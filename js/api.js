@@ -7,7 +7,7 @@
 
 const API = {
   // Configuration
-  baseURL: localStorage.getItem('VIDSPARK_API_URL') || 'http://localhost:3001/api',
+  baseURL: localStorage.getItem('VIDSPARK_API_URL') || 'https://vidspark-ai-production-9ac7.up.railway.app/api',
 
   // 🔍 DEBUG: Log the API URL being used
   init() {
