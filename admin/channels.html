@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chaînes — VidSpark Admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="vs-loader"><div class="vs-spinner"></div></div>
+<div id="vs-login-overlay"></div>
+
+<div class="vs-layout">
+  <aside class="vs-sidebar">
+    <div class="sb-header">
+      <a href="../index.html" class="sb-logo">
+        <div class="sb-logo-icon">⚡</div>
+        <span class="sb-logo-name">VidSpark AI</span>
+      </a>
+      <span class="sb-admin-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav" id="vs-nav-items"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-avatar">👤</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">—</div>
+          <div class="sb-user-role" id="sb-user-role">—</div>
+        </div>
+      </div>
+      <button id="vs-logout-btn">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="vs-main">
+    <div class="vs-topbar">
+      <div>
+        <div class="vs-page-title">📺 Chaînes YouTube</div>
+        <div class="vs-page-sub" id="ch-count">Chargement…</div>
+      </div>
+    </div>
+
+    <div class="vs-content">
+      <div class="vs-card">
+        <!-- Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>ID Chaîne</th>
+                <th>Nom Chaîne</th>
+                <th>Propriétaire Google</th>
+                <th>Ajoutée</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ch-tbody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="ch-pag"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="shared.js"></script>
+<script src="admin.js"></script>
+<script src="api.js"></script>
+<script>
+'use strict';
+let _page = 1;
+const PER_PAGE = 30;
+
+async function loadChannels(page = 1) {
+  _page = page;
+  VS.showLoader();
+
+  try {
+    const response = await AdminAPI.getChannels(page, PER_PAGE);
+    const channels = response.channels || [];
+    const pagination = response.pagination || {};
+
+    document.getElementById('ch-count').textContent = `${pagination.total || 0} chaînes`;
+
+    const tbody = document.getElementById('ch-tbody');
+    if (!channels || channels.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="vs-empty"><div class="vs-empty-icon">📺</div><div class="vs-empty-text">Aucune chaîne trouvée</div></div></td></tr>`;
+    } else {
+      tbody.innerHTML = channels.map(c => `
+        <tr>
+          <td class="td-email">${VS.esc(c.user?.email || '—')}</td>
+          <td style="font-family:monospace;font-size:11px">${VS.esc(c.channel_id)}</td>
+          <td>${VS.esc(c.channel_name || '—')}</td>
+          <td style="font-size:12px">${VS.esc(c.google_account_owner || '—')}</td>
+          <td class="td-muted">${VS.formatDate(c.added_at)}</td>
+          <td>
+            <button class="vs-btn vs-btn-danger vs-btn-sm" onclick="deleteChannel('${c.id}')">Supprimer</button>
+          </td>
+        </tr>`).join('');
+    }
+
+    // Pagination
+    if (pagination.pages > 1) {
+      const pagContainer = document.getElementById('ch-pag');
+      let html = `<div style="display:flex; gap:8px; justify-content:center; margin-top:24px; align-items:center">`;
+
+      if (page > 1) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadChannels(${page - 1})">← Précédent</button>`;
+      }
+
+      html += `<span style="color:var(--muted); font-size:14px">Page ${page} / ${pagination.pages}</span>`;
+
+      if (page < pagination.pages) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadChannels(${page + 1})">Suivant →</button>`;
+      }
+
+      html += '</div>';
+      pagContainer.innerHTML = html;
+    }
+  } catch (err) {
+    console.error('[Channels] Error:', err);
+    alert('❌ Erreur: ' + (err.message || 'Impossible de charger les chaînes'));
+  } finally {
+    VS.hideLoader();
+  }
+}
+
+async function deleteChannel(channelId) {
+  try {
+    const confirmed = confirm('Supprimer cette chaîne?');
+    if (!confirmed) return;
+
+    await AdminAPI.deleteChannel(channelId);
+    alert('✅ Chaîne supprimée');
+    await loadChannels(_page);
+  } catch (err) {
+    alert('❌ Erreur: ' + err.message);
+  }
+}
+
+// Initialiser la page
+if (!VS.checkAdminAuth()) { } else { VS.initNavigation();
+VS.hideLoader();
+loadChannels();
+}/
+</script>
+</body>
+</html>

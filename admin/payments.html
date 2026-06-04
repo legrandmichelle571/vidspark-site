@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paiements — VidSpark Admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="vs-loader"><div class="vs-spinner"></div></div>
+<div id="vs-login-overlay"></div>
+
+<div class="vs-layout">
+  <aside class="vs-sidebar">
+    <div class="sb-header">
+      <a href="../index.html" class="sb-logo">
+        <div class="sb-logo-icon">⚡</div>
+        <span class="sb-logo-name">VidSpark AI</span>
+      </a>
+      <span class="sb-admin-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav" id="vs-nav-items"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-avatar">👤</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">—</div>
+          <div class="sb-user-role" id="sb-user-role">—</div>
+        </div>
+      </div>
+      <button id="vs-logout-btn">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="vs-main">
+    <div class="vs-topbar">
+      <div>
+        <div class="vs-page-title">💳 Paiements</div>
+        <div class="vs-page-sub" id="pay-count">Chargement…</div>
+      </div>
+      <div class="vs-topbar-right">
+        <span id="pay-total-label" style="font-weight:700;color:var(--green)"></span>
+      </div>
+    </div>
+
+    <div class="vs-content">
+      <div class="vs-card">
+        <!-- Filtres -->
+        <div class="vs-card-body" style="padding-bottom:8px">
+          <div class="search-bar">
+            <select class="vs-select" id="p-status" onchange="loadPayments()">
+              <option value="">Tous statuts</option>
+              <option value="succeeded">Réussi</option>
+              <option value="failed">Échoué</option>
+              <option value="pending">En attente</option>
+              <option value="refunded">Remboursé</option>
+            </select>
+            <select class="vs-select" id="p-provider" onchange="loadPayments()">
+              <option value="">Tous fournisseurs</option>
+              <option value="stripe">Stripe</option>
+              <option value="paypal">PayPal</option>
+              <option value="manual">Manuel</option>
+            </select>
+            <select class="vs-select" id="p-period" onchange="loadPayments()">
+              <option value="">Toute période</option>
+              <option value="today">Aujourd'hui</option>
+              <option value="7d">7 derniers jours</option>
+              <option value="30d">30 derniers jours</option>
+              <option value="90d">90 derniers jours</option>
+            </select>
+            <button class="vs-btn vs-btn-ghost" onclick="resetPFilters()">✕ Réinitialiser</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Montant</th>
+                <th>Statut</th>
+                <th>Fournisseur</th>
+                <th>Réf. fournisseur</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="pay-tbody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="pay-pag"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="shared.js"></script>
+<script src="admin.js"></script>
+<script src="api.js"></script>
+<script>
+'use strict';
+let _page = 1;
+const PER_PAGE = 30;
+
+function getDateFilter() {
+  const period = document.getElementById('p-period').value;
+  if (!period) return null;
+  const now = Date.now();
+  const map = { today: 86400000, '7d': 7*86400000, '30d': 30*86400000, '90d': 90*86400000 };
+  return new Date(now - (map[period]||0)).toISOString();
+}
+
+async function loadPayments(page = 1) {
+  _page = page;
+  VS.showLoader();
+
+  try {
+    const status = document.getElementById('p-status').value;
+    const provider = document.getElementById('p-provider').value;
+    const dateFrom = getDateFilter();
+
+    const filters = {};
+    if (status) filters.status = status;
+    if (provider) filters.provider = provider;
+    if (dateFrom) filters.date_from = dateFrom;
+
+    const response = await AdminAPI.getPayments(page, PER_PAGE, filters);
+    const payments = response.payments || [];
+    const pagination = response.pagination || {};
+
+    // Calculer le total des paiements réussis affichés
+    const visibleTotal = payments
+      .filter(p => p.status === 'succeeded')
+      .reduce((s, p) => s + parseFloat(p.amount || 0), 0);
+
+    document.getElementById('pay-count').textContent = `${pagination.total || 0} paiements`;
+    document.getElementById('pay-total-label').textContent =
+      visibleTotal > 0 ? '💶 ' + VS.formatCurrency(visibleTotal) + ' (réussis affichés)' : '';
+
+    const tbody = document.getElementById('pay-tbody');
+    if (!payments || payments.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="vs-empty"><div class="vs-empty-icon">💳</div><div class="vs-empty-text">Aucun paiement trouvé</div></div></td></tr>`;
+    } else {
+      tbody.innerHTML = payments.map(p => `
+        <tr>
+          <td>
+            <div class="td-email">${VS.esc(p.user?.email || '—')}</div>
+            <div class="td-muted">${VS.esc(p.user?.name || '')}</div>
+          </td>
+          <td style="font-weight:700;color:${p.status === 'succeeded' ? 'var(--green)' : 'var(--muted)'}">
+            ${VS.formatCurrency(p.amount)} ${(p.currency || 'USD').toUpperCase()}
+          </td>
+          <td>${VS.getStatusBadge(p.status)}</td>
+          <td>${VS.getProviderBadge(p.provider)}</td>
+          <td class="td-muted" style="font-family:monospace;font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis">
+            ${VS.esc(p.provider_payment_id || '—')}
+          </td>
+          <td class="td-muted">${VS.formatDate(p.created_at)}</td>
+        </tr>`).join('');
+    }
+
+    // Pagination
+    if (pagination.pages > 1) {
+      const pagContainer = document.getElementById('pay-pag');
+      let html = `<div style="display:flex; gap:8px; justify-content:center; margin-top:24px; align-items:center">`;
+
+      if (page > 1) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadPayments(${page - 1})">← Précédent</button>`;
+      }
+
+      html += `<span style="color:var(--muted); font-size:14px">Page ${page} / ${pagination.pages}</span>`;
+
+      if (page < pagination.pages) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadPayments(${page + 1})">Suivant →</button>`;
+      }
+
+      html += '</div>';
+      pagContainer.innerHTML = html;
+    }
+  } catch (err) {
+    console.error('[Payments] Error:', err);
+    alert('❌ Erreur: ' + (err.message || 'Impossible de charger les paiements'));
+  } finally {
+    VS.hideLoader();
+  }
+}
+
+function resetPFilters() {
+  document.getElementById('p-status').value = '';
+  document.getElementById('p-provider').value = '';
+  document.getElementById('p-period').value = '';
+  loadPayments();
+}
+
+// Vérifier l'authentification et initialiser la page
+if (!VS.checkAdminAuth()) {
+  // Redirect will happen in checkAdminAuth
+} else {
+  VS.initNavigation();
+  VS.hideLoader();
+  loadPayments();
+}
+</script>
+</body>
+</html>

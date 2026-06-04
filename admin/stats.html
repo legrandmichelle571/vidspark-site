@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistiques — VidSpark Admin</title>
+<link rel="stylesheet" href="admin.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  .chart-container { position: relative; height: 400px; margin-bottom: 20px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+  .stat-box { background: var(--b1); border: 1px solid var(--b2); border-radius: 12px; padding: 20px; }
+  .stat-box-value { font-size: 32px; font-weight: 700; color: var(--green); margin: 10px 0; }
+  .stat-box-label { font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="vs-loader"><div class="vs-spinner"></div></div>
+<div id="vs-login-overlay"></div>
+
+<div class="vs-layout">
+  <aside class="vs-sidebar">
+    <div class="sb-header">
+      <a href="../index.html" class="sb-logo">
+        <div class="sb-logo-icon">⚡</div>
+        <span class="sb-logo-name">VidSpark AI</span>
+      </a>
+      <span class="sb-admin-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav" id="vs-nav-items"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-avatar">👤</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">—</div>
+          <div class="sb-user-role" id="sb-user-role">—</div>
+        </div>
+      </div>
+      <button id="vs-logout-btn">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="vs-main">
+    <div class="vs-topbar">
+      <div>
+        <div class="vs-page-title">📈 Statistiques Détaillées</div>
+        <div class="vs-page-sub">Données globales du système</div>
+      </div>
+    </div>
+
+    <div class="vs-content">
+      <div class="stats-grid" id="stats-grid">
+        <!-- Stats générées ici -->
+      </div>
+
+      <div class="vs-card">
+        <div class="vs-card-header">
+          <div class="vs-card-title">📊 Croissance Mensuelle</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="growthChart"></canvas>
+        </div>
+      </div>
+
+      <div class="vs-card" style="margin-top:20px">
+        <div class="vs-card-header">
+          <div class="vs-card-title">💰 Revenu par Mois</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="revenueMonthlyChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="shared.js"></script>
+<script src="admin.js"></script>
+<script src="api.js"></script>
+<script>
+'use strict';
+
+let charts = {};
+
+async function loadStats() {
+  VS.showLoader();
+
+  try {
+    const [stats, revenue] = await Promise.all([
+      AdminAPI.getStats(),
+      AdminAPI.getRevenue()
+    ]);
+
+    // Afficher les stats box
+    const grid = document.getElementById('stats-grid');
+    grid.innerHTML = `
+      <div class="stat-box">
+        <div class="stat-box-label">👥 Total Utilisateurs</div>
+        <div class="stat-box-value">${stats.users.total || 0}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">💶 Revenu Mensuel (MRR)</div>
+        <div class="stat-box-value">${VS.formatCurrency(stats.revenue.mrr || 0)}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">💰 Revenu Annuel (ARR)</div>
+        <div class="stat-box-value">${VS.formatCurrency(stats.revenue.arr || 0)}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">📊 Analyses Totales</div>
+        <div class="stat-box-value">${stats.analyses.total || 0}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">⭐ Utilisateurs PRO</div>
+        <div class="stat-box-value">${stats.users.pro || 0}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">🏢 Utilisateurs BUSINESS</div>
+        <div class="stat-box-value">${stats.users.business || 0}</div>
+      </div>
+    `;
+
+    // Graphique de croissance
+    const growthCtx = document.getElementById('growthChart');
+    if (growthCtx && Chart) {
+      if (charts.growth) charts.growth.destroy();
+      charts.growth = new Chart(growthCtx, {
+        type: 'line',
+        data: {
+          labels: ['S1', 'S2', 'S3', 'S4'],
+          datasets: [{
+            label: 'Nouveaux Utilisateurs',
+            data: [5, 12, 8, 15],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#e8e8f0' } } },
+          scales: {
+            y: { grid: { color: '#3a3a48' }, ticks: { color: '#8888a0' } },
+            x: { grid: { display: false }, ticks: { color: '#8888a0' } }
+          }
+        }
+      });
+    }
+
+    // Graphique de revenu
+    const revenueCtx = document.getElementById('revenueMonthlyChart');
+    if (revenueCtx && Chart) {
+      if (charts.revenue) charts.revenue.destroy();
+      charts.revenue = new Chart(revenueCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun'],
+          datasets: [{
+            label: 'Revenu ($)',
+            data: [120, 150, 180, 200, 220, (revenue?.monthly_revenue || 0)],
+            backgroundColor: '#22c55e',
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#e8e8f0' } } },
+          scales: {
+            y: { grid: { color: '#3a3a48' }, ticks: { color: '#8888a0' } },
+            x: { grid: { display: false }, ticks: { color: '#8888a0' } }
+          }
+        }
+      });
+    }
+  } catch (err) {
+    console.error('[Stats] Error:', err);
+    alert('Erreur: ' + (err.message || 'Impossible de charger les statistiques'));
+  } finally {
+    VS.hideLoader();
+  }
+}
+
+if (!VS.checkAdminAuth()) { } else { VS.initNavigation();
+VS.hideLoader();
+loadStats();
+}/
+</script>
+</body>
+</html>

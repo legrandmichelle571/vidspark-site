@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VidSpark AI — Dashboard utilisateur">
+  <title>VidSpark AI — Dashboard</title>
+  <style>
+    :root {
+      --bg:       #07070a;
+      --s1:       #0e0e12;
+      --s2:       #141418;
+      --s3:       #1a1a20;
+      --b1:       #1e1e26;
+      --b2:       #2a2a35;
+      --b3:       #3a3a48;
+      --text:     #e8e8f0;
+      --muted:    #8888a0;
+      --faint:    #505060;
+      --purple:   #7c6dfa;
+      --purple-l: #a78bfa;
+      --purple-d: #2d1f5e;
+      --green:    #22c55e;
+      --green-d:  #0d2d1a;
+      --red:      #ef4444;
+      --amber:    #f59e0b;
+      --blue:     #3b82f6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* NAV */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,7,10,.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--b1);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .nav-logo-icon {
+      width: 34px; height: 34px;
+      background: rgba(124,109,250,.15);
+      border: 1px solid rgba(124,109,250,.35);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      color: var(--muted);
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--b2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .avatar:hover {
+      background: var(--b3);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+    }
+
+    .header-info h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .header-info p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all .2s;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--purple-l);
+    }
+
+    .btn-secondary {
+      background: var(--b1);
+      color: var(--text);
+      border: 1px solid var(--b2);
+    }
+
+    .btn-secondary:hover {
+      background: var(--b2);
+    }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .card {
+      background: var(--b1);
+      border: 1px solid var(--b2);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--b3);
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .card-value {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .card-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .card-action:hover {
+      color: var(--purple-l);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--b2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      transition: width 0.3s ease;
+    }
+
+    .plan-badge {
+      display: inline-block;
+      background: rgba(124,109,250,.1);
+      color: var(--purple);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .plan-badge.pro {
+      background: rgba(34,197,94,.1);
+      color: var(--green);
+    }
+
+    .plan-badge.business {
+      background: rgba(59,130,246,.1);
+      color: var(--blue);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(124,109,250,.2);
+      border-top-color: var(--purple);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error {
+      background: rgba(239,68,68,.1);
+      border: 1px solid rgba(239,68,68,.3);
+      color: #ff6b6b;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+
+    .menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--b1);
+      border: 1px solid var(--b2);
+      border-radius: 8px;
+      overflow: hidden;
+      min-width: 160px;
+      display: none;
+      z-index: 200;
+    }
+
+    .menu.active {
+      display: block;
+    }
+
+    .menu-item {
+      display: block;
+      width: 100%;
+      padding: 12px 16px;
+      text-align: left;
+      color: var(--text);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 14px;
+    }
+
+    .menu-item:hover {
+      background: var(--b2);
+    }
+
+    .menu-item.danger {
+      color: var(--red);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">✨</div>
+        <div>VidSpark AI</div>
+      </div>
+
+      <div class="nav-links">
+        <a href="https://vidsparkpro.com/pricing.html" class="nav-link">Pricing</a>
+        <a href="#" class="nav-link">Documentation</a>
+
+        <div class="nav-user">
+          <button id="avatarButton" class="avatar">
+            <div id="avatarContent">👤</div>
+          </button>
+
+          <!-- Menu utilisateur -->
+          <div id="userMenu" class="menu">
+            <a href="account.html" class="menu-item">Account Settings</a>
+            <a href="billing.html" class="menu-item">Billing</a>
+            <button id="logoutButton" class="menu-item danger">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <div class="main">
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading dashboard...</p>
+    </div>
+
+    <div id="content" style="display: none;">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-info">
+          <h1 id="userName">Welcome</h1>
+          <p id="userEmail">Loading...</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="window.location.href='account.html'">
+            Account Settings
+          </button>
+          <button class="btn btn-primary" onclick="window.location.href='billing.html'">
+            Upgrade Plan
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="cards">
+        <!-- Plan Card -->
+        <div class="card">
+          <div class="card-title">Current Plan</div>
+          <div class="card-value" id="planName">Loading...</div>
+          <div class="plan-badge" id="planBadge">active</div>
+          <div class="card-desc" id="planDesc">Your current plan details</div>
+          <a class="card-action" href="billing.html">Manage subscription →</a>
+        </div>
+
+        <!-- Usage Card -->
+        <div class="card">
+          <div class="card-title">Monthly Usage</div>
+          <div class="card-value" id="usageText">0/10</div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+          </div>
+          <div class="card-desc" id="usageDesc">Analyses this month</div>
+        </div>
+
+        <!-- Channels Card -->
+        <div class="card">
+          <div class="card-title">YouTube Channels</div>
+          <div class="card-value" id="channelsCount">0</div>
+          <div class="card-desc" id="channelsDesc">Primary channel selected</div>
+          <a class="card-action" href="channels.html">Manage channels →</a>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="cards">
+        <div class="card">
+          <div class="card-title">🚀 Next Steps</div>
+          <ul style="list-style: none; padding: 0;">
+            <li style="padding: 8px 0; border-bottom: 1px solid var(--b2); display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="task1" style="cursor: pointer;">
+              <label for="task1" style="cursor: pointer; flex: 1;">Install extension</label>
+            </li>
+            <li style="padding: 8px 0; border-bottom: 1px solid var(--b2); display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="task2" style="cursor: pointer;">
+              <label for="task2" style="cursor: pointer; flex: 1;">Connect YouTube channel</label>
+            </li>
+            <li style="padding: 8px 0; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="task3" style="cursor: pointer;">
+              <label for="task3" style="cursor: pointer; flex: 1;">Run first analysis</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    /**
+     * Dashboard — Affichage profil et stats utilisateur
+     */
+    const loadingEl = document.getElementById('loading');
+    const contentEl = document.getElementById('content');
+    const avatarButton = document.getElementById('avatarButton');
+    const userMenu = document.getElementById('userMenu');
+    const logoutButton = document.getElementById('logoutButton');
+
+    // Menu utilisateur
+    avatarButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      userMenu.classList.toggle('active');
+    });
+
+    document.addEventListener('click', () => {
+      userMenu.classList.remove('active');
+    });
+
+    logoutButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (confirm('Are you sure you want to logout?')) {
+        await Auth.logout();
+      }
+    });
+
+    // Charger dashboard
+    async function loadDashboard() {
+      try {
+        // Vérifier connexion
+        Auth.requireLogin();
+
+        // Récupérer données utilisateur
+        const userResponse = await UserAPI.getProfile();
+        const user = userResponse.user || Auth.getCurrentUser();
+
+        if (!user) {
+          throw new Error('User profile not found');
+        }
+
+        // Récupérer plan
+        const planResponse = await UserAPI.getPlan();
+        const plan = planResponse.plan || 'free';
+
+        // Récupérer usage
+        const usageResponse = await UserAPI.getUsage();
+        const usage = usageResponse || { monthly_usage: 0, monthly_limit: 10 };
+
+        // Récupérer chaînes
+        const channelsResponse = await ChannelsAPI.list();
+        const channels = channelsResponse.channels || [];
+
+        // Afficher les données
+        document.getElementById('userName').textContent = `Welcome, ${user.name || 'Creator'}`;
+        document.getElementById('userEmail').textContent = user.email;
+
+        // Avatar
+        if (user.avatar) {
+          document.getElementById('avatarContent').innerHTML = `<img src="${user.avatar}" alt="${user.name}">`;
+        }
+
+        // Plan
+        document.getElementById('planName').textContent = plan.toUpperCase();
+        const planBadge = document.getElementById('planBadge');
+        planBadge.textContent = plan === 'business' ? 'Business' : plan === 'pro' ? 'Pro' : 'Free';
+        planBadge.className = `plan-badge ${plan}`;
+
+        // Usage
+        const percent = (usage.monthly_usage / usage.monthly_limit) * 100;
+        document.getElementById('usageText').textContent = `${usage.monthly_usage}/${usage.monthly_limit}`;
+        document.getElementById('progressFill').style.width = Math.min(percent, 100) + '%';
+
+        // Channels
+        document.getElementById('channelsCount').textContent = channels.length;
+
+        // Afficher contenu
+        loadingEl.style.display = 'none';
+        contentEl.style.display = 'block';
+      } catch (err) {
+        console.error('[Dashboard] Load error:', err);
+        loadingEl.innerHTML = `<div class="error">Failed to load dashboard: ${err.message}</div>`;
+      }
+    }
+
+    // Charger au démarrage
+    window.addEventListener('load', loadDashboard);
+  </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quotas — VidSpark Admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="vs-loader"><div class="vs-spinner"></div></div>
+<div id="vs-login-overlay"></div>
+
+<div class="vs-layout">
+  <aside class="vs-sidebar">
+    <div class="sb-header">
+      <a href="../index.html" class="sb-logo">
+        <div class="sb-logo-icon">⚡</div>
+        <span class="sb-logo-name">VidSpark AI</span>
+      </a>
+      <span class="sb-admin-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav" id="vs-nav-items"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-avatar">👤</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">—</div>
+          <div class="sb-user-role" id="sb-user-role">—</div>
+        </div>
+      </div>
+      <button id="vs-logout-btn">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="vs-main">
+    <div class="vs-topbar">
+      <div>
+        <div class="vs-page-title">📊 Quotas Mensuels</div>
+        <div class="vs-page-sub" id="q-count">Chargement…</div>
+      </div>
+    </div>
+
+    <div class="vs-content">
+      <div class="vs-card">
+        <!-- Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Plan</th>
+                <th>Limite Mensuelle</th>
+                <th>Utilisé</th>
+                <th>Disponible</th>
+                <th>% Utilisé</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="q-tbody">
+              <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted)">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="q-pag"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="shared.js"></script>
+<script src="admin.js"></script>
+<script src="api.js"></script>
+<script>
+'use strict';
+let _page = 1;
+const PER_PAGE = 30;
+
+async function loadQuotas(page = 1) {
+  _page = page;
+  VS.showLoader();
+
+  try {
+    const response = await AdminAPI.getQuotas(page, PER_PAGE);
+    const quotas = response.quotas || [];
+    const pagination = response.pagination || {};
+
+    document.getElementById('q-count').textContent = `${pagination.total || 0} utilisateurs`;
+
+    const tbody = document.getElementById('q-tbody');
+    if (!quotas || quotas.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7"><div class="vs-empty"><div class="vs-empty-icon">📊</div><div class="vs-empty-text">Aucun quota trouvé</div></div></td></tr>`;
+    } else {
+      tbody.innerHTML = quotas.map(q => {
+        const used = q.monthly_usage || 0;
+        const limit = q.monthly_limit || 10;
+        const available = Math.max(0, limit - used);
+        const pct = Math.round((used / limit) * 100);
+        const pctClass = pct >= 90 ? 'danger' : pct >= 70 ? 'warn' : '';
+
+        return `<tr>
+          <td class="td-email">${VS.esc(q.email || '—')}</td>
+          <td>${VS.getPlanBadge(q.plan)}</td>
+          <td style="font-weight:600">${limit}</td>
+          <td style="color:var(--${pctClass || 'text'})">${used}</td>
+          <td style="color:var(--green)">${available}</td>
+          <td>
+            <div class="quota-bar" style="margin:0">
+              <div class="quota-track"><div class="quota-fill ${pctClass}" style="width:${Math.min(100, pct)}%"></div></div>
+              <span style="font-size:11px;color:var(--muted)">${pct}%</span>
+            </div>
+          </td>
+          <td>
+            <button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="resetQuota('${q.user_id}')">Réinitialiser</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Pagination
+    if (pagination.pages > 1) {
+      const pagContainer = document.getElementById('q-pag');
+      let html = `<div style="display:flex; gap:8px; justify-content:center; margin-top:24px; align-items:center">`;
+
+      if (page > 1) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadQuotas(${page - 1})">← Précédent</button>`;
+      }
+
+      html += `<span style="color:var(--muted); font-size:14px">Page ${page} / ${pagination.pages}</span>`;
+
+      if (page < pagination.pages) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadQuotas(${page + 1})">Suivant →</button>`;
+      }
+
+      html += '</div>';
+      pagContainer.innerHTML = html;
+    }
+  } catch (err) {
+    console.error('[Quotas] Error:', err);
+    alert('❌ Erreur: ' + (err.message || 'Impossible de charger les quotas'));
+  } finally {
+    VS.hideLoader();
+  }
+}
+
+async function resetQuota(userId) {
+  try {
+    const confirmed = confirm('Réinitialiser le quota mensuel pour cet utilisateur?');
+    if (!confirmed) return;
+
+    await AdminAPI.resetQuota(userId);
+    alert('✅ Quota réinitialisé');
+    await loadQuotas(_page);
+  } catch (err) {
+    alert('❌ Erreur: ' + err.message);
+  }
+}
+
+// Initialiser la page
+if (!VS.checkAdminAuth()) { } else { VS.initNavigation();
+VS.hideLoader();
+loadQuotas();
+}/
+</script>
+</body>
+</html>

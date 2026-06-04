@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logs — VidSpark Admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="vs-loader"><div class="vs-spinner"></div></div>
+<div id="vs-login-overlay"></div>
+
+<div class="vs-layout">
+  <aside class="vs-sidebar">
+    <div class="sb-header">
+      <a href="../index.html" class="sb-logo">
+        <div class="sb-logo-icon">⚡</div>
+        <span class="sb-logo-name">VidSpark AI</span>
+      </a>
+      <span class="sb-admin-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav" id="vs-nav-items"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-avatar">👤</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">—</div>
+          <div class="sb-user-role" id="sb-user-role">—</div>
+        </div>
+      </div>
+      <button id="vs-logout-btn">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="vs-main">
+    <div class="vs-topbar">
+      <div>
+        <div class="vs-page-title">📋 Journaux d'Activité</div>
+        <div class="vs-page-sub" id="log-count">Chargement…</div>
+      </div>
+    </div>
+
+    <div class="vs-content">
+      <div class="vs-card">
+        <!-- Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Admin</th>
+                <th>Action</th>
+                <th>Utilisateur Cible</th>
+                <th>Détails</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="log-tbody">
+              <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--muted)">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="shared.js"></script>
+<script src="admin.js"></script>
+<script src="api.js"></script>
+<script>
+'use strict';
+
+async function loadLogs() {
+  VS.showLoader();
+
+  try {
+    const response = await AdminAPI.getLogs(100);
+    const logs = response.logs || [];
+
+    document.getElementById('log-count').textContent = logs.length + ' événements';
+
+    const tbody = document.getElementById('log-tbody');
+    if (!logs || logs.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5"><div class="vs-empty"><div class="vs-empty-icon">📋</div><div class="vs-empty-text">Aucun log trouvé</div></div></td></tr>';
+    } else {
+      tbody.innerHTML = logs.map(log => {
+        return '<tr>' +
+          '<td class="td-email" style="font-size:12px">' + VS.esc(log.admin?.email || '—') + '</td>' +
+          '<td>' + VS.esc((log.action || '—').toUpperCase()) + '</td>' +
+          '<td class="td-email" style="font-size:12px">' + VS.esc(log.target_user?.email || '—') + '</td>' +
+          '<td class="td-muted" style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis">' + VS.esc(log.details || '—') + '</td>' +
+          '<td class="td-muted">' + VS.formatDateTime(log.created_at) + '</td>' +
+          '</tr>';
+      }).join('');
+    }
+  } catch (err) {
+    console.error('[Logs] Error:', err);
+    alert('Erreur: ' + (err.message || 'Impossible de charger les logs'));
+  } finally {
+    VS.hideLoader();
+  }
+}
+
+if (!VS.checkAdminAuth()) { } else { VS.initNavigation();
+VS.hideLoader();
+loadLogs();
+}/
+
+setInterval(() => { loadLogs(); }, 30000);
+</script>
+</body>
+</html>

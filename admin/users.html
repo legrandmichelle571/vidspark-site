@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utilisateurs — VidSpark Admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="vs-loader"><div class="vs-spinner"></div></div>
+<div id="vs-login-overlay"></div>
+
+<div class="vs-layout">
+  <aside class="vs-sidebar">
+    <div class="sb-header">
+      <a href="../index.html" class="sb-logo">
+        <div class="sb-logo-icon">⚡</div>
+        <span class="sb-logo-name">VidSpark AI</span>
+      </a>
+      <span class="sb-admin-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav" id="vs-nav-items"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-avatar">👤</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">—</div>
+          <div class="sb-user-role" id="sb-user-role">—</div>
+        </div>
+      </div>
+      <button id="vs-logout-btn">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="vs-main">
+    <div class="vs-topbar">
+      <div>
+        <div class="vs-page-title">👥 Utilisateurs</div>
+        <div class="vs-page-sub" id="users-count">Chargement…</div>
+      </div>
+    </div>
+
+    <div class="vs-content">
+      <div class="vs-card">
+        <!-- Filtres -->
+        <div class="vs-card-body" style="padding-bottom:8px">
+          <div class="search-bar">
+            <input type="text" class="vs-input" id="u-search" placeholder="🔍 Email ou nom…" oninput="debounce(loadUsers,400)()">
+            <select class="vs-select" id="u-plan" onchange="loadUsers()">
+              <option value="">Tous les plans</option>
+              <option value="free">Free</option>
+              <option value="pro">Pro</option>
+              <option value="business">Business</option>
+            </select>
+            <select class="vs-select" id="u-status" onchange="loadUsers()">
+              <option value="">Tous statuts</option>
+              <option value="active">Actif</option>
+              <option value="suspended">Suspendu</option>
+              <option value="cancelled">Annulé</option>
+            </select>
+            <button class="vs-btn vs-btn-ghost" onclick="resetFilters()">✕ Réinitialiser</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Nom</th>
+                <th>Plan</th>
+                <th>Statut</th>
+                <th>Rôle</th>
+                <th>Quota</th>
+                <th>Inscrit</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--muted)">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="users-pag"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="shared.js"></script>
+<script src="admin.js"></script>
+<script src="api.js"></script>
+<script>
+'use strict';
+let _page = 1;
+const PER_PAGE = 25;
+
+/* ── Debounce pour la recherche ── */
+const debouncedLoadUsers = VS.debounce(function() {
+  loadUsers(1);
+}, 400);
+
+/* ── Charger les utilisateurs ── */
+async function loadUsers(page = 1) {
+  _page = page;
+  VS.showLoader();
+
+  try {
+    const search = document.getElementById('u-search').value.trim();
+    const plan = document.getElementById('u-plan').value;
+    const status = document.getElementById('u-status').value;
+
+    // Appel API avec filtres
+    const filters = {};
+    if (search) filters.search = search;
+    if (plan) filters.plan = plan;
+    if (status) filters.status = status;
+
+    const response = await AdminAPI.getUsers(page, PER_PAGE, filters);
+    const users = response.users || [];
+    const pagination = response.pagination || {};
+
+    document.getElementById('users-count').textContent = `${pagination.total || 0} utilisateurs`;
+
+    const tbody = document.getElementById('users-tbody');
+    if (!users || users.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="vs-empty"><div class="vs-empty-icon">👥</div><div class="vs-empty-text">Aucun utilisateur trouvé</div></div></td></tr>`;
+    } else {
+      tbody.innerHTML = users.map(u => {
+        const lim = PLAN_LIMITS[u.plan] || PLAN_LIMITS.free;
+        const usage = u.monthly_usage || u.quota_used || 0;
+        const limit = lim.monthly_limit || lim.daily_analyses || 10;
+        const pct = Math.min(100, Math.round((usage / limit) * 100));
+        const cls = pct >= 90 ? 'danger' : pct >= 70 ? 'warn' : '';
+
+        return `<tr>
+          <td class="td-email">${VS.esc(u.email)}</td>
+          <td class="td-muted">${VS.esc(u.name || '—')}</td>
+          <td>${VS.getPlanBadge(u.plan)}</td>
+          <td>${VS.getStatusBadge(u.status)}</td>
+          <td class="td-muted">${u.role === 'admin' ? '<span style="color:var(--amber)">⭐ Admin</span>' : 'User'}</td>
+          <td style="min-width:130px">
+            <div class="quota-bar">
+              <span style="font-size:11px;color:var(--muted);white-space:nowrap">${usage}/${limit}</span>
+              <div class="quota-track"><div class="quota-fill ${cls}" style="width:${pct}%"></div></div>
+            </div>
+          </td>
+          <td class="td-muted">${VS.formatDate(u.created_at)}</td>
+          <td>
+            <div class="action-btns">
+              ${u.plan !== 'free' ? `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="changePlan('${u.id}','free')">Free</button>` : ''}
+              ${u.plan !== 'pro' ? `<button class="vs-btn vs-btn-sm" style="background:rgba(124,109,250,.12);color:var(--purple-l);border:1px solid rgba(124,109,250,.2)" onclick="changePlan('${u.id}','pro')">Pro</button>` : ''}
+              ${u.plan !== 'business' ? `<button class="vs-btn vs-btn-sm vs-btn-success" onclick="changePlan('${u.id}','business')">Biz</button>` : ''}
+              ${u.status === 'active' ? `<button class="vs-btn vs-btn-danger vs-btn-sm" onclick="changeStatus('${u.id}','suspended')">⏸ Suspendre</button>` : `<button class="vs-btn vs-btn-success vs-btn-sm" onclick="changeStatus('${u.id}','active')">▶ Réactiver</button>`}
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Pagination
+    if (pagination.pages > 1) {
+      const pagContainer = document.getElementById('users-pag');
+      let html = `<div style="display:flex; gap:8px; justify-content:center; margin-top:24px; align-items:center">`;
+
+      if (page > 1) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadUsers(${page - 1})">← Précédent</button>`;
+      }
+
+      html += `<span style="color:var(--muted); font-size:14px">Page ${page} / ${pagination.pages}</span>`;
+
+      if (page < pagination.pages) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadUsers(${page + 1})">Suivant →</button>`;
+      }
+
+      html += '</div>';
+      pagContainer.innerHTML = html;
+    }
+  } catch (err) {
+    console.error('[Users] Error:', err);
+    alert('❌ Erreur: ' + (err.message || 'Impossible de charger les utilisateurs'));
+  } finally {
+    VS.hideLoader();
+  }
+}
+
+async function changePlan(userId, newPlan) {
+  try {
+    await VS.changePlan(userId, newPlan);
+    await loadUsers(_page);
+  } catch (err) {
+    console.error('[Change Plan] Error:', err);
+  }
+}
+
+async function changeStatus(userId, newStatus) {
+  try {
+    await VS.setStatus(userId, newStatus);
+    await loadUsers(_page);
+  } catch (err) {
+    console.error('[Change Status] Error:', err);
+  }
+}
+
+function resetFilters() {
+  document.getElementById('u-search').value = '';
+  document.getElementById('u-plan').value = '';
+  document.getElementById('u-status').value = '';
+  loadUsers();
+}
+
+// Vérifier l'authentification et initialiser la page
+if (!VS.checkAdminAuth()) {
+  // Redirect will happen in checkAdminAuth
+} else {
+  VS.initNavigation();
+  VS.hideLoader();
+  loadUsers();
+}
+</script>
+</body>
+</html>

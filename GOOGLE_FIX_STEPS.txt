@@ -1,0 +1,156 @@
+═══════════════════════════════════════════════════════════════════════
+ 🔐 FIX GOOGLE OAUTH - VIDSPARK AI
+═══════════════════════════════════════════════════════════════════════
+
+ERREUR: "The OAuth client was not found" (Error 401: invalid_client)
+SOLUTION: Configurer Google Cloud Console
+
+═══════════════════════════════════════════════════════════════════════
+ ÉTAPE 1: OUVRE GOOGLE CLOUD CONSOLE
+═══════════════════════════════════════════════════════════════════════
+
+Clique ici:
+👉 https://console.cloud.google.com/apis/credentials
+
+Connecte-toi avec: legrandmichelle571@gmail.com
+
+═══════════════════════════════════════════════════════════════════════
+ ÉTAPE 2: TROUVE LE CLIENT OAUTH
+═══════════════════════════════════════════════════════════════════════
+
+1. À gauche, clique sur "Credentials"
+2. Cherche "VidSpark AI" ou "665845815325-..."
+3. CLIQUE DESSUS
+
+═══════════════════════════════════════════════════════════════════════
+ ÉTAPE 3: AJOUTE LES JAVASCRIPT ORIGINS
+═══════════════════════════════════════════════════════════════════════
+
+Dans la section "Authorized JavaScript origins":
+
+❌ SUPPRIME: localhost, http://, etc.
+
+✅ AJOUTE SEULEMENT:
+   - https://vidsparkpro.com
+   - https://www.vidsparkpro.com
+
+Comment:
+1. Clique "+ Add URI"
+2. Copie-colle: https://vidsparkpro.com
+3. Clique "+ Add URI"
+4. Copie-colle: https://www.vidsparkpro.com
+
+═══════════════════════════════════════════════════════════════════════
+ ÉTAPE 4: AJOUTE LES REDIRECT URIS
+═══════════════════════════════════════════════════════════════════════
+
+Dans la section "Authorized redirect URIs":
+
+❌ SUPPRIME: localhost, http://, etc.
+
+✅ AJOUTE SEULEMENT:
+   - https://vidsparkpro.com/login.html
+   - https://vidsparkpro.com
+   - https://www.vidsparkpro.com/login.html
+   - https://www.vidsparkpro.com
+
+Comment:
+1. Clique "+ Add URI"
+2. Copie-colle: https://vidsparkpro.com/login.html
+3. Clique "+ Add URI"
+4. Copie-colle: https://vidsparkpro.com
+5. Clique "+ Add URI"
+6. Copie-colle: https://www.vidsparkpro.com/login.html
+7. Clique "+ Add URI"
+8. Copie-colle: https://www.vidsparkpro.com
+
+═══════════════════════════════════════════════════════════════════════
+ ÉTAPE 5: SAVE
+═══════════════════════════════════════════════════════════════════════
+
+Clique le bouton "SAVE" en bas de la page
+
+═══════════════════════════════════════════════════════════════════════
+ ÉTAPE 6: ATTENDRE ⏱️
+═══════════════════════════════════════════════════════════════════════
+
+⏱️ ATTENDS 5-10 MINUTES
+
+Google prend du temps pour appliquer les changements!
+
+═══════════════════════════════════════════════════════════════════════
+ ÉTAPE 7: TESTE
+═══════════════════════════════════════════════════════════════════════
+
+Après 5-10 minutes, ouvre cette page:
+👉 https://vidsparkpro.com/google-oauth-test.html
+
+Tu devrais voir:
+✅ "Google OAuth prêt!"
+
+Clique "Test Google OAuth"
+Tu devrais voir le popup Google s'ouvrir ✅
+
+═══════════════════════════════════════════════════════════════════════
+ ✅ SI ÇA MARCHE
+═══════════════════════════════════════════════════════════════════════
+
+Félicitations! 🎉
+Google OAuth est maintenant configuré!
+
+Les utilisateurs peuvent se connecter avec:
+✅ Compte Google SEULEMENT
+✅ Pas de faux emails
+✅ 100% sécurisé
+
+═══════════════════════════════════════════════════════════════════════
+ ❌ SI ÇA NE MARCHE PAS
+═══════════════════════════════════════════════════════════════════════
+
+1. ATTENDS 5 MINUTES DE PLUS
+   (Google est très lent parfois)
+
+2. VIDE LE CACHE:
+   - Ctrl + Shift + Delete (Windows)
+   - Cmd + Shift + Delete (Mac)
+   - Clique "Clear cache"
+
+3. OUVRE UNE FENÊTRE PRIVÉE/INCOGNITO
+   - Ctrl + Shift + N (Windows)
+   - Cmd + Shift + N (Mac)
+
+4. TESTE À NOUVEAU:
+   https://vidsparkpro.com/google-oauth-test.html
+
+5. SI TOUJOURS BON:
+   - Screenshot l'erreur
+   - Dis-moi le message exact
+   - Dis-moi les URLs que tu as ajoutées
+
+═══════════════════════════════════════════════════════════════════════
+ 📋 CHECKLIST
+═══════════════════════════════════════════════════════════════════════
+
+[ ] J'ai ouvert Google Cloud Console
+[ ] J'ai trouvé le client VidSpark
+[ ] J'ai ajouté https://vidsparkpro.com
+[ ] J'ai ajouté https://www.vidsparkpro.com
+[ ] J'ai ajouté les 4 redirect URIs
+[ ] J'ai cliqué SAVE
+[ ] J'ai attendu 5-10 minutes
+[ ] J'ai testé sur google-oauth-test.html
+[ ] ✅ ÇA MARCHE!
+
+═══════════════════════════════════════════════════════════════════════
+ 🎯 CLIENT ID (Pour Référence)
+═══════════════════════════════════════════════════════════════════════
+
+665845815325-kguko2tbkji3e9ru9fopmi97qcb9qcvl.apps.googleusercontent.com
+
+═══════════════════════════════════════════════════════════════════════
+
+C'EST TOUT! SIMPLE! 💪
+
+Fais-le maintenant et dis-moi quand c'est bon! ✅
+
+═══════════════════════════════════════════════════════════════════════

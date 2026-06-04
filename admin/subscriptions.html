@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abonnements — VidSpark Admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="vs-loader"><div class="vs-spinner"></div></div>
+<div id="vs-login-overlay"></div>
+
+<div class="vs-layout">
+  <aside class="vs-sidebar">
+    <div class="sb-header">
+      <a href="../index.html" class="sb-logo">
+        <div class="sb-logo-icon">⚡</div>
+        <span class="sb-logo-name">VidSpark AI</span>
+      </a>
+      <span class="sb-admin-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav" id="vs-nav-items"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-avatar">👤</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">—</div>
+          <div class="sb-user-role" id="sb-user-role">—</div>
+        </div>
+      </div>
+      <button id="vs-logout-btn">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="vs-main">
+    <div class="vs-topbar">
+      <div>
+        <div class="vs-page-title">🔔 Abonnements</div>
+        <div class="vs-page-sub" id="sub-count">Chargement…</div>
+      </div>
+    </div>
+
+    <div class="vs-content">
+      <div class="vs-card">
+        <!-- Filtres -->
+        <div class="vs-card-body" style="padding-bottom:8px">
+          <div class="search-bar">
+            <select class="vs-select" id="s-plan" onchange="loadSubscriptions()">
+              <option value="">Tous plans</option>
+              <option value="pro">Pro</option>
+              <option value="business">Business</option>
+            </select>
+            <select class="vs-select" id="s-status" onchange="loadSubscriptions()">
+              <option value="">Tous statuts</option>
+              <option value="active">Actif</option>
+              <option value="expired">Expiré</option>
+              <option value="cancelled">Annulé</option>
+            </select>
+            <button class="vs-btn vs-btn-ghost" onclick="resetSFilters()">✕ Réinitialiser</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Plan</th>
+                <th>Statut</th>
+                <th>Créé</th>
+                <th>Expire</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sub-tbody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="sub-pag"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="shared.js"></script>
+<script src="admin.js"></script>
+<script src="api.js"></script>
+<script>
+'use strict';
+let _page = 1;
+const PER_PAGE = 30;
+
+async function loadSubscriptions(page = 1) {
+  _page = page;
+  VS.showLoader();
+
+  try {
+    const plan = document.getElementById('s-plan').value;
+    const status = document.getElementById('s-status').value;
+
+    const filters = {};
+    if (plan) filters.plan = plan;
+    if (status) filters.status = status;
+
+    const response = await AdminAPI.getSubscriptions(page, PER_PAGE, filters);
+    const subscriptions = response.subscriptions || [];
+    const pagination = response.pagination || {};
+
+    document.getElementById('sub-count').textContent = `${pagination.total || 0} abonnements`;
+
+    const tbody = document.getElementById('sub-tbody');
+    if (!subscriptions || subscriptions.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="vs-empty"><div class="vs-empty-icon">🔔</div><div class="vs-empty-text">Aucun abonnement trouvé</div></div></td></tr>`;
+    } else {
+      tbody.innerHTML = subscriptions.map(s => {
+        const daysLeft = Math.ceil((new Date(s.current_period_end) - new Date()) / (1000 * 60 * 60 * 24));
+        const statusClass = daysLeft <= 0 ? 'danger' : daysLeft <= 7 ? 'warn' : '';
+
+        return `<tr>
+          <td>
+            <div class="td-email">${VS.esc(s.user?.email || '—')}</div>
+          </td>
+          <td>${VS.getPlanBadge(s.plan)}</td>
+          <td>${VS.getStatusBadge(s.status)}</td>
+          <td>${VS.formatDate(s.created_at)}</td>
+          <td style="color:var(--${statusClass || 'text'})">
+            ${VS.formatDate(s.current_period_end)}
+            <span style="font-size:11px;color:var(--muted)"> (${daysLeft > 0 ? daysLeft + ' jours' : 'Expiré'})</span>
+          </td>
+          <td>
+            <div class="action-btns">
+              ${s.status === 'active' ? `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="extendSub('${s.id}')">+30j</button>` : ''}
+              ${s.status !== 'cancelled' ? `<button class="vs-btn vs-btn-danger vs-btn-sm" onclick="cancelSub('${s.id}')">Annuler</button>` : ''}
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Pagination
+    if (pagination.pages > 1) {
+      const pagContainer = document.getElementById('sub-pag');
+      let html = `<div style="display:flex; gap:8px; justify-content:center; margin-top:24px; align-items:center">`;
+
+      if (page > 1) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadSubscriptions(${page - 1})">← Précédent</button>`;
+      }
+
+      html += `<span style="color:var(--muted); font-size:14px">Page ${page} / ${pagination.pages}</span>`;
+
+      if (page < pagination.pages) {
+        html += `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="loadSubscriptions(${page + 1})">Suivant →</button>`;
+      }
+
+      html += '</div>';
+      pagContainer.innerHTML = html;
+    }
+  } catch (err) {
+    console.error('[Subscriptions] Error:', err);
+    alert('❌ Erreur: ' + (err.message || 'Impossible de charger les abonnements'));
+  } finally {
+    VS.hideLoader();
+  }
+}
+
+async function extendSub(subId) {
+  try {
+    const confirmed = confirm('Étendre l\'abonnement de 30 jours?');
+    if (!confirmed) return;
+
+    await AdminAPI.extendSubscription(subId, 30);
+    alert('✅ Abonnement étendu');
+    await loadSubscriptions(_page);
+  } catch (err) {
+    alert('❌ Erreur: ' + err.message);
+  }
+}
+
+async function cancelSub(subId) {
+  try {
+    const confirmed = confirm('Annuler cet abonnement? Cette action est irréversible.');
+    if (!confirmed) return;
+
+    await AdminAPI.cancelSubscription(subId);
+    alert('✅ Abonnement annulé');
+    await loadSubscriptions(_page);
+  } catch (err) {
+    alert('❌ Erreur: ' + err.message);
+  }
+}
+
+function resetSFilters() {
+  document.getElementById('s-plan').value = '';
+  document.getElementById('s-status').value = '';
+  loadSubscriptions();
+}
+
+// Initialiser la page
+if (!VS.checkAdminAuth()) { } else { VS.initNavigation();
+VS.hideLoader();
+loadSubscriptions();
+}/
+</script>
+</body>
+</html>

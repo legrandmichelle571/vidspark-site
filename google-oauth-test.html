@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VidSpark AI - Google OAuth Test</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 16px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      color: #00d4ff;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #999;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .status-box {
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 4px solid #ff6b6b;
+      padding: 15px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .status-box.loading {
+      border-left-color: #ffd93d;
+      color: #ffd93d;
+    }
+
+    .status-box.success {
+      border-left-color: #6bcf7f;
+      color: #6bcf7f;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+      color: black;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .logs {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      max-height: 400px;
+      overflow-y: auto;
+      color: #6bcf7f;
+    }
+
+    .log-entry {
+      margin-bottom: 8px;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      border-left: 3px solid #6bcf7f;
+    }
+
+    .log-entry.error {
+      border-left-color: #ff6b6b;
+      color: #ff6b6b;
+    }
+
+    .log-entry.warning {
+      border-left-color: #ffd93d;
+      color: #ffd93d;
+    }
+
+    .log-entry.info {
+      border-left-color: #00d4ff;
+      color: #00d4ff;
+    }
+
+    .google-button {
+      width: 100%;
+      padding: 12px;
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .google-button:hover {
+      background: #f0f0f0;
+    }
+
+    .info-section {
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .info-section h3 {
+      color: #00d4ff;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Monaco', 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 VidSpark AI - Google OAuth Test</h1>
+    <p class="subtitle">Vérifier que Google OAuth est bien configuré</p>
+
+    <div class="status-box loading" id="statusBox">
+      ⏳ Chargement...
+    </div>
+
+    <div class="info-section">
+      <h3>ℹ️ À Quoi Sert Cette Page?</h3>
+      <p>
+        Cette page teste si Google OAuth est correctement configuré. Elle:
+      </p>
+      <ul style="margin-top: 10px; margin-left: 20px;">
+        <li>Charge la librairie Google Identity Services</li>
+        <li>Vérifie le Client ID</li>
+        <li>Affiche tous les logs de debug</li>
+        <li>Te permet de tester la connexion Google</li>
+      </ul>
+    </div>
+
+    <div class="button-group">
+      <button class="btn-primary" onclick="testGoogleLogin()">
+        🔵 Test Google OAuth
+      </button>
+      <button class="btn-secondary" onclick="clearLogs()">
+        🗑️ Effacer les logs
+      </button>
+      <button class="btn-secondary" onclick="copyClientId()">
+        📋 Copier Client ID
+      </button>
+    </div>
+
+    <div id="googleButton" class="google-button" style="display: none;">
+      Se connecter avec Google
+    </div>
+
+    <div class="info-section">
+      <h3>❓ Étapes de Configuration Google Cloud</h3>
+      <p>
+        Si tu vois une erreur "invalid_client", il faut configurer Google Cloud Console:
+      </p>
+      <ol style="margin-top: 10px; margin-left: 20px;">
+        <li>Va à <code>console.cloud.google.com/credentials</code></li>
+        <li>Clique sur ton client OAuth "VidSpark AI"</li>
+        <li>Ajoute ces URLs aux "Authorized JavaScript origins":
+          <br><code>https://vidsparkpro.com</code>
+          <br><code>https://www.vidsparkpro.com</code>
+        </li>
+        <li>Ajoute ces URLs aux "Authorized redirect URIs":
+          <br><code>https://vidsparkpro.com/login.html</code>
+          <br><code>https://vidsparkpro.com</code>
+          <br><code>https://www.vidsparkpro.com/login.html</code>
+          <br><code>https://www.vidsparkpro.com</code>
+        </li>
+        <li>Clique sur SAVE</li>
+        <li>Attends 5-10 minutes</li>
+        <li>Reviens tester ici</li>
+      </ol>
+    </div>
+
+    <p style="margin-bottom: 15px; color: #999; font-size: 13px;">
+      <strong>Logs:</strong>
+    </p>
+    <div class="logs" id="logs"></div>
+  </div>
+
+  <script>
+    const LOGS = [];
+
+    function log(message, type = 'info') {
+      const timestamp = new Date().toLocaleTimeString();
+      const entry = `[${timestamp}] ${message}`;
+      LOGS.push({ message: entry, type });
+      console.log(entry);
+      updateLogsDisplay();
+    }
+
+    function updateLogsDisplay() {
+      const logsDiv = document.getElementById('logs');
+      logsDiv.innerHTML = LOGS.map(entry =>
+        `<div class="log-entry ${entry.type}">${entry.message}</div>`
+      ).join('');
+      logsDiv.scrollTop = logsDiv.scrollHeight;
+    }
+
+    function clearLogs() {
+      LOGS.length = 0;
+      document.getElementById('logs').innerHTML = '';
+    }
+
+    function copyClientId() {
+      const clientId = '665845815325-kguko2tbkji3e9ru9fopmi97qcb9qcvl.apps.googleusercontent.com';
+      navigator.clipboard.writeText(clientId);
+      alert('✅ Client ID copié!');
+      log('Client ID copié au presse-papiers', 'success');
+    }
+
+    function updateStatus(message, type = 'error') {
+      const box = document.getElementById('statusBox');
+      box.textContent = message;
+      box.className = `status-box ${type}`;
+    }
+
+    function testGoogleLogin() {
+      log('Test Google OAuth cliqué', 'info');
+
+      if (typeof google === 'undefined') {
+        log('❌ Google Identity Services non chargé!', 'error');
+        updateStatus('❌ Google Identity Services non chargé', 'error');
+        return;
+      }
+
+      log('✅ Google Identity Services disponible', 'success');
+
+      try {
+        google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed()) {
+            log('⚠️ Google prompt non affiché, tentative du bouton custom', 'warning');
+            renderGoogleButton();
+          } else if (notification.isSkippedMoment()) {
+            log('⚠️ Google prompt ignoré par l\'utilisateur', 'warning');
+          } else {
+            log('✅ Google prompt affiché avec succès', 'success');
+          }
+        });
+      } catch (err) {
+        log(`❌ Erreur: ${err.message}`, 'error');
+        updateStatus(`❌ Erreur: ${err.message}`, 'error');
+      }
+    }
+
+    function renderGoogleButton() {
+      log('Rendu du bouton Google custom', 'info');
+
+      const clientId = '665845815325-kguko2tbkji3e9ru9fopmi97qcb9qcvl.apps.googleusercontent.com';
+
+      try {
+        google.accounts.id.renderButton(
+          document.getElementById('googleButton'),
+          {
+            theme: 'outline',
+            size: 'large',
+            width: '100%',
+            text: 'signin'
+          }
+        );
+        document.getElementById('googleButton').style.display = 'flex';
+        log('✅ Bouton Google rendu', 'success');
+      } catch (err) {
+        log(`❌ Erreur rendu bouton: ${err.message}`, 'error');
+      }
+    }
+
+    // Initialisation au chargement
+    document.addEventListener('DOMContentLoaded', () => {
+      log('Page chargée', 'info');
+
+      // Charger Google Identity Services
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+
+      script.onload = () => {
+        log('✅ Google Identity Services chargé', 'success');
+
+        const clientId = '665845815325-kguko2tbkji3e9ru9fopmi97qcb9qcvl.apps.googleusercontent.com';
+
+        log(`Client ID: ${clientId}`, 'info');
+        log(`Client ID valide: ${clientId.endsWith('.apps.googleusercontent.com')}`, 'info');
+        log(`Domaine: ${window.location.hostname}`, 'info');
+
+        try {
+          google.accounts.id.initialize({
+            client_id: clientId,
+            callback: (response) => {
+              log('✅ Réponse Google reçue', 'success');
+              log(`Token reçu: ${response.credential?.substring(0, 50)}...`, 'success');
+            }
+          });
+
+          log('✅ Google initialized avec succès', 'success');
+          updateStatus('✅ Google OAuth prêt! Clique sur "Test Google OAuth"', 'success');
+        } catch (err) {
+          log(`❌ Erreur initialize: ${err.message}`, 'error');
+          updateStatus(`❌ Erreur: ${err.message}`, 'error');
+        }
+      };
+
+      script.onerror = () => {
+        log('❌ Erreur chargement Google Identity Services', 'error');
+        updateStatus('❌ Erreur chargement Google', 'error');
+      };
+
+      document.head.appendChild(script);
+    });
+  </script>
+</body>
+</html>

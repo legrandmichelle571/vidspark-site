@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VidSpark AI Pricing — Choose the perfect plan">
+  <title>Pricing — VidSpark AI</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --bg:       #07070a;
+      --s1:       #0e0e12;
+      --s2:       #141418;
+      --s3:       #1a1a20;
+      --b1:       #1e1e26;
+      --b2:       #2a2a35;
+      --b3:       #3a3a48;
+      --text:     #e8e8f0;
+      --muted:    #8888a0;
+      --faint:    #505060;
+      --purple:   #7c6dfa;
+      --blue:     #3b82f6;
+      --green:    #22c55e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .pricing-header {
+      text-align: center;
+      padding: 80px 24px 40px;
+    }
+
+    .pricing-header h1 {
+      font-size: 40px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #7c6dfa 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .pricing-header p {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    /* Plans Grid */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      margin-bottom: 80px;
+    }
+
+    .plan-card {
+      background: var(--s3);
+      border: 2px solid var(--b2);
+      border-radius: 16px;
+      padding: 40px 28px;
+      position: relative;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-8px);
+    }
+
+    .plan-card.recommended {
+      border-color: var(--purple);
+      background: linear-gradient(135deg, #2d1f5e 0%, var(--s3) 100%);
+      transform: scale(1.05);
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: -12px;
+      left: 24px;
+      background: var(--purple);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .plan-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+
+    .plan-description {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .plan-price {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      color: var(--purple);
+    }
+
+    .plan-price-period {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--b2);
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 32px;
+      flex-grow: 1;
+    }
+
+    .plan-features li {
+      padding: 12px 0;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+    }
+
+    .plan-features li.disabled {
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .feature-icon {
+      font-size: 18px;
+      min-width: 20px;
+    }
+
+    .plan-cta {
+      background: var(--purple);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .plan-cta:hover {
+      background: var(--purple);
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+
+    .plan-cta:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    /* Comparison Table */
+    .comparison-section {
+      margin-top: 80px;
+      padding: 40px 24px;
+      background: var(--s2);
+      border-radius: 16px;
+      border: 2px solid var(--b2);
+    }
+
+    .comparison-section h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--b2);
+    }
+
+    .comparison-table th {
+      background: var(--s3);
+      font-weight: 600;
+      color: var(--purple);
+    }
+
+    .comparison-table td {
+      color: var(--text);
+    }
+
+    .comparison-table tr:hover td {
+      background: rgba(124, 109, 250, 0.05);
+    }
+
+    .check { color: var(--green); font-weight: bold; }
+    .cross { color: var(--muted); opacity: 0.5; }
+
+    /* Billing Interval Toggle */
+    .billing-toggle-section {
+      text-align: center;
+      margin-bottom: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .billing-toggle-buttons {
+      display: flex;
+      gap: 12px;
+      background: var(--b2);
+      padding: 8px;
+      border-radius: 10px;
+    }
+
+    .billing-toggle-btn {
+      padding: 12px 24px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .billing-toggle-btn.active {
+      background: var(--purple);
+      color: white;
+    }
+
+    .billing-toggle-btn:hover:not(.active) {
+      color: var(--text);
+    }
+
+    .savings-badge {
+      background: var(--green);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: none;
+    }
+
+    .savings-badge.show {
+      display: inline-block;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      margin-top: 80px;
+      padding: 40px 0;
+    }
+
+    .faq-section h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .faq-list {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: var(--s3);
+      border: 2px solid var(--b2);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(124, 109, 250, 0.1);
+    }
+
+    .faq-question.active {
+      background: var(--purple);
+      color: white;
+    }
+
+    .faq-toggle { font-size: 20px; }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--muted);
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      padding: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .pricing-header h1 {
+        font-size: 32px;
+      }
+
+      .plan-card.recommended {
+        transform: scale(1);
+      }
+
+      .plans-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="pricing-header">
+      <h1>Simple, Transparent Pricing</h1>
+      <p>Choose the perfect plan for your YouTube success</p>
+    </div>
+
+    <!-- Billing Interval Toggle -->
+    <div class="billing-toggle-section">
+      <div class="billing-toggle-buttons">
+        <button class="billing-toggle-btn active" data-interval="month">Monthly</button>
+        <button class="billing-toggle-btn" data-interval="year">Yearly</button>
+      </div>
+      <span class="savings-badge" id="savingsBadge">Save ~10%</span>
+    </div>
+
+    <!-- Plans Grid -->
+    <div class="plans-grid" id="plansContainer"></div>
+
+    <!-- Comparison Table -->
+    <div class="comparison-section">
+      <h2>📊 Detailed Comparison</h2>
+      <div id="comparisonTableContainer"></div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h2>❓ Frequently Asked Questions</h2>
+      <div class="faq-list" id="faqContainer"></div>
+    </div>
+  </div>
+
+  <script src="js/plans-config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    let currentBillingInterval = 'month';
+
+    const FAQData = [
+      {
+        question: "Can I change my plan anytime?",
+        answer: "Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate your charges fairly."
+      },
+      {
+        question: "What happens when I reach my monthly limit?",
+        answer: "FREE plan: You'll need to upgrade to continue. PRO/BUSINESS: These generous limits rarely get exceeded, but we'll send you a notification at 80% usage."
+      },
+      {
+        question: "Why do all BUSINESS channels need the same owner?",
+        answer: "This anti-sharing requirement ensures fair usage and prevents account abuse. Each BUSINESS account is tied to a single Google owner for security."
+      },
+      {
+        question: "Do you offer annual discounts?",
+        answer: "Yes! Annual plans include approximately 10% savings compared to monthly billing. Pay $107.89/year for PRO or $323.89/year for BUSINESS."
+      },
+      {
+        question: "Is there a free trial?",
+        answer: "Our FREE tier is essentially a free trial with generous limits. Upgrade to PRO anytime without commitment."
+      },
+      {
+        question: "What payment methods do you accept?",
+        answer: "We accept all major credit cards via Stripe. Your payment information is encrypted and PCI compliant."
+      }
+    ];
+
+    // Render comparison table
+    function renderComparisonTable() {
+      const proPriceDisplay = currentBillingInterval === 'year' ? '$107.89/year' : '$9.99/mo';
+      const businessPriceDisplay = currentBillingInterval === 'year' ? '$323.89/year' : '$29.99/mo';
+
+      const tableHtml = `
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>FREE</th>
+              <th>PRO</th>
+              <th>BUSINESS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Price</td>
+              <td>$0</td>
+              <td>${proPriceDisplay}</td>
+              <td>${businessPriceDisplay}</td>
+            </tr>
+            <tr>
+              <td>Analyses/Month</td>
+              <td class="check">10</td>
+              <td class="check">500</td>
+              <td class="check">10,000</td>
+            </tr>
+            <tr>
+              <td>AI Reports/Month</td>
+              <td class="cross">—</td>
+              <td class="check">100</td>
+              <td class="check">5,000</td>
+            </tr>
+            <tr>
+              <td>AI Titles/Month</td>
+              <td class="cross">—</td>
+              <td class="check">Unlimited</td>
+              <td class="check">Unlimited</td>
+            </tr>
+            <tr>
+              <td>Max Channels</td>
+              <td class="check">1</td>
+              <td class="check">1</td>
+              <td class="check">5</td>
+            </tr>
+            <tr>
+              <td>PDF Export</td>
+              <td class="cross">—</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>API Access</td>
+              <td class="cross">—</td>
+              <td class="cross">—</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>Priority Support</td>
+              <td class="cross">—</td>
+              <td class="cross">—</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>Same Account Requirement</td>
+              <td class="cross">N/A</td>
+              <td class="cross">N/A</td>
+              <td class="check">Required</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+
+      document.getElementById('comparisonTableContainer').innerHTML = tableHtml;
+    }
+
+    // Setup billing interval toggle
+    function setupBillingToggle() {
+      const toggleButtons = document.querySelectorAll('.billing-toggle-btn');
+      const savingsBadge = document.getElementById('savingsBadge');
+
+      toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active from all buttons
+          toggleButtons.forEach(b => b.classList.remove('active'));
+          // Add active to clicked button
+          btn.classList.add('active');
+
+          // Update current interval
+          currentBillingInterval = btn.getAttribute('data-interval');
+
+          // Show/hide savings badge
+          if (currentBillingInterval === 'year') {
+            savingsBadge.classList.add('show');
+          } else {
+            savingsBadge.classList.remove('show');
+          }
+
+          // Re-render plans and comparison table with new interval
+          renderPlans();
+          renderComparisonTable();
+        });
+      });
+    }
+
+    // Render plans
+    function renderPlans() {
+      const plansHtml = Object.keys(PLANS_CONFIG).map(planId => {
+        const plan = PLANS_CONFIG[planId];
+        const isRecommended = plan.recommended;
+        const price = currentBillingInterval === 'year' ? plan.price_yearly : plan.price_monthly;
+        const isFree = planId === 'free';
+
+        return `
+          <div class="plan-card ${isRecommended ? 'recommended' : ''}">
+            ${isRecommended ? '<div class="plan-badge">⭐ RECOMMENDED</div>' : ''}
+            <div class="plan-name">${plan.name}</div>
+            <div class="plan-description">${plan.description}</div>
+            <div class="plan-price">${isFree ? '$0' : '$' + price.toFixed(2)}</div>
+            <div class="plan-price-period">${isFree ? 'Forever Free' : '/' + (currentBillingInterval === 'year' ? 'year' : 'month')}</div>
+            <ul class="plan-features">
+              ${plan.features.map(feature => `
+                <li class="${feature.included ? '' : 'disabled'}">
+                  <span class="feature-icon">${feature.included ? '✓' : '✗'}</span>
+                  ${feature.name}
+                </li>
+              `).join('')}
+            </ul>
+            <button class="plan-cta" onclick="handlePlanClick('${planId}')">
+              ${planId === 'free' ? 'Get Started' : 'Choose Plan'}
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('plansContainer').innerHTML = plansHtml;
+    }
+
+    // Render FAQ
+    function renderFAQ() {
+      const faqHtml = FAQData.map((item, idx) => `
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(${idx})">
+            <span>${item.question}</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">${item.answer}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('faqContainer').innerHTML = faqHtml;
+    }
+
+    function toggleFAQ(idx) {
+      const items = document.querySelectorAll('.faq-item');
+      items[idx].classList.toggle('active');
+
+      // Toggle icon
+      const toggle = items[idx].querySelector('.faq-toggle');
+      toggle.textContent = items[idx].classList.contains('active') ? '−' : '+';
+    }
+
+    function handlePlanClick(planId) {
+      if (planId === 'free') {
+        alert('Start with FREE tier - no credit card needed!');
+        return;
+      }
+
+      // Check if user is logged in
+      const user = JSON.parse(localStorage.getItem('VIDSPARK_USER') || '{}');
+      if (!user.id) {
+        alert('Please log in first to upgrade');
+        window.location.href = '/login.html';
+        return;
+      }
+
+      // Start checkout with interval parameter
+      BillingAPI.checkout(planId, currentBillingInterval).catch(err => {
+        alert('Error: ' + err.message);
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      setupBillingToggle();
+      renderPlans();
+      renderComparisonTable();
+      renderFAQ();
+    });
+  </script>
+</body>
+</html>

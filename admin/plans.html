@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plans — VidSpark Admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="vs-loader"><div class="vs-spinner"></div></div>
+<div id="vs-login-overlay"></div>
+
+<div class="vs-layout">
+  <aside class="vs-sidebar">
+    <div class="sb-header">
+      <a href="../index.html" class="sb-logo">
+        <div class="sb-logo-icon">⚡</div>
+        <span class="sb-logo-name">VidSpark AI</span>
+      </a>
+      <span class="sb-admin-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav" id="vs-nav-items"></nav>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-avatar">👤</div>
+        <div>
+          <div class="sb-user-name" id="sb-user-name">—</div>
+          <div class="sb-user-role" id="sb-user-role">—</div>
+        </div>
+      </div>
+      <button id="vs-logout-btn">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="vs-main">
+    <div class="vs-topbar">
+      <div>
+        <div class="vs-page-title">💰 Plans Tarifaires</div>
+        <div class="vs-page-sub">Gérer les plans et tarifs</div>
+      </div>
+    </div>
+
+    <div class="vs-content" id="plans-container">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin-top:20px" id="plans-grid">
+        <!-- Plans affichés ici -->
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="shared.js"></script>
+<script src="admin.js"></script>
+<script src="api.js"></script>
+<script>
+'use strict';
+
+async function loadPlans() {
+  VS.showLoader();
+
+  try {
+    const response = await AdminAPI.getPlans();
+    const plans = response.plans || [];
+
+    const grid = document.getElementById('plans-grid');
+    if (!plans || plans.length === 0) {
+      grid.innerHTML = `<div class="vs-empty"><div class="vs-empty-icon">💰</div><div class="vs-empty-text">Aucun plan trouvé</div></div>`;
+      return;
+    }
+
+    grid.innerHTML = plans.map(p => `
+      <div class="vs-card" style="padding:24px">
+        <div style="font-size:18px;font-weight:700;margin-bottom:8px">${VS.esc(p.name)}</div>
+        <div style="font-size:24px;font-weight:700;color:var(--green);margin-bottom:16px">
+          $${parseFloat(p.price_monthly || 0).toFixed(2)}<span style="font-size:12px;color:var(--muted)">/mois</span>
+        </div>
+
+        <div style="background:var(--b2);padding:12px;border-radius:8px;margin-bottom:16px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Limites mensuelles:</div>
+          <div style="font-size:13px;line-height:1.6">
+            ${p.limits ? `
+              <div>📊 Analyses: ${p.limits.monthly_analyses || '—'}</div>
+              <div>📝 Rapports IA: ${p.limits.monthly_reports || '—'}</div>
+              <div>✨ Titres IA: ${p.limits.monthly_titles === -1 ? 'Illimités' : p.limits.monthly_titles || '—'}</div>
+              <div>📺 Max Chaînes: ${p.limits.max_channels || '—'}</div>
+            ` : '—'}
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px">
+          <button class="vs-btn vs-btn-ghost vs-btn-sm" style="flex:1" onclick="editPlan('${p.id}')">Éditer</button>
+          <button class="vs-btn vs-btn-danger vs-btn-sm" style="flex:1" onclick="deletePlan('${p.id}')">Supprimer</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error('[Plans] Error:', err);
+    alert('❌ Erreur: ' + (err.message || 'Impossible de charger les plans'));
+  } finally {
+    VS.hideLoader();
+  }
+}
+
+async function editPlan(planId) {
+  const newPrice = prompt('Nouveau prix mensuel (USD):');
+  if (newPrice === null || newPrice === '') return;
+
+  try {
+    await AdminAPI.updatePlan(planId, { price_monthly: parseFloat(newPrice) });
+    alert('✅ Plan mis à jour');
+    await loadPlans();
+  } catch (err) {
+    alert('❌ Erreur: ' + err.message);
+  }
+}
+
+async function deletePlan(planId) {
+  try {
+    const confirmed = confirm('Supprimer ce plan? Les utilisateurs actuels conserveront leur accès.');
+    if (!confirmed) return;
+
+    await AdminAPI.deletePlan(planId);
+    alert('✅ Plan supprimé');
+    await loadPlans();
+  } catch (err) {
+    alert('❌ Erreur: ' + err.message);
+  }
+}
+
+// Initialiser la page
+if (!VS.checkAdminAuth()) { } else { VS.initNavigation();
+VS.hideLoader();
+loadPlans();
+}/
+</script>
+</body>
+</html>

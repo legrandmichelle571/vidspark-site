@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to VidSpark AI — Select Your Channel</title>
+  <style>
+    :root {
+      --bg:       #07070a;
+      --s1:       #0e0e12;
+      --s2:       #141418;
+      --s3:       #1a1a20;
+      --b1:       #1e1e26;
+      --b2:       #2a2a35;
+      --b3:       #3a3a48;
+      --text:     #e8e8f0;
+      --muted:    #8888a0;
+      --faint:    #505060;
+      --purple:   #7c6dfa;
+      --purple-l: #a78bfa;
+      --purple-d: #2d1f5e;
+      --green:    #22c55e;
+      --red:      #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .logo {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--b2);
+    }
+
+    .step-dot.active {
+      background: var(--purple);
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .channels-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .channel-card {
+      padding: 16px;
+      background: var(--b1);
+      border: 2px solid var(--b2);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .channel-card:hover {
+      border-color: var(--b3);
+      background: var(--b2);
+    }
+
+    .channel-card.selected {
+      border-color: var(--purple);
+      background: rgba(124,109,250,.1);
+    }
+
+    .channel-card-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--b3);
+      flex-shrink: 0;
+    }
+
+    .channel-card.selected .channel-card-radio {
+      border-color: var(--purple);
+      background: var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .channel-info {
+      flex: 1;
+    }
+
+    .channel-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .channel-meta {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(124,109,250,.2);
+      border-top-color: var(--purple);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error {
+      background: rgba(239,68,68,.1);
+      border: 1px solid rgba(239,68,68,.3);
+      color: #ff6b6b;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--purple-l);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: var(--b1);
+      color: var(--text);
+      border: 1px solid var(--b2);
+    }
+
+    .btn-secondary:hover {
+      background: var(--b2);
+    }
+
+    .skip-link {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .skip-link a {
+      color: var(--muted);
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .skip-link a:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">✨</div>
+      <h1 class="title">Welcome to VidSpark AI</h1>
+      <p class="subtitle">Let's set up your account</p>
+      <div class="step-indicator">
+        <div class="step-dot active"></div>
+        <span>Step 1 of 2</span>
+        <div class="step-dot"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="error"></div>
+
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading your YouTube channels...</p>
+      </div>
+
+      <div id="channelsContent" style="display: none;">
+        <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Select Your Primary Channel</h2>
+        <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">
+          Choose the YouTube channel you want to analyze. You can add more channels later.
+        </p>
+
+        <div class="channels-grid" id="channelsList"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="goBack()">Back</button>
+        <button class="btn btn-primary" id="continueBtn" disabled onclick="continueSetup()">Continue</button>
+      </div>
+
+      <div class="skip-link">
+        <a href="#" onclick="skipOnboarding(event)">Skip for now</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    /**
+     * Onboarding — Sélection chaîne YouTube
+     */
+    let selectedChannel = null;
+
+    async function loadChannels() {
+      try {
+        // Note: Cet endpoint devrait retourner les chaînes YouTube de l'utilisateur
+        // via Google YouTube API
+        const response = await API.get('/user/youtube-channels');
+        const channels = response.channels || [];
+
+        document.getElementById('loading').style.display = 'none';
+
+        if (channels.length === 0) {
+          document.getElementById('error').innerHTML =
+            '<div class="error">No YouTube channels found. Make sure your Google account has YouTube channels.</div>';
+          return;
+        }
+
+        renderChannels(channels);
+        document.getElementById('channelsContent').style.display = 'block';
+      } catch (err) {
+        console.error('[Onboarding] Load channels error:', err);
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').innerHTML =
+          '<div class="error">Failed to load your YouTube channels. Please try again.</div>';
+      }
+    }
+
+    function renderChannels(channels) {
+      const list = document.getElementById('channelsList');
+      list.innerHTML = channels.map(channel => `
+        <div class="channel-card" onclick="selectChannel('${channel.id}', this)">
+          <div class="channel-card-radio" data-channel-id="${channel.id}"></div>
+          <div class="channel-info">
+            <div class="channel-name">${channel.title}</div>
+            <div class="channel-meta">
+              ${channel.subscriberCount ? `${channel.subscriberCount} subscribers` : 'YouTube channel'}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectChannel(channelId, element) {
+      // Désélectionner le précédent
+      document.querySelectorAll('.channel-card').forEach(el => {
+        el.classList.remove('selected');
+      });
+
+      // Sélectionner le nouveau
+      element.classList.add('selected');
+      selectedChannel = {
+        id: channelId,
+        title: element.querySelector('.channel-name').textContent
+      };
+
+      document.getElementById('continueBtn').disabled = false;
+    }
+
+    async function continueSetup() {
+      if (!selectedChannel) return;
+
+      try {
+        document.getElementById('continueBtn').disabled = true;
+
+        // Sauvegarder la chaîne sélectionnée
+        await ChannelsAPI.setPrimary(selectedChannel.id);
+
+        // Rediriger vers dashboard
+        window.location.href = '/dashboard.html';
+      } catch (err) {
+        console.error('[Onboarding] Setup error:', err);
+        document.getElementById('error').innerHTML =
+          '<div class="error">Failed to save your channel. Please try again.</div>';
+        document.getElementById('continueBtn').disabled = false;
+      }
+    }
+
+    function skipOnboarding(e) {
+      e.preventDefault();
+      window.location.href = '/dashboard.html';
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    // Charger au démarrage
+    Auth.requireLogin();
+    window.addEventListener('load', loadChannels);
+  </script>
+</body>
+</html>
