@@ -1,10 +1,7 @@
 /**
  * VidSpark AI — Authentification via Supabase
  * ════════════════════════════════════════════════════════════════
- * Utilise Supabase Auth pour:
- * - Connexion Google OAuth (via Supabase)
- * - Gestion de session
- * - Récupération du profil utilisateur
+ * Utilise Supabase Auth pour Google OAuth
  */
 
 // ✅ Initialiser Supabase Client
@@ -15,20 +12,20 @@ const supabase = window.supabase.createClient(
 
 const Auth = {
   /**
-   * Récupérer l'utilisateur actuel depuis Supabase
+   * Récupérer l'utilisateur actuel
    */
   async getCurrentUser() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       return user;
     } catch (err) {
-      console.error('[Auth] Error getting current user:', err);
+      console.error('[Auth] Error:', err);
       return null;
     }
   },
 
   /**
-   * Vérifier si utilisateur est connecté
+   * Vérifier si connecté
    */
   async isLoggedIn() {
     const user = await this.getCurrentUser();
@@ -36,82 +33,41 @@ const Auth = {
   },
 
   /**
-   * Déconnecter l'utilisateur
+   * Déconnecter
    */
   async logout() {
     try {
       await supabase.auth.signOut();
       localStorage.clear();
-      console.log('[Auth] User logged out');
-    } catch (err) {
-      console.error('[Auth] Logout failed:', err);
-    }
-  },
-
-  /**
-   * Rediriger vers login si pas connecté
-   */
-  async requireLogin() {
-    const loggedIn = await this.isLoggedIn();
-    if (!loggedIn) {
       window.location.href = '/login.html';
-    }
-  },
-
-  /**
-   * Rediriger vers dashboard si déjà connecté
-   */
-  async redirectIfLoggedIn() {
-    const loggedIn = await this.isLoggedIn();
-    if (loggedIn) {
-      window.location.href = '/dashboard.html';
+    } catch (err) {
+      console.error('[Auth] Logout error:', err);
     }
   }
 };
 
 /**
- * ════════════════════════════════════════════════════════════════
  * GOOGLE OAUTH VIA SUPABASE
- * ════════════════════════════════════════════════════════════════
  */
 const GoogleAuth = {
   /**
-   * Initialiser - Check si déjà connecté
+   * Initialiser
    */
   async init() {
     console.log('[GoogleAuth] Initializing Supabase Auth');
-
-    // Vérifier l'état de session au chargement
     const loggedIn = await Auth.isLoggedIn();
     if (loggedIn) {
-      console.log('[GoogleAuth] ✅ User already logged in');
-    } else {
-      console.log('[GoogleAuth] No active session');
+      console.log('[GoogleAuth] User already logged in, redirecting...');
+      window.location.href = '/dashboard.html';
     }
-      console.log('[GoogleAuth] Client ID source:', window.VIDSPARK_GOOGLE_CLIENT_ID ? 'window variable' : 'hardcoded fallback');
-      console.log('[GoogleAuth] Client ID format valid:', clientId.endsWith('.apps.googleusercontent.com'));
-
-      if (!clientId || clientId.includes('REPLACE') || clientId.length < 50) {
-        console.error('[GoogleAuth] ❌ CLIENT_ID not configured properly. Update js/auth.js line 96');
-        return;
-      }
-      console.log('[GoogleAuth] ✅ CLIENT_ID validation passed');
-
-      // Supabase est déjà configuré, rien à faire ici
-    };
-
-    // On n'a pas besoin de charger Google Identity Services
-    // Supabase gère tout ça!
   },
 
   /**
-   * 🚀 Connexion Google SIMPLE via Supabase
-   * Une seule ligne de code!
+   * Connexion Google via Supabase
    */
   async login() {
     try {
-      console.log('[GoogleAuth] Starting Google login via Supabase');
-
+      console.log('[GoogleAuth] Starting Google OAuth...');
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -120,24 +76,20 @@ const GoogleAuth = {
       });
 
       if (error) {
-        console.error('[GoogleAuth] Login failed:', error);
         throw error;
       }
-
-      console.log('[GoogleAuth] ✅ OAuth initiated, redirecting to Google...');
+      console.log('[GoogleAuth] OAuth redirect initiated');
     } catch (err) {
-      console.error('[GoogleAuth] Login error:', err);
-      alert('Erreur de connexion: ' + err.message);
+      console.error('[GoogleAuth] Error:', err);
+      alert('Erreur: ' + (err.message || 'Connexion échouée'));
     }
   }
 };
 
 /**
- * ════════════════════════════════════════════════════════════════
- * Initialisation au chargement
- * ════════════════════════════════════════════════════════════════
+ * Initialisation
  */
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('[Auth] Initializing...');
+  console.log('[Auth] Page loaded');
   GoogleAuth.init();
 });
