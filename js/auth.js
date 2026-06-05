@@ -4,17 +4,14 @@
  * Utilise Supabase Auth pour Google OAuth
  */
 
-// ✅ Initialiser Supabase Client
-const supabase = window.supabase.createClient(
-  'https://fnhyskbisfbtjgblbiap.supabase.co',
-  'sb_publishable_Eq1H3ObUnaRnRt-rVUx2Ng_8iKndXKZ'
-);
+let supabase = null;
 
 const Auth = {
   /**
    * Récupérer l'utilisateur actuel
    */
   async getCurrentUser() {
+    if (!supabase) return null;
     try {
       const { data: { user } } = await supabase.auth.getUser();
       return user;
@@ -36,6 +33,7 @@ const Auth = {
    * Déconnecter
    */
   async logout() {
+    if (!supabase) return;
     try {
       await supabase.auth.signOut();
       localStorage.clear();
@@ -51,9 +49,28 @@ const Auth = {
  */
 const GoogleAuth = {
   /**
-   * Initialiser
+   * Initialiser Supabase
+   */
+  initSupabase() {
+    if (supabase) return; // Déjà initialisé
+
+    if (!window.supabase) {
+      console.error('[GoogleAuth] Supabase not loaded');
+      return;
+    }
+
+    supabase = window.supabase.createClient(
+      'https://fnhyskbisfbtjgblbiap.supabase.co',
+      'sb_publishable_Eq1H3ObUnaRnRt-rVUx2Ng_8iKndXKZ'
+    );
+    console.log('[GoogleAuth] Supabase initialized');
+  },
+
+  /**
+   * Initialiser Auth
    */
   async init() {
+    this.initSupabase();
     console.log('[GoogleAuth] Initializing Supabase Auth');
     const loggedIn = await Auth.isLoggedIn();
     if (loggedIn) {
@@ -66,6 +83,12 @@ const GoogleAuth = {
    * Connexion Google via Supabase
    */
   async login() {
+    this.initSupabase();
+    if (!supabase) {
+      alert('Supabase non initialisé');
+      return;
+    }
+
     try {
       console.log('[GoogleAuth] Starting Google OAuth...');
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -87,9 +110,9 @@ const GoogleAuth = {
 };
 
 /**
- * Initialisation
+ * Initialisation au chargement
  */
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('[Auth] Page loaded');
+  console.log('[Auth] Page loaded, initializing...');
   GoogleAuth.init();
 });
