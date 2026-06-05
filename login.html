@@ -290,6 +290,9 @@
     </div>
   </div>
 
+  <!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
   <script>
@@ -334,18 +337,23 @@
       // Normalement désactivé, Google OAuth uniquement
     });
 
-    // Au chargement, vérifier si déjà connecté
+    // Au chargement, initialiser et vérifier si déjà connecté
     window.addEventListener('load', async () => {
       // 🔍 DEBUG: Show API configuration
       API.init();
 
+      // Initialiser Auth
+      await GoogleAuth.init();
+
       try {
-        const user = await Auth.getProfile();
-        if (user) {
+        const loggedIn = await Auth.isLoggedIn();
+        if (loggedIn) {
           // Déjà connecté, rediriger vers dashboard
+          console.log('[Login] User already logged in, redirecting...');
           window.location.href = '/dashboard.html';
         }
       } catch (err) {
+        console.log('[Login] Not logged in yet, showing login form');
         // Pas connecté, c'est normal
       }
     });
