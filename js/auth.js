@@ -1,5 +1,6 @@
 /**
  * VidSpark AI — Authentification Supabase
+ * Version: 2.0 - Minimal implementation
  */
 
 const GoogleAuth = {
