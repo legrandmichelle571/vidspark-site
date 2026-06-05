@@ -13,7 +13,7 @@ const GoogleAuth = {
 
       // Créer client Supabase dynamiquement
       const client = window.supabase.createClient(
-        'https://fhyskbisfbtjgblbiap.supabase.co',
+        'https://fnhyskbisfbtjgblbiap.supabase.co',
         'sb_publishable_Eq1H3ObUnaRnRt-rVUx2Ng_8iKndXKZ'
       );
 
