@@ -20,7 +20,7 @@ const GoogleAuth = {
       const { error } = await client.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'https://vidsparkpro.com/dashboard.html'
+          redirectTo: 'https://vidspark-site.pages.dev/dashboard.html'
         }
       });
 
