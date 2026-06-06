@@ -214,22 +214,35 @@
     // Charger les chaînes YouTube de l'utilisateur
     async function loadChannels() {
       try {
+        setLoading(true);
+
         // Récupérer l'utilisateur
         const user = await Auth.getCurrentUser();
         if (!user) {
           showError('Non authentifié');
+          setLoading(false);
           return;
         }
 
         const session = await Auth.getSession();
         const token = session?.access_token;
+        if (!token) {
+          showError('Token invalide');
+          setLoading(false);
+          return;
+        }
 
-        // Récupérer le plan
-        const planRes = await fetch(`${BACKEND_URL}/user/plan`, {
+        // Récupérer les informations utilisateur
+        const userRes = await fetch(`${BACKEND_URL}/user`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        const planData = await planRes.json();
-        currentUserPlan = planData.plan || 'free';
+
+        if (!userRes.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const userData = await userRes.json();
+        currentUserPlan = userData.plan || 'free';
 
         // Afficher les infos du plan
         const planInfo = {
@@ -239,44 +252,36 @@
         };
         document.getElementById('planInfo').textContent = planInfo[currentUserPlan];
 
-        // Afficher le formulaire approprié
+        // Afficher le formulaire approprié selon le plan
         if (currentUserPlan === 'business') {
           document.getElementById('businessMode').style.display = 'block';
           setupBusinessMode();
         } else {
           document.getElementById('simpleMode').style.display = 'block';
+          // Remplacer le dropdown par un input manuel
+          const container = document.querySelector('#simpleMode .form-group');
+          if (container) {
+            container.innerHTML = `
+              <label for="manualChannelId">ID de votre chaîne YouTube:</label>
+              <input id="manualChannelId" type="text" placeholder="ex: UCxxxxxxxxxxxxxxxxxxxxx">
+              <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
+                👉 <strong>Comment trouver votre Channel ID?</strong><br>
+                1. Allez sur votre chaîne YouTube<br>
+                2. Cliquez sur l'URL: youtube.com/channel/<strong>UCxxxxxxxxxxxxxxxxxxxxx</strong><br>
+                3. Copiez la partie <strong>UC...</strong> (commence par UC + 22 caractères)
+              </p>
+            `;
+          }
           setupSimpleMode();
         }
 
-        // Permettre à l'utilisateur d'entrer son Channel ID manuellement
-        // Format: UC + 22 caractères alphanumériques
-        // Exemple: UCxxxxxxxxxxxxxxxxxxxxx
-        const channelIdInput = document.querySelector('#channelSelect') || document.querySelector('#channelsGrid');
-        if (channelIdInput) {
-          // Mode simple: ajouter un input au lieu du dropdown
-          if (currentUserPlan !== 'business') {
-            const container = document.querySelector('.form-group');
-            if (container) {
-              container.innerHTML = `
-                <label for="manualChannelId">ID de votre chaîne YouTube:</label>
-                <input id="manualChannelId" type="text" placeholder="ex: UCxxxxxxxxxxxxxxxxxxxxx" style="width: 100%; padding: 12px 14px; background: #1a1a20; color: #e8e8f0; border: 1px solid #2a2a35; border-radius: 8px; font-size: 14px;">
-                <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
-                  👉 <strong>Comment trouver votre Channel ID?</strong><br>
-                  1. Allez sur votre chaîne YouTube<br>
-                  2. Cliquez sur l'URL: youtube.com/channel/<strong>UCxxxxxxxxxxxxxxxxxxxxx</strong><br>
-                  3. Copiez la partie <strong>UC...</strong> (commence par UC + 22 caractères)
-                </p>
-              `;
-            }
-          }
-        }
-
         availableChannels = [];
-        populateChannels();
+        setLoading(false);
 
       } catch (err) {
-        console.error('Erreur:', err);
-        showError('Erreur lors du chargement des chaînes: ' + err.message);
+        console.error('Erreur loadChannels:', err);
+        showError('Erreur lors du chargement: ' + err.message);
+        setLoading(false);
       }
     }
 
@@ -323,24 +328,31 @@
     }
 
     async function submitSimpleMode() {
-      // Essayer d'abord le input manuel
-      let channelId = document.getElementById('manualChannelId')?.value;
-      let channelName = 'Ma Chaîne YouTube';
+      try {
+        // Récupérer le Channel ID depuis l'input manuel
+        const channelIdInput = document.getElementById('manualChannelId');
+        const channelId = channelIdInput?.value?.trim();
 
-      // Si pas d'input manuel, utiliser le dropdown
-      if (!channelId) {
-        const select = document.getElementById('channelSelect');
-        channelId = select?.value;
-        const selectedOption = select?.options[select.selectedIndex];
-        channelName = selectedOption?.dataset.name || 'Chaîne';
+        if (!channelId) {
+          showError('Veuillez entrer votre Channel ID YouTube');
+          return;
+        }
+
+        // Valider le format du Channel ID (UC + 22 caractères)
+        if (!channelId.match(/^UC[a-zA-Z0-9_-]{22}$/)) {
+          showError('Channel ID invalide. Format: UC + 22 caractères alphanumériques');
+          return;
+        }
+
+        // Soumettre le formulaire
+        await submitChannelSelection([{
+          id: channelId,
+          name: 'Ma Chaîne YouTube'
+        }]);
+      } catch (err) {
+        console.error('Erreur submitSimpleMode:', err);
+        showError('Erreur: ' + err.message);
       }
-
-      if (!channelId || !channelId.match(/^UC[a-zA-Z0-9_-]{22}$/)) {
-        showError('Channel ID invalide. Format: UCxxxxxxxxxxxxxxxxxxxxx (UC + 22 caractères)');
-        return;
-      }
-
-      await submitChannelSelection([{ id: channelId, name: channelName }]);
     }
 
     async function submitBusinessMode() {

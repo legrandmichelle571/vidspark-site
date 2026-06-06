@@ -112,6 +112,7 @@ const GoogleAuth = {
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/dashboard.html`,
+          scopes: 'https://www.googleapis.com/auth/youtube.readonly',
           queryParams: {
             // Forcer le choix du compte Google à chaque fois
             // 'select_account' = affiche le choix même si déjà connecté
