@@ -490,50 +490,40 @@
     async function loadDashboard() {
       try {
         // Vérifier connexion
-        Auth.requireLogin();
+        await Auth.requireLogin();
 
-        // Récupérer données utilisateur
-        const userResponse = await UserAPI.getProfile();
-        const user = userResponse.user || Auth.getCurrentUser();
+        // Récupérer l'utilisateur depuis Supabase Auth
+        const user = await Auth.getCurrentUser();
 
         if (!user) {
-          throw new Error('User profile not found');
+          throw new Error('Not authenticated');
         }
 
-        // Récupérer plan
-        const planResponse = await UserAPI.getPlan();
-        const plan = planResponse.plan || 'free';
-
-        // Récupérer usage
-        const usageResponse = await UserAPI.getUsage();
-        const usage = usageResponse || { monthly_usage: 0, monthly_limit: 10 };
-
-        // Récupérer chaînes
-        const channelsResponse = await ChannelsAPI.list();
-        const channels = channelsResponse.channels || [];
-
-        // Afficher les données
-        document.getElementById('userName').textContent = `Welcome, ${user.name || 'Creator'}`;
+        // Afficher les données (depuis Supabase Auth)
+        const userName = user.user_metadata?.full_name || user.email || 'Creator';
+        document.getElementById('userName').textContent = `Welcome, ${userName}`;
         document.getElementById('userEmail').textContent = user.email;
 
         // Avatar
-        if (user.avatar) {
-          document.getElementById('avatarContent').innerHTML = `<img src="${user.avatar}" alt="${user.name}">`;
+        const avatarUrl = user.user_metadata?.picture;
+        if (avatarUrl) {
+          document.getElementById('avatarContent').innerHTML = `<img src="${avatarUrl}" alt="${userName}">`;
         }
 
-        // Plan
-        document.getElementById('planName').textContent = plan.toUpperCase();
+        // Données par défaut (FREE plan)
+        document.getElementById('planName').textContent = 'FREE';
         const planBadge = document.getElementById('planBadge');
-        planBadge.textContent = plan === 'business' ? 'Business' : plan === 'pro' ? 'Pro' : 'Free';
-        planBadge.className = `plan-badge ${plan}`;
+        planBadge.textContent = 'Free';
+        planBadge.className = 'plan-badge free';
 
-        // Usage
+        // Usage par défaut
+        const usage = { monthly_usage: 0, monthly_limit: 10 };
         const percent = (usage.monthly_usage / usage.monthly_limit) * 100;
         document.getElementById('usageText').textContent = `${usage.monthly_usage}/${usage.monthly_limit}`;
         document.getElementById('progressFill').style.width = Math.min(percent, 100) + '%';
 
-        // Channels
-        document.getElementById('channelsCount').textContent = channels.length;
+        // Chaînes par défaut
+        document.getElementById('channelsCount').textContent = '0';
 
         // Afficher contenu
         loadingEl.style.display = 'none';
