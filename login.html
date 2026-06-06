@@ -3,358 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Connexion à VidSpark AI — Analysez vos vidéos YouTube avec l'IA">
   <title>VidSpark AI — Connexion</title>
   <style>
-    /* Design tokens réutilisés */
-    :root {
-      --bg:       #07070a;
-      --s1:       #0e0e12;
-      --s2:       #141418;
-      --s3:       #1a1a20;
-      --b1:       #1e1e26;
-      --b2:       #2a2a35;
-      --b3:       #3a3a48;
-      --text:     #e8e8f0;
-      --muted:    #8888a0;
-      --faint:    #505060;
-      --purple:   #7c6dfa;
-      --purple-l: #a78bfa;
-      --purple-d: #2d1f5e;
-      --green:    #22c55e;
-      --green-d:  #0d2d1a;
-      --red:      #ef4444;
-      --amber:    #f59e0b;
-      --blue:     #3b82f6;
-      --r:        8px;
-      --r2:       12px;
-      --r3:       16px;
-      --r4:       24px;
-      --shadow:   0 4px 24px rgba(0,0,0,.5);
-      --glow:     0 0 60px rgba(124,109,250,.18);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: #07070a;
+      color: #e8e8f0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 16px;
-      line-height: 1.65;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-    button { cursor: pointer; border: none; background: none; font-family: inherit; }
-
-    .login-container {
+    .container {
+      max-width: 400px;
       width: 100%;
-      max-width: 420px;
-    }
-
-    .login-header {
       text-align: center;
-      margin-bottom: 48px;
     }
-
-    .logo {
-      font-size: 40px;
-      margin-bottom: 20px;
-    }
-
-    .logo-text {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .logo-sub {
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form-label {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .form-input {
-      padding: 12px 16px;
-      background: var(--b1);
-      border: 1px solid var(--b2);
-      border-radius: var(--r2);
-      color: var(--text);
-      font-size: 15px;
-      transition: all 0.2s;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(124,109,250,.1);
-    }
-
+    .logo { font-size: 48px; margin-bottom: 20px; }
+    h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+    p { color: #8888a0; margin-bottom: 40px; font-size: 14px; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: var(--r2);
-      font-size: 15px;
-      font-weight: 600;
-      transition: all .2s ease;
-      white-space: nowrap;
-      cursor: pointer;
+      width: 100%;
+      padding: 14px;
+      background: #7c6dfa;
+      color: white;
       border: none;
-    }
-
-    .btn-primary {
-      background: var(--purple);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(124,109,250,.35);
-      width: 100%;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: var(--purple-l);
-      box-shadow: 0 6px 28px rgba(124,109,250,.5);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* Google Official Sign-In Button */
-    .btn-google {
-      background: #fff;
-      border: 1px solid #dadce0;
-      color: #3c4043;
-      width: 100%;
-      height: 40px;
-      padding: 0 12px;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      transition: background-color 0.2s, box-shadow 0.2s;
+      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
+      font-size: 15px;
+      transition: background 0.2s;
     }
-
-    .btn-google:hover:not(:disabled) {
-      background-color: #f8f9fa;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-google:active:not(:disabled) {
-      background-color: #f1f3f4;
-    }
-
-    .btn-google:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .google-icon {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 14px;
-      margin: 20px 0;
-    }
-
-    .divider-line {
-      flex: 1;
-      height: 1px;
-      background: var(--b2);
-    }
-
-    .error-message {
-      background: rgba(239,68,68,.1);
-      border: 1px solid rgba(239,68,68,.3);
-      color: #ff6b6b;
-      padding: 12px 16px;
-      border-radius: var(--r2);
-      font-size: 14px;
-      display: none;
-    }
-
-    .error-message.show {
-      display: block;
-    }
-
-    .loading {
-      display: none;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 2px solid rgba(124,109,250,.2);
-      border-top-color: var(--purple);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 12px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .links {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      margin-top: 20px;
-      gap: 12px;
-    }
-
-    .link {
-      color: var(--purple);
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-
-    .link:hover {
-      color: var(--purple-l);
-    }
+    .btn:hover { background: #a78bfa; }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="login-header">
-      <div class="logo">✨</div>
-      <div class="logo-text">VidSpark AI</div>
-      <div class="logo-sub">Analysez vos vidéos YouTube avec l'IA</div>
-    </div>
-
-    <form class="login-form" id="loginForm">
-      <div id="errorMessage" class="error-message"></div>
-
-      <!-- Google Official Sign-In Button -->
-      <button type="button" class="btn btn-google" id="googleButton">
-        <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-        </svg>
-        Sign in with Google
-      </button>
-
-
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p>Connexion en cours...</p>
-      </div>
-    </form>
-
-    <div class="links">
-      <a href="/contact.html" class="link">Besoin d'aide ?</a>
-      <a href="/privacy.html" class="link">Politique de confidentialité</a>
-    </div>
+  <div class="container">
+    <div class="logo">✨</div>
+    <h1>VidSpark AI</h1>
+    <p>Analysez vos vidéos YouTube avec l'IA</p>
+    <button class="btn" onclick="login()">
+      🔐 Se connecter avec Google
+    </button>
   </div>
 
-  <!-- Supabase Client Library -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
   <script>
-    /**
-     * Page Login — Gestion connexion Google
-     */
-    const googleButton = document.getElementById('googleButton');
-    const form = document.getElementById('loginForm');
-    const errorMessage = document.getElementById('errorMessage');
-    const loading = document.getElementById('loading');
-
-    // Afficher l'erreur
-    function showError(msg) {
-      errorMessage.textContent = msg;
-      errorMessage.classList.add('show');
-      loading.style.display = 'none';
-      googleButton.disabled = false;
+    async function login() {
+      console.log('[Login] Button clicked');
+      await GoogleAuth.login();
     }
 
-    function hideError() {
-      errorMessage.classList.remove('show');
-    }
-
-    // Clic sur bouton Google
-    googleButton.addEventListener('click', async (e) => {
-      e.preventDefault();
-      hideError();
-      googleButton.disabled = true;
-      loading.style.display = 'block';
-
-      try {
-        await GoogleAuth.login();
-      } catch (err) {
-        console.error('[Login] Google auth error:', err);
-        showError(err.message || 'Une erreur est survenue');
-      }
-    });
-
-    // Forme (si jamais on réactive l'email)
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      // Normalement désactivé, Google OAuth uniquement
-    });
-
-    // Au chargement, initialiser et vérifier si déjà connecté
+    // Si déjà connecté, aller au dashboard
     window.addEventListener('load', async () => {
-      // 🔍 DEBUG: Show API configuration
-      API.init();
-
-      // Initialiser Auth
-      await GoogleAuth.init();
-
-      try {
-        const loggedIn = await Auth.isLoggedIn();
-        if (loggedIn) {
-          // Déjà connecté, rediriger vers dashboard
-          console.log('[Login] User already logged in, redirecting...');
-          window.location.href = '/dashboard.html';
-        }
-      } catch (err) {
-        console.log('[Login] Not logged in yet, showing login form');
-        // Pas connecté, c'est normal
+      const user = await Auth.getCurrentUser();
+      if (user) {
+        console.log('[Login] Already logged in, redirecting...');
+        window.location.href = '/dashboard.html';
       }
     });
   </script>
