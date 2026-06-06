@@ -530,19 +530,30 @@
         contentEl.style.display = 'block';
 
         // 🔌 Envoyer les infos d'authentification à l'extension Chrome
-        if (window.chrome && chrome.runtime) {
-          console.log('[Dashboard] Sending auth to extension...');
-          chrome.runtime.sendMessage({
-            action: 'authSuccess',
+        try {
+          const session = await Auth.getSession();
+          const token = session?.access_token || '';
+
+          console.log('[Dashboard] Sending auth to extension via postMessage...');
+
+          // Envoyer via window.postMessage (le content script écoutera)
+          window.postMessage({
+            type: 'VIDSPARK_AUTH',
             email: user.email,
-            token: (await Auth.getSession())?.access_token || ''
-          }, (response) => {
-            if (chrome.runtime.lastError) {
-              console.log('[Dashboard] Extension not available (normal if not installed)');
-            } else {
-              console.log('[Dashboard] Extension notified of auth');
+            token: token,
+            timestamp: Date.now()
+          }, '*');
+
+          console.log('[Dashboard] Auth message sent to extension');
+
+          // Écouter l'ACK de l'extension
+          window.addEventListener('message', (event) => {
+            if (event.data.type === 'VIDSPARK_AUTH_ACK' && event.data.success) {
+              console.log('[Dashboard] Extension confirmed auth received');
             }
           });
+        } catch (err) {
+          console.error('[Dashboard] Error sending auth to extension:', err);
         }
       } catch (err) {
         console.error('[Dashboard] Load error:', err);
