@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VidSpark AI — Sélectionner une chaîne</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #07070a;
+      color: #e8e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      width: 100%;
+      background: #0e0e12;
+      border: 1px solid #1a1a20;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+    }
+    .logo { font-size: 48px; margin-bottom: 20px; }
+    h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+    p { color: #8888a0; margin-bottom: 30px; font-size: 14px; }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #e8e8f0;
+      margin-bottom: 8px;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #1a1a20;
+      color: #e8e8f0;
+      border: 1px solid #2a2a35;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    select:focus, input:focus {
+      outline: none;
+      border-color: #7c6dfa;
+      box-shadow: 0 0 0 3px rgba(124, 109, 250, 0.1);
+    }
+
+    .channels-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #1a1a20;
+      border-radius: 8px;
+      border: 1px solid #2a2a35;
+    }
+
+    .channel-item {
+      padding: 12px;
+      background: #0e0e12;
+      border: 1px solid #2a2a35;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .channel-item:hover {
+      border-color: #7c6dfa;
+      background: #141418;
+    }
+
+    .channel-item input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+
+    .channel-info {
+      flex: 1;
+      text-align: left;
+    }
+
+    .channel-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .channel-id {
+      font-size: 12px;
+      color: #8888a0;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #7c6dfa;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: #a78bfa; }
+    .btn:disabled { background: #4a4a5a; cursor: not-allowed; }
+
+    .loading { display: none; text-align: center; padding: 20px; }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(124, 109, 250, 0.2);
+      border-top-color: #7c6dfa;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ff6b6b;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .info-text {
+      background: rgba(124, 109, 250, 0.1);
+      border-left: 3px solid #7c6dfa;
+      padding: 12px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #a78bfa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">⚡</div>
+    <h1>VidSpark AI</h1>
+    <p>Sélectionnez votre chaîne YouTube</p>
+
+    <div id="error" class="error" style="display: none;"></div>
+
+    <div id="content">
+      <div class="info-text" id="planInfo"></div>
+
+      <!-- Mode GRATUIT/PRO: Dropdown simple -->
+      <div id="simpleMode" style="display: none;">
+        <div class="form-group">
+          <label for="channelSelect">Choisir une chaîne:</label>
+          <select id="channelSelect">
+            <option value="">-- Sélectionner une chaîne --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Mode BUSINESS: Checkbox multiple (max 5) -->
+      <div id="businessMode" style="display: none;">
+        <div class="form-group">
+          <label>Sélectionner jusqu'à 5 chaînes:</label>
+          <div id="channelsGrid" class="channels-grid"></div>
+          <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
+            <span id="selectedCount">0</span>/5 sélectionnées
+          </p>
+        </div>
+      </div>
+
+      <button id="submitBtn" class="btn">Continuer</button>
+    </div>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p style="margin-top: 12px;">Chargement...</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const supabaseClient = window.supabase.createClient(
+      'https://fnhyskbisfbtjgblbiap.supabase.co',
+      'sb_publishable_Eq1H3ObUnaRnRt-rVUx2Ng_8iKndXKZ'
+    );
+
+    const BACKEND_URL = 'https://vidspark-ai-production-9ac7.up.railway.app/api';
+
+    let currentUserPlan = 'free';
+    let availableChannels = [];
+    let selectedChannels = [];
+
+    // Charger les chaînes YouTube de l'utilisateur
+    async function loadChannels() {
+      try {
+        // Récupérer l'utilisateur
+        const user = await Auth.getCurrentUser();
+        if (!user) {
+          showError('Non authentifié');
+          return;
+        }
+
+        const session = await Auth.getSession();
+        const token = session?.access_token;
+
+        // Récupérer le plan
+        const planRes = await fetch(`${BACKEND_URL}/user/plan`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const planData = await planRes.json();
+        currentUserPlan = planData.plan || 'free';
+
+        // Afficher les infos du plan
+        const planInfo = {
+          free: 'Plan GRATUIT: Vous pouvez analyser 1 seule chaîne YouTube',
+          pro: 'Plan PRO: Vous pouvez analyser 1 seule chaîne YouTube',
+          business: 'Plan BUSINESS: Sélectionnez jusqu\'à 5 chaînes YouTube'
+        };
+        document.getElementById('planInfo').textContent = planInfo[currentUserPlan];
+
+        // Afficher le formulaire approprié
+        if (currentUserPlan === 'business') {
+          document.getElementById('businessMode').style.display = 'block';
+          setupBusinessMode();
+        } else {
+          document.getElementById('simpleMode').style.display = 'block';
+          setupSimpleMode();
+        }
+
+        // Charger les chaînes depuis YouTube (mock pour now)
+        // En production, récupérer via YouTube API ou depuis user_channels
+        availableChannels = [
+          { id: 'UC1234567890', name: 'Ma Chaîne Principale' },
+          { id: 'UC0987654321', name: 'Chaîne 2' },
+          { id: 'UCabcdefghijk', name: 'Chaîne 3' },
+          { id: 'UCxyzabcdefgh', name: 'Chaîne 4' },
+          { id: 'UCtestchannel1', name: 'Chaîne 5' }
+        ];
+
+        populateChannels();
+
+      } catch (err) {
+        console.error('Erreur:', err);
+        showError('Erreur lors du chargement des chaînes: ' + err.message);
+      }
+    }
+
+    function setupSimpleMode() {
+      document.getElementById('submitBtn').addEventListener('click', submitSimpleMode);
+    }
+
+    function setupBusinessMode() {
+      document.getElementById('submitBtn').addEventListener('click', submitBusinessMode);
+    }
+
+    function populateChannels() {
+      if (currentUserPlan === 'business') {
+        const grid = document.getElementById('channelsGrid');
+        grid.innerHTML = availableChannels.map((ch, idx) => `
+          <label class="channel-item">
+            <input type="checkbox" value="${ch.id}" data-name="${ch.name}" onchange="onChannelToggle(this)">
+            <div class="channel-info">
+              <div class="channel-name">${ch.name}</div>
+              <div class="channel-id">${ch.id}</div>
+            </div>
+          </label>
+        `).join('');
+      } else {
+        const select = document.getElementById('channelSelect');
+        select.innerHTML += availableChannels.map(ch => `
+          <option value="${ch.id}" data-name="${ch.name}">${ch.name}</option>
+        `).join('');
+      }
+    }
+
+    function onChannelToggle(checkbox) {
+      if (checkbox.checked) {
+        if (selectedChannels.length >= 5) {
+          checkbox.checked = false;
+          alert('Maximum 5 chaînes');
+          return;
+        }
+        selectedChannels.push({ id: checkbox.value, name: checkbox.dataset.name });
+      } else {
+        selectedChannels = selectedChannels.filter(ch => ch.id !== checkbox.value);
+      }
+      document.getElementById('selectedCount').textContent = selectedChannels.length;
+    }
+
+    async function submitSimpleMode() {
+      const select = document.getElementById('channelSelect');
+      const channelId = select.value;
+      const selectedOption = select.options[select.selectedIndex];
+      const channelName = selectedOption.dataset.name;
+
+      if (!channelId) {
+        showError('Sélectionnez une chaîne');
+        return;
+      }
+
+      await submitChannelSelection([{ id: channelId, name: channelName }]);
+    }
+
+    async function submitBusinessMode() {
+      if (selectedChannels.length === 0) {
+        showError('Sélectionnez au moins 1 chaîne');
+        return;
+      }
+
+      await submitChannelSelection(selectedChannels);
+    }
+
+    async function submitChannelSelection(channels) {
+      try {
+        setLoading(true);
+
+        const session = await Auth.getSession();
+        const token = session?.access_token;
+
+        const endpoint = currentUserPlan === 'business'
+          ? `${BACKEND_URL}/channels/select-business`
+          : `${BACKEND_URL}/channels/select`;
+
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            channels: channels.map(ch => ({
+              youtube_channel_id: ch.id,
+              channel_name: ch.name
+            }))
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        // Succès! Aller au dashboard
+        window.location.href = '/dashboard.html';
+
+      } catch (err) {
+        console.error('Erreur:', err);
+        showError('Erreur lors de la sélection: ' + err.message);
+        setLoading(false);
+      }
+    }
+
+    function showError(msg) {
+      const errorEl = document.getElementById('error');
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+    }
+
+    function setLoading(show) {
+      document.getElementById('content').style.display = show ? 'none' : 'block';
+      document.getElementById('loading').style.display = show ? 'block' : 'none';
+    }
+
+    // Charger au démarrage
+    window.addEventListener('DOMContentLoaded', loadChannels);
+  </script>
+</body>
+</html>
