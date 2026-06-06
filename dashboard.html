@@ -392,6 +392,9 @@
           <p id="userEmail">Loading...</p>
         </div>
         <div class="header-actions">
+          <button class="btn btn-primary" onclick="goToYouTube()" style="background:#ff0000">
+            🎥 Aller à YouTube
+          </button>
           <button class="btn btn-secondary" onclick="window.location.href='account.html'">
             Account Settings
           </button>
@@ -487,6 +490,16 @@
     });
 
     // Charger dashboard
+    /**
+     * Aller à YouTube avec extension ouverte
+     */
+    function goToYouTube() {
+      // Attendre que la postMessage soit envoyée et reçue
+      setTimeout(() => {
+        window.open('https://www.youtube.com', '_blank');
+      }, 1000);
+    }
+
     async function loadDashboard() {
       try {
         // Vérifier connexion
@@ -534,17 +547,40 @@
           const session = await Auth.getSession();
           const token = session?.access_token || '';
 
-          console.log('[Dashboard] Sending auth to extension via postMessage...');
+          // Récupérer le plan depuis le backend
+          let userPlan = 'free';
+          try {
+            const planRes = await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/user/plan', {
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (planRes.ok) {
+              const planData = await planRes.json();
+              userPlan = planData.plan || 'free';
+            }
+          } catch (err) {
+            console.warn('[Dashboard] Could not fetch plan:', err);
+          }
+
+          console.log('[Dashboard] Sending auth to extension via postMessage...', { plan: userPlan });
+
+          // Attendre un peu pour que le website-bridge soit prêt
+          await new Promise(r => setTimeout(r, 500));
 
           // Envoyer via window.postMessage (le content script écoutera)
-          window.postMessage({
+          const authMessage = {
             type: 'VIDSPARK_AUTH',
             email: user.email,
             token: token,
+            plan: userPlan,
+            avatar: user.user_metadata?.picture || '',
+            name: user.user_metadata?.full_name || user.email,
             timestamp: Date.now()
-          }, '*');
+          };
 
-          console.log('[Dashboard] Auth message sent to extension');
+          console.log('[Dashboard] 📤 Posting message:', authMessage);
+          window.postMessage(authMessage, '*');
+
+          console.log('[Dashboard] ✅ Auth message sent to extension');
 
           // Écouter l'ACK de l'extension
           window.addEventListener('message', (event) => {
