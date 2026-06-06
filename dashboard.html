@@ -485,16 +485,75 @@
     logoutButton.addEventListener('click', async (e) => {
       e.preventDefault();
       if (confirm('Are you sure you want to logout?')) {
+        // Notifier l'extension de la déconnexion
+        console.log('[Dashboard] 🚪 Sending logout to extension');
+        window.postMessage({
+          type: 'VIDSPARK_LOGOUT',
+          timestamp: Date.now()
+        }, '*');
+
+        // Puis déconnecter
         await Auth.logout();
       }
     });
 
     // Charger dashboard
     /**
+     * Envoyer l'authentification à l'extension (réutilisable)
+     */
+    async function sendAuthToExtension() {
+      try {
+        const user = await Auth.getCurrentUser();
+        if (!user) return;
+
+        const session = await Auth.getSession();
+        const token = session?.access_token || '';
+
+        // Récupérer le plan depuis le backend
+        let userPlan = 'free';
+        try {
+          const planRes = await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/user/plan', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (planRes.ok) {
+            const planData = await planRes.json();
+            userPlan = planData.plan || 'free';
+          }
+        } catch (err) {
+          console.warn('[Dashboard] Could not fetch plan:', err);
+        }
+
+        console.log('[Dashboard] 📤 Sending auth to extension:', { email: user.email, plan: userPlan });
+
+        // Attendre que le website-bridge soit prêt
+        await new Promise(r => setTimeout(r, 500));
+
+        // Envoyer via window.postMessage
+        const authMessage = {
+          type: 'VIDSPARK_AUTH',
+          email: user.email,
+          token: token,
+          plan: userPlan,
+          avatar: user.user_metadata?.picture || '',
+          name: user.user_metadata?.full_name || user.email,
+          timestamp: Date.now()
+        };
+
+        console.log('[Dashboard] ✅ Auth message:', authMessage);
+        window.postMessage(authMessage, '*');
+      } catch (err) {
+        console.error('[Dashboard] Error sending auth:', err);
+      }
+    }
+
+    /**
      * Aller à YouTube avec extension ouverte
      */
     function goToYouTube() {
-      // Attendre que la postMessage soit envoyée et reçue
+      // Envoyer l'auth d'abord
+      sendAuthToExtension();
+
+      // Puis ouvrir YouTube
       setTimeout(() => {
         window.open('https://www.youtube.com', '_blank');
       }, 1000);
@@ -543,54 +602,7 @@
         contentEl.style.display = 'block';
 
         // 🔌 Envoyer les infos d'authentification à l'extension Chrome
-        try {
-          const session = await Auth.getSession();
-          const token = session?.access_token || '';
-
-          // Récupérer le plan depuis le backend
-          let userPlan = 'free';
-          try {
-            const planRes = await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/user/plan', {
-              headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (planRes.ok) {
-              const planData = await planRes.json();
-              userPlan = planData.plan || 'free';
-            }
-          } catch (err) {
-            console.warn('[Dashboard] Could not fetch plan:', err);
-          }
-
-          console.log('[Dashboard] Sending auth to extension via postMessage...', { plan: userPlan });
-
-          // Attendre un peu pour que le website-bridge soit prêt
-          await new Promise(r => setTimeout(r, 500));
-
-          // Envoyer via window.postMessage (le content script écoutera)
-          const authMessage = {
-            type: 'VIDSPARK_AUTH',
-            email: user.email,
-            token: token,
-            plan: userPlan,
-            avatar: user.user_metadata?.picture || '',
-            name: user.user_metadata?.full_name || user.email,
-            timestamp: Date.now()
-          };
-
-          console.log('[Dashboard] 📤 Posting message:', authMessage);
-          window.postMessage(authMessage, '*');
-
-          console.log('[Dashboard] ✅ Auth message sent to extension');
-
-          // Écouter l'ACK de l'extension
-          window.addEventListener('message', (event) => {
-            if (event.data.type === 'VIDSPARK_AUTH_ACK' && event.data.success) {
-              console.log('[Dashboard] Extension confirmed auth received');
-            }
-          });
-        } catch (err) {
-          console.error('[Dashboard] Error sending auth to extension:', err);
-        }
+        await sendAuthToExtension();
       } catch (err) {
         console.error('[Dashboard] Load error:', err);
         loadingEl.innerHTML = `<div class="error">Failed to load dashboard: ${err.message}</div>`;
