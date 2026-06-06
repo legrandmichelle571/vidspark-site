@@ -370,6 +370,7 @@
           <div id="userMenu" class="menu">
             <a href="account.html" class="menu-item">Account Settings</a>
             <a href="billing.html" class="menu-item">Billing</a>
+            <button id="switchAccountButton" class="menu-item">🔄 Switch Account</button>
             <button id="logoutButton" class="menu-item danger">Logout</button>
           </div>
         </div>
@@ -471,6 +472,7 @@
     const avatarButton = document.getElementById('avatarButton');
     const userMenu = document.getElementById('userMenu');
     const logoutButton = document.getElementById('logoutButton');
+    const switchAccountButton = document.getElementById('switchAccountButton');
 
     // Menu utilisateur
     avatarButton.addEventListener('click', (e) => {
@@ -482,6 +484,27 @@
       userMenu.classList.remove('active');
     });
 
+    // Changer de compte
+    switchAccountButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      console.log('[Dashboard] 🔄 Switching account...');
+
+      // Notifier l'extension de la déconnexion
+      window.postMessage({
+        type: 'VIDSPARK_LOGOUT',
+        timestamp: Date.now()
+      }, '*');
+
+      // Déconnecter
+      await Auth.logout();
+
+      // Puis rediriger vers login
+      setTimeout(() => {
+        window.location.href = '/login.html';
+      }, 500);
+    });
+
+    // Logout
     logoutButton.addEventListener('click', async (e) => {
       e.preventDefault();
       if (confirm('Are you sure you want to logout?')) {
