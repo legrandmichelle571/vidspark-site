@@ -528,6 +528,22 @@
         // Afficher contenu
         loadingEl.style.display = 'none';
         contentEl.style.display = 'block';
+
+        // 🔌 Envoyer les infos d'authentification à l'extension Chrome
+        if (window.chrome && chrome.runtime) {
+          console.log('[Dashboard] Sending auth to extension...');
+          chrome.runtime.sendMessage({
+            action: 'authSuccess',
+            email: user.email,
+            token: (await Auth.getSession())?.access_token || ''
+          }, (response) => {
+            if (chrome.runtime.lastError) {
+              console.log('[Dashboard] Extension not available (normal if not installed)');
+            } else {
+              console.log('[Dashboard] Extension notified of auth');
+            }
+          });
+        }
       } catch (err) {
         console.error('[Dashboard] Load error:', err);
         loadingEl.innerHTML = `<div class="error">Failed to load dashboard: ${err.message}</div>`;
