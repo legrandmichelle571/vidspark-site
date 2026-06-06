@@ -111,12 +111,17 @@ const GoogleAuth = {
       const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard.html`
+          redirectTo: `${window.location.origin}/dashboard.html`,
+          queryParams: {
+            // Forcer le choix du compte Google à chaque fois
+            // 'select_account' = affiche le choix même si déjà connecté
+            prompt: 'select_account'
+          }
         }
       });
 
       if (error) throw error;
-      console.log('[GoogleAuth] OAuth initiated');
+      console.log('[GoogleAuth] OAuth initiated with account selection');
     } catch (err) {
       console.error('[GoogleAuth] Error:', err);
       alert('Connexion échouée: ' + err.message);
