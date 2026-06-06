@@ -248,16 +248,30 @@
           setupSimpleMode();
         }
 
-        // Charger les chaînes depuis YouTube (mock pour now)
-        // En production, récupérer via YouTube API ou depuis user_channels
-        availableChannels = [
-          { id: 'UC1234567890', name: 'Ma Chaîne Principale' },
-          { id: 'UC0987654321', name: 'Chaîne 2' },
-          { id: 'UCabcdefghijk', name: 'Chaîne 3' },
-          { id: 'UCxyzabcdefgh', name: 'Chaîne 4' },
-          { id: 'UCtestchannel1', name: 'Chaîne 5' }
-        ];
+        // Permettre à l'utilisateur d'entrer son Channel ID manuellement
+        // Format: UC + 22 caractères alphanumériques
+        // Exemple: UCxxxxxxxxxxxxxxxxxxxxx
+        const channelIdInput = document.querySelector('#channelSelect') || document.querySelector('#channelsGrid');
+        if (channelIdInput) {
+          // Mode simple: ajouter un input au lieu du dropdown
+          if (currentUserPlan !== 'business') {
+            const container = document.querySelector('.form-group');
+            if (container) {
+              container.innerHTML = `
+                <label for="manualChannelId">ID de votre chaîne YouTube:</label>
+                <input id="manualChannelId" type="text" placeholder="ex: UCxxxxxxxxxxxxxxxxxxxxx" style="width: 100%; padding: 12px 14px; background: #1a1a20; color: #e8e8f0; border: 1px solid #2a2a35; border-radius: 8px; font-size: 14px;">
+                <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
+                  👉 <strong>Comment trouver votre Channel ID?</strong><br>
+                  1. Allez sur votre chaîne YouTube<br>
+                  2. Cliquez sur l'URL: youtube.com/channel/<strong>UCxxxxxxxxxxxxxxxxxxxxx</strong><br>
+                  3. Copiez la partie <strong>UC...</strong> (commence par UC + 22 caractères)
+                </p>
+              `;
+            }
+          }
+        }
 
+        availableChannels = [];
         populateChannels();
 
       } catch (err) {
@@ -309,13 +323,20 @@
     }
 
     async function submitSimpleMode() {
-      const select = document.getElementById('channelSelect');
-      const channelId = select.value;
-      const selectedOption = select.options[select.selectedIndex];
-      const channelName = selectedOption.dataset.name;
+      // Essayer d'abord le input manuel
+      let channelId = document.getElementById('manualChannelId')?.value;
+      let channelName = 'Ma Chaîne YouTube';
 
+      // Si pas d'input manuel, utiliser le dropdown
       if (!channelId) {
-        showError('Sélectionnez une chaîne');
+        const select = document.getElementById('channelSelect');
+        channelId = select?.value;
+        const selectedOption = select?.options[select.selectedIndex];
+        channelName = selectedOption?.dataset.name || 'Chaîne';
+      }
+
+      if (!channelId || !channelId.match(/^UC[a-zA-Z0-9_-]{22}$/)) {
+        showError('Channel ID invalide. Format: UCxxxxxxxxxxxxxxxxxxxxx (UC + 22 caractères)');
         return;
       }
 
