@@ -618,6 +618,19 @@
           throw new Error('Not authenticated');
         }
 
+        // 🔥 IMPORTANT: Envoyer l'ID token au backend pour activer l'extension
+        const session = await Auth.getSession();
+        if (session?.access_token) {
+          console.log('[Dashboard] Sending google login to backend with token...');
+          try {
+            await AuthAPI.googleLogin(session.access_token);
+            console.log('[Dashboard] ✅ Backend activation codes received');
+          } catch (err) {
+            console.error('[Dashboard] Error sending google login:', err);
+            // Continuer même si ça échoue
+          }
+        }
+
         // Afficher les données (depuis Supabase Auth)
         const userName = user.user_metadata?.full_name || user.email || 'Creator';
         document.getElementById('userName').textContent = `Welcome, ${userName}`;
