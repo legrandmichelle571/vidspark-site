@@ -458,22 +458,6 @@
           </div>
         </div>
 
-        <!-- Mes chaînes (multi-chaînes selon le plan) -->
-        <div class="card">
-          <div class="card-title">📺 Mes chaînes <span id="channelsLimitBadge" style="font-size:11px;color:var(--muted);font-weight:400;">(0/1)</span></div>
-          <div style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Les chaînes YouTube où ton extension fonctionnera</div>
-
-          <div id="channelsList" style="margin-bottom: 12px;"></div>
-
-          <div id="addChannelBox" style="background: var(--s2); border-radius: 8px; padding: 12px;">
-            <div style="font-size: 11px; color: var(--muted); margin-bottom: 6px;">Ajouter une chaîne (URL ou @handle)</div>
-            <div style="display: flex; gap: 8px;">
-              <input type="text" id="newChannelInput" placeholder="https://youtube.com/@MaChaine ou /channel/UC..." style="flex: 1; background: var(--s1); border: 1px solid var(--b2); border-radius: 4px; padding: 8px; color: var(--text); font-size: 11px;">
-              <button id="addChannelBtn" onclick="addChannel()" style="background: var(--purple); color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 11px; cursor: pointer; white-space: nowrap;">+ Ajouter</button>
-            </div>
-            <div id="channelMsg" style="font-size: 11px; margin-top: 8px; min-height: 14px;"></div>
-          </div>
-        </div>
       </div>
 
       <!-- Quick Actions -->
@@ -815,7 +799,6 @@
     window.addEventListener('load', async () => {
       await loadDashboard();
       await loadActivationData();
-      await loadChannels();
     });
   </script>
 </body>
