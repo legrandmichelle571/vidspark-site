@@ -457,6 +457,23 @@
             <div style="font-size: 11px; color: var(--green); line-height: 1.6;">✅ Valid for <span id="daysRemaining">—</span> days</div>
           </div>
         </div>
+
+        <!-- Mes chaînes (multi-chaînes selon le plan) -->
+        <div class="card">
+          <div class="card-title">📺 Mes chaînes <span id="channelsLimitBadge" style="font-size:11px;color:var(--muted);font-weight:400;">(0/1)</span></div>
+          <div style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Les chaînes YouTube où ton extension fonctionnera</div>
+
+          <div id="channelsList" style="margin-bottom: 12px;"></div>
+
+          <div id="addChannelBox" style="background: var(--s2); border-radius: 8px; padding: 12px;">
+            <div style="font-size: 11px; color: var(--muted); margin-bottom: 6px;">Ajouter une chaîne (URL ou @handle)</div>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="newChannelInput" placeholder="https://youtube.com/@MaChaine ou /channel/UC..." style="flex: 1; background: var(--s1); border: 1px solid var(--b2); border-radius: 4px; padding: 8px; color: var(--text); font-size: 11px;">
+              <button id="addChannelBtn" onclick="addChannel()" style="background: var(--purple); color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 11px; cursor: pointer; white-space: nowrap;">+ Ajouter</button>
+            </div>
+            <div id="channelMsg" style="font-size: 11px; margin-top: 8px; min-height: 14px;"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Quick Actions -->
@@ -715,10 +732,90 @@
       }
     }
 
+    // ── Gestion des chaînes (multi-chaînes selon le plan) ──
+    const API_BASE = 'https://vidspark-ai-production-9ac7.up.railway.app';
+
+    async function loadChannels() {
+      try {
+        const session = await Auth.getSession();
+        if (!session?.access_token) return;
+        const res = await fetch(`${API_BASE}/api/user/channels`, {
+          headers: { 'Authorization': `Bearer ${session.access_token}` }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const limit = data.limit || 1;
+        const channels = data.channels || [];
+        document.getElementById('channelsLimitBadge').textContent = `(${channels.length}/${limit} · ${data.plan || 'free'})`;
+
+        const list = document.getElementById('channelsList');
+        list.innerHTML = channels.length ? '' : '<div style="font-size:11px;color:var(--muted);">Aucune chaîne ajoutée pour le moment.</div>';
+        channels.forEach(c => {
+          const row = document.createElement('div');
+          row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--s2);border-radius:8px;padding:8px 12px;margin-bottom:6px;';
+          row.innerHTML = `
+            <div style="overflow:hidden;">
+              <div style="font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.channel_name || c.channel_id}</div>
+              <div style="font-size:10px;color:var(--muted);font-family:monospace;">${c.channel_id}</div>
+            </div>
+            <button data-id="${c.channel_id}" style="background:var(--b2);color:#fa6d6d;border:none;border-radius:4px;padding:4px 10px;font-size:11px;cursor:pointer;">Retirer</button>
+          `;
+          row.querySelector('button').addEventListener('click', () => removeChannel(c.channel_id));
+          list.appendChild(row);
+        });
+
+        // Masquer le champ d'ajout si la limite est atteinte
+        document.getElementById('addChannelBox').style.display = channels.length >= limit ? 'none' : 'block';
+      } catch (err) {
+        console.warn('[Dashboard] loadChannels:', err);
+      }
+    }
+
+    async function addChannel() {
+      const input = document.getElementById('newChannelInput');
+      const msg = document.getElementById('channelMsg');
+      const btn = document.getElementById('addChannelBtn');
+      const val = input.value.trim();
+      if (!val) { msg.style.color = '#fa6d6d'; msg.textContent = '⚠️ Colle l\'URL de ta chaîne'; return; }
+      btn.disabled = true; btn.textContent = '⏳...'; msg.textContent = '';
+      try {
+        const session = await Auth.getSession();
+        const res = await fetch(`${API_BASE}/api/user/channels`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+          body: JSON.stringify({ channel_url: val })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msg.style.color = 'var(--green)'; msg.textContent = '✅ Chaîne ajoutée';
+          input.value = '';
+          await loadChannels();
+        } else {
+          msg.style.color = '#fa6d6d'; msg.textContent = '❌ ' + (data.error || 'Erreur');
+        }
+      } catch (e) {
+        msg.style.color = '#fa6d6d'; msg.textContent = '❌ Erreur réseau';
+      } finally {
+        btn.disabled = false; btn.textContent = '+ Ajouter';
+      }
+    }
+
+    async function removeChannel(channelId) {
+      try {
+        const session = await Auth.getSession();
+        await fetch(`${API_BASE}/api/user/channels/${encodeURIComponent(channelId)}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${session.access_token}` }
+        });
+        await loadChannels();
+      } catch (e) { console.warn('removeChannel:', e); }
+    }
+
     // Charger au démarrage
     window.addEventListener('load', async () => {
       await loadDashboard();
       await loadActivationData();
+      await loadChannels();
     });
   </script>
 </body>
