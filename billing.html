@@ -174,13 +174,6 @@
       }).join('');
     }
 
-    const CRYPTOMUS_WIDGETS = {
-      pro_month: 'https://pay.cryptomus.com/widget/f124378c-bdc5-44ca-bb88-aa5ea1e2140f',
-      pro_year: 'https://pay.cryptomus.com/widget/b0311c84-31ba-496a-98a3-51702bdf6c07',
-      business_month: 'https://pay.cryptomus.com/widget/e1148ea0-e538-4322-ab49-9f3996c9998d',
-      business_year: 'https://pay.cryptomus.com/widget/b901af7f-0a78-42ab-96ed-5effd3c89c53'
-    };
-
     async function checkout(plan, provider = null){
       const msg = document.getElementById('msg');
 
@@ -196,13 +189,29 @@
         return;
       }
 
-      // Cryptomus: Redirection directe vers le widget
+      // Cryptomus: Appel API pour créer le paiement
       if(provider === 'cryptomus'){
-        const widgetKey = `${plan}_${interval}`;
-        const widgetUrl = CRYPTOMUS_WIDGETS[widgetKey];
-        if(!widgetUrl){ msg.style.color='var(--red)'; msg.textContent='❌ Widget non disponible'; return; }
-        msg.textContent = '⏳ Redirection vers le paiement Cryptomus...';
-        setTimeout(() => window.open(widgetUrl, '_blank'), 500);
+        msg.style.color = 'var(--muted)';
+        msg.textContent = '⏳ Création du paiement Cryptomus...';
+        try{
+          const session = await Auth.getSession();
+          if(!session?.access_token){ msg.textContent='⚠️ Connecte-toi d\'abord.'; setTimeout(()=>location.href='login',1200); return; }
+          const res = await fetch(`${API_BASE}/api/subscription/checkout/cryptomus`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`},
+            body: JSON.stringify({ plan, interval })
+          });
+          const data = await res.json();
+          if(res.ok && data.checkout_url){
+            window.location.href = data.checkout_url;
+          } else {
+            msg.style.color='var(--red)';
+            msg.textContent = '❌ ' + (data.error || 'Erreur Cryptomus');
+          }
+        }catch(e){
+          msg.style.color='var(--red)';
+          msg.textContent = '❌ Erreur : ' + e.message;
+        }
         return;
       }
 
