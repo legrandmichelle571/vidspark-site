@@ -175,8 +175,10 @@
     }
 
     const CRYPTOMUS_WIDGETS = {
-      pro: 'https://pay.cryptomus.com/widget/f124378c-bdc5-44ca-bb88-aa5ea1e2140f',
-      business: 'https://pay.cryptomus.com/widget/e1148ea0-e538-4322-ab49-9f3996c9998d'
+      pro_month: 'https://pay.cryptomus.com/widget/f124378c-bdc5-44ca-bb88-aa5ea1e2140f',
+      pro_year: 'https://pay.cryptomus.com/widget/b0311c84-31ba-496a-98a3-51702bdf6c07',
+      business_month: 'https://pay.cryptomus.com/widget/e1148ea0-e538-4322-ab49-9f3996c9998d',
+      business_year: 'https://pay.cryptomus.com/widget/b901af7f-0a78-42ab-96ed-5effd3c89c53'
     };
 
     async function checkout(plan, provider = null){
@@ -196,9 +198,12 @@
 
       // Cryptomus: Afficher le widget
       if(provider === 'cryptomus'){
+        const widgetKey = `${plan}_${interval}`;
+        const widgetUrl = CRYPTOMUS_WIDGETS[widgetKey];
+        if(!widgetUrl){ msg.style.color='var(--red)'; msg.textContent='❌ Widget non disponible'; return; }
         msg.innerHTML = `
           <div style="margin-top:20px;text-align:center;">
-            <iframe src="${CRYPTOMUS_WIDGETS[plan]}" height="280px" width="440px" style="border:none;border-radius:8px;"></iframe>
+            <iframe src="${widgetUrl}" height="280px" width="440px" style="border:none;border-radius:8px;"></iframe>
           </div>
         `;
         return;
