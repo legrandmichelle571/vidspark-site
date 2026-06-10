@@ -203,7 +203,7 @@
         if(!widgetUrl){ msg.style.color='var(--red)'; msg.textContent='❌ Widget non disponible'; return; }
         msg.innerHTML = `
           <div style="margin-top:20px;text-align:center;">
-            <iframe src="${widgetUrl}" height="280px" width="440px" style="border:none;border-radius:8px;"></iframe>
+            <iframe src="${widgetUrl}" height="380px" width="100%" style="border:none;border-radius:8px;max-width:500px;" allow="payment" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
           </div>
         `;
         return;
