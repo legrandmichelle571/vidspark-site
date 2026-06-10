@@ -699,6 +699,12 @@
         if (!res.ok) return;
 
         const user = await res.json();
+        // Afficher le VRAI plan (corrige l'affichage FREE codé en dur)
+        if (user.plan) {
+          document.getElementById('planName').textContent = user.plan.toUpperCase();
+          const pb = document.getElementById('planBadge');
+          if (pb) { pb.textContent = user.plan; pb.className = 'plan-badge ' + user.plan; }
+        }
         if (user.activation_id && user.activation_secret) {
           document.getElementById('activationId').value = user.activation_id;
           document.getElementById('activationSecret').value = user.activation_secret;
