@@ -90,7 +90,7 @@
       <button onclick="cancelSubscription()">Annuler mon abonnement</button>
     </div>
 
-    <div class="secure">🔒 Paiement sécurisé par Stripe — annulable à tout moment.</div>
+    <div class="secure">🔒 Paiement sécurisé par PayPal & Cryptomus — annulable à tout moment.</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -174,14 +174,27 @@
       }).join('');
     }
 
-    async function checkout(plan){
+    async function checkout(plan, provider = null){
       const msg = document.getElementById('msg');
+
+      // Si pas de provider spécifié, demander à l'utilisateur
+      if(!provider){
+        msg.style.color = 'var(--muted)';
+        msg.innerHTML = `
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+            <button onclick="checkout('${plan}','paypal')" style="padding:12px 24px;background:var(--purple);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🅿️ PayPal</button>
+            <button onclick="checkout('${plan}','cryptomus')" style="padding:12px 24px;background:var(--gold);color:#1a1a1a;border:none;border-radius:8px;cursor:pointer;font-weight:600;">₿ USDT / Card</button>
+          </div>
+        `;
+        return;
+      }
+
       msg.style.color = 'var(--muted)';
       msg.textContent = '⏳ Redirection vers le paiement sécurisé...';
       try{
         const session = await Auth.getSession();
         if(!session?.access_token){ msg.textContent='⚠️ Connecte-toi d\'abord.'; setTimeout(()=>location.href='login',1200); return; }
-        const res = await fetch(`${API_BASE}/api/subscription/checkout/stripe`,{
+        const res = await fetch(`${API_BASE}/api/subscription/checkout/${provider}`,{
           method:'POST',
           headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`},
           body: JSON.stringify({ plan, interval })
