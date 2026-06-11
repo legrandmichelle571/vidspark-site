@@ -2,14 +2,14 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur de Tags YouTube Gratuit (IA) — VidSpark AI</title>
-<meta name="description" content="Génère gratuitement 15 tags YouTube optimisés SEO avec l'IA. Sans inscription. Copie-colle tes tags en 1 clic et améliore le classement de tes vidéos.">
+<title>Générateur de Tags YouTube (IA) — Pro — VidSpark AI</title>
+<meta name="description" content="Génère 15 tags YouTube optimisés SEO avec l'IA (abonnés Pro/Business). Copie-colle tes tags en 1 clic et améliore le classement de tes vidéos.">
 <link rel="stylesheet" href="tools.css">
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free">100% GRATUIT · IA · SANS INSCRIPTION</div>
+    <div class="badge-free" style="background:rgba(124,109,250,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1>🏷️ Générateur de Tags YouTube</h1>
     <p>Entre le sujet de ta vidéo : l'IA génère 15 tags SEO optimisés pour aider YouTube à comprendre et classer ta vidéo.</p>
   </div>
@@ -39,6 +39,9 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
 <script src="tools.js"></script>
 <script>
 async function go(){
@@ -54,7 +57,7 @@ async function go(){
     r.innerHTML=`<div>${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
       <button class="btn green" style="margin-top:14px" onclick='copyTxt(${JSON.stringify(tags.join(", "))},this)'>📋 Copier tous les tags</button>
       <div class="muted" style="margin-top:8px">Colle-les dans YouTube Studio → Détails de la vidéo → Tags.</div>`;
-  }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
 </script>
 </body>

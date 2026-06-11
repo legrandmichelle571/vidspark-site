@@ -2,14 +2,14 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur de Description YouTube Gratuit (IA) — VidSpark AI</title>
-<meta name="description" content="Génère gratuitement une description YouTube optimisée SEO avec hashtags grâce à l'IA. Sans inscription, prête à coller dans YouTube Studio.">
+<title>Générateur de Description YouTube (IA) — Pro — VidSpark AI</title>
+<meta name="description" content="Génère une description YouTube optimisée SEO avec hashtags grâce à l'IA (abonnés Pro/Business).">
 <link rel="stylesheet" href="tools.css">
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free">100% GRATUIT · IA · SANS INSCRIPTION</div>
+    <div class="badge-free" style="background:rgba(124,109,250,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1>📝 Générateur de Description YouTube</h1>
     <p>Entre le titre ou le sujet de ta vidéo : l'IA rédige une description riche en mots-clés + des hashtags, prête à coller.</p>
   </div>
@@ -39,6 +39,9 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
 <script src="tools.js"></script>
 <script>
 async function go(){
@@ -53,7 +56,7 @@ async function go(){
     if(!d.description)throw new Error('Aucune description générée, réessaie.');
     r.innerHTML=`<textarea readonly style="width:100%;min-height:160px;resize:vertical;">${esc(full)}</textarea>
       <button class="btn green" style="margin-top:12px" onclick='copyTxt(${JSON.stringify(full)},this)'>📋 Copier la description</button>`;
-  }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
 </script>
 </body>
