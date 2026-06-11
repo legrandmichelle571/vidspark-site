@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VidSpark AI — Connexion</title>
+
+  <!-- ⚡ Pré-connexion aux services externes (accélère le login) -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fnhyskbisfbtjgblbiap.supabase.co" crossorigin>
+  <link rel="dns-prefetch" href="https://vidspark-ai-production-9ac7.up.railway.app">
+  <!-- Charge la librairie Supabase en parallèle, sans bloquer l'affichage -->
+  <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {

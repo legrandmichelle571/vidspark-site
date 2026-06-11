@@ -613,15 +613,36 @@
 
         // 🔥 IMPORTANT: Envoyer l'ID token au backend pour activer l'extension
         const session = await Auth.getSession();
-        if (session?.access_token) {
+        const token = session?.access_token;
+        if (token) {
           console.log('[Dashboard] Sending google login to backend with token...');
           try {
-            await AuthAPI.googleLogin(session.access_token);
+            await AuthAPI.googleLogin(token);
             console.log('[Dashboard] ✅ Backend activation codes received');
           } catch (err) {
             console.error('[Dashboard] Error sending google login:', err);
             // Continuer même si ça échoue
           }
+        }
+
+        // 🔒 Vérifier si chaîne YouTube sélectionnée
+        try {
+          const channelRes = await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/channels/list', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+
+          if (channelRes.ok) {
+            const channelData = await channelRes.json();
+            if (!channelData.channels || channelData.channels.length === 0) {
+              // Pas de chaîne sélectionnée → rediriger vers channels.html
+              console.log('[Dashboard] No channel selected, redirecting to channels...');
+              window.location.href = '/channels.html';
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('[Dashboard] Could not check channels:', err);
+          // Continue même si vérification échoue
         }
 
         // Afficher les données (depuis Supabase Auth)
