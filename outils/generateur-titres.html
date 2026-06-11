@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de Titres YouTube Gratuit (IA) — VidSpark AI</title>
+<meta name="description" content="Génère gratuitement 5 titres YouTube accrocheurs avec l'IA : versions SEO, CTR, virale, Shorts et tendance. Sans inscription, copie en 1 clic.">
+<link rel="stylesheet" href="tools.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free">100% GRATUIT · IA · SANS INSCRIPTION</div>
+    <h1>✨ Générateur de Titres YouTube</h1>
+    <p>Décris ta vidéo : l'IA propose 5 titres optimisés (SEO, clics, viral, Shorts, tendance), chacun noté sur 100.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row">
+      <input type="text" id="topic" placeholder="Ex : j'ai testé la voiture la moins chère du monde" onkeydown="if(event.key==='Enter')go()">
+      <select id="lang">
+        <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="hi">हिन्दी</option><option value="tr">Türkçe</option>
+      </select>
+      <button class="btn" onclick="go()">✨ Générer 5 titres</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Qu'est-ce qui fait un bon titre YouTube ?</h3><p>Un bon titre fait 40 à 70 caractères, contient le mot-clé principal au début, crée de la curiosité (question, chiffre, mot fort) et reste fidèle au contenu de la vidéo.</p></div>
+    <div class="faq-item"><h3>Que signifient les types SEO, CTR, Viral… ?</h3><p>SEO = optimisé pour la recherche YouTube/Google. CTR = maximise le taux de clics. Viral = joue sur l'émotion et la curiosité. Shorts = court et percutant. Trending = surfe sur les formulations à la mode.</p></div>
+    <div class="faq-item"><h3>Puis-je générer en arabe ou en anglais ?</h3><p>Oui, choisis la langue dans le menu : l'IA écrit des titres natifs dans 8 langues, dont l'arabe.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>🩺 Va plus loin avec le Title Doctor</h3>
+    <p>L'extension VidSpark AI note ton titre EN DIRECT pendant que tu l'écris, et l'A/B test prédit lequel de deux titres gagnera.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const topic=document.getElementById('topic').value.trim();
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(topic.length<3){r.innerHTML='<div class="err">❌ Entre un sujet (3 caractères min).</div>';return;}
+  r.innerHTML=spinner('L\'IA écrit tes titres…');
+  try{
+    const d=await aiCall('/api/public/ai/titles',{topic,language:lang});
+    const titles=d.titles||[];
+    if(!titles.length)throw new Error('Aucun titre généré, réessaie.');
+    r.innerHTML=titles.map(t=>{
+      const c=(t.score||70)>=70?'#22c55e':(t.score||70)>=45?'#f5b301':'#ef4444';
+      return `<div class="title-item">
+        <div class="tx">${esc(t.text)}</div>
+        ${t.hook?`<span class="tag">${esc(t.hook)}</span>`:''}
+        <span class="sc" style="color:${c}">${t.score||'—'}/100</span>
+        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(t.text||"")},this)'>⧉</button>
+      </div>`;
+    }).join('');
+  }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
+}
+</script>
+</body>
+</html>

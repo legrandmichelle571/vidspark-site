@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de Tags YouTube Gratuit (IA) — VidSpark AI</title>
+<meta name="description" content="Génère gratuitement 15 tags YouTube optimisés SEO avec l'IA. Sans inscription. Copie-colle tes tags en 1 clic et améliore le classement de tes vidéos.">
+<link rel="stylesheet" href="tools.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free">100% GRATUIT · IA · SANS INSCRIPTION</div>
+    <h1>🏷️ Générateur de Tags YouTube</h1>
+    <p>Entre le sujet de ta vidéo : l'IA génère 15 tags SEO optimisés pour aider YouTube à comprendre et classer ta vidéo.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row">
+      <input type="text" id="topic" placeholder="Ex : recette de pizza maison facile" onkeydown="if(event.key==='Enter')go()">
+      <select id="lang">
+        <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="hi">हिन्दी</option><option value="tr">Türkçe</option>
+      </select>
+      <button class="btn" onclick="go()">✨ Générer les tags</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>À quoi servent les tags YouTube ?</h3><p>Les tags aident l'algorithme YouTube à comprendre le sujet de ta vidéo et à la proposer dans les recherches et les suggestions. Ils sont surtout utiles pour les mots-clés mal orthographiés et les variantes de ton sujet.</p></div>
+    <div class="faq-item"><h3>Combien de tags faut-il mettre ?</h3><p>YouTube autorise 500 caractères. L'idéal est 10 à 15 tags pertinents : commence par ton mot-clé principal, puis des variantes et des mots-clés de niche.</p></div>
+    <div class="faq-item"><h3>Cet outil est-il vraiment gratuit ?</h3><p>Oui, 15 générations gratuites par heure, sans compte. Pour un accès illimité + 25 outils IA directement sur YouTube, découvre VidSpark AI Pro.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>🚀 Génère tes tags directement sur YouTube</h3>
+    <p>L'extension VidSpark AI ajoute 25 outils IA sur chaque vidéo : tags, titres, A/B test de miniatures, analyse de rétention, tendances…</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const topic=document.getElementById('topic').value.trim();
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(topic.length<3){r.innerHTML='<div class="err">❌ Entre un sujet (3 caractères min).</div>';return;}
+  r.innerHTML=spinner('L\'IA génère tes tags…');
+  try{
+    const d=await aiCall('/api/public/ai/tags',{topic,language:lang});
+    const tags=d.tags||[];
+    if(!tags.length)throw new Error('Aucun tag généré, réessaie.');
+    r.innerHTML=`<div>${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      <button class="btn green" style="margin-top:14px" onclick='copyTxt(${JSON.stringify(tags.join(", "))},this)'>📋 Copier tous les tags</button>
+      <div class="muted" style="margin-top:8px">Colle-les dans YouTube Studio → Détails de la vidéo → Tags.</div>`;
+  }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
+}
+</script>
+</body>
+</html>

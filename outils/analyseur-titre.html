@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyseur de Titre YouTube Gratuit (Score CTR) — VidSpark AI</title>
+<meta name="description" content="Analyse gratuitement ton titre YouTube : score CTR instantané sur 100 et les 5 critères qui font cliquer (longueur, chiffre, émotion, hook, ponctuation).">
+<link rel="stylesheet" href="tools.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free">100% GRATUIT · INSTANTANÉ · SANS INSCRIPTION</div>
+    <h1>📊 Analyseur de Titre YouTube</h1>
+    <p>Tape ton titre : le score CTR se met à jour en direct, avec les 5 critères qui font cliquer les spectateurs.</p>
+  </div>
+
+  <div class="tool-box">
+    <input type="text" id="titleIn" placeholder="Ton titre de vidéo…" oninput="go()" style="width:100%">
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Qu'est-ce que le CTR ?</h3><p>Le taux de clics (Click-Through Rate) : le % de personnes qui cliquent sur ta vidéo quand elles la voient. C'est l'un des signaux les plus importants pour l'algorithme YouTube.</p></div>
+    <div class="faq-item"><h3>Sur quoi se base le score ?</h3><p>5 critères éprouvés : longueur idéale (40-70 caractères), présence d'un chiffre, mot émotionnel/puissant, accroche au début (Comment, Pourquoi, question…) et ponctuation expressive (? ou !).</p></div>
+    <div class="faq-item"><h3>Un score de 100 garantit-il des vues ?</h3><p>Non — le score mesure le potentiel de clic du titre. La miniature, le sujet et la rétention comptent aussi. L'extension VidSpark AI analyse tout ça ensemble.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>🩺 Le Title Doctor fait mieux</h3>
+    <p>Dans l'extension VidSpark AI, l'IA diagnostique ton titre, te dit ce qui manque et le RÉÉCRIT pour plus de clics — directement sur YouTube.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="tools.js"></script>
+<script>
+function go(){
+  const t=(document.getElementById('titleIn').value||'').trim();
+  const r=document.getElementById('res');
+  if(!t){r.innerHTML='';return;}
+  const s=titleScore(t);
+  const col=s.score>=70?'#22c55e':s.score>=45?'#f5b301':'#ef4444';
+  const chk=(ok,lbl)=>`<div class="check">${ok?'✅':'⬜'} ${lbl}</div>`;
+  r.innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;"><div style="font-size:28px;font-weight:800;color:${col}">${s.score}</div><div class="muted">/100 · ${s.len} caractères</div></div>
+    <div class="score-bar"><div style="width:${s.score}%;background:${col}"></div></div>
+    ${chk(s.okLen,'Longueur idéale (40-70 caractères)')}
+    ${chk(s.okNum,'Contient un chiffre')}
+    ${chk(s.okEmo,'Mot émotionnel/puissant')}
+    ${chk(s.okHook,'Accroche au début (Comment, Pourquoi, ?…)')}
+    ${chk(s.okPunct,'Ponctuation expressive (? ou !)')}`;
+}
+</script>
+</body>
+</html>

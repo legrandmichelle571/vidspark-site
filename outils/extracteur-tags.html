@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extracteur de Tags YouTube Gratuit — VidSpark AI</title>
+<meta name="description" content="Extrais gratuitement les tags (mots-clés SEO) de n'importe quelle vidéo YouTube. Analyse les tags de tes concurrents, sans inscription.">
+<link rel="stylesheet" href="tools.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free">100% GRATUIT · SANS INSCRIPTION</div>
+    <h1>🔎 Extracteur de Tags YouTube</h1>
+    <p>Colle l'URL d'une vidéo : découvre les tags SEO qu'elle utilise. Parfait pour analyser les vidéos qui cartonnent dans ta niche.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row">
+      <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')go()">
+      <button class="btn" onclick="go()">🔎 Extraire les tags</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Pourquoi extraire les tags des concurrents ?</h3><p>Les vidéos qui cartonnent utilisent des mots-clés efficaces. En les analysant, tu découvres les termes exacts que ton audience recherche — et tu peux les réutiliser (intelligemment) dans tes propres vidéos.</p></div>
+    <div class="faq-item"><h3>Ça marche avec toutes les vidéos ?</h3><p>Oui, tant que le créateur a défini des tags. Certaines vidéos n'en ont aucun (l'outil te le dira).</p></div>
+    <div class="faq-item"><h3>Est-ce légal ?</h3><p>Oui : les tags sont des métadonnées publiques fournies par l'API officielle YouTube.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>🏆 Va plus loin : analyse complète des concurrents</h3>
+    <p>L'extension VidSpark AI montre les vues/heure des concurrents, les mots-clés en hausse, le score d'opportunité et les tendances de ta niche en direct.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const id=vidId(document.getElementById('url').value);
+  const r=document.getElementById('res');
+  if(!id){r.innerHTML='<div class="err">❌ URL YouTube invalide.</div>';return;}
+  r.innerHTML=spinner('Extraction des tags…');
+  try{
+    const res=await fetch(`${API}/api/public/video?videoId=${id}`);
+    const d=await res.json();
+    if(!res.ok)throw new Error(d.error||'Erreur');
+    if(!d.tags||!d.tags.length){r.innerHTML='<div class="muted">Cette vidéo n\'a aucun tag public. 🤔</div>';return;}
+    r.innerHTML=`<div class="muted" style="margin-bottom:8px">📹 ${esc(d.title)} — <b>${d.tags.length} tags</b></div>
+      <div>${d.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+      <button class="btn green" style="margin-top:14px" onclick='copyTxt(${JSON.stringify((d.tags||[]).join(", "))},this)'>📋 Copier tous les tags</button>`;
+  }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
+}
+</script>
+</body>
+</html>

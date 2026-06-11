@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Télécharger une Miniature YouTube (HD) Gratuit — VidSpark AI</title>
+<meta name="description" content="Télécharge gratuitement la miniature de n'importe quelle vidéo YouTube en HD 1280×720, sans filigrane ni inscription.">
+<link rel="stylesheet" href="tools.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free">100% GRATUIT · HD · SANS INSCRIPTION</div>
+    <h1>🖼️ Téléchargeur de Miniatures YouTube</h1>
+    <p>Colle l'URL d'une vidéo ou d'un Short : récupère sa miniature en HD (1280×720) et autres tailles, sans filigrane.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row">
+      <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')go()">
+      <button class="btn" onclick="go()">🖼️ Récupérer</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Quelles tailles sont disponibles ?</h3><p>HD 1280×720 (maxres), SD 640×480, HQ 480×360 et MQ 320×180 — selon ce que la vidéo propose. Si la HD n'apparaît pas, la vidéo n'a pas de miniature maxres.</p></div>
+    <div class="faq-item"><h3>Ça marche avec les Shorts ?</h3><p>Oui, colle l'URL du Short (youtube.com/shorts/…) et l'outil récupère sa miniature.</p></div>
+    <div class="faq-item"><h3>Puis-je utiliser la miniature d'un autre créateur ?</h3><p>Pour t'en inspirer oui, mais la réutiliser telle quelle peut violer ses droits d'auteur. Utilise cet outil pour analyser, étudier ou sauvegarder tes propres miniatures.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>📸 Compare 2 miniatures avec l'IA Vision</h3>
+    <p>L'extension VidSpark AI te dit laquelle de tes 2 miniatures fera le plus de clics — et pourquoi (contraste, visage, émotion, lisibilité TV/mobile).</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="tools.js"></script>
+<script>
+function go(){
+  const id=vidId(document.getElementById('url').value);
+  const r=document.getElementById('res');
+  if(!id){r.innerHTML='<div class="err">❌ URL YouTube invalide.</div>';return;}
+  const sizes=[['maxresdefault','HD 1280×720'],['sddefault','SD 640×480'],['hqdefault','HQ 480×360'],['mqdefault','MQ 320×180']];
+  r.innerHTML='<div class="thumbs">'+sizes.map(([q,lbl])=>`
+    <div class="thumb-card">
+      <img src="https://i.ytimg.com/vi/${id}/${q}.jpg" onerror="this.parentNode.style.display='none'">
+      <div class="meta"><span>${lbl}</span><a href="https://i.ytimg.com/vi/${id}/${q}.jpg" target="_blank" download>⬇ Télécharger</a></div>
+    </div>`).join('')+'</div>';
+}
+</script>
+</body>
+</html>

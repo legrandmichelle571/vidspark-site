@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de Description YouTube Gratuit (IA) — VidSpark AI</title>
+<meta name="description" content="Génère gratuitement une description YouTube optimisée SEO avec hashtags grâce à l'IA. Sans inscription, prête à coller dans YouTube Studio.">
+<link rel="stylesheet" href="tools.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free">100% GRATUIT · IA · SANS INSCRIPTION</div>
+    <h1>📝 Générateur de Description YouTube</h1>
+    <p>Entre le titre ou le sujet de ta vidéo : l'IA rédige une description riche en mots-clés + des hashtags, prête à coller.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row">
+      <input type="text" id="topic" placeholder="Ex : tutoriel montage vidéo pour débutants" onkeydown="if(event.key==='Enter')go()">
+      <select id="lang">
+        <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="hi">हिन्दी</option><option value="tr">Türkçe</option>
+      </select>
+      <button class="btn" onclick="go()">✨ Générer la description</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Pourquoi la description est-elle importante ?</h3><p>YouTube indexe le texte de ta description : une description riche en mots-clés naturels aide l'algorithme à comprendre ta vidéo et à la proposer dans les recherches. Les 2 premières lignes sont visibles avant le clic « plus ».</p></div>
+    <div class="faq-item"><h3>Combien de hashtags utiliser ?</h3><p>3 à 5 hashtags pertinents suffisent. Les 3 premiers apparaissent au-dessus du titre de la vidéo.</p></div>
+    <div class="faq-item"><h3>Quelle longueur idéale ?</h3><p>Au moins 300 caractères. Une bonne description contient : un résumé accrocheur, les mots-clés naturels, un appel à l'abonnement et tes liens.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>📦 Le pack complet en 1 clic</h3>
+    <p>L'extension VidSpark AI génère titre + description + « abonne-toi » + hashtags + 15 tags d'un coup, adaptés à ta niche et ta région.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const topic=document.getElementById('topic').value.trim();
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(topic.length<3){r.innerHTML='<div class="err">❌ Entre un sujet (3 caractères min).</div>';return;}
+  r.innerHTML=spinner('L\'IA rédige ta description…');
+  try{
+    const d=await aiCall('/api/public/ai/description',{topic,language:lang});
+    const full=(d.description||'')+(d.hashtags&&d.hashtags.length?'\n\n'+d.hashtags.join(' '):'');
+    if(!d.description)throw new Error('Aucune description générée, réessaie.');
+    r.innerHTML=`<textarea readonly style="width:100%;min-height:160px;resize:vertical;">${esc(full)}</textarea>
+      <button class="btn green" style="margin-top:12px" onclick='copyTxt(${JSON.stringify(full)},this)'>📋 Copier la description</button>`;
+  }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
+}
+</script>
+</body>
+</html>
