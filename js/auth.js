@@ -4,9 +4,20 @@
  */
 
 // Supabase client
+// ⚙️ Config explicite : on FORCE le flux "implicit" (#access_token dans le hash)
+// pour rester cohérent quelle que soit la version du CDN @supabase/supabase-js@2.
+// detectSessionInUrl: true → Supabase traite automatiquement le retour OAuth.
 const supabaseClient = window.supabase.createClient(
   'https://fnhyskbisfbtjgblbiap.supabase.co',
-  'sb_publishable_Eq1H3ObUnaRnRt-rVUx2Ng_8iKndXKZ'
+  'sb_publishable_Eq1H3ObUnaRnRt-rVUx2Ng_8iKndXKZ',
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      flowType: 'implicit'
+    }
+  }
 );
 
 /**
@@ -42,15 +53,63 @@ const Auth = {
   },
 
   /**
+   * Attendre que la session soit prête.
+   * Au retour d'une connexion Google, Supabase met un court instant à
+   * traiter le token présent dans l'URL. On attend cet événement au lieu
+   * de vérifier trop tôt (cause du bug "il faut s'y reprendre à 2 fois").
+   */
+  async waitForSession(timeoutMs = 5000) {
+    // 1) Session déjà présente ? on répond tout de suite.
+    let session = await this.getSession();
+    if (session) return session;
+
+    // 2) Est-ce qu'on revient d'une redirection OAuth ?
+    const url = window.location.href;
+    const returningFromOAuth =
+      window.location.hash.includes('access_token') ||
+      url.includes('code=') ||
+      window.location.hash.includes('error');
+
+    if (!returningFromOAuth) return null; // simple visite sans token → pas connecté
+
+    // 3) On attend l'événement SIGNED_IN + un sondage de secours.
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = (s) => {
+        if (done) return;
+        done = true;
+        try { sub?.subscription?.unsubscribe(); } catch (e) {}
+        clearInterval(poll);
+        resolve(s);
+      };
+
+      const { data: sub } = supabaseClient.auth.onAuthStateChange((event, s) => {
+        if (s) finish(s);
+      });
+
+      const start = Date.now();
+      const poll = setInterval(async () => {
+        const s = await this.getSession();
+        if (s) return finish(s);
+        if (Date.now() - start > timeoutMs) return finish(null);
+      }, 300);
+    });
+  },
+
+  /**
    * Vérifier si connecté, sinon rediriger
    */
   async requireLogin() {
     try {
-      const user = await this.getCurrentUser();
-      if (!user) {
+      const session = await this.waitForSession();
+      if (!session) {
         console.warn('[Auth] Not logged in, redirecting to login...');
         window.location.href = '/login.html';
         return false;
+      }
+      // Nettoie le token de l'URL pour éviter qu'il traîne dans la barre d'adresse
+      if (window.location.hash.includes('access_token') && window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname);
       }
       return true;
     } catch (err) {
