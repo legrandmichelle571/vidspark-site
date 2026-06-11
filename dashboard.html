@@ -756,9 +756,10 @@
           renderCodes(codes);
 
           const hint = document.getElementById('codesHint');
-          if (hint) hint.textContent = codes.length > 1
-            ? `Tu as ${codes.length} codes (1 par PC). Chaque code ne fonctionne que sur un seul appareil à la fois.`
-            : 'Use these to activate your extension';
+          const maxPC = (user.plan === 'business') ? 5 : 1;
+          if (hint) hint.textContent = maxPC > 1
+            ? `Ce code fonctionne sur ${maxPC} PC en même temps (plan Business).`
+            : 'Ce code fonctionne sur 1 seul PC à la fois.';
 
           // Afficher les jours restants
           if (user.subscription_expiry) {
