@@ -437,22 +437,10 @@
         <!-- Activation Card -->
         <div class="card">
           <div class="card-title">🔑 Extension Activation</div>
-          <div style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Use these to activate your extension</div>
-          <div style="background: var(--s2); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
-            <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">ID</div>
-            <div style="display: flex; gap: 8px;">
-              <input type="text" id="activationId" readonly style="flex: 1; background: var(--s1); border: 1px solid var(--b2); border-radius: 4px; padding: 8px; color: var(--green); font-family: monospace; font-size: 11px;">
-              <button onclick="copyClip('activationId')" style="background: var(--purple); color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer;">Copy</button>
-            </div>
-          </div>
-          <div style="background: var(--s2); border-radius: 8px; padding: 12px;">
-            <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">Secret</div>
-            <div style="display: flex; gap: 8px;">
-              <input type="password" id="activationSecret" readonly style="flex: 1; background: var(--s1); border: 1px solid var(--b2); border-radius: 4px; padding: 8px; color: var(--green); font-family: monospace; font-size: 11px;">
-              <button onclick="toggleSecret()" style="background: var(--b2); color: var(--text); padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer;">👁️</button>
-              <button onclick="copyClip('activationSecret')" style="background: var(--purple); color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer;">Copy</button>
-            </div>
-          </div>
+          <div id="codesHint" style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Use these to activate your extension</div>
+          <div id="codesContainer"></div>
+          <!-- Champs cachés conservés pour compat (code principal) -->
+          <input type="hidden" id="activationId"><input type="hidden" id="activationSecret">
           <div style="margin-top: 12px; padding: 12px; background: rgba(34,197,94,.1); border-left: 3px solid var(--green); border-radius: 4px;">
             <div style="font-size: 11px; color: var(--green); line-height: 1.6;">✅ Valid for <span id="daysRemaining">—</span> days</div>
           </div>
@@ -685,6 +673,38 @@
       field.type = field.type === 'password' ? 'text' : 'password';
     }
 
+    // Copie un texte directement (codes multiples)
+    function copyText(txt, btn) {
+      navigator.clipboard.writeText(txt);
+      const orig = btn.textContent;
+      btn.textContent = '✅';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    }
+    function toggleField(el) {
+      el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    // Affiche 1 ou 5 codes (Business) dans la carte d'activation
+    function renderCodes(codes) {
+      const wrap = document.getElementById('codesContainer');
+      if (!wrap) return;
+      wrap.innerHTML = codes.map((c, i) => `
+        <div style="background: var(--s2); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+          ${codes.length > 1 ? `<div style="font-size:11px;color:var(--purple-l,#a78bfa);font-weight:700;margin-bottom:6px;">PC ${i + 1}</div>` : ''}
+          <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">ID</div>
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <input type="text" value="${c.activation_id}" readonly style="flex:1;background:var(--s1);border:1px solid var(--b2);border-radius:4px;padding:8px;color:var(--green);font-family:monospace;font-size:11px;">
+            <button onclick="copyText('${c.activation_id}', this)" style="background:var(--purple);color:#fff;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer;border:none;">Copy</button>
+          </div>
+          <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">Secret</div>
+          <div style="display: flex; gap: 8px;">
+            <input type="password" value="${c.activation_secret}" readonly style="flex:1;background:var(--s1);border:1px solid var(--b2);border-radius:4px;padding:8px;color:var(--green);font-family:monospace;font-size:11px;">
+            <button onclick="toggleField(this.parentNode.querySelector('input'))" style="background:var(--b2);color:var(--text);padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer;border:none;">👁️</button>
+            <button onclick="copyText('${c.activation_secret}', this)" style="background:var(--purple);color:#fff;padding:6px 12px;border-radius:4px;font-size:11px;cursor:pointer;border:none;">Copy</button>
+          </div>
+        </div>`).join('');
+    }
+
     // Récupérer et afficher l'activation
     async function loadActivationData() {
       try {
@@ -708,6 +728,17 @@
         if (user.activation_id && user.activation_secret) {
           document.getElementById('activationId').value = user.activation_id;
           document.getElementById('activationSecret').value = user.activation_secret;
+
+          // Liste des codes (Business = 5, autres = 1)
+          const codes = Array.isArray(user.codes) && user.codes.length
+            ? user.codes
+            : [{ activation_id: user.activation_id, activation_secret: user.activation_secret }];
+          renderCodes(codes);
+
+          const hint = document.getElementById('codesHint');
+          if (hint) hint.textContent = codes.length > 1
+            ? `Tu as ${codes.length} codes (1 par PC). Chaque code ne fonctionne que sur un seul appareil à la fois.`
+            : 'Use these to activate your extension';
 
           // Afficher les jours restants
           if (user.subscription_expiry) {
