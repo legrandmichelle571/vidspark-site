@@ -61,6 +61,7 @@
   .pill.free{background:rgba(136,136,160,.18);color:var(--muted);}
   .pill.pro{background:rgba(124,109,250,.2);color:var(--purple-l);}
   .pill.business{background:rgba(245,179,1,.18);color:var(--amber);}
+  .pill.diamant{background:rgba(34,211,238,.18);color:#22d3ee;}
   .pill.active{background:rgba(34,197,94,.15);color:var(--green);}
   .pill.suspended{background:rgba(239,68,68,.15);color:var(--red);}
   .muted{color:var(--muted);font-size:12px;}
@@ -190,7 +191,7 @@ async function loadUsers(){
     <div class="page-title">👥 Utilisateurs</div>
     <div class="toolbar">
       <input id="uSearch" placeholder="🔍 Email ou nom…" style="flex:1;min-width:160px" onkeydown="if(event.key==='Enter')renderUsers()">
-      <select id="uPlan" onchange="renderUsers()"><option value="">Tous les plans</option><option value="free">Free</option><option value="pro">Pro</option><option value="business">Business</option></select>
+      <select id="uPlan" onchange="renderUsers()"><option value="">Tous les plans</option><option value="free">Free</option><option value="pro">Pro</option><option value="business">Business</option><option value="diamant">💎 Diamant</option></select>
       <select id="uStatus" onchange="renderUsers()"><option value="">Tous les statuts</option><option value="active">Actif</option><option value="suspended">Suspendu</option></select>
       <button class="btn btn-sm" onclick="renderUsers()">Filtrer</button>
       <button class="btn btn-sm btn-green" onclick="exportCSV()">⬇ CSV</button>
@@ -222,6 +223,7 @@ async function renderUsers(){
               <option ${u.plan==='free'?'selected':''} value="free">Free</option>
               <option ${u.plan==='pro'?'selected':''} value="pro">Pro</option>
               <option ${u.plan==='business'?'selected':''} value="business">Business</option>
+              <option ${u.plan==='diamant'?'selected':''} value="diamant">💎 Diamant</option>
             </select>
             ${u.status==='suspended'
               ? `<button class="btn btn-sm btn-green" onclick="setStatus('${u.id}','active')">Réactiver</button>`
