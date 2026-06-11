@@ -444,6 +444,10 @@
           <div style="margin-top: 12px; padding: 12px; background: rgba(34,197,94,.1); border-left: 3px solid var(--green); border-radius: 4px;">
             <div style="font-size: 11px; color: var(--green); line-height: 1.6;">✅ Valid for <span id="daysRemaining">—</span> days</div>
           </div>
+          <div style="margin-top: 12px;">
+            <button onclick="releaseDevices()" style="width:100%;background:transparent;border:1px solid var(--b2);color:var(--muted);padding:9px;border-radius:6px;font-size:12px;cursor:pointer;">🔓 PC perdu ? Libérer mes codes</button>
+            <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
+          </div>
         </div>
 
       </div>
@@ -682,6 +686,22 @@
     }
     function toggleField(el) {
       el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    // Libère tous les codes (déverrouille les appareils) — si PC perdu
+    async function releaseDevices() {
+      if (!confirm('Libérer TOUS tes codes de leurs appareils ? Tu pourras les réactiver sur de nouveaux PC. Les anciens PC seront déconnectés.')) return;
+      const msg = document.getElementById('releaseMsg');
+      msg.style.color = 'var(--muted)'; msg.textContent = '⏳ Libération…';
+      try {
+        const session = await Auth.getSession();
+        const res = await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/user/devices/release', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token }
+        });
+        if (res.ok) { msg.style.color = 'var(--green)'; msg.textContent = '✅ Codes libérés ! Réactive l\'extension sur ton nouveau PC.'; }
+        else { const d = await res.json().catch(() => ({})); msg.style.color = 'var(--red,#ef4444)'; msg.textContent = '❌ ' + (d.error || 'Erreur'); }
+      } catch (e) { msg.style.color = 'var(--red,#ef4444)'; msg.textContent = '❌ ' + e.message; }
     }
 
     // Affiche 1 ou 5 codes (Business) dans la carte d'activation
