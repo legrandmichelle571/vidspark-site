@@ -450,14 +450,14 @@
           </div>
         </div>
 
-        <!-- Diamant Card -->
+        <!-- Studio Card -->
         <div class="card" style="border:1px solid rgba(34,211,238,.35);background:linear-gradient(160deg,rgba(34,211,238,.06),rgba(124,109,250,.06));">
-          <div class="card-title">💎 Outils Diamant</div>
+          <div class="card-title">✦ VidSpark Studio</div>
           <div style="font-size:12px;color:var(--muted);margin:6px 0 14px;line-height:1.5;">
-            Audit de chaîne avancé (score /100) + suivi de positionnement YouTube.
+            Discover, Audit de chaîne (score /100) et suivi de position YouTube. Inclus dans les forfaits payants.
           </div>
           <a class="card-action" href="diamant.html" style="display:inline-block;background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;font-weight:800;padding:10px 16px;border-radius:8px;text-decoration:none;font-size:13px;">
-            Ouvrir les outils Diamant →
+            Ouvrir le Studio →
           </a>
         </div>
 
@@ -481,50 +481,6 @@
               <label for="task3" style="cursor: pointer; flex: 1;">Run first analysis</label>
             </li>
           </ul>
-        </div>
-      </div>
-
-      <!-- 💎 Outils Diamant (visibles seulement pour le plan diamant) -->
-      <div id="diamantTools" style="display:none;">
-        <h2 style="font-size:20px;font-weight:800;margin:8px 0 14px;">💎 Outils Diamant</h2>
-        <div class="cards">
-
-          <div class="card" style="border:1px solid rgba(34,211,238,.3);">
-            <div class="card-title">📊 Audit de chaîne</div>
-            <div style="font-size:12px;color:var(--muted);margin:6px 0 12px;">Score de santé /100 + recommandations.</div>
-            <div id="dmtChannelWrap" style="display:none;margin-bottom:10px;">
-              <select id="dmtChannel" style="width:100%;background:#141418;border:1px solid var(--b2);border-radius:8px;padding:9px;color:var(--text);font-size:13px;"></select>
-            </div>
-            <button onclick="dmtAudit()" id="dmtAuditBtn" style="background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;border:none;border-radius:8px;padding:10px 18px;font-weight:700;font-size:13px;cursor:pointer;">Lancer l'audit</button>
-            <div id="dmtAuditErr" style="color:#ef4444;font-size:12px;margin-top:8px;display:none;"></div>
-            <div id="dmtAuditRes" style="margin-top:12px;display:none;"></div>
-          </div>
-
-          <div class="card" style="border:1px solid rgba(34,211,238,.3);">
-            <div class="card-title">🎯 Vérifier une position</div>
-            <div style="font-size:12px;color:var(--muted);margin:6px 0 12px;">Position d'une vidéo sur un mot-clé.</div>
-            <input id="dmtRkKw" placeholder="Mot-clé" style="width:100%;background:#141418;border:1px solid var(--b2);border-radius:8px;padding:9px;color:var(--text);font-size:13px;margin-bottom:8px;">
-            <input id="dmtRkVid" placeholder="ID de la vidéo" style="width:100%;background:#141418;border:1px solid var(--b2);border-radius:8px;padding:9px;color:var(--text);font-size:13px;margin-bottom:10px;">
-            <button onclick="dmtRank()" id="dmtRankBtn" style="background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;border:none;border-radius:8px;padding:10px 18px;font-weight:700;font-size:13px;cursor:pointer;">Vérifier</button>
-            <div id="dmtRankErr" style="color:#ef4444;font-size:12px;margin-top:8px;display:none;"></div>
-            <div id="dmtRankRes" style="margin-top:12px;display:none;"></div>
-          </div>
-
-        </div>
-
-        <div class="card" style="border:1px solid rgba(34,211,238,.3);margin-top:16px;">
-          <div class="card-title">🔍 Discover</div>
-          <div style="font-size:12px;color:var(--muted);margin:6px 0 12px;">Top vidéos YouTube sur un mot-clé, avec leurs stats.</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
-            <input id="dmtDiscKw" placeholder="Mot-clé" style="flex:2;min-width:160px;background:#141418;border:1px solid var(--b2);border-radius:8px;padding:9px;color:var(--text);font-size:13px;">
-            <select id="dmtDiscSort" style="flex:1;min-width:120px;background:#141418;border:1px solid var(--b2);border-radius:8px;padding:9px;color:var(--text);font-size:13px;">
-              <option value="views">Vues</option><option value="likes">Likes</option>
-              <option value="vph">Vues/heure</option><option value="recent">Récent</option>
-            </select>
-          </div>
-          <button onclick="dmtDiscover()" id="dmtDiscBtn" style="background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;border:none;border-radius:8px;padding:10px 18px;font-weight:700;font-size:13px;cursor:pointer;">Découvrir</button>
-          <div id="dmtDiscErr" style="color:#ef4444;font-size:12px;margin-top:8px;display:none;"></div>
-          <div id="dmtDiscRes" style="display:none;"></div>
         </div>
       </div>
 
@@ -935,95 +891,6 @@
       await loadDashboard();
       await loadActivationData();
     });
-  </script>
-
-  <!-- 💎 Outils Diamant -->
-  <script>
-  (function(){
-    const DMT_API = 'https://vidspark-ai-production-9ac7.up.railway.app';
-    const $ = id => document.getElementById(id);
-    const dmtN = n => { n=+n||0; return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'k':n; };
-    async function dmtToken(){ const s = await Auth.getSession(); return s?.access_token || ''; }
-    async function dmtFetch(path, body){
-      const r = await fetch(DMT_API+path, { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+(await dmtToken())}, body:JSON.stringify(body||{}) });
-      const data = await r.json().catch(()=>({})); return { ok:r.ok, status:r.status, data };
-    }
-
-    window.dmtAudit = async function(){
-      const btn=$('dmtAuditBtn'), old=btn.textContent;
-      $('dmtAuditErr').style.display='none'; $('dmtAuditRes').style.display='none';
-      btn.disabled=true; btn.textContent='Analyse…';
-      try{
-        const {ok,data} = await dmtFetch('/api/diamant/channel-audit',{ channelId: $('dmtChannel').value || undefined });
-        if(!ok) throw new Error(data.error||'Audit indisponible');
-        const b=data.health_breakdown||{};
-        const bar=(l,v,m)=>`<div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;"><span>${l}</span><span>${v}/${m}</span></div><div style="height:6px;background:var(--b2);border-radius:5px;overflow:hidden;"><i style="display:block;height:100%;width:${Math.round(v/m*100)}%;background:linear-gradient(90deg,#22d3ee,#7c6dfa);"></i></div></div>`;
-        const recs=(data.recommendations||[]).map(r=>`<div style="font-size:12px;background:#141418;border-left:3px solid #22d3ee;border-radius:6px;padding:8px 10px;margin-bottom:6px;">${r.icon} ${r.text}</div>`).join('');
-        const stat=(v,l)=>`<div style="background:#141418;border-radius:8px;padding:8px;text-align:center;"><div style="font-weight:800;">${v}</div><div style="font-size:10px;color:var(--muted);">${l}</div></div>`;
-        $('dmtAuditRes').innerHTML=`
-          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px;">
-            <div style="font-size:34px;font-weight:800;color:#22d3ee;">${data.health_score}<span style="font-size:13px;color:var(--muted);">/100</span></div>
-            <div style="flex:1;min-width:180px;">${bar('💬 Engagement',b.engagement||0,30)}${bar('📅 Régularité',b.regularite||0,30)}${bar('🏷️ SEO',b.seo_tags||0,25)}${bar('✍️ Titres',b.titres||0,15)}</div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-bottom:12px;">
-            ${stat(dmtN(data.subs),'Abonnés')}${stat(dmtN(data.avg_views),'Vues moy.')}${stat(data.avg_engagement+'%','Engagement')}${stat((data.upload_freq_days??'—')+'j','Entre vidéos')}
-          </div>${recs}`;
-        $('dmtAuditRes').style.display='block';
-      }catch(e){ $('dmtAuditErr').textContent='❌ '+e.message; $('dmtAuditErr').style.display='block'; }
-      finally{ btn.disabled=false; btn.textContent=old; }
-    };
-
-    window.dmtRank = async function(){
-      const kw=$('dmtRkKw').value.trim(), vid=$('dmtRkVid').value.trim(), btn=$('dmtRankBtn'), old=btn.textContent;
-      $('dmtRankErr').style.display='none'; $('dmtRankRes').style.display='none';
-      if(!kw||!vid){ $('dmtRankErr').textContent='Remplis le mot-clé et l\'ID.'; $('dmtRankErr').style.display='block'; return; }
-      btn.disabled=true; btn.textContent='Recherche…';
-      try{
-        const {ok,data} = await dmtFetch('/api/diamant/rank-check',{keyword:kw,videoId:vid});
-        if(!ok) throw new Error(data.error||'Indisponible');
-        $('dmtRankRes').innerHTML = data.found
-          ? `<div style="text-align:center;padding:14px;background:#141418;border-radius:10px;"><div style="font-size:32px;font-weight:800;color:#22d3ee;">#${data.rank}</div><div style="font-size:12px;color:var(--muted);">pour « ${data.keyword} » (sur ${data.scanned})</div></div>`
-          : `<div style="text-align:center;padding:14px;background:#141418;border-radius:10px;"><div style="font-size:32px;font-weight:800;color:var(--muted);">—</div><div style="font-size:12px;color:var(--muted);">Hors top ${data.scanned}</div></div>`;
-        $('dmtRankRes').style.display='block';
-      }catch(e){ $('dmtRankErr').textContent='❌ '+e.message; $('dmtRankErr').style.display='block'; }
-      finally{ btn.disabled=false; btn.textContent=old; }
-    };
-
-    window.dmtDiscover = async function(){
-      const kw=$('dmtDiscKw').value.trim(), sort=$('dmtDiscSort').value, btn=$('dmtDiscBtn'), old=btn.textContent, grid=$('dmtDiscRes');
-      $('dmtDiscErr').style.display='none'; grid.style.display='none';
-      if(!kw){ $('dmtDiscErr').textContent='Entre un mot-clé.'; $('dmtDiscErr').style.display='block'; return; }
-      btn.disabled=true; btn.textContent='Recherche…';
-      try{
-        const {ok,data} = await dmtFetch('/api/diamant/discover',{keyword:kw,sort,max:24});
-        if(!ok) throw new Error(data.error||'Indisponible');
-        grid.innerHTML=(data.videos||[]).map(v=>`<a href="https://www.youtube.com/watch?v=${v.videoId}" target="_blank" style="text-decoration:none;color:inherit;background:#141418;border:1px solid var(--b2);border-radius:10px;overflow:hidden;display:block;"><img src="https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;"><div style="padding:9px;"><div style="font-size:12px;font-weight:600;line-height:1.4;height:34px;overflow:hidden;">${v.title}</div><div style="font-size:11px;color:var(--muted);margin:5px 0 4px;">${v.channel}</div><div style="font-size:11px;display:flex;gap:8px;color:#22d3ee;"><span>👁️ ${dmtN(v.views)}</span><span>👍 ${dmtN(v.likes)}</span><span>⚡ ${dmtN(v.views_per_hour)}/h</span></div></div></a>`).join('')||'<div style="color:var(--muted);font-size:13px;">Aucune vidéo.</div>';
-        grid.style.cssText='margin-top:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;';
-      }catch(e){ $('dmtDiscErr').textContent='❌ '+e.message; $('dmtDiscErr').style.display='block'; }
-      finally{ btn.disabled=false; btn.textContent=old; }
-    };
-
-    /* Affiche les outils seulement si plan = diamant */
-    window.addEventListener('load', async () => {
-      try{
-        const token = await dmtToken();
-        if(!token) return;
-        const r = await fetch(DMT_API+'/api/user/plan', { headers:{'Authorization':'Bearer '+token} });
-        const d = await r.json().catch(()=>({}));
-        if((d.plan||'') !== 'diamant') return;
-        $('diamantTools').style.display='block';
-        try{
-          const cr = await fetch(DMT_API+'/api/channels/list', { headers:{'Authorization':'Bearer '+token} });
-          const cj = await cr.json().catch(()=>({}));
-          const chans = cj.data||[];
-          if(chans.length>1){
-            $('dmtChannel').innerHTML = chans.map(c=>`<option value="${c.youtube_channel_id}">${c.channel_name||c.youtube_channel_id}</option>`).join('');
-            $('dmtChannelWrap').style.display='block';
-          }
-        }catch(e){}
-      }catch(e){}
-    });
-  })();
   </script>
 </body>
 </html>
