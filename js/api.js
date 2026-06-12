@@ -281,12 +281,12 @@ const BillingAPI = {
   /**
    * POST /api/subscription/checkout/stripe
    * Créer une session Stripe Checkout
-   * @param {string} planId - 'pro' or 'business'
+   * @param {string} planId - 'pro', 'business' or 'diamant'
    * @param {string} interval - 'month' or 'year'
    */
   async checkout(planId, interval = 'month') {
     // Valider les paramètres
-    if (!['pro', 'business'].includes(planId)) {
+    if (!['pro', 'business', 'diamant'].includes(planId)) {
       throw new Error('Invalid plan ID: ' + planId);
     }
     if (!['month', 'year'].includes(interval)) {
