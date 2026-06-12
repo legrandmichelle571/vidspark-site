@@ -98,6 +98,10 @@
     <div class="card">
       <h2>📊 Audit de chaîne</h2>
       <p class="desc">Score de santé sur 100, points forts et axes d'amélioration, basés sur tes vraies données YouTube.</p>
+      <div class="field" id="auditChannelWrap" style="display:none;">
+        <label>Chaîne à auditer</label>
+        <select id="auditChannel" style="background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:11px 12px;color:var(--text);font-size:14px;width:100%;"></select>
+      </div>
       <button class="btn" id="auditBtn" onclick="runAudit()">Lancer l'audit</button>
       <div id="auditErr" class="err hidden"></div>
       <div id="auditResult" class="hidden" style="margin-top:18px;"></div>
@@ -156,7 +160,8 @@
     hide('auditErr'); hide('auditResult');
     btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Analyse…';
     try{
-      const { ok, status, data } = await authFetch('/api/diamant/channel-audit');
+      const channelId = document.getElementById('auditChannel').value || undefined;
+      const { ok, status, data } = await authFetch('/api/diamant/channel-audit', { channelId });
       if(status===403 && data.code==='UPGRADE_DIAMANT'){ showLock(); return; }
       if(!ok) throw new Error(data.error || 'Audit indisponible');
       renderAudit(data);
@@ -224,12 +229,29 @@
 
   function showLock(){ hide('content'); hide('loading'); show('lock'); }
 
+  /* Charge les chaînes de l'utilisateur dans le sélecteur d'audit */
+  async function loadChannels(){
+    try{
+      const session = await Auth.getSession();
+      const r = await fetch(API + '/api/channels/list', { headers:{ 'Authorization':`Bearer ${session?.access_token}` } });
+      const j = await r.json().catch(()=>({}));
+      const chans = j.data || [];
+      const sel = document.getElementById('auditChannel');
+      if(chans.length > 1){
+        sel.innerHTML = chans.map(c=>`<option value="${c.youtube_channel_id}">${c.channel_name||c.youtube_channel_id}</option>`).join('');
+        document.getElementById('auditChannelWrap').style.display = 'block';
+      }
+      // 1 seule chaîne → pas de menu, le backend prend la principale
+    }catch(e){ /* non bloquant */ }
+  }
+
   /* ── Au chargement : vérifier connexion ── */
   window.addEventListener('load', async () => {
     const ok = await Auth.requireLogin();   // redirige vers /login si pas connecté
     if(!ok) return;
     // On affiche le contenu ; le verrou Diamant est géré par le backend au 1er appel.
     hide('loading'); show('content');
+    loadChannels();
   });
 </script>
 </body>
