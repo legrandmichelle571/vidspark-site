@@ -92,11 +92,14 @@
     .lock h2{font-size:22px;margin-bottom:10px;}
     .lock p{color:var(--muted);font-size:14px;margin-bottom:22px;}
 
+    .hamburger{display:none;position:fixed;top:12px;left:12px;z-index:100;background:var(--card);border:1px solid var(--b2);color:var(--text);width:44px;height:44px;border-radius:10px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;}
+    .scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:80;}
     @media(max-width:760px){
-      .side{width:64px;padding:14px 8px;}
-      .brand span:not(.logo),.navitem span:not(.ic),.planbadge,.backlink{display:none;}
-      .navitem{justify-content:center;}
-      .main{padding:20px 16px;}
+      .side{position:fixed;left:0;top:0;bottom:0;width:240px;transform:translateX(-100%);transition:transform .25s ease;z-index:90;box-shadow:2px 0 24px rgba(0,0,0,.5);}
+      .side.open{transform:translateX(0);}
+      .main{padding:66px 16px 28px;}
+      .hamburger{display:flex;}
+      .side.open ~ .scrim{display:block;}
     }
   </style>
 </head>
@@ -117,6 +120,7 @@
 
 <!-- App -->
 <div class="app" id="app" style="display:none;">
+  <button class="hamburger" onclick="toggleSide()" aria-label="Menu">☰</button>
   <aside class="side">
     <div class="brand"><span class="logo">✦</span> <span>VidSpark AI</span></div>
     <nav class="nav">
@@ -138,6 +142,7 @@
       <a class="backlink" href="/dashboard.html">← Tableau de bord</a>
     </div>
   </aside>
+  <div class="scrim" onclick="toggleSide()"></div>
 
   <main class="main">
 
@@ -319,10 +324,13 @@
   }
   applyTheme(localStorage.getItem('vs_theme')||'dark');
 
+  function toggleSide(){ document.querySelector('.side').classList.toggle('open'); }
+
   const TIER = { free:0, pro:1, business:2, diamant:3 };
   let userTier = 'pro';
 
   function nav(v){
+    document.querySelector('.side').classList.remove('open');
     document.querySelectorAll('.navitem').forEach(b=>b.classList.toggle('active', b.dataset.view===v));
     document.querySelectorAll('.view').forEach(s=>s.classList.toggle('active', s.id==='view-'+v));
     const btn = document.querySelector('.navitem[data-view="'+v+'"]');
