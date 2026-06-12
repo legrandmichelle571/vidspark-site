@@ -869,10 +869,12 @@
           renderCodes(codes);
 
           const hint = document.getElementById('codesHint');
-          const maxPC = (user.plan === 'business') ? 5 : 1;
+          const PC_BY_PLAN = { diamant: 10, business: 5, pro: 1, free: 1 };
+          const maxPC = PC_BY_PLAN[user.plan] || 1;
+          const planLabel = (user.plan || 'free').charAt(0).toUpperCase() + (user.plan || 'free').slice(1);
           if (hint) hint.textContent = maxPC > 1
-            ? `Ce code fonctionne sur ${maxPC} PC en même temps (plan Business).`
-            : 'Ce code fonctionne sur 1 seul PC à la fois.';
+            ? `Ce code fonctionne sur ${maxPC} PC en même temps (plan ${planLabel}).`
+            : `Ce code fonctionne sur 1 seul PC à la fois (plan ${planLabel}).`;
 
           // Afficher les jours restants
           if (user.subscription_expiry) {
