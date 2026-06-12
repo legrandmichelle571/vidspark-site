@@ -398,22 +398,35 @@
     .tool-tile .tt-name{font-size:13px;font-weight:700;color:var(--text);}
     .tool-tile .tt-desc{font-size:11px;color:var(--muted);margin-top:2px;}
 
-    /* ── Cartes/tableaux colorés (orange) sur fond noir ── */
-    .kpi, .card, .tool-tile{
-      background: linear-gradient(160deg, #2a1606, #1c0f04) !important;
-      border: 1px solid rgba(245,158,11,.45) !important;
+    /* ── Style TubeRank : panneaux slate + accents orange vif ── */
+    .kpi, .card{
+      background: #1b2330 !important;
+      border: 1px solid #2b3647 !important;
     }
-    .kpi:hover, .card:hover, .tool-tile:hover{
-      border-color: rgba(245,158,11,.8) !important;
-      box-shadow: 0 8px 28px rgba(245,158,11,.12) !important;
+    .kpi:hover, .card:hover{
+      border-color: #f7941d !important;
+      box-shadow: 0 8px 28px rgba(247,148,29,.12) !important;
     }
-    .kpi .kpi-ic{ background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.4); }
-    /* La carte Activation reste mise en avant en orange plus chaud */
     .card.primary{
-      background: linear-gradient(160deg, #38200a, #20120466) !important;
-      border-color: rgba(245,158,11,.6) !important;
+      background: #1b2330 !important;
+      border-color: #f7941d !important;
     }
-    .progress-bar{ background: rgba(245,158,11,.15); }
+    .section-title{ color: #f7941d; }
+    .progress-bar{ background: #2b3647; }
+    .kpi .kpi-ic{ background: rgba(247,148,29,.18); border-color: rgba(247,148,29,.4); }
+    /* Tuiles d'outils IA en orange vif (comme TubeRank) */
+    .tool-tile{
+      background: linear-gradient(135deg, #f7941d, #f5801f) !important;
+      border: none !important;
+    }
+    .tool-tile .tt-name{ color: #fff !important; }
+    .tool-tile .tt-desc{ color: rgba(255,255,255,.85) !important; }
+    .tool-tile:hover{ filter: brightness(1.08); transform: translateY(-2px); }
+    /* Élément actif de la barre latérale en orange */
+    .app-side a.sb-link.active{
+      background: linear-gradient(135deg, #f7941d, #f5801f) !important;
+      color: #fff !important;
+    }
   </style>
 </head>
 <body>
