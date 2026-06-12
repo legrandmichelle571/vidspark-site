@@ -381,14 +381,44 @@
       if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
       const stat=(val,k)=>`<div class="stat"><div class="v">${val}</div><div class="k">${k}</div></div>`;
-      const tags=(data.tags||[]).map(t=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${t}</span>`).join('')||'<span class="muted">Aucun tag public</span>';
+      const chip=(t,c)=>`<span style="display:inline-block;background:var(--bg);border:1px solid ${c||'var(--b2)'};border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${t}</span>`;
+      const A = data.analysis||{};
+      const td = A.title||{}; const ins = A.insights||{}; const perf = A.performance||{};
+
+      // Verdict de performance
+      const perfColor = perf.level==='excellent'?'var(--green)':perf.level==='good'?'var(--cyan)':perf.level==='average'?'var(--amber)':'var(--red)';
+      const perfHtml = perf.label?`<div class="panel" style="border-left:4px solid ${perfColor};margin-bottom:14px;"><div style="font-weight:700;font-size:14px;">${perf.label}</div><div class="muted" style="margin-top:3px;">${perf.engagement_verdict||''} · ${data.engagement_rate}% d'engagement</div></div>`:'';
+
+      // Title Doctor (IA)
+      const tdMissing=(td.missing||[]).map(m=>chip('⚠️ '+m,'var(--amber)')).join('');
+      const tdTips=(td.tips||[]).map(t=>`<div class="rec"><span>💡</span><span>${t}</span></div>`).join('');
+      const tdHtml = td.score!=null?`
+        <div class="panel" style="margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:10px;">
+            <div><div style="font-size:32px;font-weight:800;color:${td.score>=70?'var(--green)':td.score>=45?'var(--amber)':'var(--red)'}">${td.score}<span style="font-size:13px;color:var(--muted)">/100</span></div><div class="k" style="font-size:11px;color:var(--muted)">Score CTR du titre</div></div>
+            <div><div style="font-size:22px;font-weight:800;">${td.ctr_estimate||'—'}%</div><div class="k" style="font-size:11px;color:var(--muted)">CTR estimé</div></div>
+          </div>
+          ${td.improved?`<div style="background:var(--bg);border-radius:9px;padding:11px;margin-bottom:8px;"><div class="muted" style="font-size:11px;margin-bottom:3px;">✨ Titre amélioré (IA)</div><div style="font-weight:600;font-size:14px;">${td.improved}</div></div>`:''}
+          ${tdMissing?`<div style="margin-bottom:8px;">${tdMissing}</div>`:''}
+          ${tdTips}
+        </div>`:'';
+
+      // Tags suggérés (IA) + opportunités
+      const sugTags=(A.suggested_tags||[]).map(t=>chip(t,'rgba(34,211,238,.4)')).join('')||'<span class="muted">—</span>';
+      const opps=(ins.opportunities||[]).map(o=>`<div class="rec"><span>🎯</span><span>${o}</span></div>`).join('');
+      const angles=(ins.angles||[]).map(o=>`<div class="rec"><span>🎬</span><span>${o}</span></div>`).join('');
+
       $('anResult').innerHTML=`
         <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px;">
           <img src="https://i.ytimg.com/vi/${data.videoId}/mqdefault.jpg" style="width:180px;border-radius:10px;">
-          <div style="flex:1;min-width:200px;"><div style="font-weight:700;font-size:15px;margin-bottom:4px;">${data.title}</div><div class="muted">${data.channel} · ${fmtN(data.channel_subs)} abonnés</div></div>
+          <div style="flex:1;min-width:200px;"><div style="font-weight:700;font-size:15px;margin-bottom:4px;">${data.title}</div><div class="muted">${data.channel} · ${fmtN(data.channel_subs)} abonnés${ins.niche?' · '+ins.niche:''}</div></div>
         </div>
+        ${perfHtml}
         <div class="stats">${stat(fmtN(data.views),'Vues')}${stat(fmtN(data.likes),'Likes')}${stat(fmtN(data.comments),'Commentaires')}${stat(fmtN(data.views_per_hour)+'/h','Vues/heure')}${stat(data.engagement_rate+'%','Engagement')}</div>
-        <div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">🏷️ Tags (${(data.tags||[]).length})</div><div>${tags}</div>`;
+        ${tdHtml}
+        <div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">🏷️ Tags recommandés par l'IA</div><div>${sugTags}</div>
+        ${opps?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">💡 Opportunités à exploiter</div>${opps}`:''}
+        ${angles?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">🎬 Angles originaux</div>${angles}`:''}`;
       $('anResult').style.display='block';
     }catch(e){ $('anErr').textContent='❌ '+e.message; $('anErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Analyser'; }
