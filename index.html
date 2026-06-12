@@ -1455,25 +1455,6 @@ footer {
   </div>
 </footer>
 
-<!-- Bouton de thème (synchronisé avec le Studio) -->
-<button class="theme-fab" onclick="cycleTheme()" id="themeFab">🎨 Thème</button>
-<script>
-(function(){
-  var THEMES=['dark','light','violet'], L={dark:'Sombre',light:'Clair',violet:'Violet'};
-  window.applyTheme=function(t){
-    document.body.classList.remove('light','violet');
-    if(t==='light')document.body.classList.add('light');
-    if(t==='violet')document.body.classList.add('violet');
-    var f=document.getElementById('themeFab'); if(f)f.textContent='🎨 '+(L[t]||'Sombre');
-    try{localStorage.setItem('vs_theme',t);}catch(e){}
-  };
-  window.cycleTheme=function(){
-    var c=localStorage.getItem('vs_theme')||'dark';
-    applyTheme(THEMES[(THEMES.indexOf(c)+1)%THEMES.length]);
-  };
-  applyTheme(localStorage.getItem('vs_theme')||'dark');
-})();
-</script>
 
 <!-- Chargement de la pub gérée depuis le panel admin -->
 <script>
