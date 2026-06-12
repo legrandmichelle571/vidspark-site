@@ -25,6 +25,8 @@
     .navitem{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;border:none;background:transparent;text-align:left;width:100%;transition:.15s;}
     .navitem:hover{background:var(--card);color:var(--text);}
     .navitem.active{background:var(--grad);color:#06121a;}
+    .navitem.locked{opacity:.5;}
+    .navitem .lk{margin-left:auto;font-size:12px;}
     .navitem .ic{font-size:16px;}
     .side-foot{margin-top:auto;}
     .planbadge{display:inline-flex;align-items:center;gap:6px;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.35);color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:.5px;padding:6px 11px;border-radius:20px;text-transform:uppercase;margin:0 8px 10px;}
@@ -110,13 +112,13 @@
   <aside class="side">
     <div class="brand"><span class="logo">✦</span> <span>VidSpark AI</span></div>
     <nav class="nav">
-      <button class="navitem active" data-view="discover" onclick="nav('discover')"><span class="ic">🔍</span> <span>Discover</span></button>
-      <button class="navitem" data-view="trending" onclick="nav('trending')"><span class="ic">🚀</span> <span>Trending</span></button>
-      <button class="navitem" data-view="keywords" onclick="nav('keywords')"><span class="ic">🔑</span> <span>Mots-clés</span></button>
-      <button class="navitem" data-view="analyze" onclick="nav('analyze')"><span class="ic">🎬</span> <span>Analyser une vidéo</span></button>
-      <button class="navitem" data-view="comments" onclick="nav('comments')"><span class="ic">💬</span> <span>Commentaires</span></button>
-      <button class="navitem" data-view="audit" onclick="nav('audit')"><span class="ic">📊</span> <span>Audit de chaîne</span></button>
-      <button class="navitem" data-view="rank" onclick="nav('rank')"><span class="ic">🎯</span> <span>Suivi de position</span></button>
+      <button class="navitem active" data-view="discover" data-tier="pro" onclick="nav('discover')"><span class="ic">🔍</span> <span>Discover</span></button>
+      <button class="navitem" data-view="analyze" data-tier="pro" onclick="nav('analyze')"><span class="ic">🎬</span> <span>Analyser une vidéo</span></button>
+      <button class="navitem" data-view="keywords" data-tier="pro" onclick="nav('keywords')"><span class="ic">🔑</span> <span>Mots-clés</span></button>
+      <button class="navitem" data-view="trending" data-tier="business" onclick="nav('trending')"><span class="ic">🚀</span> <span>Trending</span></button>
+      <button class="navitem" data-view="comments" data-tier="business" onclick="nav('comments')"><span class="ic">💬</span> <span>Commentaires</span></button>
+      <button class="navitem" data-view="audit" data-tier="diamant" onclick="nav('audit')"><span class="ic">📊</span> <span>Audit de chaîne</span></button>
+      <button class="navitem" data-view="rank" data-tier="diamant" onclick="nav('rank')"><span class="ic">🎯</span> <span>Suivi de position</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
@@ -125,6 +127,8 @@
   </aside>
 
   <main class="main">
+
+    <div id="toolMsg" style="display:none;background:var(--grad);color:#06121a;font-weight:700;font-size:14px;padding:13px 18px;border-radius:12px;margin-bottom:18px;display:none;align-items:center;gap:14px;flex-wrap:wrap;"></div>
 
     <!-- Discover -->
     <section class="view active" id="view-discover">
@@ -231,10 +235,24 @@
   const $ = id => document.getElementById(id);
   const fmtN = n => { n=+n||0; return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'k':n; };
 
+  const TIER = { free:0, pro:1, business:2, diamant:3 };
+  let userTier = 'pro';
+
   function nav(v){
     document.querySelectorAll('.navitem').forEach(b=>b.classList.toggle('active', b.dataset.view===v));
     document.querySelectorAll('.view').forEach(s=>s.classList.toggle('active', s.id==='view-'+v));
+    const btn = document.querySelector('.navitem[data-view="'+v+'"]');
+    const need = btn?.dataset.tier || 'pro';
+    if((TIER[userTier]||0) < TIER[need]) toolLocked({ error:'Cet outil nécessite le forfait '+need.charAt(0).toUpperCase()+need.slice(1)+'.', required:need });
+    else hideToolMsg();
   }
+  function toolLocked(data){
+    const el = $('toolMsg');
+    el.innerHTML = '🔒 '+(data.error||'Forfait supérieur requis')+' <a href="/billing.html" style="background:#06121a;color:#fff;padding:6px 13px;border-radius:8px;text-decoration:none;font-weight:700;">Mettre à niveau →</a>';
+    el.style.display='flex';
+    el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+  function hideToolMsg(){ const el=$('toolMsg'); if(el) el.style.display='none'; }
 
   async function token(){ const s = await Auth.getSession(); return s?.access_token || ''; }
   async function apiPost(path, body){
@@ -251,7 +269,7 @@
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Recherche…';
     try{
       const {ok,status,data}=await apiPost('/api/diamant/discover',{keyword,sort,max:24});
-      if(status===403){ showLock(); return; }
+      if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Recherche indisponible');
       grid.innerHTML='<div class="vgrid">'+((data.videos||[]).map(v=>`
         <a class="vcard" href="https://www.youtube.com/watch?v=${v.videoId}" target="_blank">
@@ -271,7 +289,7 @@
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
     try{
       const {ok,status,data}=await apiPost('/api/diamant/channel-audit',{ channelId: $('auditChannel').value || undefined });
-      if(status===403){ showLock(); return; }
+      if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Audit indisponible');
       const b=data.health_breakdown||{};
       const bar=(l,v,m)=>`<div class="bar-row"><div class="l"><span>${l}</span><span>${v}/${m}</span></div><div class="bar"><i style="width:${Math.round(v/m*100)}%"></i></div></div>`;
@@ -297,7 +315,7 @@
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Recherche…';
     try{
       const {ok,status,data}=await apiPost('/api/diamant/rank-check',{keyword:kw,videoId:vid});
-      if(status===403){ showLock(); return; }
+      if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
       $('rankResult').innerHTML = data.found
         ? `<div class="rankbox"><div class="n">#${data.rank}</div><div class="muted">position pour « ${data.keyword} » (sur ${data.scanned} résultats)</div></div>`
@@ -315,7 +333,7 @@
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Recherche…';
     try{
       const {ok,status,data}=await apiPost('/api/diamant/trending',{query:kw});
-      if(status===403){ showLock(); return; }
+      if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
       grid.innerHTML='<div class="vgrid">'+((data.videos||[]).map(v=>`
         <a class="vcard" href="https://www.youtube.com/watch?v=${v.videoId}" target="_blank">
@@ -336,7 +354,7 @@
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
     try{
       const {ok,status,data}=await apiPost('/api/diamant/keywords',{query:q});
-      if(status===403){ showLock(); return; }
+      if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
       const cc = data.competition==='forte'?'var(--red)':data.competition==='moyenne'?'var(--amber)':'var(--green)';
       const chips=(data.suggestions||[]).map(s=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:16px;padding:6px 12px;margin:4px;font-size:13px;cursor:pointer;" onclick="document.getElementById('kwQuery').value=this.textContent;runKeywords();">${s}</span>`).join('')||'<span class="muted">—</span>';
@@ -360,7 +378,7 @@
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
     try{
       const {ok,status,data}=await apiPost('/api/diamant/analyze',{videoId:v});
-      if(status===403){ showLock(); return; }
+      if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
       const stat=(val,k)=>`<div class="stat"><div class="v">${val}</div><div class="k">${k}</div></div>`;
       const tags=(data.tags||[]).map(t=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${t}</span>`).join('')||'<span class="muted">Aucun tag public</span>';
@@ -384,7 +402,7 @@
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
     try{
       const {ok,status,data}=await apiPost('/api/diamant/comments',{videoId:v});
-      if(status===403){ showLock(); return; }
+      if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
       if(data.empty){ $('coResult').innerHTML='<div class="muted">Aucun commentaire à analyser.</div>'; $('coResult').style.display='block'; return; }
       const list=(arr,icon)=>(arr&&arr.length)?arr.map(x=>`<div class="rec"><span>${icon}</span><span>${typeof x==='string'?x:(x.text||x.theme||x.idea||JSON.stringify(x))}</span></div>`).join(''):'';
@@ -418,8 +436,14 @@
       const d = await r.json().catch(()=>({}));
       const plan = (d.plan||'free').toLowerCase();
       if(plan==='free'){ showLock(); return; }
+      userTier = plan;
       $('planBadge').textContent = plan;
       $('loading').style.display='none'; $('app').style.display='flex';
+      // Verrouille visuellement les onglets au-dessus du palier de l'utilisateur
+      document.querySelectorAll('.navitem').forEach(b=>{
+        const need = b.dataset.tier || 'pro';
+        if((TIER[plan]||0) < TIER[need]){ b.classList.add('locked'); b.insertAdjacentHTML('beforeend','<span class="lk">🔒</span>'); }
+      });
       try{
         const cr = await fetch(API+'/api/channels/list', { headers:{'Authorization':'Bearer '+tk} });
         const cj = await cr.json().catch(()=>({}));
