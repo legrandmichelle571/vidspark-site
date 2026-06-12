@@ -114,6 +114,9 @@
     <nav class="nav">
       <button class="navitem active" data-view="discover" data-tier="pro" onclick="nav('discover')"><span class="ic">🔍</span> <span>Discover</span></button>
       <button class="navitem" data-view="generate" data-tier="pro" onclick="nav('generate')"><span class="ic">✨</span> <span>Générer (IA)</span></button>
+      <button class="navitem" data-view="ideas" data-tier="pro" onclick="nav('ideas')"><span class="ic">💡</span> <span>Idées de vidéos</span></button>
+      <button class="navitem" data-view="abtitles" data-tier="pro" onclick="nav('abtitles')"><span class="ic">🆚</span> <span>A/B Test titres</span></button>
+      <button class="navitem" data-view="translate" data-tier="business" onclick="nav('translate')"><span class="ic">🌍</span> <span>Traduire</span></button>
       <button class="navitem" data-view="analyze" data-tier="pro" onclick="nav('analyze')"><span class="ic">🎬</span> <span>Analyser une vidéo</span></button>
       <button class="navitem" data-view="keywords" data-tier="pro" onclick="nav('keywords')"><span class="ic">🔑</span> <span>Mots-clés</span></button>
       <button class="navitem" data-view="trending" data-tier="business" onclick="nav('trending')"><span class="ic">🚀</span> <span>Trending</span></button>
@@ -158,6 +161,48 @@
         <div id="genErr" class="err"></div>
       </div>
       <div id="genResult" style="display:none;"></div>
+    </section>
+
+    <!-- Idées de vidéos -->
+    <section class="view" id="view-ideas">
+      <div class="head"><h1>💡 Idées de vidéos</h1><p>L'IA te propose 10 idées à fort potentiel viral pour ta niche.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="flex:2;"><label>Ta niche ou ton sujet</label><input id="idTopic" placeholder="ex: cuisine végétarienne"></div>
+          <button class="btn" id="idBtn" onclick="runIdeas()">Trouver des idées</button>
+        </div>
+        <div id="idErr" class="err"></div>
+      </div>
+      <div id="idResult" style="display:none;"></div>
+    </section>
+
+    <!-- A/B Test titres -->
+    <section class="view" id="view-abtitles">
+      <div class="head"><h1>🆚 A/B Test de titres</h1><p>L'IA prédit lequel de tes 2 titres obtiendra le meilleur taux de clics.</p></div>
+      <div class="panel">
+        <div class="field"><label>Titre A</label><input id="abA" placeholder="Premier titre"></div>
+        <div class="field"><label>Titre B</label><input id="abB" placeholder="Deuxième titre"></div>
+        <button class="btn" id="abBtn" onclick="runAbTitles()">Comparer</button>
+        <div id="abErr" class="err"></div>
+        <div id="abResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <!-- Traduire -->
+    <section class="view" id="view-translate">
+      <div class="head"><h1>🌍 Traduire / localiser</h1><p>Traduis et adapte ton titre + description vers une autre langue (SEO inclus).</p></div>
+      <div class="panel">
+        <div class="field"><label>Titre</label><input id="trTitle" placeholder="Ton titre"></div>
+        <div class="field"><label>Description (optionnel)</label><input id="trDesc" placeholder="Ta description"></div>
+        <div class="row">
+          <div class="field"><label>Langue cible</label>
+            <select id="trLang"><option value="en">Anglais</option><option value="es">Espagnol</option><option value="ar">Arabe</option><option value="de">Allemand</option><option value="pt">Portugais</option><option value="it">Italien</option></select>
+          </div>
+          <button class="btn" id="trtBtn" onclick="runTranslate()">Traduire</button>
+        </div>
+        <div id="trtErr" class="err"></div>
+        <div id="trtResult" style="display:none;margin-top:14px;"></div>
+      </div>
     </section>
 
     <!-- Audit -->
@@ -492,6 +537,62 @@
       $('genResult').style.display='block';
     }catch(e){ $('genErr').textContent='❌ '+e.message; $('genErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Générer'; }
+  }
+
+  /* ── Idées de vidéos ── */
+  async function runIdeas(){
+    const topic=$('idTopic').value.trim(), btn=$('idBtn');
+    $('idErr').style.display='none'; $('idResult').style.display='none';
+    if(!topic){ $('idErr').textContent='Entre une niche ou un sujet.'; $('idErr').style.display='block'; return; }
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Recherche…';
+    try{
+      const {ok,status,data}=await apiPost('/api/diamant/ideas',{topic,niche:topic});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Indisponible');
+      $('idResult').innerHTML=(data.ideas||[]).map(i=>`<div class="panel" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;gap:10px;"><div style="font-weight:700;font-size:14px;">${i.title}</div><span style="background:var(--bg);border:1px solid var(--b2);border-radius:6px;padding:2px 8px;font-size:11px;color:var(--cyan);white-space:nowrap;">${i.format||''} ${i.viral_score||''}</span></div><div class="muted" style="margin-top:5px;">${i.angle||''}</div>${i.why?`<div class="muted" style="margin-top:3px;font-style:italic;">${i.why}</div>`:''}</div>`).join('')||'<div class="muted">Aucune idée.</div>';
+      $('idResult').style.display='block';
+    }catch(e){ $('idErr').textContent='❌ '+e.message; $('idErr').style.display='block'; }
+    finally{ btn.disabled=false; btn.textContent='Trouver des idées'; }
+  }
+
+  /* ── A/B Test de titres ── */
+  async function runAbTitles(){
+    const a=$('abA').value.trim(), b=$('abB').value.trim(), btn=$('abBtn');
+    $('abErr').style.display='none'; $('abResult').style.display='none';
+    if(!a||!b){ $('abErr').textContent='Remplis les 2 titres.'; $('abErr').style.display='block'; return; }
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
+    try{
+      const {ok,status,data}=await apiPost('/api/diamant/ab-titles',{titleA:a,titleB:b});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Indisponible');
+      const side=(label,obj,win)=>`<div class="panel" style="border:1px solid ${win?'var(--cyan)':'var(--b1)'};"><div style="display:flex;justify-content:space-between;gap:8px;"><b>Titre ${label}${win?' 🏆':''}</b><span style="color:var(--cyan);white-space:nowrap;">${obj.ctr_estimate||'—'}% · ${obj.score||0}/100</span></div>${(obj.strengths||[]).map(s=>`<div class="muted" style="margin-top:4px;">✅ ${s}</div>`).join('')}${(obj.weaknesses||[]).map(s=>`<div class="muted" style="margin-top:4px;">⚠️ ${s}</div>`).join('')}</div>`;
+      $('abResult').innerHTML=`
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">${side('A',data.a||{},data.winner==='A')}${side('B',data.b||{},data.winner==='B')}</div>
+        ${data.verdict?`<div class="rec" style="margin-top:12px;"><span>🧠</span><span>${data.verdict}</span></div>`:''}
+        ${data.improved?`<div class="panel" style="margin-top:12px;"><div class="muted" style="font-size:11px;margin-bottom:3px;">✨ Titre encore meilleur (IA)</div><div style="font-weight:600;">${data.improved}</div></div>`:''}`;
+      $('abResult').style.display='block';
+    }catch(e){ $('abErr').textContent='❌ '+e.message; $('abErr').style.display='block'; }
+    finally{ btn.disabled=false; btn.textContent='Comparer'; }
+  }
+
+  /* ── Traduire ── */
+  async function runTranslate(){
+    const title=$('trTitle').value.trim(), desc=$('trDesc').value.trim(), lang=$('trLang').value, btn=$('trtBtn');
+    $('trtErr').style.display='none'; $('trtResult').style.display='none';
+    if(!title){ $('trtErr').textContent='Entre un titre.'; $('trtErr').style.display='block'; return; }
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Traduction…';
+    try{
+      const {ok,status,data}=await apiPost('/api/diamant/translate',{title,description:desc,targetLang:lang});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Indisponible');
+      const tags=(data.tags||[]).map(t=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${t}</span>`).join('');
+      $('trtResult').innerHTML=`
+        <div class="panel"><div class="muted" style="font-size:11px;margin-bottom:3px;">Titre traduit</div><div style="font-weight:600;font-size:15px;">${data.title||''}</div></div>
+        ${data.description?`<div class="panel"><div class="muted" style="font-size:11px;margin-bottom:3px;">Description</div><div style="font-size:14px;line-height:1.6;white-space:pre-wrap;">${data.description}</div></div>`:''}
+        ${tags?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">🏷️ Tags</div><div>${tags}</div>`:''}`;
+      $('trtResult').style.display='block';
+    }catch(e){ $('trtErr').textContent='❌ '+e.message; $('trtErr').style.display='block'; }
+    finally{ btn.disabled=false; btn.textContent='Traduire'; }
   }
 
   /* ── Init : connexion + plan ── */
