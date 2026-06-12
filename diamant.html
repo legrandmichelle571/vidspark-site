@@ -111,6 +111,10 @@
     <div class="brand"><span class="logo">✦</span> <span>VidSpark AI</span></div>
     <nav class="nav">
       <button class="navitem active" data-view="discover" onclick="nav('discover')"><span class="ic">🔍</span> <span>Discover</span></button>
+      <button class="navitem" data-view="trending" onclick="nav('trending')"><span class="ic">🚀</span> <span>Trending</span></button>
+      <button class="navitem" data-view="keywords" onclick="nav('keywords')"><span class="ic">🔑</span> <span>Mots-clés</span></button>
+      <button class="navitem" data-view="analyze" onclick="nav('analyze')"><span class="ic">🎬</span> <span>Analyser une vidéo</span></button>
+      <button class="navitem" data-view="comments" onclick="nav('comments')"><span class="ic">💬</span> <span>Commentaires</span></button>
       <button class="navitem" data-view="audit" onclick="nav('audit')"><span class="ic">📊</span> <span>Audit de chaîne</span></button>
       <button class="navitem" data-view="rank" onclick="nav('rank')"><span class="ic">🎯</span> <span>Suivi de position</span></button>
     </nav>
@@ -162,6 +166,58 @@
         </div>
         <div id="rankErr" class="err"></div>
         <div id="rankResult" style="display:none;"></div>
+      </div>
+    </section>
+
+    <!-- Trending -->
+    <section class="view" id="view-trending">
+      <div class="head"><h1>🚀 Trending</h1><p>Les vidéos récentes qui explosent dans ta niche (fortes vues/heure).</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field"><label>Niche / sujet</label><input id="trKw" placeholder="ex: gaming fps"></div>
+          <button class="btn" id="trBtn" onclick="runTrending()">Voir les tendances</button>
+        </div>
+        <div id="trErr" class="err"></div>
+      </div>
+      <div id="trResult" style="display:none;"></div>
+    </section>
+
+    <!-- Keywords -->
+    <section class="view" id="view-keywords">
+      <div class="head"><h1>🔑 Recherche de mots-clés</h1><p>Suggestions, questions associées et niveau de concurrence pour un mot-clé.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field"><label>Mot-clé</label><input id="kwQuery" placeholder="ex: apprendre la guitare"></div>
+          <button class="btn" id="kwBtn" onclick="runKeywords()">Analyser</button>
+        </div>
+        <div id="kwErr" class="err"></div>
+        <div id="kwResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <!-- Analyze -->
+    <section class="view" id="view-analyze">
+      <div class="head"><h1>🎬 Analyser une vidéo</h1><p>Colle l'URL ou l'ID d'une vidéo YouTube pour voir ses stats et ses tags.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="flex:2;"><label>URL ou ID de la vidéo</label><input id="anVid" placeholder="https://youtube.com/watch?v=..."></div>
+          <button class="btn" id="anBtn" onclick="runAnalyze()">Analyser</button>
+        </div>
+        <div id="anErr" class="err"></div>
+        <div id="anResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <!-- Comments -->
+    <section class="view" id="view-comments">
+      <div class="head"><h1>💬 Analyse des commentaires</h1><p>Sentiment global, thèmes récurrents et idées de vidéos à partir des commentaires (IA).</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="flex:2;"><label>URL ou ID de la vidéo</label><input id="coVid" placeholder="https://youtube.com/watch?v=..."></div>
+          <button class="btn" id="coBtn" onclick="runComments()">Analyser</button>
+        </div>
+        <div id="coErr" class="err"></div>
+        <div id="coResult" style="display:none;margin-top:14px;"></div>
       </div>
     </section>
 
@@ -249,6 +305,107 @@
       $('rankResult').style.display='block';
     }catch(e){ $('rankErr').textContent='❌ '+e.message; $('rankErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Vérifier'; }
+  }
+
+  /* ── Trending ── */
+  async function runTrending(){
+    const kw=$('trKw').value.trim(), btn=$('trBtn'), grid=$('trResult');
+    $('trErr').style.display='none'; grid.style.display='none';
+    if(!kw){ $('trErr').textContent='Entre une niche.'; $('trErr').style.display='block'; return; }
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Recherche…';
+    try{
+      const {ok,status,data}=await apiPost('/api/diamant/trending',{query:kw});
+      if(status===403){ showLock(); return; }
+      if(!ok) throw new Error(data.error||'Indisponible');
+      grid.innerHTML='<div class="vgrid">'+((data.videos||[]).map(v=>`
+        <a class="vcard" href="https://www.youtube.com/watch?v=${v.videoId}" target="_blank">
+          <img src="https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg">
+          <div class="meta"><div class="t">${v.title}</div><div class="c">${v.channel}</div>
+          <div class="s"><span>👁️ ${fmtN(v.views)}</span><span>⚡ ${fmtN(v.views_per_hour)}/h</span></div></div>
+        </a>`).join('')||'<div class="muted">Aucune tendance trouvée.</div>')+'</div>';
+      grid.style.display='block';
+    }catch(e){ $('trErr').textContent='❌ '+e.message; $('trErr').style.display='block'; }
+    finally{ btn.disabled=false; btn.textContent='Voir les tendances'; }
+  }
+
+  /* ── Keyword Tool ── */
+  async function runKeywords(){
+    const q=$('kwQuery').value.trim(), btn=$('kwBtn');
+    $('kwErr').style.display='none'; $('kwResult').style.display='none';
+    if(!q){ $('kwErr').textContent='Entre un mot-clé.'; $('kwErr').style.display='block'; return; }
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
+    try{
+      const {ok,status,data}=await apiPost('/api/diamant/keywords',{query:q});
+      if(status===403){ showLock(); return; }
+      if(!ok) throw new Error(data.error||'Indisponible');
+      const cc = data.competition==='forte'?'var(--red)':data.competition==='moyenne'?'var(--amber)':'var(--green)';
+      const chips=(data.suggestions||[]).map(s=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:16px;padding:6px 12px;margin:4px;font-size:13px;cursor:pointer;" onclick="document.getElementById('kwQuery').value=this.textContent;runKeywords();">${s}</span>`).join('')||'<span class="muted">—</span>';
+      $('kwResult').innerHTML=`
+        <div class="stats" style="margin-bottom:14px;">
+          <div class="stat"><div class="v" style="color:${cc};text-transform:capitalize;">${data.competition||'—'}</div><div class="k">Concurrence</div></div>
+          <div class="stat"><div class="v">${fmtN(data.top_avg_views||0)}</div><div class="k">Vues moy. du top</div></div>
+          <div class="stat"><div class="v">${data.sampled||0}</div><div class="k">Vidéos analysées</div></div>
+        </div>
+        <div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">💡 Suggestions (clique pour relancer)</div><div>${chips}</div>`;
+      $('kwResult').style.display='block';
+    }catch(e){ $('kwErr').textContent='❌ '+e.message; $('kwErr').style.display='block'; }
+    finally{ btn.disabled=false; btn.textContent='Analyser'; }
+  }
+
+  /* ── Analyze ── */
+  async function runAnalyze(){
+    const v=$('anVid').value.trim(), btn=$('anBtn');
+    $('anErr').style.display='none'; $('anResult').style.display='none';
+    if(!v){ $('anErr').textContent='Colle une URL ou un ID.'; $('anErr').style.display='block'; return; }
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
+    try{
+      const {ok,status,data}=await apiPost('/api/diamant/analyze',{videoId:v});
+      if(status===403){ showLock(); return; }
+      if(!ok) throw new Error(data.error||'Indisponible');
+      const stat=(val,k)=>`<div class="stat"><div class="v">${val}</div><div class="k">${k}</div></div>`;
+      const tags=(data.tags||[]).map(t=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${t}</span>`).join('')||'<span class="muted">Aucun tag public</span>';
+      $('anResult').innerHTML=`
+        <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px;">
+          <img src="https://i.ytimg.com/vi/${data.videoId}/mqdefault.jpg" style="width:180px;border-radius:10px;">
+          <div style="flex:1;min-width:200px;"><div style="font-weight:700;font-size:15px;margin-bottom:4px;">${data.title}</div><div class="muted">${data.channel} · ${fmtN(data.channel_subs)} abonnés</div></div>
+        </div>
+        <div class="stats">${stat(fmtN(data.views),'Vues')}${stat(fmtN(data.likes),'Likes')}${stat(fmtN(data.comments),'Commentaires')}${stat(fmtN(data.views_per_hour)+'/h','Vues/heure')}${stat(data.engagement_rate+'%','Engagement')}</div>
+        <div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">🏷️ Tags (${(data.tags||[]).length})</div><div>${tags}</div>`;
+      $('anResult').style.display='block';
+    }catch(e){ $('anErr').textContent='❌ '+e.message; $('anErr').style.display='block'; }
+    finally{ btn.disabled=false; btn.textContent='Analyser'; }
+  }
+
+  /* ── Analyse des commentaires (IA) ── */
+  async function runComments(){
+    const v=$('coVid').value.trim(), btn=$('coBtn');
+    $('coErr').style.display='none'; $('coResult').style.display='none';
+    if(!v){ $('coErr').textContent='Colle une URL ou un ID.'; $('coErr').style.display='block'; return; }
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
+    try{
+      const {ok,status,data}=await apiPost('/api/diamant/comments',{videoId:v});
+      if(status===403){ showLock(); return; }
+      if(!ok) throw new Error(data.error||'Indisponible');
+      if(data.empty){ $('coResult').innerHTML='<div class="muted">Aucun commentaire à analyser.</div>'; $('coResult').style.display='block'; return; }
+      const list=(arr,icon)=>(arr&&arr.length)?arr.map(x=>`<div class="rec"><span>${icon}</span><span>${typeof x==='string'?x:(x.text||x.theme||x.idea||JSON.stringify(x))}</span></div>`).join(''):'';
+      let sent='';
+      const s=data.sentiment;
+      if(s && typeof s==='object'){
+        const st=(val,k,c)=>`<div class="stat"><div class="v" style="color:${c}">${val??'—'}${typeof val==='number'?'%':''}</div><div class="k">${k}</div></div>`;
+        sent=`<div class="stats" style="margin-bottom:14px;">${st(s.positive,'Positif','var(--green)')}${st(s.neutral,'Neutre','var(--muted)')}${st(s.negative,'Négatif','var(--red)')}</div>`;
+      } else if(typeof s==='string'){
+        sent=`<div style="margin-bottom:12px;"><span style="background:var(--bg);border:1px solid var(--b2);border-radius:14px;padding:5px 12px;font-size:13px;">Sentiment : ${s}</span></div>`;
+      }
+      $('coResult').innerHTML=`
+        ${data.summary?`<div class="panel" style="margin-bottom:14px;"><div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">📝 Résumé</div><div style="font-size:14px;line-height:1.6;">${data.summary}</div></div>`:''}
+        ${sent}
+        ${data.themes&&data.themes.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:6px 0;">🔁 Thèmes récurrents</div>${list(data.themes,'💬')}`:''}
+        ${data.requests&&data.requests.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">🙋 Demandes du public</div>${list(data.requests,'❓')}`:''}
+        ${data.video_ideas&&data.video_ideas.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">🎬 Idées de vidéos</div>${list(data.video_ideas,'💡')}`:''}
+        <div class="muted" style="margin-top:10px;">${data.count||0} commentaires analysés</div>`;
+      $('coResult').style.display='block';
+    }catch(e){ $('coErr').textContent='❌ '+e.message; $('coErr').style.display='block'; }
+    finally{ btn.disabled=false; btn.textContent='Analyser'; }
   }
 
   /* ── Init : connexion + plan ── */
