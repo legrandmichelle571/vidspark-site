@@ -119,6 +119,26 @@
       <div id="rankErr" class="err hidden"></div>
       <div id="rankResult" class="hidden"></div>
     </div>
+
+    <!-- ── Discover ── -->
+    <div class="card">
+      <h2>🔍 Discover</h2>
+      <p class="desc">Explore les meilleures vidéos YouTube sur un mot-clé, avec leurs stats — pour trouver des idées et analyser la concurrence.</p>
+      <div class="row">
+        <div class="field" style="flex:2;"><label>Mot-clé</label><input id="dKeyword" placeholder="ex: montage vidéo"></div>
+        <div class="field"><label>Trier par</label>
+          <select id="dSort" style="background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:11px 12px;color:var(--text);font-size:14px;width:100%;">
+            <option value="views">Vues</option>
+            <option value="likes">Likes</option>
+            <option value="vph">Vues / heure</option>
+            <option value="recent">Plus récent</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" id="discBtn" onclick="runDiscover()">Découvrir</button>
+      <div id="discErr" class="err hidden"></div>
+      <div id="discResult" style="display:none;"></div>
+    </div>
   </div>
 
   <!-- Écran "verrouillé" (non-Diamant) -->
@@ -224,6 +244,39 @@
       const el=document.getElementById('rankErr'); el.textContent='❌ '+e.message; show('rankErr');
     }finally{
       btn.disabled=false; btn.textContent='Vérifier la position';
+    }
+  }
+
+  /* ── Discover ── */
+  function fmtN(n){ n=+n||0; return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'k':n; }
+  async function runDiscover(){
+    const keyword = document.getElementById('dKeyword').value.trim();
+    const sort = document.getElementById('dSort').value;
+    const btn = document.getElementById('discBtn');
+    const grid = document.getElementById('discResult');
+    hide('discErr'); grid.style.display='none';
+    if(!keyword){ const el=document.getElementById('discErr'); el.textContent='Entre un mot-clé.'; show('discErr'); return; }
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Recherche…';
+    try{
+      const { ok, status, data } = await authFetch('/api/diamant/discover',{keyword,sort,max:24});
+      if(status===403 && data.code==='UPGRADE_DIAMANT'){ showLock(); return; }
+      if(!ok) throw new Error(data.error || 'Recherche indisponible');
+      grid.innerHTML = (data.videos||[]).map(v=>`
+        <a href="https://www.youtube.com/watch?v=${v.videoId}" target="_blank" style="text-decoration:none;color:inherit;background:var(--s2);border:1px solid var(--b2);border-radius:10px;overflow:hidden;display:block;">
+          <img src="https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;">
+          <div style="padding:10px;">
+            <div style="font-size:12px;font-weight:600;line-height:1.4;height:34px;overflow:hidden;">${v.title}</div>
+            <div style="font-size:11px;color:var(--muted);margin:6px 0 4px;">${v.channel}</div>
+            <div style="font-size:11px;display:flex;gap:10px;color:var(--cyan);">
+              <span>👁️ ${fmtN(v.views)}</span><span>👍 ${fmtN(v.likes)}</span><span>⚡ ${fmtN(v.views_per_hour)}/h</span>
+            </div>
+          </div>
+        </a>`).join('') || '<div class="muted">Aucune vidéo trouvée.</div>';
+      grid.style.cssText = 'margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;';
+    }catch(e){
+      const el=document.getElementById('discErr'); el.textContent='❌ '+e.message; show('discErr');
+    }finally{
+      btn.disabled=false; btn.textContent='Découvrir';
     }
   }
 
