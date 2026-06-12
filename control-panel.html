@@ -310,22 +310,23 @@ async function extendExpiry(id,days){const d=new Date(Date.now()+days*86400000).
 
 async function loadAds(){
   const m=document.getElementById('main');
+  const slots=[
+    ['ad_home',"🏠 Accueil — bannière du bas"],
+    ['ad_home_left',"⬅️ Accueil — pub à gauche (grand écran)"],
+    ['ad_home_right',"➡️ Accueil — pub à droite (grand écran)"],
+    ['ad_dashboard',"📊 Dashboard — bannière du bas"],
+    ['ad_dashboard_right',"➡️ Dashboard — pub à droite (grand écran)"]
+  ];
   m.innerHTML=`<div class="page-title">📢 Publicités</div>
-    <div class="muted" style="margin-bottom:16px;">Colle ici ton code pub (Google AdSense, une image + lien, ou du HTML). Il s'affichera sur ton site. Laisse vide pour ne rien afficher.</div>
-    <div class="card" style="margin-bottom:16px;">
-      <div style="font-weight:700;margin-bottom:8px;">🏠 Pub — Page d'accueil</div>
-      <textarea id="adHome" style="width:100%;min-height:140px;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:10px;color:var(--text);font-family:monospace;font-size:12px;" placeholder="<img src='...'> ou code AdSense…"></textarea>
-      <button class="btn btn-sm btn-green" style="margin-top:8px;" onclick="saveAd('ad_home','adHome')">💾 Enregistrer</button>
-    </div>
-    <div class="card">
-      <div style="font-weight:700;margin-bottom:8px;">📊 Pub — Tableau de bord client</div>
-      <textarea id="adDash" style="width:100%;min-height:140px;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:10px;color:var(--text);font-family:monospace;font-size:12px;" placeholder="<img src='...'> ou code AdSense…"></textarea>
-      <button class="btn btn-sm btn-green" style="margin-top:8px;" onclick="saveAd('ad_dashboard','adDash')">💾 Enregistrer</button>
-    </div>`;
+    <div class="muted" style="margin-bottom:16px;">Colle ton code (image+lien, HTML ou AdSense). Laisse vide pour ne rien afficher. Les pubs latérales n'apparaissent que sur grand écran.</div>`+
+    slots.map(s=>`<div class="card" style="margin-bottom:14px;">
+      <div style="font-weight:700;margin-bottom:8px;">${s[1]}</div>
+      <textarea id="ta_${s[0]}" style="width:100%;min-height:110px;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:10px;color:var(--text);font-family:monospace;font-size:12px;" placeholder="<img src='...'> ou code AdSense…"></textarea>
+      <button class="btn btn-sm btn-green" style="margin-top:8px;" onclick="saveAd('${s[0]}','ta_${s[0]}')">💾 Enregistrer</button>
+    </div>`).join('');
   try{
-    const [h,d]=await Promise.all([api('/config/ad_home'),api('/config/ad_dashboard')]);
-    document.getElementById('adHome').value=h.value||'';
-    document.getElementById('adDash').value=d.value||'';
+    const res=await Promise.all(slots.map(s=>api('/config/'+s[0])));
+    slots.forEach((s,i)=>{ const el=document.getElementById('ta_'+s[0]); if(el) el.value=res[i].value||''; });
   }catch(e){toast('❌ '+e.message);}
 }
 async function saveAd(key,elId){

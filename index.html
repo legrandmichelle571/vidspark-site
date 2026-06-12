@@ -42,6 +42,21 @@
   --glow:     0 0 60px rgba(124,109,250,.18);
   --container:1180px;
 }
+body.light{
+  --bg:#f4f5fa; --s1:#ffffff; --s2:#f0f1f6; --s3:#e8e9f0;
+  --b1:#e4e6ef; --b2:#d2d5e0; --b3:#c0c3d0;
+  --text:#16161f; --muted:#5f6072; --faint:#9a9ab0;
+}
+body.violet{
+  --bg:#140f24; --s1:#1b1436; --s2:#221a3f; --s3:#2a2150;
+  --b1:#352657; --b2:#43346d; --text:#ece8f7; --muted:#a294c8;
+}
+.theme-fab{position:fixed;bottom:18px;right:18px;z-index:200;background:var(--s2);border:1px solid var(--b2);color:var(--text);padding:10px 14px;border-radius:24px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);}
+.ad-side{position:fixed;top:90px;width:160px;z-index:40;}
+.ad-side-left{left:10px;} .ad-side-right{right:10px;}
+.ad-side .ad-box{border:1px dashed var(--b2);border-radius:10px;padding:8px;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ad-side .ad-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+@media(max-width:1450px){.ad-side{display:none;}}
 
 /* ════════════════════════════════════════════════════════════
    RESET & BASE
@@ -773,6 +788,9 @@ footer {
 </style>
 </head>
 <body>
+<!-- Pubs latérales (visibles sur grand écran) — gérées depuis le panel -->
+<div class="ad-side ad-side-left"><div class="ad-box"><div class="ad-lbl">Publicité</div><div class="ad-inner-left" style="width:100%;"></div></div></div>
+<div class="ad-side ad-side-right"><div class="ad-box"><div class="ad-lbl">Publicité</div><div class="ad-inner-right" style="width:100%;"></div></div></div>
 
 <!-- ════════════════════════════════════════════════════
      NAV
@@ -1436,6 +1454,26 @@ footer {
   </div>
 </footer>
 
+<!-- Bouton de thème (synchronisé avec le Studio) -->
+<button class="theme-fab" onclick="cycleTheme()" id="themeFab">🎨 Thème</button>
+<script>
+(function(){
+  var THEMES=['dark','light','violet'], L={dark:'Sombre',light:'Clair',violet:'Violet'};
+  window.applyTheme=function(t){
+    document.body.classList.remove('light','violet');
+    if(t==='light')document.body.classList.add('light');
+    if(t==='violet')document.body.classList.add('violet');
+    var f=document.getElementById('themeFab'); if(f)f.textContent='🎨 '+(L[t]||'Sombre');
+    try{localStorage.setItem('vs_theme',t);}catch(e){}
+  };
+  window.cycleTheme=function(){
+    var c=localStorage.getItem('vs_theme')||'dark';
+    applyTheme(THEMES[(THEMES.indexOf(c)+1)%THEMES.length]);
+  };
+  applyTheme(localStorage.getItem('vs_theme')||'dark');
+})();
+</script>
+
 <!-- Chargement de la pub gérée depuis le panel admin -->
 <script>
 (function(){
@@ -1448,9 +1486,10 @@ footer {
       old.replaceWith(s);
     });
   }
+  function fill(sel, html){ if(html) document.querySelectorAll(sel).forEach(function(e){ injectAd(e, html); }); }
   fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/public/ads')
     .then(function(r){return r.json();})
-    .then(function(d){ if(d && d.home){ document.querySelectorAll('.ad-inner').forEach(function(e){ injectAd(e, d.home); }); } })
+    .then(function(d){ if(!d) return; fill('.ad-inner', d.home); fill('.ad-inner-left', d.home_left); fill('.ad-inner-right', d.home_right); })
     .catch(function(){});
 })();
 </script>
