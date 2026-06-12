@@ -158,9 +158,33 @@
       font-size: 13px;
       color: #a78bfa;
     }
+    /* ── Barre latérale commune (style TubeRank) ── */
+    .app-side{position:fixed;left:0;top:0;bottom:0;width:220px;background:#101017;border-right:1px solid #23232e;display:flex;flex-direction:column;padding:18px 14px;z-index:50;overflow-y:auto;}
+    .app-side .sb-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;color:#fff;padding:6px 8px 18px;}
+    .app-side .sb-brand .lg{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#22d3ee,#7c6dfa);display:flex;align-items:center;justify-content:center;color:#06121a;}
+    .app-side a.sb-link{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;color:#8a8a9a;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:2px;cursor:pointer;}
+    .app-side a.sb-link:hover{background:#16161d;color:#fff;}
+    .app-side a.sb-link.active{background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;}
+    .app-side .sb-foot{margin-top:auto;}
+    .app-side .sb-logout{color:#ef4444;}
+    body{padding-left:220px;}
+    @media(max-width:760px){.app-side{width:58px;padding:14px 8px;}.app-side .sb-brand span,.app-side a.sb-link span{display:none;}.app-side a.sb-link{justify-content:center;}body{padding-left:58px;}}
   </style>
 </head>
 <body>
+  <aside class="app-side">
+    <div class="sb-brand"><span class="lg">✦</span> <span>VidSpark AI</span></div>
+    <a class="sb-link" href="dashboard.html"><span>🏠</span> <span>Tableau de bord</span></a>
+    <a class="sb-link" href="diamant.html"><span>✦</span> <span>Studio</span></a>
+    <a class="sb-link active" href="channels.html"><span>📺</span> <span>Mes chaînes</span></a>
+    <a class="sb-link" href="billing.html"><span>💳</span> <span>Abonnement</span></a>
+    <a class="sb-link" href="account.html"><span>⚙️</span> <span>Compte</span></a>
+    <div class="sb-foot">
+      <a class="sb-link" href="https://vidsparkpro.com/pricing.html"><span>🏷️</span> <span>Forfaits</span></a>
+      <a class="sb-link sb-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';"><span>🚪</span> <span>Déconnexion</span></a>
+    </div>
+  </aside>
+
   <div class="container">
     <div class="logo">⚡</div>
     <h1>VidSpark AI</h1>
