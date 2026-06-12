@@ -427,6 +427,7 @@
     function renderComparisonTable() {
       const proPriceDisplay = currentBillingInterval === 'year' ? '$107.89/year' : '$9.99/mo';
       const businessPriceDisplay = currentBillingInterval === 'year' ? '$323.89/year' : '$29.99/mo';
+      const diamantPriceDisplay = currentBillingInterval === 'year' ? '$539.89/year' : '$49.99/mo';
 
       const tableHtml = `
         <table class="comparison-table">
@@ -436,6 +437,7 @@
               <th>FREE</th>
               <th>PRO</th>
               <th>BUSINESS</th>
+              <th>💎 DIAMANT</th>
             </tr>
           </thead>
           <tbody>
@@ -444,22 +446,26 @@
               <td>$0</td>
               <td>${proPriceDisplay}</td>
               <td>${businessPriceDisplay}</td>
+              <td>${diamantPriceDisplay}</td>
             </tr>
             <tr>
               <td>Analyses/Month</td>
               <td class="check">10</td>
               <td class="check">500</td>
               <td class="check">10,000</td>
+              <td class="check">150,000</td>
             </tr>
             <tr>
               <td>AI Reports/Month</td>
               <td class="cross">—</td>
               <td class="check">100</td>
               <td class="check">5,000</td>
+              <td class="check">60,000</td>
             </tr>
             <tr>
               <td>AI Titles/Month</td>
               <td class="cross">—</td>
+              <td class="check">Unlimited</td>
               <td class="check">Unlimited</td>
               <td class="check">Unlimited</td>
             </tr>
@@ -468,10 +474,12 @@
               <td class="check">1</td>
               <td class="check">1</td>
               <td class="check">5</td>
+              <td class="check">10</td>
             </tr>
             <tr>
               <td>PDF Export</td>
               <td class="cross">—</td>
+              <td class="check">✓</td>
               <td class="check">✓</td>
               <td class="check">✓</td>
             </tr>
@@ -480,9 +488,25 @@
               <td class="cross">—</td>
               <td class="cross">—</td>
               <td class="check">✓</td>
+              <td class="check">✓</td>
             </tr>
             <tr>
               <td>Priority Support</td>
+              <td class="cross">—</td>
+              <td class="cross">—</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>💎 Advanced Channel Audit</td>
+              <td class="cross">—</td>
+              <td class="cross">—</td>
+              <td class="cross">—</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>💎 Rank Tracker</td>
+              <td class="cross">—</td>
               <td class="cross">—</td>
               <td class="cross">—</td>
               <td class="check">✓</td>
@@ -491,6 +515,7 @@
               <td>Same Account Requirement</td>
               <td class="cross">N/A</td>
               <td class="cross">N/A</td>
+              <td class="check">Required</td>
               <td class="check">Required</td>
             </tr>
           </tbody>

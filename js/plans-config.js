@@ -57,7 +57,7 @@ const PLANS_CONFIG = {
       ai_generations_monthly: 500,
       monthly_reports: 100,
       monthly_titles: -1,  // unlimited
-      max_channels: 10
+      max_channels: 1
     },
 
     // Display
@@ -72,7 +72,7 @@ const PLANS_CONFIG = {
       { name: 'AI reports (100/mo)', included: true },
       { name: 'AI titles (unlimited)', included: true },
       { name: 'PDF export', included: true },
-      { name: 'Max 10 channels', included: true }
+      { name: 'Max 1 channel', included: true }
     ]
   },
 
