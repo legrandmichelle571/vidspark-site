@@ -365,6 +365,38 @@
     .nav{display:none !important;}
     .main{margin-left:220px;}
     @media(max-width:760px){.app-side{width:58px;padding:14px 8px;}.app-side .sb-brand span,.app-side a.sb-link span{display:none;}.app-side a.sb-link{justify-content:center;}.main{margin-left:58px;}}
+
+    /* ── Refonte pro du tableau de bord ── */
+    .dash-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
+    .dash-head h1{font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;}
+    .dash-head .sub{color:var(--muted);font-size:13px;}
+    .dash-actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+    @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:520px){.kpis{grid-template-columns:1fr;}}
+    .kpi{background:linear-gradient(160deg,var(--s1),var(--s2));border:1px solid var(--b1);border-radius:14px;padding:18px;}
+    .kpi .kpi-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;background:rgba(124,109,250,.12);border:1px solid rgba(124,109,250,.25);}
+    .kpi .kpi-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:600;}
+    .kpi .kpi-val{font-size:24px;font-weight:800;margin-top:2px;letter-spacing:-.5px;}
+    .kpi .kpi-foot{font-size:11px;color:var(--faint);margin-top:8px;}
+    .kpi .progress-bar{margin:10px 0 0;height:6px;}
+    .kpi.accent-green .kpi-ic{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.3);}
+    .kpi.accent-blue .kpi-ic{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.3);}
+    .kpi.accent-amber .kpi-ic{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.3);}
+    .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-bottom:28px;align-items:start;}
+    @media(max-width:860px){.grid-2{grid-template-columns:1fr;}}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 14px;display:flex;align-items:center;gap:8px;}
+    .card.primary{border-color:rgba(124,109,250,.35);background:linear-gradient(160deg,rgba(124,109,250,.05),var(--b1));}
+    .checklist{list-style:none;padding:0;margin:0;}
+    .checklist li{padding:11px 0;border-bottom:1px solid var(--b2);display:flex;align-items:center;gap:10px;}
+    .checklist li:last-child{border-bottom:none;}
+    .tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:760px){.tools-grid{grid-template-columns:repeat(2,1fr);}}
+    .tool-tile{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:16px 14px;cursor:pointer;transition:all .18s;text-align:left;color:var(--text);}
+    .tool-tile:hover{border-color:var(--purple);transform:translateY(-2px);background:var(--s2);}
+    .tool-tile .tt-ic{font-size:20px;margin-bottom:8px;}
+    .tool-tile .tt-name{font-size:13px;font-weight:700;color:var(--text);}
+    .tool-tile .tt-desc{font-size:11px;color:var(--muted);margin-top:2px;}
   </style>
 </head>
 <body>
@@ -434,101 +466,83 @@
 
     <div id="content" style="display: none;">
       <!-- Header -->
-      <div class="header">
-        <div class="header-info">
-          <h1 id="userName">Welcome</h1>
-          <p id="userEmail">Loading...</p>
+      <div class="dash-head">
+        <div>
+          <h1 id="userName">Bienvenue</h1>
+          <p class="sub" id="userEmail">Chargement…</p>
         </div>
-        <div class="header-actions">
-          <button class="btn btn-primary" onclick="goToYouTube()" style="background:#ff0000">
-            🎥 Aller à YouTube
-          </button>
-          <button class="btn btn-secondary" onclick="window.location.href='account.html'">
-            Account Settings
-          </button>
-          <button class="btn btn-primary" onclick="window.location.href='billing.html'">
-            Upgrade Plan
-          </button>
+        <div class="dash-actions">
+          <button class="btn btn-secondary" onclick="window.location.href='account.html'">⚙️ Mon compte</button>
+          <button class="btn btn-primary" onclick="goToYouTube()" style="background:#ff0000">🎥 Ouvrir YouTube</button>
+          <button class="btn btn-primary" onclick="window.location.href='billing.html'">⬆️ Améliorer mon forfait</button>
         </div>
       </div>
 
-      <!-- Stats Cards -->
-      <div class="cards">
-        <!-- Plan Card -->
-        <div class="card">
-          <div class="card-title">Current Plan</div>
-          <div class="card-value" id="planName">Loading...</div>
-          <div class="plan-badge" id="planBadge">active</div>
-          <div class="card-desc" id="planDesc">Your current plan details</div>
-          <a class="card-action" href="billing.html">Manage subscription →</a>
+      <!-- KPIs -->
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-ic">💎</div>
+          <div class="kpi-lbl">Forfait actuel</div>
+          <div class="kpi-val" id="planName">—</div>
+          <div class="kpi-foot"><span class="plan-badge" id="planBadge">active</span></div>
         </div>
-
-        <!-- Usage Card -->
-        <div class="card">
-          <div class="card-title">Monthly Usage</div>
-          <div class="card-value" id="usageText">0/10</div>
-          <div class="progress-bar">
-            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
-          </div>
-          <div class="card-desc" id="usageDesc">Analyses this month</div>
+        <div class="kpi accent-blue">
+          <div class="kpi-ic">📊</div>
+          <div class="kpi-lbl">Analyses ce mois</div>
+          <div class="kpi-val" id="usageText">0/10</div>
+          <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
+          <div class="kpi-foot" id="usageDesc">Quota mensuel</div>
         </div>
-
-        <!-- Channels Card -->
-        <div class="card">
-          <div class="card-title">YouTube Channels</div>
-          <div class="card-value" id="channelsCount">0</div>
-          <div class="card-desc" id="channelsDesc">Primary channel selected</div>
-          <a class="card-action" href="channels.html">Manage channels →</a>
+        <div class="kpi accent-green">
+          <div class="kpi-ic">📺</div>
+          <div class="kpi-lbl">Chaînes YouTube</div>
+          <div class="kpi-val" id="channelsCount">0</div>
+          <div class="kpi-foot"><a class="card-action" href="channels.html" style="font-size:11px;">Gérer mes chaînes →</a></div>
         </div>
+        <div class="kpi accent-amber">
+          <div class="kpi-ic">⏳</div>
+          <div class="kpi-lbl">Abonnement</div>
+          <div class="kpi-val"><span id="daysRemaining">—</span> j</div>
+          <div class="kpi-foot" id="planDesc">jours restants</div>
+        </div>
+      </div>
 
-        <!-- Activation Card -->
-        <div class="card">
-          <div class="card-title">🔑 Extension Activation</div>
-          <div id="codesHint" style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Use these to activate your extension</div>
+      <!-- 2 colonnes : Activation + Démarrage -->
+      <div class="grid-2">
+        <div class="card primary">
+          <div class="section-title">🔑 Activation de l'extension</div>
+          <div id="codesHint" style="font-size:12px;color:var(--muted);margin-bottom:14px;">Utilise ces codes pour activer ton extension Chrome.</div>
           <div id="codesContainer"></div>
-          <!-- Champs cachés conservés pour compat (code principal) -->
           <input type="hidden" id="activationId"><input type="hidden" id="activationSecret">
-          <div style="margin-top: 12px; padding: 12px; background: rgba(34,197,94,.1); border-left: 3px solid var(--green); border-radius: 4px;">
-            <div style="font-size: 11px; color: var(--green); line-height: 1.6;">✅ Valid for <span id="daysRemaining">—</span> days</div>
+          <div style="margin-top:8px;padding:11px 14px;background:rgba(34,197,94,.08);border-left:3px solid var(--green);border-radius:6px;">
+            <span style="font-size:12px;color:var(--green);">✅ Code valide — extension prête à l'emploi.</span>
           </div>
-          <div style="margin-top: 12px;">
-            <button onclick="releaseDevices()" style="width:100%;background:transparent;border:1px solid var(--b2);color:var(--muted);padding:9px;border-radius:6px;font-size:12px;cursor:pointer;">🔓 PC perdu ? Libérer mes codes</button>
-            <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
-          </div>
+          <button onclick="releaseDevices()" style="width:100%;margin-top:12px;background:transparent;border:1px solid var(--b2);color:var(--muted);padding:10px;border-radius:8px;font-size:12px;cursor:pointer;">🔓 PC perdu ? Libérer mes codes</button>
+          <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
         </div>
 
-        <!-- Studio Card -->
-        <div class="card" style="border:1px solid rgba(34,211,238,.35);background:linear-gradient(160deg,rgba(34,211,238,.06),rgba(124,109,250,.06));">
-          <div class="card-title">✦ VidSpark Studio</div>
-          <div style="font-size:12px;color:var(--muted);margin:6px 0 14px;line-height:1.5;">
-            Discover, Audit de chaîne (score /100) et suivi de position YouTube. Inclus dans les forfaits payants.
-          </div>
-          <a class="card-action" onclick="openTool('discover')" style="cursor:pointer;display:inline-block;background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;font-weight:800;padding:10px 16px;border-radius:8px;text-decoration:none;font-size:13px;">
-            Ouvrir le Studio →
-          </a>
+        <div class="card">
+          <div class="section-title">🚀 Démarrage rapide</div>
+          <ul class="checklist">
+            <li><input type="checkbox" id="task1" style="cursor:pointer;"><label for="task1" style="cursor:pointer;flex:1;">Installer l'extension Chrome</label></li>
+            <li><input type="checkbox" id="task2" style="cursor:pointer;"><label for="task2" style="cursor:pointer;flex:1;">Connecter ma chaîne YouTube</label></li>
+            <li><input type="checkbox" id="task3" style="cursor:pointer;"><label for="task3" style="cursor:pointer;flex:1;">Lancer ma première analyse</label></li>
+          </ul>
+          <a class="btn btn-secondary" href="https://vidsparkpro.com/pricing.html" style="width:100%;margin-top:16px;">🏷️ Voir les forfaits</a>
         </div>
-
       </div>
 
-      <!-- Quick Actions -->
-      <div class="cards">
-        <div class="card">
-          <div class="card-title">🚀 Next Steps</div>
-          <ul style="list-style: none; padding: 0;">
-            <li style="padding: 8px 0; border-bottom: 1px solid var(--b2); display: flex; align-items: center; gap: 8px;">
-              <input type="checkbox" id="task1" style="cursor: pointer;">
-              <label for="task1" style="cursor: pointer; flex: 1;">Install extension</label>
-            </li>
-            <li style="padding: 8px 0; border-bottom: 1px solid var(--b2); display: flex; align-items: center; gap: 8px;">
-              <input type="checkbox" id="task2" style="cursor: pointer;">
-              <label for="task2" style="cursor: pointer; flex: 1;">Connect YouTube channel</label>
-            </li>
-            <li style="padding: 8px 0; display: flex; align-items: center; gap: 8px;">
-              <input type="checkbox" id="task3" style="cursor: pointer;">
-              <label for="task3" style="cursor: pointer; flex: 1;">Run first analysis</label>
-            </li>
-          </ul>
-        </div>
+      <!-- Outils IA -->
+      <div class="section-title">✦ Outils IA — lancement rapide</div>
+      <div class="tools-grid">
+        <button class="tool-tile" onclick="openTool('discover')"><div class="tt-ic">🔍</div><div class="tt-name">Discover</div><div class="tt-desc">Explorer des idées</div></button>
+        <button class="tool-tile" onclick="openTool('generate')"><div class="tt-ic">✨</div><div class="tt-name">Générer (IA)</div><div class="tt-desc">Titres & descriptions</div></button>
+        <button class="tool-tile" onclick="openTool('abtitles')"><div class="tt-ic">🆚</div><div class="tt-name">A/B Test titres</div><div class="tt-desc">Comparer 2 titres</div></button>
+        <button class="tool-tile" onclick="openTool('analyze')"><div class="tt-ic">🎬</div><div class="tt-name">Analyser</div><div class="tt-desc">Audit d'une vidéo</div></button>
+        <button class="tool-tile" onclick="openTool('keywords')"><div class="tt-ic">🔑</div><div class="tt-name">Mots-clés</div><div class="tt-desc">SEO YouTube</div></button>
+        <button class="tool-tile" onclick="openTool('audit')"><div class="tt-ic">📊</div><div class="tt-name">Audit de chaîne</div><div class="tt-desc">Score /100</div></button>
+        <button class="tool-tile" onclick="openTool('rank')"><div class="tt-ic">🎯</div><div class="tt-name">Suivi de position</div><div class="tt-desc">Classement</div></button>
+        <button class="tool-tile" onclick="openTool('trending')"><div class="tt-ic">🚀</div><div class="tt-name">Trending</div><div class="tt-desc">Tendances</div></button>
       </div>
 
       <!-- ════════ EMPLACEMENT PUBLICITAIRE (non-agressif) ════════
@@ -838,6 +852,12 @@
           const pb = document.getElementById('planBadge');
           if (pb) { pb.textContent = user.plan; pb.className = 'plan-badge ' + user.plan; }
         }
+        // Usage réel si fourni par le backend
+        if (typeof user.monthly_usage === 'number') {
+          const lim = user.monthly_limit || 10;
+          document.getElementById('usageText').textContent = `${user.monthly_usage}/${lim}`;
+          document.getElementById('progressFill').style.width = Math.min(user.monthly_usage / lim * 100, 100) + '%';
+        }
         if (user.activation_id && user.activation_secret) {
           document.getElementById('activationId').value = user.activation_id;
           document.getElementById('activationSecret').value = user.activation_secret;
@@ -946,10 +966,27 @@
       } catch (e) { console.warn('removeChannel:', e); }
     }
 
+    // Compter les vraies chaînes YouTube de l'utilisateur
+    async function loadChannelsCount() {
+      try {
+        const session = await Auth.getSession();
+        if (!session?.access_token) return;
+        const res = await fetch(`${API_BASE}/api/user/channels`, {
+          headers: { 'Authorization': `Bearer ${session.access_token}` }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const n = (data.channels || []).length;
+        const el = document.getElementById('channelsCount');
+        if (el) el.textContent = n;
+      } catch (e) { console.warn('[Dashboard] loadChannelsCount:', e); }
+    }
+
     // Charger au démarrage
     window.addEventListener('load', async () => {
       await loadDashboard();
       await loadActivationData();
+      await loadChannelsCount();
     });
   </script>
 
