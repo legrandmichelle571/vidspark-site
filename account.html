@@ -482,20 +482,32 @@
     // Charger profil
     async function loadProfile() {
       try {
-        const user = Auth.getCurrentUser();
+        const user = await Auth.getCurrentUser();
         if (user) {
-          document.getElementById('profileName').textContent = user.name || 'User';
+          const name = user.user_metadata?.full_name || user.email || 'Utilisateur';
+          const avatar = user.user_metadata?.picture || '';
+          document.getElementById('profileName').textContent = name;
           document.getElementById('profileEmail').textContent = user.email;
-          document.getElementById('email').value = user.email;
-          document.getElementById('fullName').value = user.name || '';
+          document.getElementById('email').value = user.email || '';
+          document.getElementById('fullName').value = user.user_metadata?.full_name || '';
 
-          if (user.avatar) {
-            document.getElementById('avatarDisplay').innerHTML = `<img src="${user.avatar}" alt="${user.name}">`;
+          if (avatar) {
+            document.getElementById('avatarDisplay').innerHTML = `<img src="${avatar}" alt="${name}">`;
           }
         }
       } catch (err) {
         console.error('[Account] Load profile error:', err);
       }
+    }
+
+    // Charger les préférences enregistrées (localStorage)
+    function loadPreferences() {
+      try {
+        const lang = localStorage.getItem('vs_lang');
+        const notif = localStorage.getItem('vs_email_notif');
+        if (lang) document.getElementById('language').value = lang;
+        document.getElementById('emailNotifications').checked = notif === '1';
+      } catch (e) {}
     }
 
     // Charger chaînes YouTube
@@ -550,22 +562,36 @@
       }
     }
 
-    // Form submission
+    // Enregistrer le profil (nom) dans Supabase
     document.getElementById('profileForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const msg = document.getElementById('profileMessage');
+      const newName = document.getElementById('fullName').value.trim();
       try {
-        // À implémenter côté backend
-        document.getElementById('profileMessage').innerHTML = '<div class="success-message">Changes saved successfully</div>';
-        setTimeout(() => {
-          document.getElementById('profileMessage').innerHTML = '';
-        }, 3000);
+        const { error } = await supabaseClient.auth.updateUser({ data: { full_name: newName } });
+        if (error) throw error;
+        document.getElementById('profileName').textContent = newName || 'Utilisateur';
+        msg.innerHTML = '<div class="success-message">✅ Modifications enregistrées</div>';
+        setTimeout(() => { msg.innerHTML = ''; }, 3000);
       } catch (err) {
-        document.getElementById('profileMessage').innerHTML = '<div class="error-message">Failed to save changes</div>';
+        console.error('[Account] Save profile error:', err);
+        msg.innerHTML = '<div class="error-message">❌ Échec de l\'enregistrement : ' + err.message + '</div>';
       }
     });
 
+    // Enregistrer les préférences (localStorage)
+    document.getElementById('preferencesForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      try {
+        localStorage.setItem('vs_lang', document.getElementById('language').value);
+        localStorage.setItem('vs_email_notif', document.getElementById('emailNotifications').checked ? '1' : '0');
+        const old = e.submitter ? e.submitter.textContent : '';
+        if (e.submitter) { e.submitter.textContent = '✅ Enregistré'; setTimeout(() => { e.submitter.textContent = old; }, 2000); }
+      } catch (err) { alert('Impossible d\'enregistrer les préférences'); }
+    });
+
     // Charger au démarrage
-    window.addEventListener('load', loadProfile);
+    window.addEventListener('load', () => { loadProfile(); loadPreferences(); });
   </script>
 </body>
 </html>

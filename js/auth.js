@@ -196,6 +196,10 @@ const GoogleAuth = {
   }
 };
 
+// Exposer globalement (les pages utilisent window.Auth dans leurs onclick)
+window.Auth = Auth;
+window.GoogleAuth = GoogleAuth;
+
 // Au chargement
 document.addEventListener('DOMContentLoaded', () => {
   Auth.init();
