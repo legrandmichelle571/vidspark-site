@@ -92,6 +92,10 @@
     .lock h2{font-size:22px;margin-bottom:10px;}
     .lock p{color:var(--muted);font-size:14px;margin-bottom:22px;}
 
+    /* Mode intégré (affiché dans le dashboard) : on masque la barre latérale du Studio */
+    body.embed .side, body.embed .hamburger, body.embed .scrim{display:none!important;}
+    body.embed .main{padding:8px 4px;}
+    body.embed .center{min-height:50vh;}
     .hamburger{display:none;position:fixed;top:12px;left:12px;z-index:100;background:var(--card);border:1px solid var(--b2);color:var(--text);width:44px;height:44px;border-radius:10px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;}
     .scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:80;}
     @media(max-width:760px){
@@ -309,6 +313,9 @@
   const API = 'https://vidspark-ai-production-9ac7.up.railway.app';
   const $ = id => document.getElementById(id);
   const fmtN = n => { n=+n||0; return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'k':n; };
+  if(new URLSearchParams(location.search).get('embed')==='1') document.body.classList.add('embed');
+  // Navigation depuis le dashboard parent (postMessage) ou le hash
+  window.addEventListener('message', function(e){ if(e.data && e.data.studioNav) nav(e.data.studioNav); });
 
   /* ── Thème : Sombre / Clair / Violet ── */
   const THEMES = ['dark','light','violet'];
@@ -643,6 +650,7 @@
       userTier = plan;
       $('planBadge').textContent = plan;
       $('loading').style.display='none'; $('app').style.display='flex';
+      const _h=location.hash.slice(1); if(_h && document.querySelector('.navitem[data-view="'+_h+'"]')) nav(_h);
       // Verrouille visuellement les onglets au-dessus du palier de l'utilisateur
       document.querySelectorAll('.navitem').forEach(b=>{
         const need = b.dataset.tier || 'pro';

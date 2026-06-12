@@ -365,8 +365,18 @@
   <!-- Barre latérale commune -->
   <aside class="app-side">
     <div class="sb-brand"><span class="lg">✦</span> <span>VidSpark AI</span></div>
-    <a class="sb-link active" href="dashboard.html"><span>🏠</span> <span>Tableau de bord</span></a>
-    <a class="sb-link" href="diamant.html"><span>✦</span> <span>Studio</span></a>
+    <a class="sb-link active" id="lnkHome" onclick="backToHome()"><span>🏠</span> <span>Tableau de bord</span></a>
+    <a class="sb-link" onclick="openTool('discover')"><span>🔍</span> <span>Discover</span></a>
+    <a class="sb-link" onclick="openTool('generate')"><span>✨</span> <span>Générer (IA)</span></a>
+    <a class="sb-link" onclick="openTool('ideas')"><span>💡</span> <span>Idées de vidéos</span></a>
+    <a class="sb-link" onclick="openTool('abtitles')"><span>🆚</span> <span>A/B Test titres</span></a>
+    <a class="sb-link" onclick="openTool('analyze')"><span>🎬</span> <span>Analyser une vidéo</span></a>
+    <a class="sb-link" onclick="openTool('keywords')"><span>🔑</span> <span>Mots-clés</span></a>
+    <a class="sb-link" onclick="openTool('translate')"><span>🌍</span> <span>Traduire</span></a>
+    <a class="sb-link" onclick="openTool('trending')"><span>🚀</span> <span>Trending</span></a>
+    <a class="sb-link" onclick="openTool('comments')"><span>💬</span> <span>Commentaires</span></a>
+    <a class="sb-link" onclick="openTool('audit')"><span>📊</span> <span>Audit de chaîne</span></a>
+    <a class="sb-link" onclick="openTool('rank')"><span>🎯</span> <span>Suivi de position</span></a>
     <a class="sb-link" href="channels.html"><span>📺</span> <span>Mes chaînes</span></a>
     <a class="sb-link" href="billing.html"><span>💳</span> <span>Abonnement</span></a>
     <a class="sb-link" href="account.html"><span>⚙️</span> <span>Compte</span></a>
@@ -407,6 +417,10 @@
 
   <!-- Main -->
   <div class="main">
+    <!-- Cadre Studio (outils) — affiché quand on clique un outil -->
+    <div id="studioWrap" style="display:none;">
+      <iframe id="studioFrame" src="" title="Studio" style="width:100%;height:calc(100vh - 30px);border:none;border-radius:12px;background:transparent;"></iframe>
+    </div>
     <div id="loading" class="loading">
       <div class="spinner"></div>
       <p>Loading dashboard...</p>
@@ -483,7 +497,7 @@
           <div style="font-size:12px;color:var(--muted);margin:6px 0 14px;line-height:1.5;">
             Discover, Audit de chaîne (score /100) et suivi de position YouTube. Inclus dans les forfaits payants.
           </div>
-          <a class="card-action" href="diamant.html" style="display:inline-block;background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;font-weight:800;padding:10px 16px;border-radius:8px;text-decoration:none;font-size:13px;">
+          <a class="card-action" onclick="openTool('discover')" style="cursor:pointer;display:inline-block;background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;font-weight:800;padding:10px 16px;border-radius:8px;text-decoration:none;font-size:13px;">
             Ouvrir le Studio →
           </a>
         </div>
@@ -950,6 +964,32 @@
       .then(function(d){ if(d && d.dashboard){ document.querySelectorAll('.ad-inner').forEach(function(e){ injectAd(e, d.dashboard); }); } })
       .catch(function(){});
   })();
+  </script>
+
+  <!-- Studio intégré dans le tableau de bord -->
+  <script>
+  var studioLoaded = false;
+  function setActiveLink(view){
+    document.querySelectorAll('.app-side a.sb-link').forEach(function(a){
+      var oc = a.getAttribute('onclick') || '';
+      a.classList.toggle('active', view==='home' ? a.id==='lnkHome' : oc.indexOf("'"+view+"'")>-1);
+    });
+  }
+  function openTool(view){
+    document.getElementById('content').style.display='none';
+    var l=document.getElementById('loading'); if(l) l.style.display='none';
+    document.getElementById('studioWrap').style.display='block';
+    var f=document.getElementById('studioFrame');
+    if(!studioLoaded){ f.src='diamant.html?embed=1#'+view; studioLoaded=true; }
+    else { try{ f.contentWindow.postMessage({studioNav:view},'*'); }catch(e){ f.src='diamant.html?embed=1#'+view; } }
+    setActiveLink(view);
+    window.scrollTo(0,0);
+  }
+  function backToHome(){
+    document.getElementById('studioWrap').style.display='none';
+    document.getElementById('content').style.display='block';
+    setActiveLink('home');
+  }
   </script>
 </body>
 </html>
