@@ -106,7 +106,7 @@
     const PLANS = [
       {
         id:'free', name:'Gratuit', icon:'', cls:'',
-        month:'0€', year:'0€', yearNote:'',
+        month:'$0', year:'$0', yearNote:'',
         feats:[
           ['Score SEO, Viral & Miniature', true],
           ['Checklist SEO', true],
@@ -118,7 +118,7 @@
       },
       {
         id:'pro', name:'Pro', icon:'⭐', cls:'primary', popular:true,
-        month:'9,99€', year:'7,99€', yearNote:'soit 95,90€/an',
+        month:'$9.99', year:'$7.99', yearNote:'soit $95.90/an',
         feats:[
           ['Tout le plan Gratuit', true],
           ['🎯 Titres IA optimisés', true],
@@ -130,7 +130,7 @@
       },
       {
         id:'business', name:'Business', icon:'💼', cls:'gold',
-        month:'29,99€', year:'23,99€', yearNote:'soit 287,90€/an',
+        month:'$29.99', year:'$23.99', yearNote:'soit $287.90/an',
         feats:[
           ['Tout le plan Pro', true],
           ['📺 Multi-chaînes (5)', true],
@@ -142,7 +142,7 @@
       },
       {
         id:'diamant', name:'Diamant', icon:'💎', cls:'diamant',
-        month:'49,99€', year:'39,99€', yearNote:'soit 479,90€/an',
+        month:'$49.99', year:'$44.99', yearNote:'soit $539.89/an',
         feats:[
           ['Tout le plan Business', true],
           ['📺 10 chaînes', true],
@@ -197,7 +197,7 @@
         msg.innerHTML = `
           <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
             <button onclick="checkout('${plan}','paypal')" style="padding:12px 24px;background:var(--purple);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🅿️ PayPal</button>
-            <button onclick="checkout('${plan}','cryptomus')" style="padding:12px 24px;background:var(--gold);color:#1a1a1a;border:none;border-radius:8px;cursor:pointer;font-weight:600;">₿ EUR / USDT</button>
+            <button onclick="checkout('${plan}','cryptomus')" style="padding:12px 24px;background:var(--gold);color:#1a1a1a;border:none;border-radius:8px;cursor:pointer;font-weight:600;">₿ USD / USDT</button>
           </div>
         `;
         return;
