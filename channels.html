@@ -256,8 +256,8 @@
           return;
         }
 
-        // Récupérer les informations utilisateur
-        const userRes = await fetch(`${BACKEND_URL}/user`, {
+        // Récupérer le plan de l'utilisateur (route /user/plan)
+        const userRes = await fetch(`${BACKEND_URL}/user/plan`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -272,12 +272,13 @@
         const planInfo = {
           free: 'Plan GRATUIT: Vous pouvez analyser 1 seule chaîne YouTube',
           pro: 'Plan PRO: Vous pouvez analyser 1 seule chaîne YouTube',
-          business: 'Plan BUSINESS: Sélectionnez jusqu\'à 5 chaînes YouTube'
+          business: 'Plan BUSINESS: Sélectionnez jusqu\'à 5 chaînes YouTube',
+          diamant: 'Plan DIAMANT: Sélectionnez jusqu\'à 10 chaînes YouTube'
         };
-        document.getElementById('planInfo').textContent = planInfo[currentUserPlan];
+        document.getElementById('planInfo').textContent = planInfo[currentUserPlan] || planInfo.free;
 
-        // Afficher le formulaire approprié selon le plan
-        if (currentUserPlan === 'business') {
+        // Afficher le formulaire approprié selon le plan (multi-chaînes pour Business et Diamant)
+        if (currentUserPlan === 'business' || currentUserPlan === 'diamant') {
           document.getElementById('businessMode').style.display = 'block';
           setupBusinessMode();
         } else {
