@@ -1436,5 +1436,24 @@ footer {
   </div>
 </footer>
 
+<!-- Chargement de la pub gérée depuis le panel admin -->
+<script>
+(function(){
+  function injectAd(el, html){
+    el.innerHTML = html;
+    el.querySelectorAll('script').forEach(function(old){
+      var s=document.createElement('script');
+      if(old.src) s.src=old.src; else s.textContent=old.textContent;
+      if(old.async) s.async=true;
+      old.replaceWith(s);
+    });
+  }
+  fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/public/ads')
+    .then(function(r){return r.json();})
+    .then(function(d){ if(d && d.home){ document.querySelectorAll('.ad-inner').forEach(function(e){ injectAd(e, d.home); }); } })
+    .catch(function(){});
+})();
+</script>
+
 </body>
 </html>

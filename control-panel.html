@@ -101,6 +101,7 @@
       <button data-page="users" onclick="nav('users')">👥 Utilisateurs</button>
       <button data-page="payments" onclick="nav('payments')">💳 Paiements</button>
       <button data-page="promos" onclick="nav('promos')">🏷️ Codes promo</button>
+      <button data-page="ads" onclick="nav('ads')">📢 Publicités</button>
       <button data-page="logs" onclick="nav('logs')">📜 Journal</button>
       <button onclick="loadAll()">🔄 Actualiser</button>
     </div>
@@ -157,6 +158,7 @@ function nav(p){
   else if(p==='payments')loadPayments();
   else if(p==='promos')loadPromos();
   else if(p==='logs')loadLogs();
+  else if(p==='ads')loadAds();
 }
 function loadAll(){nav(curPage);}
 
@@ -305,6 +307,33 @@ async function userDetail(id){
 async function releaseDevices(id){if(!confirm('Libérer tous les appareils de cet utilisateur ?'))return;try{await api(`/users/${id}/release-devices`,{method:'POST'});toast('🔓 Appareils libérés');userDetail(id);}catch(e){toast('❌ '+e.message);}}
 async function setExpiry(id){const v=document.getElementById('expDate').value;if(!v){toast('Choisis une date');return;}try{await api(`/users/${id}/expiry`,{method:'PUT',body:JSON.stringify({date:v})});toast('✅ Date mise à jour');userDetail(id);renderUsers();}catch(e){toast('❌ '+e.message);}}
 async function extendExpiry(id,days){const d=new Date(Date.now()+days*86400000).toISOString();try{await api(`/users/${id}/expiry`,{method:'PUT',body:JSON.stringify({date:d})});toast('✅ +'+days+' jours');userDetail(id);renderUsers();}catch(e){toast('❌ '+e.message);}}
+
+async function loadAds(){
+  const m=document.getElementById('main');
+  m.innerHTML=`<div class="page-title">📢 Publicités</div>
+    <div class="muted" style="margin-bottom:16px;">Colle ici ton code pub (Google AdSense, une image + lien, ou du HTML). Il s'affichera sur ton site. Laisse vide pour ne rien afficher.</div>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="font-weight:700;margin-bottom:8px;">🏠 Pub — Page d'accueil</div>
+      <textarea id="adHome" style="width:100%;min-height:140px;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:10px;color:var(--text);font-family:monospace;font-size:12px;" placeholder="<img src='...'> ou code AdSense…"></textarea>
+      <button class="btn btn-sm btn-green" style="margin-top:8px;" onclick="saveAd('ad_home','adHome')">💾 Enregistrer</button>
+    </div>
+    <div class="card">
+      <div style="font-weight:700;margin-bottom:8px;">📊 Pub — Tableau de bord client</div>
+      <textarea id="adDash" style="width:100%;min-height:140px;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:10px;color:var(--text);font-family:monospace;font-size:12px;" placeholder="<img src='...'> ou code AdSense…"></textarea>
+      <button class="btn btn-sm btn-green" style="margin-top:8px;" onclick="saveAd('ad_dashboard','adDash')">💾 Enregistrer</button>
+    </div>`;
+  try{
+    const [h,d]=await Promise.all([api('/config/ad_home'),api('/config/ad_dashboard')]);
+    document.getElementById('adHome').value=h.value||'';
+    document.getElementById('adDash').value=d.value||'';
+  }catch(e){toast('❌ '+e.message);}
+}
+async function saveAd(key,elId){
+  try{
+    await api('/config/'+key,{method:'PUT',body:JSON.stringify({value:document.getElementById(elId).value})});
+    toast('✅ Pub enregistrée');
+  }catch(e){toast('❌ '+e.message);}
+}
 
 async function loadPayments(){
   const m=document.getElementById('main');m.innerHTML='<div class="page-title">💳 Paiements</div><div class="muted">Chargement…</div>';
