@@ -224,9 +224,11 @@
       <div class="head"><h1>📊 Audit de chaîne</h1><p>Score de santé sur 100, points forts et axes d'amélioration, basés sur tes vraies données YouTube.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" id="auditChannelWrap" style="display:none;"><label>Chaîne</label><select id="auditChannel"></select></div>
+          <div class="field" style="flex:2;"><label>ID ou URL de ta chaîne YouTube</label><input id="auditChannelId" placeholder="ex: UCxxxxxxxx ou youtube.com/channel/UC..."></div>
           <button class="btn" id="auditBtn" onclick="runAudit()">Lancer l'audit</button>
         </div>
+        <div id="auditChannelWrap" style="display:none;margin-top:8px;"><label class="muted" style="font-size:12px;">Ou une de tes chaînes :</label><select id="auditChannel" onchange="document.getElementById('auditChannelId').value=this.value" style="margin-top:5px;"></select></div>
+        <p class="muted" style="margin-top:10px;font-size:12px;">💡 Comment trouver l'ID : va sur ta chaîne → l'URL contient <b>youtube.com/channel/UC...</b> — copie la partie qui commence par UC.</p>
         <div id="auditErr" class="err"></div>
       </div>
       <div class="panel" id="auditResult" style="display:none;"></div>
@@ -380,7 +382,7 @@
     $('auditErr').style.display='none'; $('auditResult').style.display='none';
     btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
     try{
-      const {ok,status,data}=await apiPost('/api/diamant/channel-audit',{ channelId: $('auditChannel').value || undefined });
+      const {ok,status,data}=await apiPost('/api/diamant/channel-audit',{ channelId: $('auditChannelId').value.trim() || undefined });
       if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Audit indisponible');
       const b=data.health_breakdown||{};
