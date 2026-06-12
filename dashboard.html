@@ -397,6 +397,23 @@
     .tool-tile .tt-ic{font-size:20px;margin-bottom:8px;}
     .tool-tile .tt-name{font-size:13px;font-weight:700;color:var(--text);}
     .tool-tile .tt-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+
+    /* ── Cartes/tableaux colorés (orange) sur fond noir ── */
+    .kpi, .card, .tool-tile{
+      background: linear-gradient(160deg, #2a1606, #1c0f04) !important;
+      border: 1px solid rgba(245,158,11,.45) !important;
+    }
+    .kpi:hover, .card:hover, .tool-tile:hover{
+      border-color: rgba(245,158,11,.8) !important;
+      box-shadow: 0 8px 28px rgba(245,158,11,.12) !important;
+    }
+    .kpi .kpi-ic{ background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.4); }
+    /* La carte Activation reste mise en avant en orange plus chaud */
+    .card.primary{
+      background: linear-gradient(160deg, #38200a, #20120466) !important;
+      border-color: rgba(245,158,11,.6) !important;
+    }
+    .progress-bar{ background: rgba(245,158,11,.15); }
   </style>
 </head>
 <body>
