@@ -110,6 +110,39 @@ const PLANS_CONFIG = {
       { name: 'API access', included: true },
       { name: 'Priority support', included: true }
     ]
+  },
+
+  diamant: {
+    id: 'diamant',
+    name: 'Diamant',
+    description: 'For YouTube SEO experts',
+
+    // Pricing (monthly)
+    price_monthly: 49.99,
+    price_yearly: 539.89,  // ~10% off
+
+    // Feature limits
+    limits: {
+      monthly_analyses: 150000,
+      ai_generations_monthly: 60000,
+      monthly_reports: 60000,
+      monthly_titles: -1,  // unlimited
+      max_channels: 10
+    },
+
+    // Display
+    badge: '💎 DIAMANT',
+    color: '#22d3ee',
+    recommended: false,
+
+    // Features included
+    features: [
+      { name: 'Everything in Business', included: true },
+      { name: 'Max 10 channels', included: true },
+      { name: '💎 Advanced channel audit', included: true },
+      { name: '💎 Rank tracker', included: true },
+      { name: 'Priority support', included: true }
+    ]
   }
 };
 
