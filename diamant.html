@@ -173,7 +173,7 @@
           <div class="field"><label>Trier par</label>
             <select id="dSort"><option value="views">Vues</option><option value="likes">Likes</option><option value="vph">Vues / heure</option><option value="recent">Plus récent</option></select>
           </div>
-          <button class="btn" id="discBtn" onclick="runDiscover()">Découvrir</button>
+          <button class="btn" id="discBtn" onclick="run(this,runDiscover)">Découvrir</button>
         </div>
         <div id="discErr" class="err"></div>
       </div>
@@ -186,7 +186,7 @@
       <div class="panel">
         <div class="row">
           <div class="field" style="flex:2;"><label>Sujet de ta vidéo</label><input id="genTopic" placeholder="ex: 5 astuces pour monter une vidéo rapidement"></div>
-          <button class="btn" id="genBtn" onclick="runGenerate()">Générer</button>
+          <button class="btn" id="genBtn" onclick="run(this,runGenerate)">Générer</button>
         </div>
         <div id="genErr" class="err"></div>
       </div>
@@ -199,7 +199,7 @@
       <div class="panel">
         <div class="row">
           <div class="field" style="flex:2;"><label>Ta niche ou ton sujet</label><input id="idTopic" placeholder="ex: cuisine végétarienne"></div>
-          <button class="btn" id="idBtn" onclick="runIdeas()">Trouver des idées</button>
+          <button class="btn" id="idBtn" onclick="run(this,runIdeas)">Trouver des idées</button>
         </div>
         <div id="idErr" class="err"></div>
       </div>
@@ -212,7 +212,7 @@
       <div class="panel">
         <div class="field"><label>Titre A</label><input id="abA" placeholder="Premier titre"></div>
         <div class="field"><label>Titre B</label><input id="abB" placeholder="Deuxième titre"></div>
-        <button class="btn" id="abBtn" onclick="runAbTitles()">Comparer</button>
+        <button class="btn" id="abBtn" onclick="run(this,runAbTitles)">Comparer</button>
         <div id="abErr" class="err"></div>
         <div id="abResult" style="display:none;margin-top:14px;"></div>
       </div>
@@ -228,7 +228,7 @@
           <div class="field"><label>Langue cible</label>
             <select id="trLang"><option value="en">Anglais</option><option value="es">Espagnol</option><option value="ar">Arabe</option><option value="de">Allemand</option><option value="pt">Portugais</option><option value="it">Italien</option></select>
           </div>
-          <button class="btn" id="trtBtn" onclick="runTranslate()">Traduire</button>
+          <button class="btn" id="trtBtn" onclick="run(this,runTranslate)">Traduire</button>
         </div>
         <div id="trtErr" class="err"></div>
         <div id="trtResult" style="display:none;margin-top:14px;"></div>
@@ -241,7 +241,7 @@
       <div class="panel">
         <div class="row">
           <div class="field" style="flex:2;"><label>ID ou URL de ta chaîne YouTube</label><input id="auditChannelId" placeholder="ex: UCxxxxxxxx ou youtube.com/channel/UC..."></div>
-          <button class="btn" id="auditBtn" onclick="runAudit()">Lancer l'audit</button>
+          <button class="btn" id="auditBtn" onclick="run(this,runAudit)">Lancer l'audit</button>
         </div>
         <div id="auditChannelWrap" style="display:none;margin-top:8px;"><label class="muted" style="font-size:12px;">Ou une de tes chaînes :</label><select id="auditChannel" onchange="document.getElementById('auditChannelId').value=this.value" style="margin-top:5px;"></select></div>
         <p class="muted" style="margin-top:10px;font-size:12px;">💡 Comment trouver l'ID : va sur ta chaîne → l'URL contient <b>youtube.com/channel/UC...</b> — copie la partie qui commence par UC.</p>
@@ -257,7 +257,7 @@
         <div class="row">
           <div class="field"><label>Mot-clé</label><input id="rkKeyword" placeholder="ex: recette tiramisu"></div>
           <div class="field"><label>ID de la vidéo</label><input id="rkVideo" placeholder="ex: dQw4w9WgXcQ"></div>
-          <button class="btn" id="rankBtn" onclick="runRank()">Vérifier</button>
+          <button class="btn" id="rankBtn" onclick="run(this,runRank)">Vérifier</button>
         </div>
         <div id="rankErr" class="err"></div>
         <div id="rankResult" style="display:none;"></div>
@@ -270,7 +270,7 @@
       <div class="panel">
         <div class="row">
           <div class="field"><label>Niche / sujet</label><input id="trKw" placeholder="ex: gaming fps"></div>
-          <button class="btn" id="trBtn" onclick="runTrending()">Voir les tendances</button>
+          <button class="btn" id="trBtn" onclick="run(this,runTrending)">Voir les tendances</button>
         </div>
         <div id="trErr" class="err"></div>
       </div>
@@ -283,7 +283,7 @@
       <div class="panel">
         <div class="row">
           <div class="field"><label>Mot-clé</label><input id="kwQuery" placeholder="ex: apprendre la guitare"></div>
-          <button class="btn" id="kwBtn" onclick="runKeywords()">Analyser</button>
+          <button class="btn" id="kwBtn" onclick="run(this,runKeywords)">Analyser</button>
         </div>
         <div id="kwErr" class="err"></div>
         <div id="kwResult" style="display:none;margin-top:14px;"></div>
@@ -296,7 +296,7 @@
       <div class="panel">
         <div class="row">
           <div class="field" style="flex:2;"><label>URL ou ID de la vidéo</label><input id="anVid" placeholder="https://youtube.com/watch?v=..."></div>
-          <button class="btn" id="anBtn" onclick="runAnalyze()">Analyser</button>
+          <button class="btn" id="anBtn" onclick="run(this,runAnalyze)">Analyser</button>
         </div>
         <div id="anErr" class="err"></div>
         <div id="anResult" style="display:none;margin-top:14px;"></div>
@@ -309,7 +309,7 @@
       <div class="panel">
         <div class="row">
           <div class="field" style="flex:2;"><label>URL ou ID de la vidéo</label><input id="coVid" placeholder="https://youtube.com/watch?v=..."></div>
-          <button class="btn" id="coBtn" onclick="runComments()">Analyser</button>
+          <button class="btn" id="coBtn" onclick="run(this,runComments)">Analyser</button>
         </div>
         <div id="coErr" class="err"></div>
         <div id="coResult" style="display:none;margin-top:14px;"></div>
@@ -322,7 +322,7 @@
         <div class="row">
           <div class="field" style="flex:2;"><label>Titre de ta vidéo</label><input id="viTitle" placeholder="Ex : J'ai testé 10 régimes en 30 jours"></div>
           <select id="viLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
-          <button class="btn" onclick="runViral()">Calculer</button>
+          <button class="btn" onclick="run(this,runViral)">Calculer</button>
         </div>
         <div class="field"><label>Description (optionnel)</label><textarea id="viDesc" rows="2" placeholder="Description de ta vidéo…" style="width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--text);border-radius:8px;padding:8px;font-size:14px;resize:vertical"></textarea></div>
         <div id="viErr" class="err"></div>
@@ -336,7 +336,7 @@
         <div class="row">
           <div class="field" style="flex:2;"><label>Sujet de ta vidéo</label><input id="shTopic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€"></div>
           <select id="shLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
-          <button class="btn" onclick="runShorts()">Générer</button>
+          <button class="btn" onclick="run(this,runShorts)">Générer</button>
         </div>
         <div id="shErr" class="err"></div>
         <div id="shResult" style="display:none;margin-top:14px;"></div>
@@ -349,7 +349,7 @@
         <div class="field"><label>Intro / Hook (30 premières secondes)</label><textarea id="hkText" rows="4" placeholder="Colle ici tes 30 premières secondes de script…" style="width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--text);border-radius:8px;padding:8px;font-size:14px;resize:vertical"></textarea></div>
         <div class="row">
           <select id="hkLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
-          <button class="btn" onclick="runHook()">Analyser mon hook</button>
+          <button class="btn" onclick="run(this,runHook)">Analyser mon hook</button>
         </div>
         <div id="hkErr" class="err"></div>
         <div id="hkResult" style="display:none;margin-top:14px;"></div>
@@ -373,7 +373,7 @@
         </div>
         <div class="row">
           <select id="atLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
-          <button class="btn" onclick="runAbThumbs()">Comparer</button>
+          <button class="btn" onclick="run(this,runAbThumbs)">Comparer</button>
         </div>
         <div id="atErr" class="err"></div>
         <div id="atResult" style="display:none;margin-top:14px;"></div>
@@ -391,7 +391,7 @@
         <img id="thPrev" style="display:none;max-width:100%;border-radius:8px;margin-bottom:12px;border:1.5px solid #f7941d">
         <div class="row">
           <select id="thLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
-          <button class="btn" onclick="runThumbnail()">Analyser</button>
+          <button class="btn" onclick="run(this,runThumbnail)">Analyser</button>
         </div>
         <div id="thErr" class="err"></div>
         <div id="thResult" style="display:none;margin-top:14px;"></div>
@@ -409,7 +409,7 @@
             <option value="US">🇺🇸 USA</option><option value="GB">🇬🇧 UK</option><option value="DE">🇩🇪 DE</option>
           </select>
           <select id="auLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
-          <button class="btn" onclick="runAudience()">Analyser</button>
+          <button class="btn" onclick="run(this,runAudience)">Analyser</button>
         </div>
         <div id="auErr" class="err"></div>
         <div id="auResult" style="display:none;margin-top:14px;"></div>
@@ -426,7 +426,7 @@
             <option value="FR">🇫🇷 FR</option><option value="US">🇺🇸 US</option><option value="MA">🇲🇦 MA</option>
             <option value="DZ">🇩🇿 DZ</option><option value="SA">🇸🇦 SA</option><option value="GB">🇬🇧 GB</option>
           </select>
-          <button class="btn" onclick="runRevenue()">Estimer</button>
+          <button class="btn" onclick="run(this,runRevenue)">Estimer</button>
         </div>
         <div id="rvErr" class="err"></div>
         <div id="rvResult" style="display:none;margin-top:14px;"></div>
@@ -490,6 +490,25 @@
     const data = await r.json().catch(()=>({})); return { ok:r.ok, status:r.status, data };
   }
   function showLock(){ $('app').style.display='none'; $('loading').style.display='none'; $('lock').style.display='flex'; }
+
+  /* Lance une action async en désactivant le bouton + retour visuel "Patientez…" (anti double-clic) */
+  async function run(btn, fn){
+    if(btn.dataset.busy) return;
+    const orig = btn.innerHTML;
+    btn.dataset.busy = '1';
+    btn.disabled = true;
+    btn.style.opacity = '.65';
+    btn.style.cursor = 'wait';
+    btn.innerHTML = '<span class="spin"></span> Patientez…';
+    try{ await fn(); }
+    finally{
+      btn.disabled = false;
+      btn.style.opacity = '';
+      btn.style.cursor = '';
+      btn.innerHTML = orig;
+      delete btn.dataset.busy;
+    }
+  }
 
   /* ── Discover ── */
   async function runDiscover(){
