@@ -32,6 +32,25 @@ function esc(s){const d=document.createElement('div');d.textContent=s==null?'':s
 function spinner(msg){return `<div class="muted"><span class="spin"></span>${msg||'Génération en cours…'}</div>`;}
 function copyTxt(txt,btn){navigator.clipboard.writeText(txt);const o=btn.textContent;btn.textContent='✅';setTimeout(()=>btn.textContent=o,1400);}
 
+/* Lance une action async en désactivant le bouton + retour visuel "Veuillez patienter…" (anti double-clic) */
+async function run(btn, fn){
+  if(btn.dataset.busy) return;
+  const orig = btn.innerHTML;
+  btn.dataset.busy = '1';
+  btn.disabled = true;
+  btn.style.opacity = '.65';
+  btn.style.cursor = 'wait';
+  btn.innerHTML = '<span class="spin"></span> Veuillez patienter…';
+  try { await fn(); }
+  finally {
+    btn.disabled = false;
+    btn.style.opacity = '';
+    btn.style.cursor = '';
+    btn.innerHTML = orig;
+    delete btn.dataset.busy;
+  }
+}
+
 /* Outils IA : réservés aux abonnés Pro/Business connectés */
 async function aiCall(path, body){
   let token = null;
