@@ -429,33 +429,51 @@
       await submitChannelSelection(selectedChannels);
     }
 
+    // Construit une URL YouTube à partir de l'id analysé (@handle, UC..., video:..)
+    function buildChannelUrl(id) {
+      if (/^UC[a-zA-Z0-9_-]{22}$/.test(id)) return 'https://www.youtube.com/channel/' + id;
+      if (id.startsWith('@'))       return 'https://www.youtube.com/' + id;
+      if (id.startsWith('video:'))  return 'https://www.youtube.com/watch?v=' + id.slice(6);
+      return 'https://www.youtube.com/' + id.replace(/^\//, '');
+    }
+
     async function submitChannelSelection(channels) {
       try {
         setLoading(true);
 
         const session = await Auth.getSession();
         const token = session?.access_token;
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
 
-        const endpoint = (currentUserPlan === 'business' || currentUserPlan === 'diamant')
-          ? `${BACKEND_URL}/channels/select-business`
-          : `${BACKEND_URL}/channels/select`;
+        // 1) Supprimer les chaînes existantes pour permettre le remplacement
+        //    (même table que le dashboard : activation_channels via /user/channels)
+        try {
+          const exRes = await fetch(`${BACKEND_URL}/user/channels`, { headers });
+          const exData = await exRes.json();
+          for (const c of (exData.channels || [])) {
+            await fetch(`${BACKEND_URL}/user/channels/${encodeURIComponent(c.channel_id)}`, {
+              method: 'DELETE', headers
+            });
+          }
+        } catch (e) { /* pas bloquant */ }
 
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            channels: channels.map(ch => ({
-              youtube_channel_id: ch.id,
-              channel_name: ch.name
-            }))
-          })
-        });
+        // 2) Ajouter les nouvelles chaînes (le backend résout @handle / lien vidéo en UC...)
+        for (const ch of channels) {
+          const isUC = /^UC[a-zA-Z0-9_-]{22}$/.test(ch.id);
+          const body = isUC
+            ? { channel_id: ch.id, channel_name: ch.name }
+            : { channel_url: buildChannelUrl(ch.id),
+                channel_name: (ch.name && !/^@|^Chaîne /.test(ch.name)) ? ch.name : undefined };
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
+          const res = await fetch(`${BACKEND_URL}/user/channels`, {
+            method: 'POST', headers, body: JSON.stringify(body)
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || 'Erreur lors de l\'ajout de la chaîne');
+        }
 
         // Succès! Aller au dashboard
         window.location.href = '/dashboard.html';
