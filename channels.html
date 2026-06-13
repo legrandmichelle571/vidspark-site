@@ -220,7 +220,7 @@
             <button type="button" id="addChannelBtn" class="btn" style="width:auto; padding:12px 18px; white-space:nowrap;">+ Ajouter</button>
           </div>
           <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
-            👉 Colle le <strong>lien de ta chaîne</strong> (ex : <em>youtube.com/@maChaine</em> ou <em>youtube.com/channel/UC...</em>)
+            👉 Colle le <strong>lien de ta chaîne</strong> (<em>youtube.com/@maChaine</em>) — ou même le <strong>lien d'une de tes vidéos</strong>, on remonte à la chaîne.
           </p>
           <div id="channelsGrid" class="channels-grid" style="margin-top:12px; display:none;"></div>
           <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
@@ -308,8 +308,8 @@
               <label for="manualChannelId">Lien de votre chaîne YouTube :</label>
               <input id="manualChannelId" type="text" placeholder="ex: https://youtube.com/@maChaine">
               <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
-                👉 Colle simplement le <strong>lien de ta chaîne</strong><br>
-                (ex : <em>youtube.com/@maChaine</em> ou <em>youtube.com/channel/UC...</em>)
+                👉 Colle le <strong>lien de ta chaîne</strong> (<em>youtube.com/@maChaine</em>)<br>
+                — ou même le <strong>lien d'une de tes vidéos</strong>, on remonte à la chaîne.
               </p>
             `;
           }
@@ -351,6 +351,9 @@
       // 3) URL personnalisée : /c/Nom ou /user/Nom
       let c = s.match(/\/(?:c|user)\/([a-zA-Z0-9._-]+)/);
       if (c) return { id: c[1], name: c[1] };
+      // 4) Lien d'une VIDÉO (watch?v=, youtu.be/, /shorts/, /live/) → le backend remonte à la chaîne
+      let v = s.match(/(?:[?&]v=|youtu\.be\/|\/shorts\/|\/live\/|\/embed\/)([a-zA-Z0-9_-]{11})/);
+      if (v) return { id: 'video:' + v[1], name: 'Chaîne de la vidéo' };
       return null;
     }
 
@@ -361,7 +364,7 @@
 
       const parsed = parseChannelInput(input.value);
       if (!parsed) {
-        showError('Lien invalide. Colle le lien de ta chaîne (youtube.com/@nom ou youtube.com/channel/UC...)');
+        showError('Lien invalide. Colle le lien de ta chaîne (youtube.com/@nom) ou d\'une de tes vidéos');
         return;
       }
       if (selectedChannels.some(ch => ch.id === parsed.id)) {
@@ -405,7 +408,7 @@
         const parsed = parseChannelInput(channelIdInput?.value);
 
         if (!parsed) {
-          showError('Lien invalide. Colle le lien de ta chaîne (youtube.com/@nom ou youtube.com/channel/UC...)');
+          showError('Lien invalide. Colle le lien de ta chaîne (youtube.com/@nom) ou d\'une de tes vidéos');
           return;
         }
 
