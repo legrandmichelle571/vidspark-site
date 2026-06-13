@@ -11,15 +11,15 @@
       --s1:       #0e0e12;
       --s2:       #141418;
       --s3:       #1a1a20;
-      --b1:       #1e1e26;
-      --b2:       #2a2a35;
+      --b1:       #1b2330;
+      --b2:       #2b3647;
       --b3:       #3a3a48;
       --text:     #e8e8f0;
       --muted:    #8888a0;
       --faint:    #505060;
-      --purple:   #7c6dfa;
-      --purple-l: #a78bfa;
-      --purple-d: #2d1f5e;
+      --purple:   #f7941d;
+      --purple-l: #f9a94a;
+      --purple-d: #3a2406;
       --green:    #22c55e;
       --green-d:  #0d2d1a;
       --red:      #ef4444;
@@ -79,8 +79,8 @@
 
     .nav-logo-icon {
       width: 34px; height: 34px;
-      background: rgba(124,109,250,.15);
-      border: 1px solid rgba(124,109,250,.35);
+      background: rgba(247,148,29,.15);
+      border: 1px solid rgba(247,148,29,.35);
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       font-size: 17px;
@@ -267,7 +267,7 @@
 
     .plan-badge {
       display: inline-block;
-      background: rgba(124,109,250,.1);
+      background: rgba(247,148,29,.1);
       color: var(--purple);
       padding: 4px 12px;
       border-radius: 20px;
@@ -295,7 +295,7 @@
     .spinner {
       width: 32px;
       height: 32px;
-      border: 3px solid rgba(124,109,250,.2);
+      border: 3px solid rgba(247,148,29,.2);
       border-top-color: var(--purple);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
@@ -356,10 +356,10 @@
     /* ── Barre latérale commune (style TubeRank) ── */
     .app-side{position:fixed;left:0;top:0;bottom:0;width:220px;background:#101017;border-right:1px solid #23232e;display:flex;flex-direction:column;padding:18px 14px;z-index:50;overflow-y:auto;}
     .app-side .sb-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;color:#fff;padding:6px 8px 18px;}
-    .app-side .sb-brand .lg{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#22d3ee,#7c6dfa);display:flex;align-items:center;justify-content:center;color:#06121a;}
+    .app-side .sb-brand .lg{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#f5801f,#f7941d);display:flex;align-items:center;justify-content:center;color:#06121a;}
     .app-side a.sb-link{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;color:#8a8a9a;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:2px;cursor:pointer;}
     .app-side a.sb-link:hover{background:#16161d;color:#fff;}
-    .app-side a.sb-link.active{background:linear-gradient(135deg,#22d3ee,#7c6dfa);color:#06121a;}
+    .app-side a.sb-link.active{background:linear-gradient(135deg,#f5801f,#f7941d);color:#06121a;}
     .app-side .sb-foot{margin-top:auto;}
     .app-side .sb-logout{color:#ef4444;}
     .nav{display:none !important;}
@@ -375,7 +375,7 @@
     @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr);}}
     @media(max-width:520px){.kpis{grid-template-columns:1fr;}}
     .kpi{background:linear-gradient(160deg,var(--s1),var(--s2));border:1px solid var(--b1);border-radius:14px;padding:18px;}
-    .kpi .kpi-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;background:rgba(124,109,250,.12);border:1px solid rgba(124,109,250,.25);}
+    .kpi .kpi-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;background:rgba(247,148,29,.12);border:1px solid rgba(247,148,29,.25);}
     .kpi .kpi-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:600;}
     .kpi .kpi-val{font-size:24px;font-weight:800;margin-top:2px;letter-spacing:-.5px;}
     .kpi .kpi-foot{font-size:11px;color:var(--faint);margin-top:8px;}
@@ -386,7 +386,7 @@
     .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-bottom:28px;align-items:start;}
     @media(max-width:860px){.grid-2{grid-template-columns:1fr;}}
     .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 14px;display:flex;align-items:center;gap:8px;}
-    .card.primary{border-color:rgba(124,109,250,.35);background:linear-gradient(160deg,rgba(124,109,250,.05),var(--b1));}
+    .card.primary{border-color:rgba(247,148,29,.35);background:linear-gradient(160deg,rgba(247,148,29,.05),var(--b1));}
     .checklist{list-style:none;padding:0;margin:0;}
     .checklist li{padding:11px 0;border-bottom:1px solid var(--b2);display:flex;align-items:center;gap:10px;}
     .checklist li:last-child{border-bottom:none;}
@@ -847,7 +847,7 @@
       if (!wrap) return;
       wrap.innerHTML = codes.map((c, i) => `
         <div style="background: var(--s2); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
-          ${codes.length > 1 ? `<div style="font-size:11px;color:var(--purple-l,#a78bfa);font-weight:700;margin-bottom:6px;">PC ${i + 1}</div>` : ''}
+          ${codes.length > 1 ? `<div style="font-size:11px;color:var(--purple-l,#f9a94a);font-weight:700;margin-bottom:6px;">PC ${i + 1}</div>` : ''}
           <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">ID</div>
           <div style="display: flex; gap: 8px; margin-bottom: 8px;">
             <input type="text" value="${c.activation_id}" readonly style="flex:1;background:var(--s1);border:1px solid var(--b2);border-radius:4px;padding:8px;color:var(--green);font-family:monospace;font-size:11px;">

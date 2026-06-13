@@ -7,14 +7,14 @@
   <style>
     :root{
       --bg:#07070a; --s1:#0e0e12; --s2:#141418; --b1:#1b2330; --b2:#2b3647;
-      --text:#e8e8f0; --muted:#8888a0; --purple:#7c6dfa; --purple-l:#a78bfa;
+      --text:#e8e8f0; --muted:#8888a0; --purple:#f7941d; --purple-l:#f9a94a;
       --green:#22c55e; --red:#ef4444; --gold:#f5b301;
     }
     *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
     body{background:var(--bg);color:var(--text);min-height:100vh;}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;border-bottom:1px solid var(--b1);}
     .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;}
-    .logo-badge{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#7c6dfa,#a78bfa);display:flex;align-items:center;justify-content:center;}
+    .logo-badge{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#f7941d,#f9a94a);display:flex;align-items:center;justify-content:center;}
     .nav a{color:var(--muted);text-decoration:none;font-size:14px;margin-left:20px;}
     .nav a:hover{color:var(--text);}
     .page{max-width:1040px;margin:0 auto;padding:48px 20px 80px;}
@@ -25,10 +25,10 @@
     .current .plan{font-size:24px;font-weight:800;}
     .pill{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;}
     .pill.free{background:rgba(136,136,160,.18);color:var(--muted);}
-    .pill.pro{background:rgba(124,109,250,.2);color:var(--purple-l);}
+    .pill.pro{background:rgba(247,148,29,.2);color:var(--purple-l);}
     .pill.business{background:rgba(245,179,1,.18);color:var(--gold);}
-    .pill.diamant{background:rgba(34,211,238,.18);color:#22d3ee;}
-    .choose.diamant{background:#22d3ee;color:#06121a;}
+    .pill.diamant{background:rgba(247,148,29,.18);color:#f5801f;}
+    .choose.diamant{background:#f5801f;color:#06121a;}
     .toggle{display:flex;justify-content:center;align-items:center;gap:12px;margin:0 0 28px;}
     .toggle button{background:var(--s2);border:1px solid var(--b2);color:var(--muted);padding:8px 18px;border-radius:20px;cursor:pointer;font-weight:600;font-size:13px;}
     .toggle button.active{background:var(--purple);color:#fff;border-color:var(--purple);}
@@ -36,7 +36,7 @@
     .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
     .plan-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;position:relative;transition:transform .15s,border-color .15s;}
     .plan-card:hover{transform:translateY(-4px);border-color:var(--b2);}
-    .plan-card.popular{border-color:var(--purple);box-shadow:0 8px 30px rgba(124,109,250,.18);}
+    .plan-card.popular{border-color:var(--purple);box-shadow:0 8px 30px rgba(247,148,29,.18);}
     .popular-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-size:11px;font-weight:700;padding:4px 14px;border-radius:12px;}
     .plan-name{font-size:18px;font-weight:800;margin-bottom:4px;}
     .plan-price{font-size:34px;font-weight:800;margin:10px 0 2px;}
@@ -61,7 +61,7 @@
     /* ── Barre latérale commune (style TubeRank) ── */
     .app-side{position:fixed;left:0;top:0;bottom:0;width:220px;background:#101017;border-right:1px solid #23232e;display:flex;flex-direction:column;padding:18px 14px;z-index:50;overflow-y:auto;}
     .app-side .sb-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;color:#fff;padding:6px 8px 18px;}
-    .app-side .sb-brand .lg{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#22d3ee,#7c6dfa);display:flex;align-items:center;justify-content:center;color:#06121a;}
+    .app-side .sb-brand .lg{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#f5801f,#f7941d);display:flex;align-items:center;justify-content:center;color:#06121a;}
     .app-side a.sb-link{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;color:#8a8a9a;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:2px;cursor:pointer;}
     .app-side a.sb-link:hover{background:#16161d;color:#fff;}
     .app-side a.sb-link.active{background:linear-gradient(135deg,#f7941d,#f5801f);color:#fff;}

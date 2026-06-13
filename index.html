@@ -20,15 +20,15 @@
   --s1:       #0e0e12;
   --s2:       #141418;
   --s3:       #1a1a20;
-  --b1:       #1e1e26;
-  --b2:       #2a2a35;
+  --b1:       #1b2330;
+  --b2:       #2b3647;
   --b3:       #3a3a48;
   --text:     #e8e8f0;
   --muted:    #8888a0;
   --faint:    #505060;
-  --purple:   #7c6dfa;
-  --purple-l: #a78bfa;
-  --purple-d: #2d1f5e;
+  --purple:   #f7941d;
+  --purple-l: #f9a94a;
+  --purple-d: #3a2406;
   --green:    #22c55e;
   --green-d:  #0d2d1a;
   --red:      #ef4444;
@@ -39,7 +39,7 @@
   --r3:       16px;
   --r4:       24px;
   --shadow:   0 4px 24px rgba(0,0,0,.5);
-  --glow:     0 0 60px rgba(124,109,250,.18);
+  --glow:     0 0 60px rgba(247,148,29,.18);
   --container:1180px;
 }
 body.light{
@@ -94,8 +94,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--purple-l);
-  background: rgba(124,109,250,.1);
-  border: 1px solid rgba(124,109,250,.25);
+  background: rgba(247,148,29,.1);
+  border: 1px solid rgba(247,148,29,.25);
   padding: 4px 12px;
   border-radius: 20px;
   margin-bottom: 20px;
@@ -116,7 +116,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .centered { text-align: center; }
 .centered .section-sub { margin: 0 auto; }
 .gradient-text {
-  background: linear-gradient(135deg, #a78bfa 0%, #7c6dfa 40%, #60a5fa 100%);
+  background: linear-gradient(135deg, #f9a94a 0%, #f7941d 40%, #60a5fa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -140,11 +140,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .btn-primary {
   background: var(--purple);
   color: #fff;
-  box-shadow: 0 4px 20px rgba(124,109,250,.35);
+  box-shadow: 0 4px 20px rgba(247,148,29,.35);
 }
 .btn-primary:hover {
   background: var(--purple-l);
-  box-shadow: 0 6px 28px rgba(124,109,250,.5);
+  box-shadow: 0 6px 28px rgba(247,148,29,.5);
   transform: translateY(-1px);
 }
 .btn-ghost {
@@ -194,8 +194,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .nav-logo-icon {
   width: 34px; height: 34px;
-  background: rgba(124,109,250,.15);
-  border: 1px solid rgba(124,109,250,.35);
+  background: rgba(247,148,29,.15);
+  border: 1px solid rgba(247,148,29,.35);
   border-radius: var(--r);
   display: flex; align-items: center; justify-content: center;
   font-size: 17px;
@@ -205,7 +205,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-size: 10px;
   background: var(--purple-d);
   color: var(--purple-l);
-  border: 1px solid rgba(124,109,250,.3);
+  border: 1px solid rgba(247,148,29,.3);
   padding: 1px 7px;
   border-radius: 20px;
   font-weight: 700;
@@ -276,7 +276,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,109,250,.15) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(247,148,29,.15) 0%, transparent 70%),
     radial-gradient(ellipse 40% 40% at 80% 60%, rgba(59,130,246,.07) 0%, transparent 60%);
   pointer-events: none;
 }
@@ -284,8 +284,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(124,109,250,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(124,109,250,.04) 1px, transparent 1px);
+    linear-gradient(rgba(247,148,29,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247,148,29,.04) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 0%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 0%, transparent 70%);
@@ -366,7 +366,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .mockup-glow {
   position: absolute;
   inset: -30px;
-  background: radial-gradient(ellipse at center, rgba(124,109,250,.2) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(247,148,29,.2) 0%, transparent 70%);
   pointer-events: none;
 }
 .dashboard-mockup {
@@ -374,7 +374,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: var(--s1);
   border: 1px solid var(--b2);
   border-radius: var(--r3);
-  box-shadow: var(--shadow), 0 0 0 1px rgba(124,109,250,.12);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(247,148,29,.12);
   overflow: hidden;
 }
 .dashboard-header {
@@ -388,17 +388,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .dashboard-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; }
 .dashboard-logo-icon {
   width: 26px; height: 26px;
-  background: rgba(124,109,250,.2);
-  border: 1px solid rgba(124,109,250,.35);
+  background: rgba(247,148,29,.2);
+  border: 1px solid rgba(247,148,29,.35);
   border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
   font-size: 13px;
 }
 .dashboard-badge {
   font-size: 10px;
-  background: rgba(124,109,250,.15);
+  background: rgba(247,148,29,.15);
   color: var(--purple-l);
-  border: 1px solid rgba(124,109,250,.3);
+  border: 1px solid rgba(247,148,29,.3);
   padding: 2px 8px;
   border-radius: 10px;
   font-weight: 700;
@@ -493,11 +493,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(124,109,250,.06) 0%, transparent 60%);
+  background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(247,148,29,.06) 0%, transparent 60%);
   opacity: 0;
   transition: opacity .3s;
 }
-.feature-card:hover { border-color: rgba(124,109,250,.35); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
+.feature-card:hover { border-color: rgba(247,148,29,.35); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
 .feature-card:hover::before { opacity: 1; }
 .feature-icon {
   width: 44px; height: 44px;
@@ -508,7 +508,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-size: 20px;
   margin-bottom: 18px;
 }
-.fi-purple { background: rgba(124,109,250,.12); border: 1px solid rgba(124,109,250,.2); }
+.fi-purple { background: rgba(247,148,29,.12); border: 1px solid rgba(247,148,29,.2); }
 .fi-green  { background: rgba(34,197,94,.1);   border: 1px solid rgba(34,197,94,.2); }
 .fi-blue   { background: rgba(59,130,246,.1);  border: 1px solid rgba(59,130,246,.2); }
 .fi-amber  { background: rgba(245,158,11,.1);  border: 1px solid rgba(245,158,11,.2); }
@@ -556,11 +556,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding: 28px;
   transition: border-color .2s, transform .2s;
 }
-.saas-card:hover { border-color: rgba(124,109,250,.35); transform: translateY(-3px); }
+.saas-card:hover { border-color: rgba(247,148,29,.35); transform: translateY(-3px); }
 .saas-icon {
   width: 48px; height: 48px;
-  background: rgba(124,109,250,.12);
-  border: 1px solid rgba(124,109,250,.2);
+  background: rgba(247,148,29,.12);
+  border: 1px solid rgba(247,148,29,.2);
   border-radius: var(--r2);
   display: flex;
   align-items: center;
@@ -598,9 +598,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .pricing-card:hover { border-color: var(--b3); }
 .pricing-card.featured {
-  border-color: rgba(124,109,250,.5);
-  background: linear-gradient(160deg, rgba(124,109,250,.07) 0%, var(--s1) 60%);
-  box-shadow: 0 0 0 1px rgba(124,109,250,.15), var(--glow);
+  border-color: rgba(247,148,29,.5);
+  background: linear-gradient(160deg, rgba(247,148,29,.07) 0%, var(--s1) 60%);
+  box-shadow: 0 0 0 1px rgba(247,148,29,.15), var(--glow);
 }
 .pricing-popular {
   position: absolute;
@@ -668,7 +668,7 @@ details {
   transition: border-color .2s;
   overflow: hidden;
 }
-details[open] { border-color: rgba(124,109,250,.3); }
+details[open] { border-color: rgba(247,148,29,.3); }
 details:hover  { border-color: var(--b3); }
 summary {
   list-style: none;
@@ -707,7 +707,7 @@ details[open] summary::after { content: "−"; }
    FINAL CTA
 ════════════════════════════════════════════════════════════ */
 .cta-section {
-  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(124,109,250,.1) 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(247,148,29,.1) 0%, transparent 70%);
   border-top: 1px solid var(--b1);
   border-bottom: 1px solid var(--b1);
 }
@@ -1389,7 +1389,7 @@ footer {
        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 ═══════════════════════════════════════════════════════════ -->
-<div style="max-width:728px;margin:30px auto;padding:10px;border:1px dashed #2a2a35;border-radius:10px;text-align:center;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+<div style="max-width:728px;margin:30px auto;padding:10px;border:1px dashed #2b3647;border-radius:10px;text-align:center;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
   <div style="font-size:10px;color:#8888a0;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Publicité</div>
   <div class="ad-inner" style="width:100%;color:#8888a0;font-size:12px;"><!-- Code pub ici --></div>
 </div>

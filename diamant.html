@@ -9,7 +9,7 @@
   <style>
     :root{
       --bg:#0a0a0f; --side:#101017; --card:#1b2330; --b1:#2b3647; --b2:#30303c;
-      --text:#e9e9f2; --muted:#8a8a9a; --cyan:#22d3ee; --purple:#7c6dfa; --grad:linear-gradient(135deg,#f7941d,#f5801f);
+      --text:#e9e9f2; --muted:#8a8a9a; --cyan:#f5801f; --purple:#f7941d; --grad:linear-gradient(135deg,#f7941d,#f5801f);
       --green:#22c55e; --red:#ef4444; --amber:#f5b301;
     }
     body.light{
@@ -37,7 +37,7 @@
     .navitem .lk{margin-left:auto;font-size:12px;}
     .navitem .ic{font-size:16px;}
     .side-foot{margin-top:auto;}
-    .planbadge{display:inline-flex;align-items:center;gap:6px;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.35);color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:.5px;padding:6px 11px;border-radius:20px;text-transform:uppercase;margin:0 8px 10px;}
+    .planbadge{display:inline-flex;align-items:center;gap:6px;background:rgba(247,148,29,.12);border:1px solid rgba(247,148,29,.35);color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:.5px;padding:6px 11px;border-radius:20px;text-transform:uppercase;margin:0 8px 10px;}
     .backlink{display:block;padding:10px 13px;color:var(--muted);font-size:13px;border-radius:8px;}
     .backlink:hover{background:var(--card);color:var(--text);}
 
@@ -504,7 +504,7 @@
         </div>`:'';
 
       // Tags suggérés (IA) + opportunités
-      const sugTags=(A.suggested_tags||[]).map(t=>chip(t,'rgba(34,211,238,.4)')).join('')||'<span class="muted">—</span>';
+      const sugTags=(A.suggested_tags||[]).map(t=>chip(t,'rgba(247,148,29,.4)')).join('')||'<span class="muted">—</span>';
       const opps=(ins.opportunities||[]).map(o=>`<div class="rec"><span>🎯</span><span>${o}</span></div>`).join('');
       const angles=(ins.angles||[]).map(o=>`<div class="rec"><span>🎬</span><span>${o}</span></div>`).join('');
 
@@ -568,7 +568,7 @@
       if(!ok) throw new Error(data.error||'Indisponible');
       const titles=(data.titles||[]).map(t=>`<div class="rec"><span style="background:var(--bg);border:1px solid var(--b2);border-radius:6px;padding:2px 7px;font-size:11px;color:var(--cyan);white-space:nowrap;">${t.hook||''} ${t.score||''}</span><span style="cursor:pointer;" title="Cliquer pour copier" onclick="navigator.clipboard.writeText(this.textContent)">${t.text}</span></div>`).join('')||'<span class="muted">—</span>';
       const tags=(data.tags||[]).map(t=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${t}</span>`).join('');
-      const hashtags=(data.hashtags||[]).map(h=>`<span style="display:inline-block;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.4);color:var(--cyan);border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${h}</span>`).join('');
+      const hashtags=(data.hashtags||[]).map(h=>`<span style="display:inline-block;background:rgba(247,148,29,.12);border:1px solid rgba(247,148,29,.4);color:var(--cyan);border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${h}</span>`).join('');
       const desc=(data.description||'').replace(/`/g,"'");
       $('genResult').innerHTML=`
         <div class="panel"><div class="muted" style="font-weight:700;color:var(--text);margin-bottom:8px;">📝 Titres (clique pour copier)</div>${titles}</div>

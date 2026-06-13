@@ -234,7 +234,7 @@ async function loadDashboard() {
 function createCharts(stats) {
   const colors = {
     free: '#22c55e',
-    pro: '#7c6dfa',
+    pro: '#f7941d',
     business: '#3b82f6',
     text: '#e8e8f0',
     muted: '#8888a0',
@@ -252,7 +252,7 @@ function createCharts(stats) {
         datasets: [{
           data: [stats.users.free || 0, stats.users.pro || 0, stats.users.business || 0],
           backgroundColor: [colors.free, colors.pro, colors.business],
-          borderColor: '#1e1e26',
+          borderColor: '#1b2330',
           borderWidth: 2
         }]
       },
@@ -337,7 +337,7 @@ function createCharts(stats) {
         datasets: [{
           data: [active, Math.max(0, total - active)],
           backgroundColor: [colors.pro, colors.grid],
-          borderColor: '#1e1e26',
+          borderColor: '#1b2330',
           borderWidth: 2
         }]
       },
@@ -389,7 +389,7 @@ function createCharts(stats) {
         datasets: [{
           data: [convRate, 100 - convRate],
           backgroundColor: [colors.business, colors.grid],
-          borderColor: '#1e1e26',
+          borderColor: '#1b2330',
           borderWidth: 2
         }]
       },

@@ -151,7 +151,7 @@ async function loadUsers(page = 1) {
           <td>
             <div class="action-btns">
               ${u.plan !== 'free' ? `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="changePlan('${u.id}','free')">Free</button>` : ''}
-              ${u.plan !== 'pro' ? `<button class="vs-btn vs-btn-sm" style="background:rgba(124,109,250,.12);color:var(--purple-l);border:1px solid rgba(124,109,250,.2)" onclick="changePlan('${u.id}','pro')">Pro</button>` : ''}
+              ${u.plan !== 'pro' ? `<button class="vs-btn vs-btn-sm" style="background:rgba(247,148,29,.12);color:var(--purple-l);border:1px solid rgba(247,148,29,.2)" onclick="changePlan('${u.id}','pro')">Pro</button>` : ''}
               ${u.plan !== 'business' ? `<button class="vs-btn vs-btn-sm vs-btn-success" onclick="changePlan('${u.id}','business')">Biz</button>` : ''}
               ${u.status === 'active' ? `<button class="vs-btn vs-btn-danger vs-btn-sm" onclick="changeStatus('${u.id}','suspended')">⏸ Suspendre</button>` : `<button class="vs-btn vs-btn-success vs-btn-sm" onclick="changeStatus('${u.id}','active')">▶ Réactiver</button>`}
             </div>
