@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A/B Test Titres YouTube — VidSpark AI</title>
+<meta name="description" content="Compare 2 titres YouTube : l'IA prédit le gagnant, le CTR estimé et propose un titre amélioré.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1>⚔️ A/B Test Titres</h1>
+    <p>Entre 2 titres : l'IA prédit lequel obtiendra le plus de clics, le CTR estimé pour chacun, et propose un titre encore meilleur.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row" style="flex-direction:column;gap:10px">
+      <input type="text" id="titleA" placeholder="Titre A — ex : J'ai testé 10 régimes en 30 jours" style="width:100%;border-color:#3b82f6">
+      <input type="text" id="titleB" placeholder="Titre B — ex : Ce régime m'a fait perdre 10 kg en 1 mois" style="width:100%;border-color:#ef4444">
+      <div style="display:flex;gap:10px">
+        <select id="lang">
+          <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
+        </select>
+        <button class="btn" onclick="go()" style="flex:1">⚔️ Comparer les titres</button>
+      </div>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Comment l'IA choisit le gagnant ?</h3><p>L'IA analyse le CTR attendu selon plusieurs critères : longueur optimale, présence d'un chiffre, curiosité générée, clarté du sujet, émotion et mots déclencheurs de clics.</p></div>
+    <div class="faq-item"><h3>Le CTR prédit est-il fiable ?</h3><p>C'est une estimation basée sur les bonnes pratiques YouTube. Le vrai CTR dépend aussi de ta miniature, de ta niche et de ton audience.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>📸 A/B Test aussi tes miniatures</h3>
+    <p>L'extension VidSpark AI permet de comparer 2 miniatures avec l'IA Vision — en plus des titres.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const tA=document.getElementById('titleA').value.trim();
+  const tB=document.getElementById('titleB').value.trim();
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(tA.length<3||tB.length<3){r.innerHTML='<div class="err">❌ Entre les deux titres (3 caractères min chacun).</div>';return;}
+  r.innerHTML=spinner('L\'IA compare les deux titres…');
+  try{
+    const d=await aiCall('/api/public/ai/ab-test-titles',{title_a:tA,title_b:tB,language:lang});
+    const winner=d.winner==='A'?'#3b82f6':'#ef4444';
+    r.innerHTML=`
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+        <div style="flex:1;padding:14px;background:#1b2330;border-radius:10px;border:2px solid ${d.winner==='A'?'#3b82f6':'#2b3647'}">
+          <div style="font-size:11px;color:#3b82f6;font-weight:700;margin-bottom:6px">TITRE A ${d.winner==='A'?'🏆':''}</div>
+          <div style="font-size:14px;margin-bottom:8px">${esc(tA)}</div>
+          <div style="font-size:22px;font-weight:800;color:#3b82f6">${d.ctr_a||'—'}%</div>
+          <div style="font-size:11px;color:#8888a0">CTR estimé</div>
+        </div>
+        <div style="flex:1;padding:14px;background:#1b2330;border-radius:10px;border:2px solid ${d.winner==='B'?'#ef4444':'#2b3647'}">
+          <div style="font-size:11px;color:#ef4444;font-weight:700;margin-bottom:6px">TITRE B ${d.winner==='B'?'🏆':''}</div>
+          <div style="font-size:14px;margin-bottom:8px">${esc(tB)}</div>
+          <div style="font-size:22px;font-weight:800;color:#ef4444">${d.ctr_b||'—'}%</div>
+          <div style="font-size:11px;color:#8888a0">CTR estimé</div>
+        </div>
+      </div>
+      <div style="padding:12px;background:#1b2330;border-radius:8px;margin-bottom:12px">
+        <div style="font-size:12px;color:#8888a0;margin-bottom:4px">🧠 ANALYSE</div>
+        <div>${esc(d.analysis||'')}</div>
+      </div>
+      ${d.improved?`<div style="padding:12px;background:rgba(247,148,29,.1);border-radius:8px;border:1.5px solid #f7941d">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:4px">✨ TITRE AMÉLIORÉ PAR L'IA</div>
+        <div style="font-size:15px">${esc(d.improved)}</div>
+        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(d.improved||"")},this)' style="margin-top:8px">⧉ Copier</button>
+      </div>`:''}
+    `;
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
+}
+</script>
+</body>
+</html>

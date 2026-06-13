@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de Shorts YouTube — VidSpark AI</title>
+<meta name="description" content="Génère 3 idées de Shorts YouTube avec hook, script complet, hashtags et les timestamps à couper depuis ta vidéo.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1>🎬 Générateur de Shorts</h1>
+    <p>Décris ta vidéo longue : l'IA génère 3 idées de Shorts avec hook percutant, script complet, hashtags et les passages exacts à extraire.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row" style="flex-direction:column;gap:10px">
+      <input type="text" id="topic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€" style="width:100%">
+      <textarea id="desc" placeholder="Résumé de ta vidéo (optionnel) — pour des Shorts plus précis" rows="3" style="width:100%;background:#12121a;border:1.5px solid #2b3647;color:#e8e8f0;border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
+      <div style="display:flex;gap:10px">
+        <select id="lang">
+          <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
+        </select>
+        <button class="btn" onclick="go()" style="flex:1">🎬 Générer 3 Shorts</button>
+      </div>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Quelle longueur idéale pour un Short ?</h3><p>Entre 30 et 60 secondes. L'algorithme YouTube favorise les Shorts où les gens regardent jusqu'à la fin — donc plus c'est court et accrocheur, mieux c'est.</p></div>
+    <div class="faq-item"><h3>Comment extraire un Short depuis ma vidéo longue ?</h3><p>Utilise YouTube Studio (option "Couper" ou "Shorts"), CapCut, ou DaVinci Resolve. L'IA te donne les timestamps exacts à couper.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>📱 Extension complète pour Shorts</h3>
+    <p>L'extension VidSpark analyse directement ta vidéo YouTube et propose les meilleurs moments à couper en Shorts.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const topic=document.getElementById('topic').value.trim();
+  const desc=document.getElementById('desc').value.trim();
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(topic.length<3){r.innerHTML='<div class="err">❌ Entre un sujet (3 caractères min).</div>';return;}
+  r.innerHTML=spinner('L\'IA génère tes 3 Shorts…');
+  try{
+    const d=await aiCall('/api/public/ai/shorts-generator',{topic,description:desc,language:lang});
+    const shorts=d.shorts||[];
+    if(!shorts.length)throw new Error('Aucun Short généré, réessaie.');
+    r.innerHTML=shorts.map((s,i)=>`
+      <div style="padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;margin-bottom:14px">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🎬 SHORT ${i+1}</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:8px">${esc(s.title||'')}</div>
+        ${s.hook?`<div style="padding:8px;background:rgba(247,148,29,.1);border-radius:6px;margin-bottom:8px;font-size:13px"><span style="color:#f7941d;font-weight:700">🪝 HOOK :</span> ${esc(s.hook)}</div>`:''}
+        ${s.script?`<div style="padding:8px;background:#12121a;border-radius:6px;margin-bottom:8px;font-size:13px;line-height:1.6"><span style="color:#8888a0;font-weight:700">📝 SCRIPT :</span><br>${esc(s.script)}</div>`:''}
+        ${s.timestamp?`<div style="padding:6px 10px;background:rgba(59,130,246,.1);border-radius:6px;margin-bottom:8px;font-size:13px;color:#3b82f6"><span style="font-weight:700">⏱ MOMENT :</span> ${esc(s.timestamp)}</div>`:''}
+        ${s.hashtags?`<div style="font-size:13px;color:#8888a0">${esc(s.hashtags)}</div>`:''}
+        <button class="copy-mini" onclick='copyTxt(${JSON.stringify((s.title||"")+" "+( s.script||""))},this)' style="margin-top:10px">⧉ Copier tout</button>
+      </div>
+    `).join('');
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optimiseur d'Audience YouTube — VidSpark AI</title>
+<meta name="description" content="Cible ta région et ta niche : meilleures heures de publication, tendances locales, hashtags et sujets pour ton audience.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1>🌍 Optimiseur d'Audience</h1>
+    <p>Sélectionne ta région et ta niche : l'IA te donne les meilleures heures de publication, les tendances locales, hashtags et sujets pour exploser dans ton marché.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row" style="flex-direction:column;gap:10px">
+      <input type="text" id="niche" placeholder="Ta niche — ex : cuisine marocaine, gaming mobile, fitness" style="width:100%">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <select id="region" style="flex:1">
+          <option value="FR">🇫🇷 France</option>
+          <option value="MA">🇲🇦 Maroc</option>
+          <option value="DZ">🇩🇿 Algérie</option>
+          <option value="TN">🇹🇳 Tunisie</option>
+          <option value="SA">🇸🇦 Arabie Saoudite</option>
+          <option value="EG">🇪🇬 Égypte</option>
+          <option value="US">🇺🇸 États-Unis</option>
+          <option value="GB">🇬🇧 Royaume-Uni</option>
+          <option value="DE">🇩🇪 Allemagne</option>
+          <option value="ES">🇪🇸 Espagne</option>
+          <option value="BR">🇧🇷 Brésil</option>
+        </select>
+        <select id="lang" style="flex:1">
+          <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
+        </select>
+      </div>
+      <button class="btn" onclick="go()">🌍 Optimiser pour mon audience</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Quelle est la meilleure heure pour publier sur YouTube ?</h3><p>Ça dépend de ton audience. En général : 17h-21h en semaine, 10h-13h le week-end. Mais l'IA personnalise selon ta région et ta niche.</p></div>
+    <div class="faq-item"><h3>Comment cibler le marché arabophone ?</h3><p>Le Maghreb (Maroc, Algérie, Tunisie) est très actif le soir (20h-23h). Pendant le Ramadan, les pics sont après Iftar. L'IA tient compte de ces spécificités.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>📡 Données YouTube réelles</h3>
+    <p>L'extension VidSpark analyse les vraies tendances de ta niche en temps réel avec les données YouTube Live.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const niche=document.getElementById('niche').value.trim();
+  const region=document.getElementById('region').value;
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(niche.length<2){r.innerHTML='<div class="err">❌ Entre ta niche (2 caractères min).</div>';return;}
+  r.innerHTML=spinner('Analyse de ton audience…');
+  try{
+    const d=await aiCall('/api/public/ai/audience-optimizer',{niche,region,language:lang});
+    r.innerHTML=`
+      ${d.best_hours?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">⏰ MEILLEURES HEURES DE PUBLICATION</div>
+        <div style="font-size:18px;font-weight:700">${esc(d.best_hours)}</div>
+        ${d.best_days?`<div style="font-size:13px;color:#8888a0;margin-top:4px">📅 ${esc(d.best_days)}</div>`:''}
+      </div>`:''}
+      ${d.trends&&d.trends.length?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #2b3647;margin-bottom:12px">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🔥 TENDANCES DANS TA NICHE</div>
+        ${d.trends.map(t=>`<div style="padding:6px 10px;margin-bottom:6px;background:#12121a;border-radius:6px;font-size:13px">📈 ${esc(t)}</div>`).join('')}
+      </div>`:''}
+      ${d.topics&&d.topics.length?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #2b3647;margin-bottom:12px">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">💡 SUJETS QUI MARCHENT</div>
+        ${d.topics.map(t=>`<div style="padding:6px 10px;margin-bottom:6px;background:#12121a;border-radius:6px;font-size:13px">💡 ${esc(t)}</div>`).join('')}
+      </div>`:''}
+      ${d.hashtags?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #2b3647;margin-bottom:12px">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🏷 HASHTAGS RECOMMANDÉS</div>
+        <div style="font-size:14px;color:#8888a0">${esc(d.hashtags)}</div>
+        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(d.hashtags||"")},this)' style="margin-top:8px">⧉ Copier</button>
+      </div>`:''}
+      ${d.tip?`<div style="padding:12px;background:rgba(247,148,29,.08);border-radius:8px;border:1.5px solid #f7941d;font-size:13px">💡 ${esc(d.tip)}</div>`:''}
+    `;
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
+}
+</script>
+</body>
+</html>

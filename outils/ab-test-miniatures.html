@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A/B Test Miniatures YouTube — VidSpark AI</title>
+<meta name="description" content="Compare 2 miniatures YouTube : l'IA Vision dit laquelle génère le plus de clics et pourquoi.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1>📸 A/B Test Miniatures</h1>
+    <p>Upload 2 miniatures : l'IA Vision compare le contraste, les visages, les émotions et prédit laquelle va générer le plus de clics — avec explication et prompt Midjourney.</p>
+  </div>
+
+  <div class="tool-box">
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px">
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:13px;color:#3b82f6;font-weight:700;margin-bottom:6px">MINIATURE A</div>
+        <div onclick="document.getElementById('fileA').click()" id="dropA" style="border:2px dashed #3b82f6;border-radius:8px;padding:20px;text-align:center;cursor:pointer">
+          <div style="font-size:24px">🖼</div>
+          <div style="font-size:12px;color:#8888a0">Clique pour choisir</div>
+          <input type="file" id="fileA" accept="image/*" style="display:none" onchange="preview('A',this)">
+        </div>
+        <img id="previewA" style="display:none;max-width:100%;border-radius:8px;margin-top:8px;border:2px solid #3b82f6">
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:13px;color:#ef4444;font-weight:700;margin-bottom:6px">MINIATURE B</div>
+        <div onclick="document.getElementById('fileB').click()" id="dropB" style="border:2px dashed #ef4444;border-radius:8px;padding:20px;text-align:center;cursor:pointer">
+          <div style="font-size:24px">🖼</div>
+          <div style="font-size:12px;color:#8888a0">Clique pour choisir</div>
+          <input type="file" id="fileB" accept="image/*" style="display:none" onchange="preview('B',this)">
+        </div>
+        <img id="previewB" style="display:none;max-width:100%;border-radius:8px;margin-top:8px;border:2px solid #ef4444">
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <select id="lang">
+        <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option>
+      </select>
+      <button class="btn" onclick="go()" style="flex:1">📸 Comparer les miniatures</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Comment l'IA choisit la meilleure miniature ?</h3><p>L'IA Vision analyse chaque image : contraste des couleurs, présence et expressivité du visage, lisibilité du texte, composition générale et impact émotionnel. Elle combine ces scores pour prédire le CTR.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>🖼 Analyse détaillée d'une seule miniature</h3>
+    <p>Pour une analyse approfondie avec score par critère et conseils précis, utilise l'outil d'analyse de miniature.</p>
+    <a href="/outils/analyse-miniature.html" class="btn" style="background:#2b3647;color:#e8e8f0">Analyser une miniature</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="tools.js"></script>
+<script>
+let dataA=null,dataB=null;
+function preview(side,input){
+  const file=input.files[0];if(!file)return;
+  if(file.size>5*1024*1024){alert('Fichier trop grand (max 5 Mo)');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    if(side==='A'){dataA=e.target.result;document.getElementById('previewA').src=dataA;document.getElementById('previewA').style.display='block';}
+    else{dataB=e.target.result;document.getElementById('previewB').src=dataB;document.getElementById('previewB').style.display='block';}
+  };
+  reader.readAsDataURL(file);
+}
+async function go(){
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(!dataA||!dataB){r.innerHTML='<div class="err">❌ Upload les deux miniatures.</div>';return;}
+  r.innerHTML=spinner('L\'IA Vision compare les deux miniatures…');
+  try{
+    const d=await aiCall('/api/public/ai/ab-test-thumbnails',{image_a:dataA,image_b:dataB,language:lang});
+    const winColor=d.winner==='A'?'#3b82f6':'#ef4444';
+    r.innerHTML=`
+      <div style="text-align:center;padding:16px;background:#1b2330;border-radius:12px;border:2px solid ${winColor};margin-bottom:14px">
+        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">🏆 MINIATURE GAGNANTE</div>
+        <div style="font-size:32px;font-weight:900;color:${winColor}">MINIATURE ${d.winner||'?'}</div>
+        <div style="font-size:13px;color:#8888a0;margin-top:6px">CTR estimé : <strong style="color:${winColor}">${d.ctr_winner||'—'}%</strong></div>
+      </div>
+      <div style="padding:12px;background:#1b2330;border-radius:8px;margin-bottom:12px;font-size:14px;line-height:1.6">${esc(d.analysis||'')}</div>
+      ${d.improvement?`<div style="padding:12px;background:rgba(247,148,29,.08);border-radius:8px;border:1.5px solid #f7941d;font-size:13px">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:4px">💡 POUR ENCORE MIEUX FAIRE</div>
+        ${esc(d.improvement)}
+      </div>`:''}
+    `;
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
+}
+</script>
+</body>
+</html>

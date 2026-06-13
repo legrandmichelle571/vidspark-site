@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estimateur Revenus YouTube — VidSpark AI</title>
+<meta name="description" content="Estime tes vues à 7 jours et tes revenus AdSense selon ta niche, ton pays et tes abonnés.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1>💰 Estimateur de Revenus</h1>
+    <p>Entre ta niche, ton pays principal et tes abonnés : l'IA estime tes vues à 7 jours et tes revenus AdSense potentiels.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row" style="flex-direction:column;gap:10px">
+      <input type="text" id="niche" placeholder="Ta niche — ex : finance personnelle, gaming, cuisine" style="width:100%">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <input type="number" id="subs" placeholder="Nombre d'abonnés — ex : 10000" style="flex:1;min-width:140px">
+        <select id="country" style="flex:1">
+          <option value="FR">🇫🇷 France</option>
+          <option value="US">🇺🇸 États-Unis</option>
+          <option value="MA">🇲🇦 Maroc</option>
+          <option value="DZ">🇩🇿 Algérie</option>
+          <option value="TN">🇹🇳 Tunisie</option>
+          <option value="SA">🇸🇦 Arabie Saoudite</option>
+          <option value="EG">🇪🇬 Égypte</option>
+          <option value="GB">🇬🇧 Royaume-Uni</option>
+          <option value="DE">🇩🇪 Allemagne</option>
+          <option value="CA">🇨🇦 Canada</option>
+        </select>
+        <select id="lang" style="flex:1">
+          <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option>
+        </select>
+      </div>
+      <button class="btn" onclick="go()">💰 Estimer mes revenus</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Comment YouTube calcule les revenus AdSense ?</h3><p>Le revenu dépend du RPM (revenu pour 1000 vues). Aux États-Unis : 3-15$/1000 vues. En France : 2-8€. Au Maghreb : 0.3-1.5€. La niche (finance, tech) a un RPM plus élevé que le gaming ou les vlogs.</p></div>
+    <div class="faq-item"><h3>Ces estimations sont-elles fiables ?</h3><p>C'est une estimation basée sur les moyennes du secteur. Le vrai revenu varie selon ton contenu, ta rétention et ton CPM réel. Utilise-le comme référence, pas comme garantie.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>📈 Tableau de bord chaîne complet</h3>
+    <p>L'extension VidSpark donne les vraies stats de ta chaîne + l'historique de progression de tes revenus estimés.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const niche=document.getElementById('niche').value.trim();
+  const subs=parseInt(document.getElementById('subs').value)||0;
+  const country=document.getElementById('country').value;
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(niche.length<2){r.innerHTML='<div class="err">❌ Entre ta niche.</div>';return;}
+  if(subs<0){r.innerHTML='<div class="err">❌ Entre ton nombre d\'abonnés.</div>';return;}
+  r.innerHTML=spinner('Calcul des revenus estimés…');
+  try{
+    const d=await aiCall('/api/public/ai/revenue-estimator',{niche,subscribers:subs,country,language:lang});
+    r.innerHTML=`
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;min-width:120px">
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">VUES (7 JOURS)</div>
+          <div style="font-size:28px;font-weight:800;color:#f7941d">${(d.views_7d||0).toLocaleString()}</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #22c55e;min-width:120px">
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">REVENUS ESTIMÉS</div>
+          <div style="font-size:28px;font-weight:800;color:#22c55e">${d.revenue_min||0}€ – ${d.revenue_max||0}€</div>
+          <div style="font-size:11px;color:#8888a0">par mois</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #3b82f6;min-width:120px">
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">RPM ESTIMÉ</div>
+          <div style="font-size:28px;font-weight:800;color:#3b82f6">${d.rpm||'—'}€</div>
+          <div style="font-size:11px;color:#8888a0">pour 1000 vues</div>
+        </div>
+      </div>
+      ${d.analysis?`<div style="padding:12px;background:#1b2330;border-radius:8px;margin-bottom:10px;font-size:14px;line-height:1.6">${esc(d.analysis)}</div>`:''}
+      ${d.tips&&d.tips.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:8px;border:1.5px solid #f7941d">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">💡 CONSEILS POUR AUGMENTER TES REVENUS</div>
+        ${d.tips.map(t=>`<div style="padding:4px 0;font-size:13px">▸ ${esc(t)}</div>`).join('')}
+      </div>`:''}
+    `;
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
+}
+</script>
+</body>
+</html>

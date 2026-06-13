@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyse Miniature YouTube (IA Vision) — VidSpark AI</title>
+<meta name="description" content="L'IA Vision note ta miniature YouTube : contraste, visage, émotion, texte, CTR estimé et conseils d'amélioration.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1>🖼 Analyse Miniature IA</h1>
+    <p>Upload ta miniature : l'IA Vision la note sur 100 (contraste, visage, émotion, texte lisible) et te donne un CTR estimé + des conseils précis pour l'améliorer.</p>
+  </div>
+
+  <div class="tool-box">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div id="drop-zone" onclick="document.getElementById('thumb-file').click()" style="border:2px dashed #2b3647;border-radius:10px;padding:30px;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='#f7941d'" onmouseout="this.style.borderColor='#2b3647'">
+        <div style="font-size:32px;margin-bottom:8px">🖼</div>
+        <div style="font-size:14px;color:#8888a0">Clique pour choisir ta miniature (JPG/PNG, max 5 Mo)</div>
+        <input type="file" id="thumb-file" accept="image/*" style="display:none" onchange="previewFile(this)">
+      </div>
+      <img id="preview" style="display:none;max-width:100%;border-radius:8px;border:1.5px solid #2b3647">
+      <div style="display:flex;gap:10px">
+        <select id="lang">
+          <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option>
+        </select>
+        <button class="btn" onclick="go()" style="flex:1">🖼 Analyser la miniature</button>
+      </div>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Qu'est-ce qui fait une bonne miniature ?</h3><p>Contraste fort, visage expressif (surprise, joie, choc), texte court et lisible en petit, couleurs vives qui ressortent dans le feed. L'IA vérifie tous ces critères.</p></div>
+    <div class="faq-item"><h3>Quelle taille idéale pour une miniature ?</h3><p>1280×720 pixels (ratio 16:9), format JPG ou PNG, moins de 2 Mo. C'est le standard YouTube recommandé.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>📸 A/B Test tes miniatures</h3>
+    <p>L'extension VidSpark compare 2 miniatures : l'IA Vision dit laquelle gagnera et pourquoi, avec un prompt pour Midjourney.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="tools.js"></script>
+<script>
+let fileData=null;
+function previewFile(input){
+  const file=input.files[0];
+  if(!file)return;
+  if(file.size>5*1024*1024){document.getElementById('res').innerHTML='<div class="err">❌ Fichier trop grand (max 5 Mo).</div>';return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    fileData=e.target.result;
+    const img=document.getElementById('preview');
+    img.src=fileData;
+    img.style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+async function go(){
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(!fileData){r.innerHTML='<div class="err">❌ Upload ta miniature d\'abord.</div>';return;}
+  r.innerHTML=spinner('L\'IA Vision analyse ta miniature…');
+  try{
+    const d=await aiCall('/api/public/ai/thumbnail-analyzer',{image_base64:fileData,language:lang});
+    const score=d.score||0;
+    const c=score>=70?'#22c55e':score>=45?'#f5b301':'#ef4444';
+    r.innerHTML=`
+      <div style="text-align:center;padding:16px;background:#1b2330;border-radius:12px;border:2px solid ${c};margin-bottom:14px">
+        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">SCORE MINIATURE</div>
+        <div style="font-size:48px;font-weight:900;color:${c}">${score}<span style="font-size:20px">/100</span></div>
+        <div style="font-size:13px;color:#8888a0;margin-top:4px">CTR estimé : <strong style="color:${c}">${d.ctr_estimate||'—'}%</strong></div>
+      </div>
+      ${[
+        {label:'Contraste',score:d.contrast_score},
+        {label:'Visage/Émotion',score:d.face_score},
+        {label:'Texte lisible',score:d.text_score},
+        {label:'Composition',score:d.composition_score},
+      ].filter(x=>x.score!==undefined).map(x=>{
+        const sc=x.score||0;
+        const cc=sc>=70?'#22c55e':sc>=45?'#f5b301':'#ef4444';
+        return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1b2330">
+          <div style="flex:1;font-size:13px">${x.label}</div>
+          <div style="width:120px;height:6px;background:#2b3647;border-radius:3px;overflow:hidden">
+            <div style="height:100%;width:${sc}%;background:${cc};border-radius:3px"></div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:${cc};min-width:36px;text-align:right">${sc}/100</div>
+        </div>`;
+      }).join('')}
+      ${d.tips&&d.tips.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:10px;border:1.5px solid #f7941d;margin-top:14px">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">💡 CONSEILS D'AMÉLIORATION</div>
+        ${d.tips.map(t=>`<div style="padding:5px 0;font-size:13px;border-bottom:1px solid #1b2330">▸ ${esc(t)}</div>`).join('')}
+      </div>`:''}
+      ${d.midjourney_prompt?`<div style="padding:12px;background:#1b2330;border-radius:8px;margin-top:12px">
+        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">🎨 PROMPT MIDJOURNEY</div>
+        <div style="font-size:12px;font-family:monospace">${esc(d.midjourney_prompt)}</div>
+        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(d.midjourney_prompt||"")},this)' style="margin-top:6px">⧉ Copier</button>
+      </div>`:''}
+    `;
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
+}
+</script>
+</body>
+</html>

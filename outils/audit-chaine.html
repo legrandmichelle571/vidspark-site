@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Chaîne YouTube — VidSpark AI</title>
+<meta name="description" content="Audit complet de ta chaîne YouTube : stats réelles, score de santé, fréquence d'upload et recommandations IA.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">💎 RÉSERVÉ AUX ABONNÉS DIAMANT</div>
+    <h1>📈 Audit de Chaîne</h1>
+    <p>Entre le lien de ta chaîne YouTube : l'IA analyse les vraies statistiques (vues, engagement, fréquence) et te donne un score de santé + un plan d'action.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row" style="flex-direction:column;gap:10px">
+      <input type="text" id="channel" placeholder="Lien de ta chaîne — ex : youtube.com/@maChaine ou youtube.com/channel/UC..." style="width:100%">
+      <div style="display:flex;gap:10px">
+        <select id="lang">
+          <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option>
+        </select>
+        <button class="btn" onclick="go()" style="flex:1">📈 Auditer ma chaîne</button>
+      </div>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Quelles données sont analysées ?</h3><p>L'audit analyse les 25 dernières vidéos : vues moyennes, engagement (likes+commentaires/vues), fréquence d'upload, utilisation des tags, longueur des titres et les meilleures/pires performances.</p></div>
+    <div class="faq-item"><h3>Quelle est la fréquence d'upload recommandée ?</h3><p>Pour les petites chaînes : 1-2 vidéos/semaine. Pour les grandes : 3-5. L'important c'est la régularité — YouTube favorise les chaînes qui publient à intervalles réguliers.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>💎 Plan Diamant — Multi-chaînes</h3>
+    <p>Avec le plan Diamant, audite jusqu'à 10 chaînes YouTube simultanément et compare leurs performances.</p>
+    <a href="/diamant.html" class="btn" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">Découvrir le Plan Diamant — 49€/mois</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const channel=document.getElementById('channel').value.trim();
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(channel.length<3){r.innerHTML='<div class="err">❌ Entre le lien de ta chaîne.</div>';return;}
+  r.innerHTML=spinner('Audit de la chaîne en cours (peut prendre 15s)…');
+  try{
+    const d=await aiCall('/api/diamant/audit',{channel_url:channel,language:lang});
+    const health=d.health_score||0;
+    const c=health>=70?'#22c55e':health>=45?'#f5b301':'#ef4444';
+    r.innerHTML=`
+      <div style="text-align:center;padding:20px;background:#1b2330;border-radius:12px;border:2px solid ${c};margin-bottom:16px">
+        <div style="font-size:18px;font-weight:700;margin-bottom:4px">${esc(d.channel_name||'')}</div>
+        <div style="font-size:11px;color:#8888a0;margin-bottom:10px">SCORE DE SANTÉ DE LA CHAÎNE</div>
+        <div style="font-size:56px;font-weight:900;color:${c}">${health}<span style="font-size:22px">/100</span></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        ${[
+          {label:'Abonnés',val:(d.subscribers||0).toLocaleString()},
+          {label:'Vues moy.',val:(d.avg_views||0).toLocaleString()},
+          {label:'Engagement',val:(d.avg_engagement||0)+'%'},
+          {label:'Upload freq.',val:d.upload_freq_days?d.upload_freq_days+'j/vidéo':'—'},
+        ].map(k=>`<div style="flex:1;min-width:100px;text-align:center;padding:12px;background:#1b2330;border-radius:8px;border:1.5px solid #2b3647">
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${k.label}</div>
+          <div style="font-size:18px;font-weight:700;color:#f7941d">${k.val}</div>
+        </div>`).join('')}
+      </div>
+      ${d.recommendations&&d.recommendations.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🎯 PLAN D'ACTION</div>
+        ${d.recommendations.map(rec=>`<div style="padding:6px 0;font-size:13px;border-bottom:1px solid #1b2330">▸ ${esc(rec)}</div>`).join('')}
+      </div>`:''}
+    `;
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
+}
+</script>
+</body>
+</html>

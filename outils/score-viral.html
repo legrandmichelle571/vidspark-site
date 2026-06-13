@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Score Viral YouTube — VidSpark AI</title>
+<meta name="description" content="Calcule la probabilité de viralité de ta vidéo YouTube : hook, émotion, chiffres. Score actuel vs potentiel.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1>🔥 Score Viral</h1>
+    <p>Colle le titre et la description de ta vidéo : l'IA calcule la probabilité de viralité (hook, émotion, chiffres) — score actuel vs potentiel.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row" style="flex-direction:column;gap:10px">
+      <input type="text" id="title" placeholder="Titre de ta vidéo" style="width:100%">
+      <textarea id="desc" placeholder="Description de ta vidéo (optionnel)" rows="3" style="width:100%;background:#12121a;border:1.5px solid #2b3647;color:#e8e8f0;border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
+      <div style="display:flex;gap:10px">
+        <select id="lang">
+          <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
+        </select>
+        <button class="btn" onclick="go()" style="flex:1">🔥 Calculer le score viral</button>
+      </div>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Comment est calculé le score viral ?</h3><p>L'IA analyse plusieurs facteurs : la présence d'un hook fort, les émotions suscitées, les chiffres/données, la longueur du titre, les mots déclencheurs et le potentiel de partage.</p></div>
+    <div class="faq-item"><h3>Quelle différence entre score actuel et potentiel ?</h3><p>Le score actuel reflète ton titre/description tel quel. Le score potentiel montre ce que tu pourrais atteindre avec les améliorations suggérées.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>🚀 Extension VidSpark AI</h3>
+    <p>Score viral en temps réel directement sur YouTube Studio, avec suggestions d'amélioration instantanées.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="tools.js"></script>
+<script>
+async function go(){
+  const title=document.getElementById('title').value.trim();
+  const desc=document.getElementById('desc').value.trim();
+  const lang=document.getElementById('lang').value;
+  const r=document.getElementById('res');
+  if(title.length<3){r.innerHTML='<div class="err">❌ Entre un titre (3 caractères min).</div>';return;}
+  r.innerHTML=spinner('Calcul du score viral…');
+  try{
+    const d=await aiCall('/api/public/ai/viral-score',{title,description:desc,language:lang});
+    const score=d.current_score||0;
+    const potential=d.potential_score||0;
+    const c=score>=70?'#22c55e':score>=45?'#f5b301':'#ef4444';
+    r.innerHTML=`
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px">
+        <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d">
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">SCORE ACTUEL</div>
+          <div style="font-size:40px;font-weight:800;color:${c}">${score}<span style="font-size:18px">/100</span></div>
+        </div>
+        <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #22c55e">
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">POTENTIEL</div>
+          <div style="font-size:40px;font-weight:800;color:#22c55e">${potential}<span style="font-size:18px">/100</span></div>
+        </div>
+      </div>
+      ${(d.factors||[]).map(f=>`<div style="padding:8px 12px;margin-bottom:6px;background:#1b2330;border-radius:8px;border-left:3px solid ${f.ok?'#22c55e':'#ef4444'}">
+        <span style="font-weight:600">${esc(f.label)}</span> — ${esc(f.comment)}
+      </div>`).join('')}
+      ${d.suggestion?`<div style="margin-top:14px;padding:12px;background:rgba(247,148,29,.1);border-radius:8px;border:1.5px solid #f7941d">
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:4px">💡 TITRE AMÉLIORÉ</div>
+        <div style="font-size:15px">${esc(d.suggestion)}</div>
+        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(d.suggestion||"")},this)' style="margin-top:8px">⧉ Copier</button>
+      </div>`:''}
+    `;
+  }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
+}
+</script>
+</body>
+</html>
