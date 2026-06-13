@@ -211,13 +211,20 @@
         </div>
       </div>
 
-      <!-- Mode BUSINESS: Checkbox multiple (max 5) -->
+      <!-- Mode BUSINESS/DIAMANT: ajout manuel de plusieurs chaînes -->
       <div id="businessMode" style="display: none;">
         <div class="form-group">
-          <label>Sélectionner jusqu'à 5 chaînes:</label>
-          <div id="channelsGrid" class="channels-grid"></div>
+          <label id="multiLabel">Ajouter vos chaînes YouTube :</label>
+          <div style="display:flex; gap:8px;">
+            <input id="multiChannelInput" type="text" placeholder="ex: UCxxxxxxxxxxxxxxxxxxxxxx">
+            <button type="button" id="addChannelBtn" class="btn" style="width:auto; padding:12px 18px; white-space:nowrap;">+ Ajouter</button>
+          </div>
           <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
-            <span id="selectedCount">0</span>/5 sélectionnées
+            👉 Le Channel ID est la partie <strong>UC...</strong> dans <em>youtube.com/channel/UC...</em> (UC + 22 caractères)
+          </p>
+          <div id="channelsGrid" class="channels-grid" style="margin-top:12px; display:none;"></div>
+          <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
+            <span id="selectedCount">0</span>/<span id="maxCount">5</span> sélectionnées
           </p>
         </div>
       </div>
@@ -240,6 +247,8 @@
     let currentUserPlan = 'free';
     let availableChannels = [];
     let selectedChannels = [];
+    const PLAN_LIMITS = { free: 1, pro: 1, business: 5, diamant: 10 };
+    let maxChannels = 1;
 
     // Charger les chaînes YouTube de l'utilisateur
     async function loadChannels() {
@@ -282,10 +291,13 @@
           diamant: 'Plan DIAMANT: Sélectionnez jusqu\'à 10 chaînes YouTube'
         };
         document.getElementById('planInfo').textContent = planInfo[currentUserPlan] || planInfo.free;
+        maxChannels = PLAN_LIMITS[currentUserPlan] || 1;
 
         // Afficher le formulaire approprié selon le plan (multi-chaînes pour Business et Diamant)
         if (currentUserPlan === 'business' || currentUserPlan === 'diamant') {
           document.getElementById('businessMode').style.display = 'block';
+          document.getElementById('maxCount').textContent = maxChannels;
+          document.getElementById('multiLabel').textContent = `Ajouter vos chaînes YouTube (jusqu'à ${maxChannels}) :`;
           setupBusinessMode();
         } else {
           document.getElementById('simpleMode').style.display = 'block';
@@ -321,40 +333,54 @@
     }
 
     function setupBusinessMode() {
+      document.getElementById('addChannelBtn').addEventListener('click', addChannel);
+      document.getElementById('multiChannelInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); addChannel(); }
+      });
       document.getElementById('submitBtn').addEventListener('click', submitBusinessMode);
     }
 
-    function populateChannels() {
-      if (currentUserPlan === 'business') {
-        const grid = document.getElementById('channelsGrid');
-        grid.innerHTML = availableChannels.map((ch, idx) => `
-          <label class="channel-item">
-            <input type="checkbox" value="${ch.id}" data-name="${ch.name}" onchange="onChannelToggle(this)">
-            <div class="channel-info">
-              <div class="channel-name">${ch.name}</div>
-              <div class="channel-id">${ch.id}</div>
-            </div>
-          </label>
-        `).join('');
-      } else {
-        const select = document.getElementById('channelSelect');
-        select.innerHTML += availableChannels.map(ch => `
-          <option value="${ch.id}" data-name="${ch.name}">${ch.name}</option>
-        `).join('');
+    // Ajouter une chaîne (saisie manuelle d'un Channel ID)
+    function addChannel() {
+      const input = document.getElementById('multiChannelInput');
+      const id = (input.value || '').trim();
+      document.getElementById('error').style.display = 'none';
+
+      if (!id) { showError('Colle un Channel ID YouTube'); return; }
+      if (!id.match(/^UC[a-zA-Z0-9_-]{22}$/)) {
+        showError('Channel ID invalide. Format : UC + 22 caractères'); return;
       }
+      if (selectedChannels.some(ch => ch.id === id)) {
+        showError('Cette chaîne est déjà ajoutée'); return;
+      }
+      if (selectedChannels.length >= maxChannels) {
+        showError(`Maximum ${maxChannels} chaînes pour ton forfait`); return;
+      }
+
+      selectedChannels.push({ id, name: 'Chaîne ' + (selectedChannels.length + 1) });
+      input.value = '';
+      renderSelected();
     }
 
-    function onChannelToggle(checkbox) {
-      if (checkbox.checked) {
-        if (selectedChannels.length >= 5) {
-          checkbox.checked = false;
-          alert('Maximum 5 chaînes');
-          return;
-        }
-        selectedChannels.push({ id: checkbox.value, name: checkbox.dataset.name });
-      } else {
-        selectedChannels = selectedChannels.filter(ch => ch.id !== checkbox.value);
-      }
+    // Retirer une chaîne de la liste
+    function removeChannel(id) {
+      selectedChannels = selectedChannels.filter(ch => ch.id !== id);
+      renderSelected();
+    }
+
+    // Afficher la liste des chaînes ajoutées
+    function renderSelected() {
+      const grid = document.getElementById('channelsGrid');
+      grid.style.display = selectedChannels.length ? 'block' : 'none';
+      grid.innerHTML = selectedChannels.map(ch => `
+        <div class="channel-item">
+          <div class="channel-info">
+            <div class="channel-name">${ch.name}</div>
+            <div class="channel-id">${ch.id}</div>
+          </div>
+          <button type="button" onclick="removeChannel('${ch.id}')" style="background:transparent;border:1px solid #2b3647;color:#ff6b6b;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;">Retirer</button>
+        </div>
+      `).join('');
       document.getElementById('selectedCount').textContent = selectedChannels.length;
     }
 
@@ -402,7 +428,7 @@
         const session = await Auth.getSession();
         const token = session?.access_token;
 
-        const endpoint = currentUserPlan === 'business'
+        const endpoint = (currentUserPlan === 'business' || currentUserPlan === 'diamant')
           ? `${BACKEND_URL}/channels/select-business`
           : `${BACKEND_URL}/channels/select`;
 
