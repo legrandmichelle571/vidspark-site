@@ -357,6 +357,7 @@
     .app-side{position:fixed;left:0;top:0;bottom:0;width:220px;background:#101017;border-right:1px solid #23232e;display:flex;flex-direction:column;padding:18px 14px;z-index:50;overflow-y:auto;}
     .app-side .sb-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;color:#fff;padding:6px 8px 18px;}
     .app-side .sb-brand .lg{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#f5801f,#f7941d);display:flex;align-items:center;justify-content:center;color:#06121a;}
+    .sb-section{font-size:10px;font-weight:800;letter-spacing:1px;color:#505060;padding:14px 13px 4px;text-transform:uppercase;}
     .app-side a.sb-link{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;color:#8a8a9a;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:2px;cursor:pointer;}
     .app-side a.sb-link:hover{background:#16161d;color:#fff;}
     .app-side a.sb-link.active{background:linear-gradient(135deg,#f5801f,#f7941d);color:#06121a;}
@@ -440,17 +441,27 @@
   <aside class="app-side">
     <div class="sb-brand"><span class="lg">✦</span> <span>VidSpark AI</span></div>
     <a class="sb-link active" id="lnkHome" onclick="backToHome()"><span>🏠</span> <span>Tableau de bord</span></a>
+    <div class="sb-section">📊 ANALYSE</div>
     <a class="sb-link" onclick="openTool('discover')"><span>🔍</span> <span>Discover</span></a>
+    <a class="sb-link" onclick="openTool('analyze')"><span>🎬</span> <span>Analyser une vidéo</span></a>
+    <a class="sb-link" onclick="openTool('audit')"><span>📊</span> <span>Audit de chaîne</span></a>
+    <a class="sb-link" onclick="openTool('rank')"><span>🎯</span> <span>Suivi de position</span></a>
+    <a class="sb-link" onclick="openTool('viral')"><span>🔥</span> <span>Score Viral</span></a>
+    <a class="sb-link" onclick="openTool('comments')"><span>💬</span> <span>Commentaires</span></a>
+    <div class="sb-section">✨ GÉNÉRER</div>
     <a class="sb-link" onclick="openTool('generate')"><span>✨</span> <span>Générer (IA)</span></a>
     <a class="sb-link" onclick="openTool('ideas')"><span>💡</span> <span>Idées de vidéos</span></a>
-    <a class="sb-link" onclick="openTool('abtitles')"><span>🆚</span> <span>A/B Test titres</span></a>
-    <a class="sb-link" onclick="openTool('analyze')"><span>🎬</span> <span>Analyser une vidéo</span></a>
+    <a class="sb-link" onclick="openTool('shorts')"><span>🎬</span> <span>Générateur Shorts</span></a>
+    <a class="sb-link" onclick="openTool('hook')"><span>🪝</span> <span>Hook Analyzer</span></a>
     <a class="sb-link" onclick="openTool('keywords')"><span>🔑</span> <span>Mots-clés</span></a>
     <a class="sb-link" onclick="openTool('translate')"><span>🌍</span> <span>Traduire</span></a>
     <a class="sb-link" onclick="openTool('trending')"><span>🚀</span> <span>Trending</span></a>
-    <a class="sb-link" onclick="openTool('comments')"><span>💬</span> <span>Commentaires</span></a>
-    <a class="sb-link" onclick="openTool('audit')"><span>📊</span> <span>Audit de chaîne</span></a>
-    <a class="sb-link" onclick="openTool('rank')"><span>🎯</span> <span>Suivi de position</span></a>
+    <div class="sb-section">⚔️ OPTIMISER</div>
+    <a class="sb-link" onclick="openTool('abtitles')"><span>🆚</span> <span>A/B Test titres</span></a>
+    <a class="sb-link" onclick="openTool('abthumbs')"><span>📸</span> <span>A/B Test miniatures</span></a>
+    <a class="sb-link" onclick="openTool('thumbnail')"><span>🖼</span> <span>Analyse miniature</span></a>
+    <a class="sb-link" onclick="openTool('audience')"><span>🌍</span> <span>Audience</span></a>
+    <a class="sb-link" onclick="openTool('revenue')"><span>💰</span> <span>Revenus estimés</span></a>
     <a class="sb-link" href="channels.html"><span>📺</span> <span>Mes chaînes</span></a>
     <a class="sb-link" href="billing.html"><span>💳</span> <span>Abonnement</span></a>
     <a class="sb-link" href="account.html"><span>⚙️</span> <span>Compte</span></a>

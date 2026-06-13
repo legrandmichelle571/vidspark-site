@@ -145,6 +145,13 @@
       <button class="navitem" data-view="comments" data-tier="business" onclick="nav('comments')"><span class="ic">💬</span> <span>Commentaires</span></button>
       <button class="navitem" data-view="audit" data-tier="diamant" onclick="nav('audit')"><span class="ic">📊</span> <span>Audit de chaîne</span></button>
       <button class="navitem" data-view="rank" data-tier="diamant" onclick="nav('rank')"><span class="ic">🎯</span> <span>Suivi de position</span></button>
+      <button class="navitem" data-view="viral" data-tier="pro" onclick="nav('viral')"><span class="ic">🔥</span> <span>Score Viral</span></button>
+      <button class="navitem" data-view="shorts" data-tier="pro" onclick="nav('shorts')"><span class="ic">🎬</span> <span>Générateur Shorts</span></button>
+      <button class="navitem" data-view="hook" data-tier="pro" onclick="nav('hook')"><span class="ic">🪝</span> <span>Hook Analyzer</span></button>
+      <button class="navitem" data-view="abthumbs" data-tier="pro" onclick="nav('abthumbs')"><span class="ic">📸</span> <span>A/B Test Miniatures</span></button>
+      <button class="navitem" data-view="thumbnail" data-tier="pro" onclick="nav('thumbnail')"><span class="ic">🖼</span> <span>Analyse Miniature</span></button>
+      <button class="navitem" data-view="audience" data-tier="pro" onclick="nav('audience')"><span class="ic">🌍</span> <span>Audience</span></button>
+      <button class="navitem" data-view="revenue" data-tier="pro" onclick="nav('revenue')"><span class="ic">💰</span> <span>Revenus estimés</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
@@ -306,6 +313,123 @@
         </div>
         <div id="coErr" class="err"></div>
         <div id="coResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-viral">
+      <div class="head"><h1>🔥 Score Viral</h1><p>Calcule la probabilité de viralité de ton titre : hook, émotion, chiffres. Score actuel vs potentiel.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="flex:2;"><label>Titre de ta vidéo</label><input id="viTitle" placeholder="Ex : J'ai testé 10 régimes en 30 jours"></div>
+          <select id="viLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
+          <button class="btn" onclick="runViral()">Calculer</button>
+        </div>
+        <div class="field"><label>Description (optionnel)</label><textarea id="viDesc" rows="2" placeholder="Description de ta vidéo…" style="width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--text);border-radius:8px;padding:8px;font-size:14px;resize:vertical"></textarea></div>
+        <div id="viErr" class="err"></div>
+        <div id="viResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-shorts">
+      <div class="head"><h1>🎬 Générateur de Shorts</h1><p>3 idées de Shorts avec hook, script, hashtags et les timestamps à extraire de ta vidéo.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="flex:2;"><label>Sujet de ta vidéo</label><input id="shTopic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€"></div>
+          <select id="shLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
+          <button class="btn" onclick="runShorts()">Générer</button>
+        </div>
+        <div id="shErr" class="err"></div>
+        <div id="shResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-hook">
+      <div class="head"><h1>🪝 Hook Analyzer</h1><p>Colle tes 30 premières secondes : rétention prédite, moment de décrochage et hook réécrit.</p></div>
+      <div class="panel">
+        <div class="field"><label>Intro / Hook (30 premières secondes)</label><textarea id="hkText" rows="4" placeholder="Colle ici tes 30 premières secondes de script…" style="width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--text);border-radius:8px;padding:8px;font-size:14px;resize:vertical"></textarea></div>
+        <div class="row">
+          <select id="hkLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
+          <button class="btn" onclick="runHook()">Analyser mon hook</button>
+        </div>
+        <div id="hkErr" class="err"></div>
+        <div id="hkResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-abthumbs">
+      <div class="head"><h1>📸 A/B Test Miniatures</h1><p>Upload 2 miniatures : l'IA Vision prédit laquelle génère le plus de clics.</p></div>
+      <div class="panel">
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px">
+          <div style="flex:1;min-width:160px">
+            <label style="display:block;margin-bottom:6px;font-size:12px;color:#3b82f6;font-weight:700">MINIATURE A</label>
+            <div onclick="document.getElementById('atFileA').click()" style="border:2px dashed #3b82f6;border-radius:8px;padding:16px;text-align:center;cursor:pointer;font-size:12px;color:#8888a0">📷 Choisir<input type="file" id="atFileA" accept="image/*" style="display:none" onchange="atPreview('A',this)"></div>
+            <img id="atPrevA" style="display:none;max-width:100%;border-radius:6px;margin-top:6px;border:2px solid #3b82f6">
+          </div>
+          <div style="flex:1;min-width:160px">
+            <label style="display:block;margin-bottom:6px;font-size:12px;color:#ef4444;font-weight:700">MINIATURE B</label>
+            <div onclick="document.getElementById('atFileB').click()" style="border:2px dashed #ef4444;border-radius:8px;padding:16px;text-align:center;cursor:pointer;font-size:12px;color:#8888a0">📷 Choisir<input type="file" id="atFileB" accept="image/*" style="display:none" onchange="atPreview('B',this)"></div>
+            <img id="atPrevB" style="display:none;max-width:100%;border-radius:6px;margin-top:6px;border:2px solid #ef4444">
+          </div>
+        </div>
+        <div class="row">
+          <select id="atLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
+          <button class="btn" onclick="runAbThumbs()">Comparer</button>
+        </div>
+        <div id="atErr" class="err"></div>
+        <div id="atResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-thumbnail">
+      <div class="head"><h1>🖼 Analyse Miniature IA</h1><p>L'IA Vision note ta miniature sur 100 : contraste, visage, émotion, texte + CTR estimé.</p></div>
+      <div class="panel">
+        <div onclick="document.getElementById('thFile').click()" style="border:2px dashed #f7941d;border-radius:8px;padding:20px;text-align:center;cursor:pointer;margin-bottom:12px">
+          <div style="font-size:28px">🖼</div>
+          <div style="font-size:13px;color:#8888a0">Clique pour choisir ta miniature (JPG/PNG)</div>
+          <input type="file" id="thFile" accept="image/*" style="display:none" onchange="thPreview(this)">
+        </div>
+        <img id="thPrev" style="display:none;max-width:100%;border-radius:8px;margin-bottom:12px;border:1.5px solid #f7941d">
+        <div class="row">
+          <select id="thLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
+          <button class="btn" onclick="runThumbnail()">Analyser</button>
+        </div>
+        <div id="thErr" class="err"></div>
+        <div id="thResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-audience">
+      <div class="head"><h1>🌍 Optimiseur d'Audience</h1><p>Meilleures heures, tendances locales et hashtags selon ta région et ta niche.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="flex:2;"><label>Ta niche</label><input id="auNiche" placeholder="Ex : cuisine marocaine, gaming mobile, finance"></div>
+          <select id="auRegion" class="sel">
+            <option value="FR">🇫🇷 France</option><option value="MA">🇲🇦 Maroc</option><option value="DZ">🇩🇿 Algérie</option>
+            <option value="TN">🇹🇳 Tunisie</option><option value="SA">🇸🇦 Arabie Saoudite</option><option value="EG">🇪🇬 Égypte</option>
+            <option value="US">🇺🇸 USA</option><option value="GB">🇬🇧 UK</option><option value="DE">🇩🇪 DE</option>
+          </select>
+          <select id="auLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
+          <button class="btn" onclick="runAudience()">Analyser</button>
+        </div>
+        <div id="auErr" class="err"></div>
+        <div id="auResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-revenue">
+      <div class="head"><h1>💰 Estimateur de Revenus</h1><p>Vues à 7 jours et revenus AdSense estimés selon ta niche, ton pays et tes abonnés.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="flex:2;"><label>Ta niche</label><input id="rvNiche" placeholder="Ex : finance personnelle, gaming, cuisine"></div>
+          <div class="field"><label>Abonnés</label><input id="rvSubs" type="number" placeholder="10000" style="width:110px"></div>
+          <select id="rvCountry" class="sel">
+            <option value="FR">🇫🇷 FR</option><option value="US">🇺🇸 US</option><option value="MA">🇲🇦 MA</option>
+            <option value="DZ">🇩🇿 DZ</option><option value="SA">🇸🇦 SA</option><option value="GB">🇬🇧 GB</option>
+          </select>
+          <button class="btn" onclick="runRevenue()">Estimer</button>
+        </div>
+        <div id="rvErr" class="err"></div>
+        <div id="rvResult" style="display:none;margin-top:14px;"></div>
       </div>
     </section>
 
@@ -640,6 +764,161 @@
       $('trtResult').style.display='block';
     }catch(e){ $('trtErr').textContent='❌ '+e.message; $('trtErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Traduire'; }
+  }
+
+  /* ── Score Viral ── */
+  async function runViral(){
+    const title=$('viTitle').value.trim(), desc=$('viDesc').value.trim(), lang=$('viLang').value;
+    $('viErr').style.display='none'; $('viResult').style.display='none';
+    if(!title){ $('viErr').textContent='Entre un titre.'; $('viErr').style.display='block'; return; }
+    try{
+      const {ok,status,data}=await apiPost('/api/public/ai/viral-score',{title,description:desc,language:lang});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Erreur');
+      const sc=data.current_score||0, pt=data.potential_score||0;
+      const c=sc>=70?'var(--green)':sc>=45?'var(--amber)':'var(--red)';
+      $('viResult').innerHTML=`
+        <div class="stats" style="margin-bottom:14px;">
+          <div class="stat"><div class="v" style="color:${c}">${sc}</div><div class="k">Score actuel /100</div></div>
+          <div class="stat"><div class="v" style="color:var(--green)">${pt}</div><div class="k">Potentiel /100</div></div>
+        </div>
+        ${(data.factors||[]).map(f=>`<div class="rec"><span>${f.ok?'✅':'❌'}</span><span><b>${f.label}</b> — ${f.comment}</span></div>`).join('')}
+        ${data.suggestion?`<div class="panel" style="margin-top:12px;border-left:3px solid var(--cyan)"><div class="muted" style="font-size:11px;margin-bottom:4px;">💡 Titre amélioré</div><div style="font-size:14px;font-weight:600">${data.suggestion}</div></div>`:''}`;
+      $('viResult').style.display='block';
+    }catch(e){ $('viErr').textContent='❌ '+e.message; $('viErr').style.display='block'; }
+  }
+
+  /* ── Générateur Shorts ── */
+  async function runShorts(){
+    const topic=$('shTopic').value.trim(), lang=$('shLang').value;
+    $('shErr').style.display='none'; $('shResult').style.display='none';
+    if(!topic){ $('shErr').textContent='Entre un sujet.'; $('shErr').style.display='block'; return; }
+    try{
+      const {ok,status,data}=await apiPost('/api/public/ai/shorts-generator',{topic,language:lang});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Erreur');
+      $('shResult').innerHTML=(data.shorts||[]).map((s,i)=>`
+        <div class="panel" style="margin-bottom:12px;">
+          <div style="font-size:11px;color:var(--cyan);font-weight:700;margin-bottom:6px;">🎬 SHORT ${i+1}</div>
+          <div style="font-weight:700;margin-bottom:8px;">${s.title||''}</div>
+          ${s.hook?`<div class="rec"><span>🪝</span><span>${s.hook}</span></div>`:''}
+          ${s.script?`<div class="rec" style="flex-direction:column;"><span class="muted" style="font-size:11px;">Script :</span><span style="font-size:13px;line-height:1.5;">${s.script}</span></div>`:''}
+          ${s.timestamp?`<div class="rec"><span>⏱</span><span style="color:var(--blue)">${s.timestamp}</span></div>`:''}
+          ${s.hashtags?`<div class="muted" style="font-size:12px;margin-top:6px;">${s.hashtags}</div>`:''}
+        </div>`).join('');
+      $('shResult').style.display='block';
+    }catch(e){ $('shErr').textContent='❌ '+e.message; $('shErr').style.display='block'; }
+  }
+
+  /* ── Hook Analyzer ── */
+  async function runHook(){
+    const hook=$('hkText').value.trim(), lang=$('hkLang').value;
+    $('hkErr').style.display='none'; $('hkResult').style.display='none';
+    if(hook.length<20){ $('hkErr').textContent='Colle au moins 20 caractères.'; $('hkErr').style.display='block'; return; }
+    try{
+      const {ok,status,data}=await apiPost('/api/public/ai/hook-analyzer',{hook,language:lang});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Erreur');
+      const sc=data.retention_score||0;
+      const c=sc>=70?'var(--green)':sc>=45?'var(--amber)':'var(--red)';
+      $('hkResult').innerHTML=`
+        <div class="stats" style="margin-bottom:14px;"><div class="stat"><div class="v" style="color:${c}">${sc}</div><div class="k">Rétention prédite /100</div></div></div>
+        ${data.dropout_moment?`<div class="rec"><span>⚠️</span><span>Décrochage : ${data.dropout_moment}</span></div>`:''}
+        ${(data.issues||[]).map(i=>`<div class="rec"><span>❌</span><span>${i}</span></div>`).join('')}
+        ${(data.strengths||[]).map(s=>`<div class="rec"><span>✅</span><span>${s}</span></div>`).join('')}
+        ${data.rewritten_hook?`<div class="panel" style="margin-top:12px;border-left:3px solid var(--cyan)"><div class="muted" style="font-size:11px;margin-bottom:4px;">🪝 Hook réécrit</div><div style="font-size:14px;line-height:1.6;">${data.rewritten_hook}</div></div>`:''}`;
+      $('hkResult').style.display='block';
+    }catch(e){ $('hkErr').textContent='❌ '+e.message; $('hkErr').style.display='block'; }
+  }
+
+  /* ── A/B Test Miniatures ── */
+  let atDataA=null, atDataB=null;
+  function atPreview(side,input){
+    const file=input.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=e=>{
+      if(side==='A'){ atDataA=e.target.result; $('atPrevA').src=atDataA; $('atPrevA').style.display='block'; }
+      else{ atDataB=e.target.result; $('atPrevB').src=atDataB; $('atPrevB').style.display='block'; }
+    };
+    reader.readAsDataURL(file);
+  }
+  async function runAbThumbs(){
+    $('atErr').style.display='none'; $('atResult').style.display='none';
+    if(!atDataA||!atDataB){ $('atErr').textContent='Upload les deux miniatures.'; $('atErr').style.display='block'; return; }
+    try{
+      const {ok,status,data}=await apiPost('/api/public/ai/ab-test-thumbnails',{image_a:atDataA,image_b:atDataB,language:$('atLang').value});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Erreur');
+      const wc=data.winner==='A'?'var(--blue)':'var(--red)';
+      $('atResult').innerHTML=`
+        <div class="stats" style="margin-bottom:14px;"><div class="stat"><div class="v" style="color:${wc}">🏆 ${data.winner||'?'}</div><div class="k">Miniature gagnante</div></div><div class="stat"><div class="v">${data.ctr_winner||'—'}%</div><div class="k">CTR estimé</div></div></div>
+        <div class="panel">${data.analysis||''}</div>
+        ${data.improvement?`<div class="rec"><span>💡</span><span>${data.improvement}</span></div>`:''}`;
+      $('atResult').style.display='block';
+    }catch(e){ $('atErr').textContent='❌ '+e.message; $('atErr').style.display='block'; }
+  }
+
+  /* ── Analyse Miniature ── */
+  let thData=null;
+  function thPreview(input){
+    const file=input.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=e=>{ thData=e.target.result; $('thPrev').src=thData; $('thPrev').style.display='block'; };
+    reader.readAsDataURL(file);
+  }
+  async function runThumbnail(){
+    $('thErr').style.display='none'; $('thResult').style.display='none';
+    if(!thData){ $('thErr').textContent='Upload ta miniature.'; $('thErr').style.display='block'; return; }
+    try{
+      const {ok,status,data}=await apiPost('/api/public/ai/thumbnail-analyzer',{image_base64:thData,language:$('thLang').value});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Erreur');
+      const sc=data.score||0, c=sc>=70?'var(--green)':sc>=45?'var(--amber)':'var(--red)';
+      $('thResult').innerHTML=`
+        <div class="stats" style="margin-bottom:14px;"><div class="stat"><div class="v" style="color:${c}">${sc}</div><div class="k">Score /100</div></div><div class="stat"><div class="v">${data.ctr_estimate||'—'}%</div><div class="k">CTR estimé</div></div></div>
+        ${[{l:'Contraste',v:data.contrast_score},{l:'Visage',v:data.face_score},{l:'Texte',v:data.text_score},{l:'Composition',v:data.composition_score}].filter(x=>x.v!==undefined).map(x=>{const cc=x.v>=70?'var(--green)':x.v>=45?'var(--amber)':'var(--red)';return`<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--b1)"><span style="flex:1;font-size:13px;">${x.l}</span><div style="width:100px;height:5px;background:var(--b2);border-radius:3px;overflow:hidden"><div style="height:100%;width:${x.v}%;background:${cc};border-radius:3px"></div></div><span style="font-size:13px;font-weight:700;color:${cc};min-width:30px;text-align:right">${x.v}</span></div>`;}).join('')}
+        ${(data.tips||[]).length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">💡 Conseils</div>${data.tips.map(t=>`<div class="rec"><span>▸</span><span>${t}</span></div>`).join('')}`:''}`;
+      $('thResult').style.display='block';
+    }catch(e){ $('thErr').textContent='❌ '+e.message; $('thErr').style.display='block'; }
+  }
+
+  /* ── Optimiseur Audience ── */
+  async function runAudience(){
+    const niche=$('auNiche').value.trim(), region=$('auRegion').value, lang=$('auLang').value;
+    $('auErr').style.display='none'; $('auResult').style.display='none';
+    if(!niche){ $('auErr').textContent='Entre ta niche.'; $('auErr').style.display='block'; return; }
+    try{
+      const {ok,status,data}=await apiPost('/api/public/ai/audience-optimizer',{niche,region,language:lang});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Erreur');
+      $('auResult').innerHTML=`
+        ${data.best_hours?`<div class="stats" style="margin-bottom:14px;"><div class="stat"><div class="v" style="font-size:16px;">${data.best_hours}</div><div class="k">Meilleures heures</div></div>${data.best_days?`<div class="stat"><div class="v" style="font-size:14px;">${data.best_days}</div><div class="k">Meilleurs jours</div></div>`:''}</div>`:''}
+        ${(data.trends||[]).length?`<div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">🔥 Tendances</div>${data.trends.map(t=>`<div class="rec"><span>📈</span><span>${t}</span></div>`).join('')}`:''}
+        ${(data.topics||[]).length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">💡 Sujets qui marchent</div>${data.topics.map(t=>`<div class="rec"><span>💡</span><span>${t}</span></div>`).join('')}`:''}
+        ${data.hashtags?`<div class="panel" style="margin-top:12px;"><div class="muted" style="font-size:11px;margin-bottom:4px;">🏷 Hashtags</div><div style="font-size:13px;color:var(--muted)">${data.hashtags}</div></div>`:''}`;
+      $('auResult').style.display='block';
+    }catch(e){ $('auErr').textContent='❌ '+e.message; $('auErr').style.display='block'; }
+  }
+
+  /* ── Estimateur Revenus ── */
+  async function runRevenue(){
+    const niche=$('rvNiche').value.trim(), subs=parseInt($('rvSubs').value)||0, country=$('rvCountry').value;
+    $('rvErr').style.display='none'; $('rvResult').style.display='none';
+    if(!niche){ $('rvErr').textContent='Entre ta niche.'; $('rvErr').style.display='block'; return; }
+    try{
+      const {ok,status,data}=await apiPost('/api/public/ai/revenue-estimator',{niche,subscribers:subs,country,language:'fr'});
+      if(status===403){ toolLocked(data); return; }
+      if(!ok) throw new Error(data.error||'Erreur');
+      $('rvResult').innerHTML=`
+        <div class="stats" style="margin-bottom:14px;">
+          <div class="stat"><div class="v" style="color:var(--cyan)">${(data.views_7d||0).toLocaleString()}</div><div class="k">Vues (7 jours)</div></div>
+          <div class="stat"><div class="v" style="color:var(--green)">${data.revenue_min||0}€–${data.revenue_max||0}€</div><div class="k">Revenus / mois</div></div>
+          <div class="stat"><div class="v">${data.rpm||'—'}€</div><div class="k">RPM / 1000 vues</div></div>
+        </div>
+        ${data.analysis?`<div class="panel">${data.analysis}</div>`:''}
+        ${(data.tips||[]).length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">💡 Conseils</div>${data.tips.map(t=>`<div class="rec"><span>▸</span><span>${t}</span></div>`).join('')}`:''}`;
+      $('rvResult').style.display='block';
+    }catch(e){ $('rvErr').textContent='❌ '+e.message; $('rvErr').style.display='block'; }
   }
 
   /* ── Init : connexion + plan ── */
