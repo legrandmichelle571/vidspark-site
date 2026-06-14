@@ -51,16 +51,23 @@
 /* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
+  <script src="/js/i18n.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="logo">✨</div>
     <h1>VidSpark AI</h1>
-    <p>Analysez vos vidéos YouTube avec l'IA</p>
-    <button class="btn" onclick="login()">
+    <p data-i18n="lg_sub">Analysez vos vidéos YouTube avec l'IA</p>
+    <button class="btn" onclick="login()" data-i18n="lg_btn">
       🔐 Se connecter avec Google
     </button>
   </div>
+  <script>
+    registerI18n({
+      lg_sub:{fr:"Analysez vos vidéos YouTube avec l'IA",en:'Analyze your YouTube videos with AI',es:'Analiza tus vídeos de YouTube con IA',ar:'حلّل فيديوهات يوتيوب بالذكاء الاصطناعي',pt:'Analise seus vídeos do YouTube com IA',de:'Analysiere deine YouTube-Videos mit KI',it:'Analizza i tuoi video YouTube con l’IA',ru:'Анализируйте видео YouTube с помощью ИИ',ja:'AIでYouTube動画を分析',ko:'AI로 YouTube 영상 분석',hi:'AI से अपने YouTube वीडियो का विश्लेषण करें',zh:'用 AI 分析你的 YouTube 视频',tr:'YouTube videolarını yapay zekâ ile analiz et',nl:'Analyseer je YouTube-video’s met AI'},
+      lg_btn:{fr:'🔐 Se connecter avec Google',en:'🔐 Sign in with Google',es:'🔐 Iniciar sesión con Google',ar:'🔐 تسجيل الدخول عبر Google',pt:'🔐 Entrar com Google',de:'🔐 Mit Google anmelden',it:'🔐 Accedi con Google',ru:'🔐 Войти через Google',ja:'🔐 Googleでログイン',ko:'🔐 Google로 로그인',hi:'🔐 Google से साइन इन करें',zh:'🔐 使用 Google 登录',tr:'🔐 Google ile giriş yap',nl:'🔐 Inloggen met Google'}
+    });
+  </script>
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
