@@ -15,33 +15,33 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>🏷️ Générateur de Tags YouTube</h1>
-    <p>Entre le sujet de ta vidéo : l'IA génère 15 tags SEO optimisés pour aider YouTube à comprendre et classer ta vidéo.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="gtg_h1">🏷️ Générateur de Tags YouTube</h1>
+    <p data-i18n="gtg_sub">Entre le sujet de ta vidéo : l'IA génère 15 tags SEO optimisés pour aider YouTube à comprendre et classer ta vidéo.</p>
   </div>
 
   <div class="tool-box">
     <div class="row">
-      <input type="text" id="topic" placeholder="Ex : recette de pizza maison facile" onkeydown="if(event.key==='Enter')go()">
+      <input type="text" id="topic" data-i18n-ph="gtg_ph" placeholder="Ex : recette de pizza maison facile" onkeydown="if(event.key==='Enter')run(this,go)">
       <select id="lang">
         <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="hi">हिन्दी</option><option value="tr">Türkçe</option>
       </select>
-      <button class="btn" onclick="run(this,go)">✨ Générer les tags</button>
+      <button class="btn" onclick="run(this,go)" data-i18n="gtg_btn">✨ Générer les tags</button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>À quoi servent les tags YouTube ?</h3><p>Les tags aident l'algorithme YouTube à comprendre le sujet de ta vidéo et à la proposer dans les recherches et les suggestions. Ils sont surtout utiles pour les mots-clés mal orthographiés et les variantes de ton sujet.</p></div>
-    <div class="faq-item"><h3>Combien de tags faut-il mettre ?</h3><p>YouTube autorise 500 caractères. L'idéal est 10 à 15 tags pertinents : commence par ton mot-clé principal, puis des variantes et des mots-clés de niche.</p></div>
-    <div class="faq-item"><h3>Cet outil est-il vraiment gratuit ?</h3><p>Oui, 15 générations gratuites par heure, sans compte. Pour un accès illimité + 25 outils IA directement sur YouTube, découvre VidSpark AI Pro.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="gtg_q1">À quoi servent les tags YouTube ?</h3><p data-i18n="gtg_a1">Les tags aident l'algorithme YouTube à comprendre le sujet de ta vidéo et à la proposer dans les recherches et les suggestions. Ils sont surtout utiles pour les mots-clés mal orthographiés et les variantes de ton sujet.</p></div>
+    <div class="faq-item"><h3 data-i18n="gtg_q2">Combien de tags faut-il mettre ?</h3><p data-i18n="gtg_a2">YouTube autorise 500 caractères. L'idéal est 10 à 15 tags pertinents : commence par ton mot-clé principal, puis des variantes et des mots-clés de niche.</p></div>
+    <div class="faq-item"><h3 data-i18n="gtg_q3">Cet outil est-il vraiment gratuit ?</h3><p data-i18n="gtg_a3">Oui, 15 générations gratuites par heure, sans compte. Pour un accès illimité + 25 outils IA directement sur YouTube, découvre VidSpark AI Pro.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>🚀 Génère tes tags directement sur YouTube</h3>
-    <p>L'extension VidSpark AI ajoute 25 outils IA sur chaque vidéo : tags, titres, A/B test de miniatures, analyse de rétention, tendances…</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="gtg_up_h">🚀 Génère tes tags directement sur YouTube</h3>
+    <p data-i18n="gtg_up_p">L'extension VidSpark AI ajoute 25 outils IA sur chaque vidéo : tags, titres, A/B test de miniatures, analyse de rétention, tendances…</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -50,19 +50,38 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  gtg_h1:{fr:'🏷️ Générateur de Tags YouTube',en:'🏷️ YouTube Tag Generator',es:'🏷️ Generador de Etiquetas YouTube',ar:'🏷️ مولّد وسوم يوتيوب'},
+  gtg_sub:{fr:"Entre le sujet de ta vidéo : l'IA génère 15 tags SEO optimisés pour aider YouTube à comprendre et classer ta vidéo.",en:'Enter your video topic: the AI generates 15 optimized SEO tags to help YouTube understand and rank your video.',es:'Escribe el tema de tu vídeo: la IA genera 15 etiquetas SEO optimizadas para que YouTube entienda y clasifique tu vídeo.',ar:'أدخل موضوع فيديوك: يولّد الذكاء الاصطناعي 15 وسمًا محسّنًا لمساعدة يوتيوب على فهم وترتيب فيديوك.'},
+  gtg_ph:{fr:'Ex : recette de pizza maison facile',en:'E.g. easy homemade pizza recipe',es:'Ej: receta fácil de pizza casera',ar:'مثال: وصفة بيتزا منزلية سهلة'},
+  gtg_btn:{fr:'✨ Générer les tags',en:'✨ Generate tags',es:'✨ Generar etiquetas',ar:'✨ توليد الوسوم'},
+  gtg_q1:{fr:'À quoi servent les tags YouTube ?',en:'What are YouTube tags for?',es:'¿Para qué sirven las etiquetas de YouTube?',ar:'ما فائدة وسوم يوتيوب؟'},
+  gtg_a1:{fr:"Les tags aident l'algorithme YouTube à comprendre le sujet de ta vidéo et à la proposer dans les recherches et les suggestions. Ils sont surtout utiles pour les mots-clés mal orthographiés et les variantes de ton sujet.",en:'Tags help the YouTube algorithm understand your video’s topic and surface it in search and suggestions. They’re especially useful for misspelled keywords and topic variants.',es:'Las etiquetas ayudan al algoritmo de YouTube a entender el tema de tu vídeo y mostrarlo en búsquedas y sugerencias. Son útiles sobre todo para palabras mal escritas y variantes del tema.',ar:'تساعد الوسوم خوارزمية يوتيوب على فهم موضوع فيديوك وعرضه في البحث والاقتراحات. وهي مفيدة خصوصًا للكلمات المكتوبة خطأً ومتغيّرات موضوعك.'},
+  gtg_q2:{fr:'Combien de tags faut-il mettre ?',en:'How many tags should I add?',es:'¿Cuántas etiquetas debo poner?',ar:'كم وسمًا يجب أن أضيف؟'},
+  gtg_a2:{fr:"YouTube autorise 500 caractères. L'idéal est 10 à 15 tags pertinents : commence par ton mot-clé principal, puis des variantes et des mots-clés de niche.",en:'YouTube allows 500 characters. Aim for 10–15 relevant tags: start with your main keyword, then variants and niche keywords.',es:'YouTube permite 500 caracteres. Lo ideal son 10-15 etiquetas relevantes: empieza por tu palabra clave principal, luego variantes y palabras de nicho.',ar:'يسمح يوتيوب بـ500 حرف. المثالي 10 إلى 15 وسمًا ملائمًا: ابدأ بكلمتك الرئيسية ثم المتغيّرات وكلمات المجال.'},
+  gtg_q3:{fr:'Cet outil est-il vraiment gratuit ?',en:'Is this tool really free?',es:'¿Esta herramienta es realmente gratis?',ar:'هل هذه الأداة مجانية فعلاً؟'},
+  gtg_a3:{fr:'Oui, 15 générations gratuites par heure, sans compte. Pour un accès illimité + 25 outils IA directement sur YouTube, découvre VidSpark AI Pro.',en:'Yes, 15 free generations per hour, no account. For unlimited access + 25 AI tools right on YouTube, discover VidSpark AI Pro.',es:'Sí, 15 generaciones gratis por hora, sin cuenta. Para acceso ilimitado + 25 herramientas IA en YouTube, descubre VidSpark AI Pro.',ar:'نعم، 15 توليدًا مجانيًا في الساعة، بدون حساب. للوصول غير المحدود + 25 أداة ذكاء اصطناعي على يوتيوب، اكتشف VidSpark AI Pro.'},
+  gtg_up_h:{fr:'🚀 Génère tes tags directement sur YouTube',en:'🚀 Generate your tags right on YouTube',es:'🚀 Genera tus etiquetas directamente en YouTube',ar:'🚀 ولّد وسومك مباشرةً على يوتيوب'},
+  gtg_up_p:{fr:"L'extension VidSpark AI ajoute 25 outils IA sur chaque vidéo : tags, titres, A/B test de miniatures, analyse de rétention, tendances…",en:'The VidSpark AI extension adds 25 AI tools to every video: tags, titles, thumbnail A/B test, retention analysis, trends…',es:'La extensión VidSpark AI añade 25 herramientas IA a cada vídeo: etiquetas, títulos, A/B test de miniaturas, análisis de retención, tendencias…',ar:'تضيف إضافة VidSpark AI 25 أداة ذكاء اصطناعي لكل فيديو: وسوم، عناوين، اختبار A/B للصور، تحليل الاحتفاظ، الاتجاهات…'},
+  gtg_spin:{fr:"L'IA génère tes tags…",en:'The AI is generating your tags…',es:'La IA genera tus etiquetas…',ar:'الذكاء الاصطناعي يولّد وسومك…'},
+  gtg_min:{fr:'❌ Entre un sujet (3 caractères min).',en:'❌ Enter a topic (3 chars min).',es:'❌ Escribe un tema (mín. 3 caracteres).',ar:'❌ أدخل موضوعًا (3 أحرف على الأقل).'},
+  gtg_none:{fr:'Aucun tag généré, réessaie.',en:'No tag generated, try again.',es:'No se generó ninguna etiqueta, inténtalo de nuevo.',ar:'لم يُولَّد أي وسم، حاول مجددًا.'},
+  gtg_copy:{fr:'📋 Copier tous les tags',en:'📋 Copy all tags',es:'📋 Copiar todas las etiquetas',ar:'📋 نسخ كل الوسوم'},
+  gtg_paste:{fr:'Colle-les dans YouTube Studio → Détails de la vidéo → Tags.',en:'Paste them in YouTube Studio → Video details → Tags.',es:'Pégalas en YouTube Studio → Detalles del vídeo → Etiquetas.',ar:'الصقها في YouTube Studio → تفاصيل الفيديو → الوسوم.'}
+});
 async function go(){
   const topic=document.getElementById('topic').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(topic.length<3){r.innerHTML='<div class="err">❌ Entre un sujet (3 caractères min).</div>';return;}
-  r.innerHTML=spinner('L\'IA génère tes tags…');
+  if(topic.length<3){r.innerHTML='<div class="err">'+t('gtg_min')+'</div>';return;}
+  r.innerHTML=spinner(t('gtg_spin'));
   try{
     const d=await aiCall('/api/public/ai/tags',{topic,language:lang});
     const tags=d.tags||[];
-    if(!tags.length)throw new Error('Aucun tag généré, réessaie.');
-    r.innerHTML=`<div>${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
-      <button class="btn green" style="margin-top:14px" onclick='copyTxt(${JSON.stringify(tags.join(", "))},this)'>📋 Copier tous les tags</button>
-      <div class="muted" style="margin-top:8px">Colle-les dans YouTube Studio → Détails de la vidéo → Tags.</div>`;
+    if(!tags.length)throw new Error(t('gtg_none'));
+    r.innerHTML=`<div>${tags.map(tg=>`<span class="tag">${esc(tg)}</span>`).join('')}</div>
+      <button class="btn green" style="margin-top:14px" onclick='copyTxt(${JSON.stringify(tags.join(", "))},this)'>${t('gtg_copy')}</button>
+      <div class="muted" style="margin-top:8px">${t('gtg_paste')}</div>`;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
 </script>

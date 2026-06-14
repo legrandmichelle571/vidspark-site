@@ -15,33 +15,33 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>📝 Générateur de Description YouTube</h1>
-    <p>Entre le titre ou le sujet de ta vidéo : l'IA rédige une description riche en mots-clés + des hashtags, prête à coller.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="gd_h1">📝 Générateur de Description YouTube</h1>
+    <p data-i18n="gd_sub">Entre le titre ou le sujet de ta vidéo : l'IA rédige une description riche en mots-clés + des hashtags, prête à coller.</p>
   </div>
 
   <div class="tool-box">
     <div class="row">
-      <input type="text" id="topic" placeholder="Ex : tutoriel montage vidéo pour débutants" onkeydown="if(event.key==='Enter')go()">
+      <input type="text" id="topic" data-i18n-ph="gd_ph" placeholder="Ex : tutoriel montage vidéo pour débutants" onkeydown="if(event.key==='Enter')run(this,go)">
       <select id="lang">
         <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="hi">हिन्दी</option><option value="tr">Türkçe</option>
       </select>
-      <button class="btn" onclick="run(this,go)">✨ Générer la description</button>
+      <button class="btn" onclick="run(this,go)" data-i18n="gd_btn">✨ Générer la description</button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Pourquoi la description est-elle importante ?</h3><p>YouTube indexe le texte de ta description : une description riche en mots-clés naturels aide l'algorithme à comprendre ta vidéo et à la proposer dans les recherches. Les 2 premières lignes sont visibles avant le clic « plus ».</p></div>
-    <div class="faq-item"><h3>Combien de hashtags utiliser ?</h3><p>3 à 5 hashtags pertinents suffisent. Les 3 premiers apparaissent au-dessus du titre de la vidéo.</p></div>
-    <div class="faq-item"><h3>Quelle longueur idéale ?</h3><p>Au moins 300 caractères. Une bonne description contient : un résumé accrocheur, les mots-clés naturels, un appel à l'abonnement et tes liens.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="gd_q1">Pourquoi la description est-elle importante ?</h3><p data-i18n="gd_a1">YouTube indexe le texte de ta description : une description riche en mots-clés naturels aide l'algorithme à comprendre ta vidéo et à la proposer dans les recherches. Les 2 premières lignes sont visibles avant le clic « plus ».</p></div>
+    <div class="faq-item"><h3 data-i18n="gd_q2">Combien de hashtags utiliser ?</h3><p data-i18n="gd_a2">3 à 5 hashtags pertinents suffisent. Les 3 premiers apparaissent au-dessus du titre de la vidéo.</p></div>
+    <div class="faq-item"><h3 data-i18n="gd_q3">Quelle longueur idéale ?</h3><p data-i18n="gd_a3">Au moins 300 caractères. Une bonne description contient : un résumé accrocheur, les mots-clés naturels, un appel à l'abonnement et tes liens.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>📦 Le pack complet en 1 clic</h3>
-    <p>L'extension VidSpark AI génère titre + description + « abonne-toi » + hashtags + 15 tags d'un coup, adaptés à ta niche et ta région.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="gd_up_h">📦 Le pack complet en 1 clic</h3>
+    <p data-i18n="gd_up_p">L'extension VidSpark AI génère titre + description + « abonne-toi » + hashtags + 15 tags d'un coup, adaptés à ta niche et ta région.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -50,18 +50,36 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  gd_h1:{fr:'📝 Générateur de Description YouTube',en:'📝 YouTube Description Generator',es:'📝 Generador de Descripción YouTube',ar:'📝 مولّد وصف يوتيوب'},
+  gd_sub:{fr:"Entre le titre ou le sujet de ta vidéo : l'IA rédige une description riche en mots-clés + des hashtags, prête à coller.",en:'Enter your video title or topic: the AI writes a keyword-rich description + hashtags, ready to paste.',es:'Escribe el título o tema de tu vídeo: la IA redacta una descripción rica en palabras clave + hashtags, lista para pegar.',ar:'أدخل عنوان أو موضوع فيديوك: يكتب الذكاء الاصطناعي وصفًا غنيًّا بالكلمات المفتاحية + هاشتاغات جاهزة للصق.'},
+  gd_ph:{fr:'Ex : tutoriel montage vidéo pour débutants',en:'E.g. video editing tutorial for beginners',es:'Ej: tutorial de edición de vídeo para principiantes',ar:'مثال: شرح مونتاج الفيديو للمبتدئين'},
+  gd_btn:{fr:'✨ Générer la description',en:'✨ Generate description',es:'✨ Generar descripción',ar:'✨ توليد الوصف'},
+  gd_q1:{fr:'Pourquoi la description est-elle importante ?',en:'Why is the description important?',es:'¿Por qué es importante la descripción?',ar:'لماذا الوصف مهم؟'},
+  gd_a1:{fr:"YouTube indexe le texte de ta description : une description riche en mots-clés naturels aide l'algorithme à comprendre ta vidéo et à la proposer dans les recherches. Les 2 premières lignes sont visibles avant le clic « plus ».",en:'YouTube indexes your description text: a description rich in natural keywords helps the algorithm understand your video and surface it in search. The first 2 lines show before the “more” click.',es:'YouTube indexa el texto de tu descripción: una descripción rica en palabras clave naturales ayuda al algoritmo a entender tu vídeo y mostrarlo en búsquedas. Las 2 primeras líneas se ven antes del clic “más”.',ar:'يفهرس يوتيوب نص وصفك: وصف غني بالكلمات الطبيعية يساعد الخوارزمية على فهم فيديوك وعرضه في البحث. أول سطرين يظهران قبل النقر على «المزيد».'},
+  gd_q2:{fr:'Combien de hashtags utiliser ?',en:'How many hashtags to use?',es:'¿Cuántos hashtags usar?',ar:'كم هاشتاغًا أستخدم؟'},
+  gd_a2:{fr:'3 à 5 hashtags pertinents suffisent. Les 3 premiers apparaissent au-dessus du titre de la vidéo.',en:'3 to 5 relevant hashtags are enough. The first 3 appear above the video title.',es:'Con 3 a 5 hashtags relevantes basta. Los 3 primeros aparecen encima del título del vídeo.',ar:'يكفي من 3 إلى 5 هاشتاغات ملائمة. تظهر الثلاثة الأولى فوق عنوان الفيديو.'},
+  gd_q3:{fr:'Quelle longueur idéale ?',en:'What is the ideal length?',es:'¿Cuál es la longitud ideal?',ar:'ما الطول المثالي؟'},
+  gd_a3:{fr:"Au moins 300 caractères. Une bonne description contient : un résumé accrocheur, les mots-clés naturels, un appel à l'abonnement et tes liens.",en:'At least 300 characters. A good description includes: a catchy summary, natural keywords, a subscribe call-to-action and your links.',es:'Al menos 300 caracteres. Una buena descripción incluye: un resumen atractivo, palabras clave naturales, una llamada a suscribirse y tus enlaces.',ar:'300 حرف على الأقل. الوصف الجيّد يحوي: ملخّصًا جذّابًا، كلمات طبيعية، دعوة للاشتراك، وروابطك.'},
+  gd_up_h:{fr:'📦 Le pack complet en 1 clic',en:'📦 The full pack in 1 click',es:'📦 El pack completo en 1 clic',ar:'📦 الحزمة الكاملة بنقرة واحدة'},
+  gd_up_p:{fr:"L'extension VidSpark AI génère titre + description + « abonne-toi » + hashtags + 15 tags d'un coup, adaptés à ta niche et ta région.",en:'The VidSpark AI extension generates title + description + “subscribe” + hashtags + 15 tags at once, tailored to your niche and region.',es:'La extensión VidSpark AI genera título + descripción + “suscríbete” + hashtags + 15 etiquetas de una vez, adaptados a tu nicho y región.',ar:'تولّد إضافة VidSpark AI العنوان + الوصف + «اشترك» + الهاشتاغات + 15 وسمًا دفعة واحدة، حسب مجالك ومنطقتك.'},
+  gd_spin:{fr:"L'IA rédige ta description…",en:'The AI is writing your description…',es:'La IA redacta tu descripción…',ar:'الذكاء الاصطناعي يكتب وصفك…'},
+  gd_min:{fr:'❌ Entre un sujet (3 caractères min).',en:'❌ Enter a topic (3 chars min).',es:'❌ Escribe un tema (mín. 3 caracteres).',ar:'❌ أدخل موضوعًا (3 أحرف على الأقل).'},
+  gd_none:{fr:'Aucune description générée, réessaie.',en:'No description generated, try again.',es:'No se generó ninguna descripción, inténtalo de nuevo.',ar:'لم يُولَّد أي وصف، حاول مجددًا.'},
+  gd_copy:{fr:'📋 Copier la description',en:'📋 Copy description',es:'📋 Copiar descripción',ar:'📋 نسخ الوصف'}
+});
 async function go(){
   const topic=document.getElementById('topic').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(topic.length<3){r.innerHTML='<div class="err">❌ Entre un sujet (3 caractères min).</div>';return;}
-  r.innerHTML=spinner('L\'IA rédige ta description…');
+  if(topic.length<3){r.innerHTML='<div class="err">'+t('gd_min')+'</div>';return;}
+  r.innerHTML=spinner(t('gd_spin'));
   try{
     const d=await aiCall('/api/public/ai/description',{topic,language:lang});
     const full=(d.description||'')+(d.hashtags&&d.hashtags.length?'\n\n'+d.hashtags.join(' '):'');
-    if(!d.description)throw new Error('Aucune description générée, réessaie.');
+    if(!d.description)throw new Error(t('gd_none'));
     r.innerHTML=`<textarea readonly style="width:100%;min-height:160px;resize:vertical;">${esc(full)}</textarea>
-      <button class="btn green" style="margin-top:12px" onclick='copyTxt(${JSON.stringify(full)},this)'>📋 Copier la description</button>`;
+      <button class="btn green" style="margin-top:12px" onclick='copyTxt(${JSON.stringify(full)},this)'>${t('gd_copy')}</button>`;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
 </script>
