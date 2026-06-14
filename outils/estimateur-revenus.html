@@ -12,16 +12,16 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>💰 Estimateur de Revenus</h1>
-    <p>Entre ta niche, ton pays principal et tes abonnés : l'IA estime tes vues à 7 jours et tes revenus AdSense potentiels.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="er_h1">💰 Estimateur de Revenus</h1>
+    <p data-i18n="er_sub">Entre ta niche, ton pays principal et tes abonnés : l'IA estime tes vues à 7 jours et tes revenus AdSense potentiels.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="niche" placeholder="Ta niche — ex : finance personnelle, gaming, cuisine" style="width:100%">
+      <input type="text" id="niche" data-i18n-ph="er_ph_niche" placeholder="Ta niche — ex : finance personnelle, gaming, cuisine" style="width:100%">
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <input type="number" id="subs" placeholder="Nombre d'abonnés — ex : 10000" style="flex:1;min-width:140px">
+        <input type="number" id="subs" data-i18n-ph="er_ph_subs" placeholder="Nombre d'abonnés — ex : 10000" style="flex:1;min-width:140px">
         <select id="country" style="flex:1">
           <option value="FR">🇫🇷 France</option>
           <option value="US">🇺🇸 États-Unis</option>
@@ -38,21 +38,21 @@
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option>
         </select>
       </div>
-      <button class="btn" onclick="run(this,go)">💰 Estimer mes revenus</button>
+      <button class="btn" onclick="run(this,go)" data-i18n="er_btn">💰 Estimer mes revenus</button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Comment YouTube calcule les revenus AdSense ?</h3><p>Le revenu dépend du RPM (revenu pour 1000 vues). Aux États-Unis : 3-15$/1000 vues. En France : 2-8€. Au Maghreb : 0.3-1.5€. La niche (finance, tech) a un RPM plus élevé que le gaming ou les vlogs.</p></div>
-    <div class="faq-item"><h3>Ces estimations sont-elles fiables ?</h3><p>C'est une estimation basée sur les moyennes du secteur. Le vrai revenu varie selon ton contenu, ta rétention et ton CPM réel. Utilise-le comme référence, pas comme garantie.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="er_q1">Comment YouTube calcule les revenus AdSense ?</h3><p data-i18n="er_a1">Le revenu dépend du RPM (revenu pour 1000 vues). Aux États-Unis : 3-15$/1000 vues. En France : 2-8€. Au Maghreb : 0.3-1.5€. La niche (finance, tech) a un RPM plus élevé que le gaming ou les vlogs.</p></div>
+    <div class="faq-item"><h3 data-i18n="er_q2">Ces estimations sont-elles fiables ?</h3><p data-i18n="er_a2">C'est une estimation basée sur les moyennes du secteur. Le vrai revenu varie selon ton contenu, ta rétention et ton CPM réel. Utilise-le comme référence, pas comme garantie.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>📈 Tableau de bord chaîne complet</h3>
-    <p>L'extension VidSpark donne les vraies stats de ta chaîne + l'historique de progression de tes revenus estimés.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="er_up_h">📈 Tableau de bord chaîne complet</h3>
+    <p data-i18n="er_up_p">L'extension VidSpark donne les vraies stats de ta chaîne + l'historique de progression de tes revenus estimés.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -61,38 +61,60 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  er_h1:{fr:'💰 Estimateur de Revenus',en:'💰 Revenue Estimator',es:'💰 Estimador de Ingresos',ar:'💰 مقدّر الأرباح'},
+  er_sub:{fr:"Entre ta niche, ton pays principal et tes abonnés : l'IA estime tes vues à 7 jours et tes revenus AdSense potentiels.",en:'Enter your niche, main country and subscribers: the AI estimates your 7-day views and potential AdSense revenue.',es:'Escribe tu nicho, país principal y suscriptores: la IA estima tus vistas a 7 días y tus ingresos AdSense potenciales.',ar:'أدخل مجالك وبلدك الرئيسي ومشتركيك: يقدّر الذكاء الاصطناعي مشاهداتك خلال 7 أيام وأرباح AdSense المحتملة.'},
+  er_ph_niche:{fr:'Ta niche — ex : finance personnelle, gaming, cuisine',en:'Your niche — e.g. personal finance, gaming, cooking',es:'Tu nicho — ej: finanzas personales, gaming, cocina',ar:'مجالك — مثال: المال الشخصي، الألعاب، الطبخ'},
+  er_ph_subs:{fr:"Nombre d'abonnés — ex : 10000",en:'Number of subscribers — e.g. 10000',es:'Número de suscriptores — ej: 10000',ar:'عدد المشتركين — مثال: 10000'},
+  er_btn:{fr:'💰 Estimer mes revenus',en:'💰 Estimate my revenue',es:'💰 Estimar mis ingresos',ar:'💰 قدّر أرباحي'},
+  er_q1:{fr:'Comment YouTube calcule les revenus AdSense ?',en:'How does YouTube calculate AdSense revenue?',es:'¿Cómo calcula YouTube los ingresos de AdSense?',ar:'كيف يحسب يوتيوب أرباح AdSense؟'},
+  er_a1:{fr:'Le revenu dépend du RPM (revenu pour 1000 vues). Aux États-Unis : 3-15$/1000 vues. En France : 2-8€. Au Maghreb : 0.3-1.5€. La niche (finance, tech) a un RPM plus élevé que le gaming ou les vlogs.',en:'Revenue depends on RPM (revenue per 1000 views). US: $3-15/1000 views. France: €2-8. Maghreb: €0.3-1.5. The niche (finance, tech) has a higher RPM than gaming or vlogs.',es:'El ingreso depende del RPM (ingreso por 1000 vistas). EE. UU.: 3-15$/1000 vistas. Francia: 2-8€. Magreb: 0,3-1,5€. El nicho (finanzas, tech) tiene un RPM mayor que el gaming o los vlogs.',ar:'يعتمد الدخل على RPM (الدخل لكل 1000 مشاهدة). أمريكا: 3-15$/1000. فرنسا: 2-8€. المغرب العربي: 0.3-1.5€. مجال (المال، التقنية) له RPM أعلى من الألعاب أو الـvlogs.'},
+  er_q2:{fr:'Ces estimations sont-elles fiables ?',en:'Are these estimates reliable?',es:'¿Son fiables estas estimaciones?',ar:'هل هذه التقديرات موثوقة؟'},
+  er_a2:{fr:"C'est une estimation basée sur les moyennes du secteur. Le vrai revenu varie selon ton contenu, ta rétention et ton CPM réel. Utilise-le comme référence, pas comme garantie.",en:'It’s an estimate based on industry averages. Real revenue varies with your content, retention and actual CPM. Use it as a reference, not a guarantee.',es:'Es una estimación basada en promedios del sector. El ingreso real varía según tu contenido, retención y CPM real. Úsalo como referencia, no como garantía.',ar:'إنه تقدير مبني على متوسّطات القطاع. يختلف الدخل الحقيقي حسب محتواك واحتفاظك وCPM الفعلي. استخدمه كمرجع لا كضمان.'},
+  er_up_h:{fr:'📈 Tableau de bord chaîne complet',en:'📈 Full channel dashboard',es:'📈 Panel completo del canal',ar:'📈 لوحة تحكم كاملة للقناة'},
+  er_up_p:{fr:"L'extension VidSpark donne les vraies stats de ta chaîne + l'historique de progression de tes revenus estimés.",en:'The VidSpark extension gives your channel’s real stats + the progression history of your estimated revenue.',es:'La extensión VidSpark da las estadísticas reales de tu canal + el historial de progresión de tus ingresos estimados.',ar:'تمنحك إضافة VidSpark إحصاءات قناتك الحقيقية + سجلّ تطوّر أرباحك المقدّرة.'},
+  er_niche:{fr:'❌ Entre ta niche.',en:'❌ Enter your niche.',es:'❌ Escribe tu nicho.',ar:'❌ أدخل مجالك.'},
+  er_subs:{fr:"❌ Entre ton nombre d'abonnés.",en:'❌ Enter your subscriber count.',es:'❌ Escribe tu número de suscriptores.',ar:'❌ أدخل عدد مشتركيك.'},
+  er_spin:{fr:'Calcul des revenus estimés…',en:'Calculating estimated revenue…',es:'Calculando ingresos estimados…',ar:'جارٍ حساب الأرباح المقدّرة…'},
+  er_views7:{fr:'VUES (7 JOURS)',en:'VIEWS (7 DAYS)',es:'VISTAS (7 DÍAS)',ar:'المشاهدات (7 أيام)'},
+  er_rev:{fr:'REVENUS ESTIMÉS',en:'ESTIMATED REVENUE',es:'INGRESOS ESTIMADOS',ar:'الأرباح المقدّرة'},
+  er_permonth:{fr:'par mois',en:'per month',es:'por mes',ar:'شهريًا'},
+  er_rpm:{fr:'RPM ESTIMÉ',en:'ESTIMATED RPM',es:'RPM ESTIMADO',ar:'RPM المقدّر'},
+  er_per1000:{fr:'pour 1000 vues',en:'per 1000 views',es:'por 1000 vistas',ar:'لكل 1000 مشاهدة'},
+  er_tips:{fr:'💡 CONSEILS POUR AUGMENTER TES REVENUS',en:'💡 TIPS TO INCREASE YOUR REVENUE',es:'💡 CONSEJOS PARA AUMENTAR TUS INGRESOS',ar:'💡 نصائح لزيادة أرباحك'}
+});
 async function go(){
   const niche=document.getElementById('niche').value.trim();
   const subs=parseInt(document.getElementById('subs').value)||0;
   const country=document.getElementById('country').value;
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(niche.length<2){r.innerHTML='<div class="err">❌ Entre ta niche.</div>';return;}
-  if(subs<0){r.innerHTML='<div class="err">❌ Entre ton nombre d\'abonnés.</div>';return;}
-  r.innerHTML=spinner('Calcul des revenus estimés…');
+  if(niche.length<2){r.innerHTML='<div class="err">'+t('er_niche')+'</div>';return;}
+  if(subs<0){r.innerHTML='<div class="err">'+t('er_subs')+'</div>';return;}
+  r.innerHTML=spinner(t('er_spin'));
   try{
     const d=await aiCall('/api/public/ai/revenue-estimator',{niche,subscribers:subs,country,language:lang});
     r.innerHTML=`
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
         <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;min-width:120px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">VUES (7 JOURS)</div>
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('er_views7')}</div>
           <div style="font-size:28px;font-weight:800;color:#f7941d">${(d.views_7d||0).toLocaleString()}</div>
         </div>
         <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #22c55e;min-width:120px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">REVENUS ESTIMÉS</div>
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('er_rev')}</div>
           <div style="font-size:28px;font-weight:800;color:#22c55e">${d.revenue_min||0}€ – ${d.revenue_max||0}€</div>
-          <div style="font-size:11px;color:#8888a0">par mois</div>
+          <div style="font-size:11px;color:#8888a0">${t('er_permonth')}</div>
         </div>
         <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #3b82f6;min-width:120px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">RPM ESTIMÉ</div>
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('er_rpm')}</div>
           <div style="font-size:28px;font-weight:800;color:#3b82f6">${d.rpm||'—'}€</div>
-          <div style="font-size:11px;color:#8888a0">pour 1000 vues</div>
+          <div style="font-size:11px;color:#8888a0">${t('er_per1000')}</div>
         </div>
       </div>
       ${d.analysis?`<div style="padding:12px;background:#1b2330;border-radius:8px;margin-bottom:10px;font-size:14px;line-height:1.6">${esc(d.analysis)}</div>`:''}
       ${d.tips&&d.tips.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:8px;border:1.5px solid #f7941d">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">💡 CONSEILS POUR AUGMENTER TES REVENUS</div>
-        ${d.tips.map(t=>`<div style="padding:4px 0;font-size:13px">▸ ${esc(t)}</div>`).join('')}
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">${t('er_tips')}</div>
+        ${d.tips.map(tp=>`<div style="padding:4px 0;font-size:13px">▸ ${esc(tp)}</div>`).join('')}
       </div>`:''}
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
