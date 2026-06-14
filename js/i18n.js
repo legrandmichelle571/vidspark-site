@@ -22,17 +22,30 @@
     document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML = t(el.getAttribute('data-i18n')); });
     document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder = t(el.getAttribute('data-i18n-ph')); });
   };
-  window.vsSetLang = function(code){
+  const inIframe = (function(){ try { return window.self !== window.top; } catch(e){ return true; } })();
+
+  window.vsSetLang = function(code, fromMsg){
     localStorage.setItem('vs_site_lang', code);
     document.documentElement.lang = code;
     document.documentElement.dir = RTL.has(code) ? 'rtl' : 'ltr';
     applyI18n();
+    // Synchroniser les iframes enfants et la fenêtre parente (même origine)
+    if(!fromMsg){
+      try { document.querySelectorAll('iframe').forEach(f=>f.contentWindow && f.contentWindow.postMessage({vsLang:code},'*')); } catch(e){}
+      try { if(inIframe && window.parent) window.parent.postMessage({vsLang:code},'*'); } catch(e){}
+    }
   };
+  window.addEventListener('message', e => {
+    if(e.data && e.data.vsLang && e.data.vsLang !== vsGetLang()) vsSetLang(e.data.vsLang, true);
+  });
 
   document.addEventListener('DOMContentLoaded', () => {
     const lang = vsGetLang();
     document.documentElement.lang = lang;
     document.documentElement.dir = RTL.has(lang) ? 'rtl' : 'ltr';
+
+    // Pas de sélecteur dans une iframe (la page parente en fournit un)
+    if(inIframe){ applyI18n(); return; }
 
     // Sélecteur flottant (haut-droite) — ne touche pas le markup des pages
     if(!document.getElementById('vsLangFloat')){

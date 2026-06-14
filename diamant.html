@@ -112,6 +112,8 @@
 /* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/i18n-labels.js"></script>
 </head>
 <body>
 
@@ -134,24 +136,24 @@
   <aside class="side">
     <div class="brand"><span class="logo">✦</span> <span>VidSpark AI</span></div>
     <nav class="nav">
-      <button class="navitem active" data-view="discover" data-tier="pro" onclick="nav('discover')"><span class="ic">🔍</span> <span>Discover</span></button>
-      <button class="navitem" data-view="generate" data-tier="pro" onclick="nav('generate')"><span class="ic">✨</span> <span>Générer (IA)</span></button>
-      <button class="navitem" data-view="ideas" data-tier="pro" onclick="nav('ideas')"><span class="ic">💡</span> <span>Idées de vidéos</span></button>
-      <button class="navitem" data-view="abtitles" data-tier="pro" onclick="nav('abtitles')"><span class="ic">🆚</span> <span>A/B Test titres</span></button>
-      <button class="navitem" data-view="translate" data-tier="business" onclick="nav('translate')"><span class="ic">🌍</span> <span>Traduire</span></button>
-      <button class="navitem" data-view="analyze" data-tier="pro" onclick="nav('analyze')"><span class="ic">🎬</span> <span>Analyser une vidéo</span></button>
-      <button class="navitem" data-view="keywords" data-tier="pro" onclick="nav('keywords')"><span class="ic">🔑</span> <span>Mots-clés</span></button>
-      <button class="navitem" data-view="trending" data-tier="business" onclick="nav('trending')"><span class="ic">🚀</span> <span>Trending</span></button>
-      <button class="navitem" data-view="comments" data-tier="business" onclick="nav('comments')"><span class="ic">💬</span> <span>Commentaires</span></button>
-      <button class="navitem" data-view="audit" data-tier="diamant" onclick="nav('audit')"><span class="ic">📊</span> <span>Audit de chaîne</span></button>
-      <button class="navitem" data-view="rank" data-tier="diamant" onclick="nav('rank')"><span class="ic">🎯</span> <span>Suivi de position</span></button>
-      <button class="navitem" data-view="viral" data-tier="pro" onclick="nav('viral')"><span class="ic">🔥</span> <span>Score Viral</span></button>
-      <button class="navitem" data-view="shorts" data-tier="pro" onclick="nav('shorts')"><span class="ic">🎬</span> <span>Générateur Shorts</span></button>
-      <button class="navitem" data-view="hook" data-tier="pro" onclick="nav('hook')"><span class="ic">🪝</span> <span>Hook Analyzer</span></button>
-      <button class="navitem" data-view="abthumbs" data-tier="pro" onclick="nav('abthumbs')"><span class="ic">📸</span> <span>A/B Test Miniatures</span></button>
-      <button class="navitem" data-view="thumbnail" data-tier="pro" onclick="nav('thumbnail')"><span class="ic">🖼</span> <span>Analyse Miniature</span></button>
-      <button class="navitem" data-view="audience" data-tier="pro" onclick="nav('audience')"><span class="ic">🌍</span> <span>Audience</span></button>
-      <button class="navitem" data-view="revenue" data-tier="pro" onclick="nav('revenue')"><span class="ic">💰</span> <span>Revenus estimés</span></button>
+      <button class="navitem active" data-view="discover" data-tier="pro" onclick="nav('discover')"><span class="ic">🔍</span> <span data-i18n="db_discover">Discover</span></button>
+      <button class="navitem" data-view="generate" data-tier="pro" onclick="nav('generate')"><span class="ic">✨</span> <span data-i18n="db_generate">Générer (IA)</span></button>
+      <button class="navitem" data-view="ideas" data-tier="pro" onclick="nav('ideas')"><span class="ic">💡</span> <span data-i18n="db_ideas">Idées de vidéos</span></button>
+      <button class="navitem" data-view="abtitles" data-tier="pro" onclick="nav('abtitles')"><span class="ic">🆚</span> <span data-i18n="db_abtitles">A/B Test titres</span></button>
+      <button class="navitem" data-view="translate" data-tier="business" onclick="nav('translate')"><span class="ic">🌍</span> <span data-i18n="db_translate">Traduire</span></button>
+      <button class="navitem" data-view="analyze" data-tier="pro" onclick="nav('analyze')"><span class="ic">🎬</span> <span data-i18n="db_analyze">Analyser une vidéo</span></button>
+      <button class="navitem" data-view="keywords" data-tier="pro" onclick="nav('keywords')"><span class="ic">🔑</span> <span data-i18n="db_keywords">Mots-clés</span></button>
+      <button class="navitem" data-view="trending" data-tier="business" onclick="nav('trending')"><span class="ic">🚀</span> <span data-i18n="db_trending">Trending</span></button>
+      <button class="navitem" data-view="comments" data-tier="business" onclick="nav('comments')"><span class="ic">💬</span> <span data-i18n="db_comments">Commentaires</span></button>
+      <button class="navitem" data-view="audit" data-tier="diamant" onclick="nav('audit')"><span class="ic">📊</span> <span data-i18n="db_audit">Audit de chaîne</span></button>
+      <button class="navitem" data-view="rank" data-tier="diamant" onclick="nav('rank')"><span class="ic">🎯</span> <span data-i18n="db_rank">Suivi de position</span></button>
+      <button class="navitem" data-view="viral" data-tier="pro" onclick="nav('viral')"><span class="ic">🔥</span> <span data-i18n="db_viral">Score Viral</span></button>
+      <button class="navitem" data-view="shorts" data-tier="pro" onclick="nav('shorts')"><span class="ic">🎬</span> <span data-i18n="db_shorts">Générateur Shorts</span></button>
+      <button class="navitem" data-view="hook" data-tier="pro" onclick="nav('hook')"><span class="ic">🪝</span> <span data-i18n="db_hook">Hook Analyzer</span></button>
+      <button class="navitem" data-view="abthumbs" data-tier="pro" onclick="nav('abthumbs')"><span class="ic">📸</span> <span data-i18n="db_abthumbs">A/B Test Miniatures</span></button>
+      <button class="navitem" data-view="thumbnail" data-tier="pro" onclick="nav('thumbnail')"><span class="ic">🖼</span> <span data-i18n="db_thumbnail">Analyse Miniature</span></button>
+      <button class="navitem" data-view="audience" data-tier="pro" onclick="nav('audience')"><span class="ic">🌍</span> <span data-i18n="db_audience">Audience</span></button>
+      <button class="navitem" data-view="revenue" data-tier="pro" onclick="nav('revenue')"><span class="ic">💰</span> <span data-i18n="db_revenue">Revenus estimés</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
