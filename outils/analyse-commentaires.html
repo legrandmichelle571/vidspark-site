@@ -12,34 +12,34 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>💬 Analyse Commentaires</h1>
-    <p>Entre l'URL de ta vidéo : l'IA analyse le sentiment des commentaires, identifie les demandes de ton audience et génère des idées de prochaines vidéos.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="cm_h1">💬 Analyse Commentaires</h1>
+    <p data-i18n="cm_sub">Entre l'URL de ta vidéo : l'IA analyse le sentiment des commentaires, identifie les demandes de ton audience et génère des idées de prochaines vidéos.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="video" placeholder="URL de ta vidéo YouTube — ex : youtube.com/watch?v=..." style="width:100%">
+      <input type="text" id="video" data-i18n-ph="cm_ph" placeholder="URL de ta vidéo YouTube — ex : youtube.com/watch?v=..." style="width:100%">
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option>
         </select>
-        <button class="btn" onclick="run(this,go)" style="flex:1">💬 Analyser les commentaires</button>
+        <button class="btn" onclick="run(this,go)" style="flex:1" data-i18n="cm_btn">💬 Analyser les commentaires</button>
       </div>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Combien de commentaires sont analysés ?</h3><p>L'IA analyse les 40 commentaires les plus pertinents (les plus likés et répondus) pour donner une vue représentative de l'audience.</p></div>
-    <div class="faq-item"><h3>Comment utiliser cette analyse ?</h3><p>Utilise les demandes identifiées pour planifier tes prochaines vidéos. Les commentaires négatifs indiquent ce à améliorer. Les positifs montrent ce qui plaît — fais-en plus !</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="cm_q1">Combien de commentaires sont analysés ?</h3><p data-i18n="cm_a1">L'IA analyse les 40 commentaires les plus pertinents (les plus likés et répondus) pour donner une vue représentative de l'audience.</p></div>
+    <div class="faq-item"><h3 data-i18n="cm_q2">Comment utiliser cette analyse ?</h3><p data-i18n="cm_a2">Utilise les demandes identifiées pour planifier tes prochaines vidéos. Les commentaires négatifs indiquent ce à améliorer. Les positifs montrent ce qui plaît — fais-en plus !</p></div>
   </div>
 
   <div class="upsell">
-    <h3>🤖 Réponses suggérées par l'IA</h3>
-    <p>L'extension VidSpark génère des réponses personnalisées pour tes commentaires directement depuis YouTube.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="cm_up_h">🤖 Réponses suggérées par l'IA</h3>
+    <p data-i18n="cm_up_p">L'extension VidSpark génère des réponses personnalisées pour tes commentaires directement depuis YouTube.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -48,12 +48,32 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  cm_h1:{fr:'💬 Analyse Commentaires',en:'💬 Comment Analysis',es:'💬 Análisis de Comentarios',ar:'💬 تحليل التعليقات'},
+  cm_sub:{fr:"Entre l'URL de ta vidéo : l'IA analyse le sentiment des commentaires, identifie les demandes de ton audience et génère des idées de prochaines vidéos.",en:'Enter your video URL: the AI analyzes comment sentiment, identifies your audience’s requests and generates ideas for your next videos.',es:'Escribe la URL de tu vídeo: la IA analiza el sentimiento de los comentarios, identifica las peticiones de tu audiencia y genera ideas para tus próximos vídeos.',ar:'أدخل رابط فيديوك: يحلّل الذكاء الاصطناعي مشاعر التعليقات ويحدّد طلبات جمهورك ويولّد أفكارًا لفيديوهاتك القادمة.'},
+  cm_ph:{fr:'URL de ta vidéo YouTube — ex : youtube.com/watch?v=...',en:'Your YouTube video URL — e.g. youtube.com/watch?v=...',es:'URL de tu vídeo de YouTube — ej: youtube.com/watch?v=...',ar:'رابط فيديوك على يوتيوب — مثال: youtube.com/watch?v=...'},
+  cm_btn:{fr:'💬 Analyser les commentaires',en:'💬 Analyze comments',es:'💬 Analizar comentarios',ar:'💬 حلّل التعليقات'},
+  cm_q1:{fr:'Combien de commentaires sont analysés ?',en:'How many comments are analyzed?',es:'¿Cuántos comentarios se analizan?',ar:'كم تعليقًا يُحلَّل؟'},
+  cm_a1:{fr:"L'IA analyse les 40 commentaires les plus pertinents (les plus likés et répondus) pour donner une vue représentative de l'audience.",en:'The AI analyzes the 40 most relevant comments (most liked and replied to) to give a representative view of the audience.',es:'La IA analiza los 40 comentarios más relevantes (más likes y respuestas) para dar una visión representativa de la audiencia.',ar:'يحلّل الذكاء الاصطناعي أهم 40 تعليقًا (الأكثر إعجابًا وردودًا) لإعطاء صورة تمثيلية للجمهور.'},
+  cm_q2:{fr:'Comment utiliser cette analyse ?',en:'How to use this analysis?',es:'¿Cómo usar este análisis?',ar:'كيف أستخدم هذا التحليل؟'},
+  cm_a2:{fr:"Utilise les demandes identifiées pour planifier tes prochaines vidéos. Les commentaires négatifs indiquent ce à améliorer. Les positifs montrent ce qui plaît — fais-en plus !",en:'Use the identified requests to plan your next videos. Negative comments show what to improve. Positive ones show what people love — do more of it!',es:'Usa las peticiones identificadas para planear tus próximos vídeos. Los comentarios negativos indican qué mejorar. Los positivos muestran lo que gusta — ¡haz más!',ar:'استخدم الطلبات المحدّدة لتخطيط فيديوهاتك القادمة. التعليقات السلبية تُظهر ما يجب تحسينه. الإيجابية تُظهر ما يُحبّ — افعل المزيد منه!'},
+  cm_up_h:{fr:"🤖 Réponses suggérées par l'IA",en:'🤖 AI-suggested replies',es:'🤖 Respuestas sugeridas por IA',ar:'🤖 ردود مقترحة بالذكاء الاصطناعي'},
+  cm_up_p:{fr:"L'extension VidSpark génère des réponses personnalisées pour tes commentaires directement depuis YouTube.",en:'The VidSpark extension generates personalized replies for your comments right from YouTube.',es:'La extensión VidSpark genera respuestas personalizadas para tus comentarios directamente desde YouTube.',ar:'تولّد إضافة VidSpark ردودًا مخصّصة لتعليقاتك مباشرةً من يوتيوب.'},
+  cm_min:{fr:"❌ Entre l'URL de ta vidéo.",en:'❌ Enter your video URL.',es:'❌ Escribe la URL de tu vídeo.',ar:'❌ أدخل رابط فيديوك.'},
+  cm_spin:{fr:'Analyse des commentaires en cours…',en:'Analyzing comments…',es:'Analizando comentarios…',ar:'جارٍ تحليل التعليقات…'},
+  cm_sent:{fr:'SENTIMENT',en:'SENTIMENT',es:'SENTIMIENTO',ar:'المشاعر'},
+  cm_pos:{fr:'POSITIFS',en:'POSITIVE',es:'POSITIVOS',ar:'إيجابية'},
+  cm_neg:{fr:'NÉGATIFS',en:'NEGATIVE',es:'NEGATIVOS',ar:'سلبية'},
+  cm_req:{fr:'📢 CE QUE TON AUDIENCE DEMANDE',en:'📢 WHAT YOUR AUDIENCE WANTS',es:'📢 LO QUE PIDE TU AUDIENCIA',ar:'📢 ما يطلبه جمهورك'},
+  cm_ideas:{fr:'💡 IDÉES DE PROCHAINES VIDÉOS',en:'💡 NEXT VIDEO IDEAS',es:'💡 IDEAS PARA PRÓXIMOS VÍDEOS',ar:'💡 أفكار للفيديوهات القادمة'},
+  cm_top:{fr:'⭐ COMMENTAIRE LE PLUS APPRÉCIÉ',en:'⭐ TOP COMMENT',es:'⭐ COMENTARIO MÁS VALORADO',ar:'⭐ التعليق الأكثر إعجابًا'}
+});
 async function go(){
   const video=document.getElementById('video').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(!video){r.innerHTML='<div class="err">❌ Entre l\'URL de ta vidéo.</div>';return;}
-  r.innerHTML=spinner('Analyse des commentaires en cours…');
+  if(!video){r.innerHTML='<div class="err">'+t('cm_min')+'</div>';return;}
+  r.innerHTML=spinner(t('cm_spin'));
   try{
     const d=await aiCall('/api/public/ai/comment-analyzer',{video_url:video,language:lang});
     const sent=d.sentiment||'neutre';
@@ -61,28 +81,28 @@ async function go(){
     r.innerHTML=`
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
         <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid ${sentColor};min-width:100px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">SENTIMENT</div>
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('cm_sent')}</div>
           <div style="font-size:20px;font-weight:800;color:${sentColor};text-transform:uppercase">${esc(sent)}</div>
         </div>
         <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #22c55e;min-width:100px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">POSITIFS</div>
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('cm_pos')}</div>
           <div style="font-size:20px;font-weight:800;color:#22c55e">${d.positive_pct||0}%</div>
         </div>
         <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #ef4444;min-width:100px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">NÉGATIFS</div>
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('cm_neg')}</div>
           <div style="font-size:20px;font-weight:800;color:#ef4444">${d.negative_pct||0}%</div>
         </div>
       </div>
       ${d.audience_requests&&d.audience_requests.length?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">📢 CE QUE TON AUDIENCE DEMANDE</div>
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">${t('cm_req')}</div>
         ${d.audience_requests.map(req=>`<div style="padding:6px 10px;margin-bottom:6px;background:#12121a;border-radius:6px;font-size:13px">▸ ${esc(req)}</div>`).join('')}
       </div>`:''}
       ${d.video_ideas&&d.video_ideas.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">💡 IDÉES DE PROCHAINES VIDÉOS</div>
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">${t('cm_ideas')}</div>
         ${d.video_ideas.map(v=>`<div style="padding:6px 10px;margin-bottom:6px;background:#1b2330;border-radius:6px;font-size:13px">💡 ${esc(v)}</div>`).join('')}
       </div>`:''}
       ${d.top_comment?`<div style="padding:12px;background:#1b2330;border-radius:8px;border-left:3px solid #22c55e">
-        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">⭐ COMMENTAIRE LE PLUS APPRÉCIÉ</div>
+        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('cm_top')}</div>
         <div style="font-size:13px;font-style:italic">"${esc(d.top_comment)}"</div>
       </div>`:''}
     `;
