@@ -12,35 +12,35 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>⚔️ A/B Test Titres</h1>
-    <p>Entre 2 titres : l'IA prédit lequel obtiendra le plus de clics, le CTR estimé pour chacun, et propose un titre encore meilleur.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="abt_h1">⚔️ A/B Test Titres</h1>
+    <p data-i18n="abt_sub">Entre 2 titres : l'IA prédit lequel obtiendra le plus de clics, le CTR estimé pour chacun, et propose un titre encore meilleur.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="titleA" placeholder="Titre A — ex : J'ai testé 10 régimes en 30 jours" style="width:100%;border-color:#3b82f6">
-      <input type="text" id="titleB" placeholder="Titre B — ex : Ce régime m'a fait perdre 10 kg en 1 mois" style="width:100%;border-color:#ef4444">
+      <input type="text" id="titleA" data-i18n-ph="abt_pha" placeholder="Titre A — ex : J'ai testé 10 régimes en 30 jours" style="width:100%;border-color:#3b82f6">
+      <input type="text" id="titleB" data-i18n-ph="abt_phb" placeholder="Titre B — ex : Ce régime m'a fait perdre 10 kg en 1 mois" style="width:100%;border-color:#ef4444">
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
         </select>
-        <button class="btn" onclick="run(this,go)" style="flex:1">⚔️ Comparer les titres</button>
+        <button class="btn" onclick="run(this,go)" style="flex:1" data-i18n="abt_btn">⚔️ Comparer les titres</button>
       </div>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Comment l'IA choisit le gagnant ?</h3><p>L'IA analyse le CTR attendu selon plusieurs critères : longueur optimale, présence d'un chiffre, curiosité générée, clarté du sujet, émotion et mots déclencheurs de clics.</p></div>
-    <div class="faq-item"><h3>Le CTR prédit est-il fiable ?</h3><p>C'est une estimation basée sur les bonnes pratiques YouTube. Le vrai CTR dépend aussi de ta miniature, de ta niche et de ton audience.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="abt_q1">Comment l'IA choisit le gagnant ?</h3><p data-i18n="abt_a1">L'IA analyse le CTR attendu selon plusieurs critères : longueur optimale, présence d'un chiffre, curiosité générée, clarté du sujet, émotion et mots déclencheurs de clics.</p></div>
+    <div class="faq-item"><h3 data-i18n="abt_q2">Le CTR prédit est-il fiable ?</h3><p data-i18n="abt_a2">C'est une estimation basée sur les bonnes pratiques YouTube. Le vrai CTR dépend aussi de ta miniature, de ta niche et de ton audience.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>📸 A/B Test aussi tes miniatures</h3>
-    <p>L'extension VidSpark AI permet de comparer 2 miniatures avec l'IA Vision — en plus des titres.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="abt_up_h">📸 A/B Test aussi tes miniatures</h3>
+    <p data-i18n="abt_up_p">L'extension VidSpark AI permet de comparer 2 miniatures avec l'IA Vision — en plus des titres.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -49,13 +49,28 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  abt_h1:{fr:'⚔️ A/B Test Titres',en:'⚔️ A/B Test Titles',es:'⚔️ A/B Test Títulos',ar:'⚔️ اختبار A/B للعناوين'},
+  abt_sub:{fr:"Entre 2 titres : l'IA prédit lequel obtiendra le plus de clics, le CTR estimé pour chacun, et propose un titre encore meilleur.",en:'Enter 2 titles: the AI predicts which gets more clicks, the estimated CTR for each, and suggests an even better title.',es:'Escribe 2 títulos: la IA predice cuál tendrá más clics, el CTR estimado de cada uno y propone un título aún mejor.',ar:'أدخل عنوانين: يتوقّع الذكاء الاصطناعي أيّهما يحقّق نقرات أكثر، وCTR المقدّر لكل منهما، ويقترح عنوانًا أفضل.'},
+  abt_pha:{fr:"Titre A — ex : J'ai testé 10 régimes en 30 jours",en:'Title A — e.g. I tried 10 diets in 30 days',es:'Título A — ej: Probé 10 dietas en 30 días',ar:'العنوان A — مثال: جرّبت 10 حميات في 30 يومًا'},
+  abt_phb:{fr:"Titre B — ex : Ce régime m'a fait perdre 10 kg en 1 mois",en:'Title B — e.g. This diet made me lose 10 kg in 1 month',es:'Título B — ej: Esta dieta me hizo perder 10 kg en 1 mes',ar:'العنوان B — مثال: هذه الحمية أنقصت وزني 10 كغ في شهر'},
+  abt_btn:{fr:'⚔️ Comparer les titres',en:'⚔️ Compare titles',es:'⚔️ Comparar títulos',ar:'⚔️ قارن العناوين'},
+  abt_q1:{fr:"Comment l'IA choisit le gagnant ?",en:'How does the AI pick the winner?',es:'¿Cómo elige la IA al ganador?',ar:'كيف يختار الذكاء الاصطناعي الفائز؟'},
+  abt_a1:{fr:"L'IA analyse le CTR attendu selon plusieurs critères : longueur optimale, présence d'un chiffre, curiosité générée, clarté du sujet, émotion et mots déclencheurs de clics.",en:'The AI analyzes expected CTR across several criteria: optimal length, a number, curiosity generated, topic clarity, emotion and click-trigger words.',es:'La IA analiza el CTR esperado según varios criterios: longitud óptima, un número, curiosidad generada, claridad del tema, emoción y palabras gatillo.',ar:'يحلّل الذكاء الاصطناعي CTR المتوقّع وفق عدّة معايير: الطول الأمثل، وجود رقم، الفضول المُولَّد، وضوح الموضوع، العاطفة، وكلمات تحفيز النقر.'},
+  abt_q2:{fr:'Le CTR prédit est-il fiable ?',en:'Is the predicted CTR reliable?',es:'¿Es fiable el CTR previsto?',ar:'هل CTR المتوقّع موثوق؟'},
+  abt_a2:{fr:"C'est une estimation basée sur les bonnes pratiques YouTube. Le vrai CTR dépend aussi de ta miniature, de ta niche et de ton audience.",en:'It’s an estimate based on YouTube best practices. The real CTR also depends on your thumbnail, niche and audience.',es:'Es una estimación basada en las buenas prácticas de YouTube. El CTR real también depende de tu miniatura, nicho y audiencia.',ar:'إنه تقدير مبني على أفضل ممارسات يوتيوب. يعتمد CTR الحقيقي أيضًا على صورتك المصغّرة ومجالك وجمهورك.'},
+  abt_up_h:{fr:'📸 A/B Test aussi tes miniatures',en:'📸 A/B test your thumbnails too',es:'📸 A/B test también tus miniaturas',ar:'📸 اختبر صورك المصغّرة أيضًا بـA/B'},
+  abt_up_p:{fr:"L'extension VidSpark AI permet de comparer 2 miniatures avec l'IA Vision — en plus des titres.",en:'The VidSpark AI extension lets you compare 2 thumbnails with Vision AI — on top of titles.',es:'La extensión VidSpark AI permite comparar 2 miniaturas con IA Vision — además de los títulos.',ar:'تتيح إضافة VidSpark AI مقارنة صورتين مصغّرتين بالذكاء البصري — إضافةً إلى العناوين.'},
+  abt_spin:{fr:"L'IA compare les deux titres…",en:'The AI is comparing the two titles…',es:'La IA compara los dos títulos…',ar:'الذكاء الاصطناعي يقارن العنوانين…'},
+  abt_min:{fr:'❌ Entre les deux titres (3 caractères min chacun).',en:'❌ Enter both titles (3 chars min each).',es:'❌ Escribe ambos títulos (mín. 3 caracteres cada uno).',ar:'❌ أدخل العنوانين (3 أحرف على الأقل لكل منهما).'}
+});
 async function go(){
   const tA=document.getElementById('titleA').value.trim();
   const tB=document.getElementById('titleB').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(tA.length<3||tB.length<3){r.innerHTML='<div class="err">❌ Entre les deux titres (3 caractères min chacun).</div>';return;}
-  r.innerHTML=spinner('L\'IA compare les deux titres…');
+  if(tA.length<3||tB.length<3){r.innerHTML='<div class="err">'+t('abt_min')+'</div>';return;}
+  r.innerHTML=spinner(t('abt_spin'));
   try{
     const d=await aiCall('/api/public/ai/ab-test-titles',{title_a:tA,title_b:tB,language:lang});
     const winner=d.winner==='A'?'#3b82f6':'#ef4444';
