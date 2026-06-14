@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Difficulté de Mot-clé YouTube Gratuit (Facile ou Dur à Ranker ?) — VidSpark AI</title>
+<meta name="description" content="Vérifie gratuitement si un mot-clé YouTube est facile ou difficile à ranker : score de difficulté sur 100, concurrence, vues moyennes du top et suggestions. Sans inscription.">
+<link rel="stylesheet" href="tools.css">
+<style id="orange-frames">
+.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge-free">100% GRATUIT · SANS INSCRIPTION</div>
+    <h1>🎯 Difficulté de Mot-clé YouTube</h1>
+    <p>Entre un mot-clé : on analyse les meilleures vidéos qui le ciblent et on te dit si c'est <strong>facile ou difficile</strong> de ranker dessus — avec un score sur 100.</p>
+  </div>
+
+  <div class="tool-box">
+    <div class="row" style="flex-direction:column;gap:10px">
+      <input type="text" id="kw" placeholder="Ex : recette pancakes, gaming fortnite, méditation…" style="width:100%" onkeydown="if(event.key==='Enter')run(this,go)">
+      <button class="btn" onclick="run(this,go)">🎯 Vérifier la difficulté</button>
+    </div>
+    <div class="result" id="res"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item"><h3>Comment le score de difficulté est calculé ?</h3><p>On analyse les meilleures vidéos qui rankent déjà sur ce mot-clé : leurs vues moyennes et leur fraîcheur (vues par heure). Plus le top est dominé par de grosses vidéos actives, plus c'est dur de ranker.</p></div>
+    <div class="faq-item"><h3>Quel mot-clé choisir ?</h3><p>Vise les mots-clés <strong>Faciles</strong> et <strong>Moyens</strong> si ta chaîne est récente : tu rankeras plus vite. Garde les mots-clés <strong>Difficiles</strong> pour quand tu auras de l'autorité.</p></div>
+    <div class="faq-item"><h3>C'est vraiment gratuit ?</h3><p>Oui, sans inscription. Pour la recherche de mots-clés avancée, les générateurs IA et les 25 outils, passe à VidSpark Pro.</p></div>
+  </div>
+
+  <div class="upsell">
+    <h3>🔑 Recherche de mots-clés complète</h3>
+    <p>VidSpark AI te donne les suggestions, la difficulté, la concurrence et génère titres + tags optimisés pour chaque mot-clé.</p>
+    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="tools.js?v=2"></script>
+<script>
+async function go(){
+  const q=document.getElementById('kw').value.trim();
+  const r=document.getElementById('res');
+  if(q.length<2){r.innerHTML='<div class="err">❌ Entre un mot-clé (2 caractères min).</div>';return;}
+  r.innerHTML=spinner('Analyse des meilleures vidéos sur ce mot-clé…');
+  try{
+    const resp=await fetch(API+'/api/public/ai/keyword-difficulty',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({query:q})
+    });
+    const d=await resp.json().catch(()=>({}));
+    if(!resp.ok) throw new Error(d.error||'Service indisponible');
+
+    const dif=d.difficulty||{};
+    const c=dif.color||'#8888a0';
+    const cc=d.competition==='forte'?'#ef4444':d.competition==='moyenne'?'#f5b301':'#22c55e';
+    const chips=(d.suggestions||[]).map(s=>`<span style="display:inline-block;background:#1b2330;border:1px solid #2b3647;border-radius:16px;padding:6px 12px;margin:4px;font-size:13px;cursor:pointer" onclick="document.getElementById('kw').value=this.textContent;run({disabled:false,innerHTML:'',dataset:{}},go)">${esc(s)}</span>`).join('')||'<span style="color:#8888a0">—</span>';
+
+    r.innerHTML=`
+      ${dif.score!==undefined?`<div style="text-align:center;padding:18px;background:#1b2330;border-radius:12px;border:2px solid ${c};margin-bottom:14px">
+        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">DIFFICULTÉ DE RANKING</div>
+        <div style="font-size:46px;font-weight:900;color:${c};line-height:1">${dif.score}<span style="font-size:20px">/100</span></div>
+        <div style="font-size:18px;font-weight:800;color:${c};margin-top:4px">${esc(dif.label||'')}</div>
+        ${dif.advice?`<div style="color:#8888a0;font-size:13px;margin-top:8px">${esc(dif.advice)}</div>`:''}
+        <div style="height:8px;background:#2b3647;border-radius:4px;overflow:hidden;margin-top:12px"><div style="height:100%;width:${dif.score}%;background:${c};border-radius:4px"></div></div>
+      </div>`:''}
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;min-width:120px">
+          <div style="font-size:22px;font-weight:800;color:${cc};text-transform:capitalize">${esc(d.competition||'—')}</div>
+          <div style="font-size:11px;color:#8888a0">Concurrence</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;min-width:120px">
+          <div style="font-size:22px;font-weight:800">${(d.top_avg_views||0).toLocaleString()}</div>
+          <div style="font-size:11px;color:#8888a0">Vues moy. du top</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;min-width:120px">
+          <div style="font-size:22px;font-weight:800">${d.sampled||0}</div>
+          <div style="font-size:11px;color:#8888a0">Vidéos analysées</div>
+        </div>
+      </div>
+      ${chips!=='<span style="color:#8888a0">—</span>'?`<div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:6px">💡 SUGGESTIONS (clique pour tester)</div><div>${chips}</div>`:''}
+    `;
+  }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
+}
+</script>
+</body>
+</html>
