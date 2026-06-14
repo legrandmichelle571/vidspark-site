@@ -369,17 +369,17 @@
   <div class="container">
     <!-- Header -->
     <div class="pricing-header">
-      <h1>Simple, Transparent Pricing</h1>
-      <p>Choose the perfect plan for your YouTube success</p>
+      <h1 data-i18n="pr_h1">Simple, Transparent Pricing</h1>
+      <p data-i18n="pr_sub">Choose the perfect plan for your YouTube success</p>
     </div>
 
     <!-- Billing Interval Toggle -->
     <div class="billing-toggle-section">
       <div class="billing-toggle-buttons">
-        <button class="billing-toggle-btn active" data-interval="month">Monthly</button>
-        <button class="billing-toggle-btn" data-interval="year">Yearly</button>
+        <button class="billing-toggle-btn active" data-interval="month" data-i18n="pr_monthly">Monthly</button>
+        <button class="billing-toggle-btn" data-interval="year" data-i18n="pr_yearly">Yearly</button>
       </div>
-      <span class="savings-badge" id="savingsBadge">Save ~10%</span>
+      <span class="savings-badge" id="savingsBadge" data-i18n="pr_save">Save ~10%</span>
     </div>
 
     <!-- Plans Grid -->
@@ -387,16 +387,27 @@
 
     <!-- Comparison Table -->
     <div class="comparison-section">
-      <h2>📊 Detailed Comparison</h2>
+      <h2 data-i18n="pr_compare">📊 Detailed Comparison</h2>
       <div id="comparisonTableContainer"></div>
     </div>
 
     <!-- FAQ Section -->
     <div class="faq-section">
-      <h2>❓ Frequently Asked Questions</h2>
+      <h2 data-i18n="pr_faq">❓ Frequently Asked Questions</h2>
       <div class="faq-list" id="faqContainer"></div>
     </div>
   </div>
+  <script>
+    registerI18n({
+      pr_h1:{fr:'Tarifs simples et transparents',en:'Simple, Transparent Pricing',es:'Precios simples y transparentes',ar:'أسعار بسيطة وشفّافة',pt:'Preços simples e transparentes',de:'Einfache, transparente Preise',it:'Prezzi semplici e trasparenti',ru:'Простые и прозрачные цены',ja:'シンプルで透明な料金',ko:'간단하고 투명한 요금',hi:'सरल, पारदर्शी मूल्य',zh:'简单透明的价格',tr:'Basit, şeffaf fiyatlandırma',nl:'Eenvoudige, transparante prijzen'},
+      pr_sub:{fr:'Choisis le forfait parfait pour réussir sur YouTube',en:'Choose the perfect plan for your YouTube success',es:'Elige el plan perfecto para tu éxito en YouTube',ar:'اختر الباقة المثالية لنجاحك على يوتيوب',pt:'Escolha o plano perfeito para seu sucesso no YouTube',de:'Wähle den perfekten Tarif für deinen YouTube-Erfolg',it:'Scegli il piano perfetto per il tuo successo su YouTube',ru:'Выберите идеальный тариф для успеха на YouTube',ja:'YouTube成功に最適なプランを選ぼう',ko:'YouTube 성공을 위한 완벽한 플랜 선택',hi:'अपनी YouTube सफलता के लिए सही योजना चुनें',zh:'为你的 YouTube 成功选择完美套餐',tr:'YouTube başarın için mükemmel planı seç',nl:'Kies het perfecte plan voor je YouTube-succes'},
+      pr_monthly:{fr:'Mensuel',en:'Monthly',es:'Mensual',ar:'شهري',pt:'Mensal',de:'Monatlich',it:'Mensile',ru:'Ежемесячно',ja:'月額',ko:'월간',hi:'मासिक',zh:'每月',tr:'Aylık',nl:'Maandelijks'},
+      pr_yearly:{fr:'Annuel',en:'Yearly',es:'Anual',ar:'سنوي',pt:'Anual',de:'Jährlich',it:'Annuale',ru:'Ежегодно',ja:'年額',ko:'연간',hi:'वार्षिक',zh:'每年',tr:'Yıllık',nl:'Jaarlijks'},
+      pr_save:{fr:'Économise ~10%',en:'Save ~10%',es:'Ahorra ~10%',ar:'وفّر ~10%',pt:'Economize ~10%',de:'Spare ~10%',it:'Risparmia ~10%',ru:'Скидка ~10%',ja:'約10%お得',ko:'~10% 절약',hi:'~10% बचाएँ',zh:'省约10%',tr:'~%10 tasarruf',nl:'Bespaar ~10%'},
+      pr_compare:{fr:'📊 Comparaison détaillée',en:'📊 Detailed Comparison',es:'📊 Comparación detallada',ar:'📊 مقارنة مفصّلة',pt:'📊 Comparação detalhada',de:'📊 Detaillierter Vergleich',it:'📊 Confronto dettagliato',ru:'📊 Подробное сравнение',ja:'📊 詳細比較',ko:'📊 상세 비교',hi:'📊 विस्तृत तुलना',zh:'📊 详细对比',tr:'📊 Ayrıntılı karşılaştırma',nl:'📊 Gedetailleerde vergelijking'},
+      pr_faq:{fr:'❓ Questions fréquentes',en:'❓ Frequently Asked Questions',es:'❓ Preguntas frecuentes',ar:'❓ أسئلة شائعة',pt:'❓ Perguntas frequentes',de:'❓ Häufige Fragen',it:'❓ Domande frequenti',ru:'❓ Частые вопросы',ja:'❓ よくある質問',ko:'❓ 자주 묻는 질문',hi:'❓ अक्सर पूछे जाने वाले प्रश्न',zh:'❓ 常见问题',tr:'❓ Sıkça sorulan sorular',nl:'❓ Veelgestelde vragen'}
+    });
+  </script>
 
   <script src="js/plans-config.js"></script>
   <script src="js/api.js"></script>
