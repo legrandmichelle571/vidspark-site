@@ -12,35 +12,35 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>💡 Idées de Vidéos</h1>
-    <p>Entre ta niche et un sujet : l'IA génère 10 idées de vidéos à fort potentiel viral, chacune avec titre, angle et pourquoi ça va cartonner.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="iv_h1">💡 Idées de Vidéos</h1>
+    <p data-i18n="iv_sub">Entre ta niche et un sujet : l'IA génère 10 idées de vidéos à fort potentiel viral, chacune avec titre, angle et pourquoi ça va cartonner.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="niche" placeholder="Ta niche — ex : développement personnel, cuisine, finance" style="width:100%">
-      <input type="text" id="topic" placeholder="Sujet ou mot-clé (optionnel) — ex : productivité, investissement" style="width:100%">
+      <input type="text" id="niche" data-i18n-ph="iv_ph_niche" placeholder="Ta niche — ex : développement personnel, cuisine, finance" style="width:100%">
+      <input type="text" id="topic" data-i18n-ph="iv_ph_topic" placeholder="Sujet ou mot-clé (optionnel) — ex : productivité, investissement" style="width:100%">
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
         </select>
-        <button class="btn" onclick="run(this,go)" style="flex:1">💡 Générer 10 idées</button>
+        <button class="btn" onclick="run(this,go)" style="flex:1" data-i18n="iv_btn">💡 Générer 10 idées</button>
       </div>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Comment l'IA choisit les idées ?</h3><p>L'IA analyse les tendances de ta niche, les formats qui marchent (listes, comparatifs, tutoriels, défis) et les angles émotionnels qui génèrent des clics et du watch time.</p></div>
-    <div class="faq-item"><h3>Puis-je générer des idées pour une niche arabophone ?</h3><p>Oui ! Choisis l'arabe dans le menu de langue. L'IA connaît les tendances du marché MENA et propose des idées adaptées à cette audience.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="iv_q1">Comment l'IA choisit les idées ?</h3><p data-i18n="iv_a1">L'IA analyse les tendances de ta niche, les formats qui marchent (listes, comparatifs, tutoriels, défis) et les angles émotionnels qui génèrent des clics et du watch time.</p></div>
+    <div class="faq-item"><h3 data-i18n="iv_q2">Puis-je générer des idées pour une niche arabophone ?</h3><p data-i18n="iv_a2">Oui ! Choisis l'arabe dans le menu de langue. L'IA connaît les tendances du marché MENA et propose des idées adaptées à cette audience.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>📊 Valide tes idées avec les vraies données</h3>
-    <p>L'extension VidSpark analyse les vues/heure de tes concurrents et valide si ton idée a un vrai potentiel dans ta niche.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="iv_up_h">📊 Valide tes idées avec les vraies données</h3>
+    <p data-i18n="iv_up_p">L'extension VidSpark analyse les vues/heure de tes concurrents et valide si ton idée a un vrai potentiel dans ta niche.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -49,24 +49,41 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  iv_h1:{fr:'💡 Idées de Vidéos',en:'💡 Video Ideas',es:'💡 Ideas de Vídeos',ar:'💡 أفكار فيديو'},
+  iv_sub:{fr:"Entre ta niche et un sujet : l'IA génère 10 idées de vidéos à fort potentiel viral, chacune avec titre, angle et pourquoi ça va cartonner.",en:'Enter your niche and a topic: the AI generates 10 high viral-potential video ideas, each with a title, angle and why it will work.',es:'Escribe tu nicho y un tema: la IA genera 10 ideas de vídeos con alto potencial viral, cada una con título, ángulo y por qué funcionará.',ar:'أدخل مجالك وموضوعًا: يولّد الذكاء الاصطناعي 10 أفكار فيديو عالية الانتشار، كل منها بعنوان وزاوية وسبب نجاحها.'},
+  iv_ph_niche:{fr:'Ta niche — ex : développement personnel, cuisine, finance',en:'Your niche — e.g. self-help, cooking, finance',es:'Tu nicho — ej: desarrollo personal, cocina, finanzas',ar:'مجالك — مثال: تطوير الذات، الطبخ، المال'},
+  iv_ph_topic:{fr:'Sujet ou mot-clé (optionnel) — ex : productivité, investissement',en:'Topic or keyword (optional) — e.g. productivity, investing',es:'Tema o palabra clave (opcional) — ej: productividad, inversión',ar:'موضوع أو كلمة (اختياري) — مثال: الإنتاجية، الاستثمار'},
+  iv_btn:{fr:'💡 Générer 10 idées',en:'💡 Generate 10 ideas',es:'💡 Generar 10 ideas',ar:'💡 توليد 10 أفكار'},
+  iv_q1:{fr:"Comment l'IA choisit les idées ?",en:'How does the AI pick ideas?',es:'¿Cómo elige las ideas la IA?',ar:'كيف يختار الذكاء الاصطناعي الأفكار؟'},
+  iv_a1:{fr:"L'IA analyse les tendances de ta niche, les formats qui marchent (listes, comparatifs, tutoriels, défis) et les angles émotionnels qui génèrent des clics et du watch time.",en:'The AI analyzes your niche trends, the formats that work (lists, comparisons, tutorials, challenges) and the emotional angles that drive clicks and watch time.',es:'La IA analiza las tendencias de tu nicho, los formatos que funcionan (listas, comparativas, tutoriales, retos) y los ángulos emocionales que generan clics y tiempo de visualización.',ar:'يحلّل الذكاء الاصطناعي اتجاهات مجالك والصيغ الناجحة (قوائم، مقارنات، شروحات، تحدّيات) والزوايا العاطفية التي تجلب النقرات ووقت المشاهدة.'},
+  iv_q2:{fr:'Puis-je générer des idées pour une niche arabophone ?',en:'Can I generate ideas for an Arabic-speaking niche?',es:'¿Puedo generar ideas para un nicho de habla árabe?',ar:'هل يمكنني توليد أفكار لجمهور عربي؟'},
+  iv_a2:{fr:"Oui ! Choisis l'arabe dans le menu de langue. L'IA connaît les tendances du marché MENA et propose des idées adaptées à cette audience.",en:'Yes! Pick Arabic in the language menu. The AI knows MENA market trends and suggests ideas tailored to that audience.',es:'¡Sí! Elige árabe en el menú de idioma. La IA conoce las tendencias del mercado MENA y propone ideas adaptadas a esa audiencia.',ar:'نعم! اختر العربية من قائمة اللغة. يعرف الذكاء الاصطناعي اتجاهات سوق MENA ويقترح أفكارًا تناسب هذا الجمهور.'},
+  iv_up_h:{fr:'📊 Valide tes idées avec les vraies données',en:'📊 Validate your ideas with real data',es:'📊 Valida tus ideas con datos reales',ar:'📊 تحقّق من أفكارك بالبيانات الحقيقية'},
+  iv_up_p:{fr:"L'extension VidSpark analyse les vues/heure de tes concurrents et valide si ton idée a un vrai potentiel dans ta niche.",en:'The VidSpark extension analyzes competitors’ views/hour and validates whether your idea has real potential in your niche.',es:'La extensión VidSpark analiza las vistas/hora de tus competidores y valida si tu idea tiene potencial real en tu nicho.',ar:'تحلّل إضافة VidSpark مشاهدات/ساعة منافسيك وتتحقّق إن كانت فكرتك ذات إمكانية حقيقية في مجالك.'},
+  iv_spin:{fr:"L'IA génère 10 idées de vidéos…",en:'The AI is generating 10 video ideas…',es:'La IA genera 10 ideas de vídeos…',ar:'الذكاء الاصطناعي يولّد 10 أفكار فيديو…'},
+  iv_min:{fr:'❌ Entre ta niche (2 caractères min).',en:'❌ Enter your niche (2 chars min).',es:'❌ Escribe tu nicho (mín. 2 caracteres).',ar:'❌ أدخل مجالك (حرفان على الأقل).'},
+  iv_none:{fr:'Aucune idée générée, réessaie.',en:'No idea generated, try again.',es:'No se generó ninguna idea, inténtalo de nuevo.',ar:'لم تُولَّد أي فكرة، حاول مجددًا.'},
+  iv_angle:{fr:'📐 Angle :',en:'📐 Angle:',es:'📐 Ángulo:',ar:'📐 الزاوية:'}
+});
 async function go(){
   const niche=document.getElementById('niche').value.trim();
   const topic=document.getElementById('topic').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(niche.length<2){r.innerHTML='<div class="err">❌ Entre ta niche (2 caractères min).</div>';return;}
-  r.innerHTML=spinner('L\'IA génère 10 idées de vidéos…');
+  if(niche.length<2){r.innerHTML='<div class="err">'+t('iv_min')+'</div>';return;}
+  r.innerHTML=spinner(t('iv_spin'));
   try{
     const d=await aiCall('/api/public/ai/video-ideas',{niche,topic,language:lang});
     const ideas=d.ideas||[];
-    if(!ideas.length)throw new Error('Aucune idée générée, réessaie.');
+    if(!ideas.length)throw new Error(t('iv_none'));
     r.innerHTML=ideas.map((idea,i)=>`
       <div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #2b3647;margin-bottom:10px">
         <div style="display:flex;align-items:flex-start;gap:10px">
           <div style="font-size:22px;font-weight:800;color:#f7941d;min-width:30px">${i+1}</div>
           <div style="flex:1">
             <div style="font-weight:700;font-size:15px;margin-bottom:6px">${esc(idea.title||'')}</div>
-            ${idea.angle?`<div style="font-size:13px;color:#8888a0;margin-bottom:4px">📐 Angle : ${esc(idea.angle)}</div>`:''}
+            ${idea.angle?`<div style="font-size:13px;color:#8888a0;margin-bottom:4px">${t('iv_angle')} ${esc(idea.angle)}</div>`:''}
             ${idea.why?`<div style="font-size:13px;color:#22c55e">🔥 ${esc(idea.why)}</div>`:''}
           </div>
           <button class="copy-mini" onclick='copyTxt(${JSON.stringify(idea.title||"")},this)'>⧉</button>
