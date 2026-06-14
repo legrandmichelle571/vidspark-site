@@ -319,6 +319,20 @@
 /* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
+  <script src="/js/i18n.js"></script>
+  <script>
+    registerI18n({
+      ac_profile:{fr:'Profil',en:'Profile',es:'Perfil',ar:'الملف الشخصي'},
+      ac_channels:{fr:'Chaînes YouTube',en:'YouTube Channels',es:'Canales de YouTube',ar:'قنوات يوتيوب'},
+      ac_prefs:{fr:'Préférences',en:'Preferences',es:'Preferencias',ar:'التفضيلات'},
+      ac_security:{fr:'Sécurité',en:'Security',es:'Seguridad',ar:'الأمان'},
+      ac_profile_info:{fr:'Informations du profil',en:'Profile Information',es:'Información del perfil',ar:'معلومات الملف الشخصي'},
+      ac_fullname:{fr:'Nom complet',en:'Full Name',es:'Nombre completo',ar:'الاسم الكامل'},
+      ac_save:{fr:'Enregistrer',en:'Save Changes',es:'Guardar cambios',ar:'حفظ التغييرات'},
+      ac_prefs_t:{fr:'Préférences',en:'Preferences',es:'Preferencias',ar:'التفضيلات'},
+      ac_sec_t:{fr:'Sécurité et confidentialité',en:'Security & Privacy',es:'Seguridad y privacidad',ar:'الأمان والخصوصية'}
+    });
+  </script>
 </head>
 <body>
   <aside class="app-side">
@@ -354,17 +368,17 @@
   <div class="container">
     <!-- Sidebar -->
     <div class="sidebar">
-      <div class="sidebar-item active" data-section="profile">Profile</div>
-      <div class="sidebar-item" data-section="channels">YouTube Channels</div>
-      <div class="sidebar-item" data-section="preferences">Preferences</div>
-      <div class="sidebar-item" data-section="security">Security</div>
+      <div class="sidebar-item active" data-section="profile" data-i18n="ac_profile">Profile</div>
+      <div class="sidebar-item" data-section="channels" data-i18n="ac_channels">YouTube Channels</div>
+      <div class="sidebar-item" data-section="preferences" data-i18n="ac_prefs">Preferences</div>
+      <div class="sidebar-item" data-section="security" data-i18n="ac_security">Security</div>
     </div>
 
     <!-- Content -->
     <div class="content">
       <!-- Profile Section -->
       <div class="section" id="profile-section">
-        <h2 class="section-title">Profile Information</h2>
+        <h2 class="section-title" data-i18n="ac_profile_info">Profile Information</h2>
         <p class="section-desc">Manage your account details</p>
 
         <div id="profileMessage"></div>
@@ -379,7 +393,7 @@
 
         <form id="profileForm">
           <div class="form-group">
-            <label class="form-label">Full Name</label>
+            <label class="form-label" data-i18n="ac_fullname">Full Name</label>
             <input type="text" id="fullName" class="form-input" placeholder="Your name" required>
           </div>
 
@@ -389,13 +403,13 @@
             <small style="color: var(--muted); margin-top: 4px; display: block;">Email is managed through your Google account</small>
           </div>
 
-          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="submit" class="btn btn-primary" data-i18n="ac_save">Save Changes</button>
         </form>
       </div>
 
       <!-- Channels Section -->
       <div class="section" id="channels-section" style="display: none;">
-        <h2 class="section-title">YouTube Channels</h2>
+        <h2 class="section-title" data-i18n="ac_channels">YouTube Channels</h2>
         <p class="section-desc">Manage your connected YouTube channels</p>
 
         <div id="channelsMessage"></div>
@@ -409,7 +423,7 @@
 
       <!-- Preferences Section -->
       <div class="section" id="preferences-section" style="display: none;">
-        <h2 class="section-title">Preferences</h2>
+        <h2 class="section-title" data-i18n="ac_prefs_t">Preferences</h2>
         <p class="section-desc">Customize your experience</p>
 
         <form id="preferencesForm">
@@ -436,7 +450,7 @@
 
       <!-- Security Section -->
       <div class="section" id="security-section" style="display: none;">
-        <h2 class="section-title">Security & Privacy</h2>
+        <h2 class="section-title" data-i18n="ac_sec_t">Security & Privacy</h2>
         <p class="section-desc">Manage your account security</p>
 
         <h3 style="font-size: 16px; margin: 24px 0 12px;">Account Status</h3>
