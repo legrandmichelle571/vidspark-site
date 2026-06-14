@@ -168,14 +168,14 @@
 
     <!-- Discover -->
     <section class="view active" id="view-discover">
-      <div class="head"><h1>🔍 Discover</h1><p>Explore les meilleures vidéos YouTube sur un mot-clé pour trouver des idées et analyser la concurrence.</p></div>
+      <div class="head"><h1>🔍 Discover</h1><p data-i18n="dt_disc_desc">Explore les meilleures vidéos YouTube sur un mot-clé pour trouver des idées et analyser la concurrence.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>Mot-clé</label><input id="dKeyword" placeholder="ex: montage vidéo"></div>
-          <div class="field"><label>Trier par</label>
-            <select id="dSort"><option value="views">Vues</option><option value="likes">Likes</option><option value="vph">Vues / heure</option><option value="recent">Plus récent</option></select>
+          <div class="field" style="flex:2;"><label data-i18n="dt_keyword">Mot-clé</label><input id="dKeyword" data-i18n-ph="dt_disc_ph" placeholder="ex: montage vidéo"></div>
+          <div class="field"><label data-i18n="dt_sortby">Trier par</label>
+            <select id="dSort"><option value="views" data-i18n="dt_views">Vues</option><option value="likes">Likes</option><option value="vph" data-i18n="dt_vph">Vues / heure</option><option value="recent" data-i18n="dt_recent">Plus récent</option></select>
           </div>
-          <button class="btn" id="discBtn" onclick="run(this,runDiscover)">Découvrir</button>
+          <button class="btn" id="discBtn" onclick="run(this,runDiscover)" data-i18n="dt_discover_btn">Découvrir</button>
         </div>
         <div id="discErr" class="err"></div>
       </div>
@@ -184,11 +184,11 @@
 
     <!-- Générer (IA) -->
     <section class="view" id="view-generate">
-      <div class="head"><h1>✨ Générer (IA)</h1><p>Donne un sujet → l'IA crée des titres, des tags SEO, une description et des hashtags prêts à l'emploi.</p></div>
+      <div class="head"><h1>✨ <span data-i18n="db_generate">Générer (IA)</span></h1><p data-i18n="dt_gen_desc">Donne un sujet → l'IA crée des titres, des tags SEO, une description et des hashtags prêts à l'emploi.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>Sujet de ta vidéo</label><input id="genTopic" placeholder="ex: 5 astuces pour monter une vidéo rapidement"></div>
-          <button class="btn" id="genBtn" onclick="run(this,runGenerate)">Générer</button>
+          <div class="field" style="flex:2;"><label data-i18n="dt_gen_lbl">Sujet de ta vidéo</label><input id="genTopic" data-i18n-ph="dt_gen_ph" placeholder="ex: 5 astuces pour monter une vidéo rapidement"></div>
+          <button class="btn" id="genBtn" onclick="run(this,runGenerate)" data-i18n="dt_generate_btn">Générer</button>
         </div>
         <div id="genErr" class="err"></div>
       </div>
@@ -197,11 +197,11 @@
 
     <!-- Idées de vidéos -->
     <section class="view" id="view-ideas">
-      <div class="head"><h1>💡 Idées de vidéos</h1><p>L'IA te propose 10 idées à fort potentiel viral pour ta niche.</p></div>
+      <div class="head"><h1>💡 <span data-i18n="db_ideas">Idées de vidéos</span></h1><p data-i18n="dt_ideas_desc">L'IA te propose 10 idées à fort potentiel viral pour ta niche.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>Ta niche ou ton sujet</label><input id="idTopic" placeholder="ex: cuisine végétarienne"></div>
-          <button class="btn" id="idBtn" onclick="run(this,runIdeas)">Trouver des idées</button>
+          <div class="field" style="flex:2;"><label data-i18n="dt_ideas_lbl">Ta niche ou ton sujet</label><input id="idTopic" data-i18n-ph="dt_ideas_ph" placeholder="ex: cuisine végétarienne"></div>
+          <button class="btn" id="idBtn" onclick="run(this,runIdeas)" data-i18n="dt_ideas_btn">Trouver des idées</button>
         </div>
         <div id="idErr" class="err"></div>
       </div>
@@ -210,11 +210,11 @@
 
     <!-- A/B Test titres -->
     <section class="view" id="view-abtitles">
-      <div class="head"><h1>🆚 A/B Test de titres</h1><p>L'IA prédit lequel de tes 2 titres obtiendra le meilleur taux de clics.</p></div>
+      <div class="head"><h1>🆚 <span data-i18n="dt_ab_title">A/B Test de titres</span></h1><p data-i18n="dt_ab_desc">L'IA prédit lequel de tes 2 titres obtiendra le meilleur taux de clics.</p></div>
       <div class="panel">
-        <div class="field"><label>Titre A</label><input id="abA" placeholder="Premier titre"></div>
-        <div class="field"><label>Titre B</label><input id="abB" placeholder="Deuxième titre"></div>
-        <button class="btn" id="abBtn" onclick="run(this,runAbTitles)">Comparer</button>
+        <div class="field"><label data-i18n="dt_ab_a">Titre A</label><input id="abA" data-i18n-ph="dt_ab_pha" placeholder="Premier titre"></div>
+        <div class="field"><label data-i18n="dt_ab_b">Titre B</label><input id="abB" data-i18n-ph="dt_ab_phb" placeholder="Deuxième titre"></div>
+        <button class="btn" id="abBtn" onclick="run(this,runAbTitles)" data-i18n="dt_compare_btn">Comparer</button>
         <div id="abErr" class="err"></div>
         <div id="abResult" style="display:none;margin-top:14px;"></div>
       </div>
@@ -222,15 +222,15 @@
 
     <!-- Traduire -->
     <section class="view" id="view-translate">
-      <div class="head"><h1>🌍 Traduire / localiser</h1><p>Traduis et adapte ton titre + description vers une autre langue (SEO inclus).</p></div>
+      <div class="head"><h1>🌍 <span data-i18n="dt_tr_title">Traduire / localiser</span></h1><p data-i18n="dt_tr_desc">Traduis et adapte ton titre + description vers une autre langue (SEO inclus).</p></div>
       <div class="panel">
-        <div class="field"><label>Titre</label><input id="trTitle" placeholder="Ton titre"></div>
-        <div class="field"><label>Description (optionnel)</label><input id="trDesc" placeholder="Ta description"></div>
+        <div class="field"><label data-i18n="dt_tr_t">Titre</label><input id="trTitle" data-i18n-ph="dt_tr_pht" placeholder="Ton titre"></div>
+        <div class="field"><label data-i18n="dt_tr_d">Description (optionnel)</label><input id="trDesc" data-i18n-ph="dt_tr_phd" placeholder="Ta description"></div>
         <div class="row">
-          <div class="field"><label>Langue cible</label>
-            <select id="trLang"><option value="en">Anglais</option><option value="es">Espagnol</option><option value="ar">Arabe</option><option value="de">Allemand</option><option value="pt">Portugais</option><option value="it">Italien</option></select>
+          <div class="field"><label data-i18n="dt_tr_target">Langue cible</label>
+            <select id="trLang"><option value="en">English</option><option value="es">Español</option><option value="ar">العربية</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="it">Italiano</option></select>
           </div>
-          <button class="btn" id="trtBtn" onclick="run(this,runTranslate)">Traduire</button>
+          <button class="btn" id="trtBtn" onclick="run(this,runTranslate)" data-i18n="db_translate">Traduire</button>
         </div>
         <div id="trtErr" class="err"></div>
         <div id="trtResult" style="display:none;margin-top:14px;"></div>
@@ -239,14 +239,14 @@
 
     <!-- Audit -->
     <section class="view" id="view-audit">
-      <div class="head"><h1>📊 Audit de chaîne</h1><p>Score de santé sur 100, points forts et axes d'amélioration, basés sur tes vraies données YouTube.</p></div>
+      <div class="head"><h1>📊 <span data-i18n="db_audit">Audit de chaîne</span></h1><p data-i18n="dt_audit_desc">Score de santé sur 100, points forts et axes d'amélioration, basés sur tes vraies données YouTube.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>ID ou URL de ta chaîne YouTube</label><input id="auditChannelId" placeholder="ex: UCxxxxxxxx ou youtube.com/channel/UC..."></div>
-          <button class="btn" id="auditBtn" onclick="run(this,runAudit)">Lancer l'audit</button>
+          <div class="field" style="flex:2;"><label data-i18n="dt_audit_lbl">ID ou URL de ta chaîne YouTube</label><input id="auditChannelId" placeholder="ex: UCxxxxxxxx ou youtube.com/channel/UC..."></div>
+          <button class="btn" id="auditBtn" onclick="run(this,runAudit)" data-i18n="dt_audit_btn">Lancer l'audit</button>
         </div>
-        <div id="auditChannelWrap" style="display:none;margin-top:8px;"><label class="muted" style="font-size:12px;">Ou une de tes chaînes :</label><select id="auditChannel" onchange="document.getElementById('auditChannelId').value=this.value" style="margin-top:5px;"></select></div>
-        <p class="muted" style="margin-top:10px;font-size:12px;">💡 Comment trouver l'ID : va sur ta chaîne → l'URL contient <b>youtube.com/channel/UC...</b> — copie la partie qui commence par UC.</p>
+        <div id="auditChannelWrap" style="display:none;margin-top:8px;"><label class="muted" style="font-size:12px;" data-i18n="dt_audit_orch">Ou une de tes chaînes :</label><select id="auditChannel" onchange="document.getElementById('auditChannelId').value=this.value" style="margin-top:5px;"></select></div>
+        <p class="muted" style="margin-top:10px;font-size:12px;" data-i18n="dt_audit_help">💡 Comment trouver l'ID : va sur ta chaîne → l'URL contient <b>youtube.com/channel/UC...</b> — copie la partie qui commence par UC.</p>
         <div id="auditErr" class="err"></div>
       </div>
       <div class="panel" id="auditResult" style="display:none;"></div>
@@ -254,12 +254,12 @@
 
     <!-- Rank -->
     <section class="view" id="view-rank">
-      <div class="head"><h1>🎯 Suivi de position</h1><p>Trouve la position d'une de tes vidéos dans les résultats YouTube pour un mot-clé donné.</p></div>
+      <div class="head"><h1>🎯 <span data-i18n="db_rank">Suivi de position</span></h1><p data-i18n="dt_rank_desc">Trouve la position d'une de tes vidéos dans les résultats YouTube pour un mot-clé donné.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field"><label>Mot-clé</label><input id="rkKeyword" placeholder="ex: recette tiramisu"></div>
-          <div class="field"><label>ID de la vidéo</label><input id="rkVideo" placeholder="ex: dQw4w9WgXcQ"></div>
-          <button class="btn" id="rankBtn" onclick="run(this,runRank)">Vérifier</button>
+          <div class="field"><label data-i18n="dt_keyword">Mot-clé</label><input id="rkKeyword" data-i18n-ph="dt_rank_phk" placeholder="ex: recette tiramisu"></div>
+          <div class="field"><label data-i18n="dt_rank_vid">ID de la vidéo</label><input id="rkVideo" placeholder="ex: dQw4w9WgXcQ"></div>
+          <button class="btn" id="rankBtn" onclick="run(this,runRank)" data-i18n="dt_check_btn">Vérifier</button>
         </div>
         <div id="rankErr" class="err"></div>
         <div id="rankResult" style="display:none;"></div>
