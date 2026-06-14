@@ -12,34 +12,34 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">💎 RÉSERVÉ AUX ABONNÉS DIAMANT</div>
-    <h1>📈 Audit de Chaîne</h1>
-    <p>Entre le lien de ta chaîne YouTube : l'IA analyse les vraies statistiques (vues, engagement, fréquence) et te donne un score de santé + un plan d'action.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="ac_badge">💎 RÉSERVÉ AUX ABONNÉS DIAMANT</div>
+    <h1 data-i18n="ac_h1">📈 Audit de Chaîne</h1>
+    <p data-i18n="ac_sub">Entre le lien de ta chaîne YouTube : l'IA analyse les vraies statistiques (vues, engagement, fréquence) et te donne un score de santé + un plan d'action.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="channel" placeholder="Lien de ta chaîne — ex : youtube.com/@maChaine ou youtube.com/channel/UC..." style="width:100%">
+      <input type="text" id="channel" data-i18n-ph="ac_ph" placeholder="Lien de ta chaîne — ex : youtube.com/@maChaine ou youtube.com/channel/UC..." style="width:100%">
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option>
         </select>
-        <button class="btn" onclick="run(this,go)" style="flex:1">📈 Auditer ma chaîne</button>
+        <button class="btn" onclick="run(this,go)" style="flex:1" data-i18n="ac_btn">📈 Auditer ma chaîne</button>
       </div>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Quelles données sont analysées ?</h3><p>L'audit analyse les 25 dernières vidéos : vues moyennes, engagement (likes+commentaires/vues), fréquence d'upload, utilisation des tags, longueur des titres et les meilleures/pires performances.</p></div>
-    <div class="faq-item"><h3>Quelle est la fréquence d'upload recommandée ?</h3><p>Pour les petites chaînes : 1-2 vidéos/semaine. Pour les grandes : 3-5. L'important c'est la régularité — YouTube favorise les chaînes qui publient à intervalles réguliers.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="ac_q1">Quelles données sont analysées ?</h3><p data-i18n="ac_a1">L'audit analyse les 25 dernières vidéos : vues moyennes, engagement (likes+commentaires/vues), fréquence d'upload, utilisation des tags, longueur des titres et les meilleures/pires performances.</p></div>
+    <div class="faq-item"><h3 data-i18n="ac_q2">Quelle est la fréquence d'upload recommandée ?</h3><p data-i18n="ac_a2">Pour les petites chaînes : 1-2 vidéos/semaine. Pour les grandes : 3-5. L'important c'est la régularité — YouTube favorise les chaînes qui publient à intervalles réguliers.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>💎 Plan Diamant — Multi-chaînes</h3>
-    <p>Avec le plan Diamant, audite jusqu'à 10 chaînes YouTube simultanément et compare leurs performances.</p>
-    <a href="/diamant.html" class="btn" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">Découvrir le Plan Diamant — 49€/mois</a>
+    <h3 data-i18n="ac_up_h">💎 Plan Diamant — Multi-chaînes</h3>
+    <p data-i18n="ac_up_p">Avec le plan Diamant, audite jusqu'à 10 chaînes YouTube simultanément et compare leurs performances.</p>
+    <a href="/diamant.html" class="btn" style="background:linear-gradient(135deg,#a855f7,#7c3aed)" data-i18n="ac_up_btn">Découvrir le Plan Diamant — 49€/mois</a>
   </div>
 </div>
 
@@ -48,12 +48,35 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  ac_badge:{fr:'💎 RÉSERVÉ AUX ABONNÉS DIAMANT',en:'💎 DIAMANT SUBSCRIBERS ONLY',es:'💎 SOLO SUSCRIPTORES DIAMANT',ar:'💎 لمشتركي DIAMANT فقط',pt:'💎 APENAS ASSINANTES DIAMANT',de:'💎 NUR FÜR DIAMANT-ABOS',it:'💎 SOLO ABBONATI DIAMANT',ru:'💎 ТОЛЬКО ДЛЯ DIAMANT',ja:'💎 DIAMANT会員限定',ko:'💎 DIAMANT 전용',hi:'💎 केवल DIAMANT के लिए',zh:'💎 仅限 DIAMANT 会员',tr:'💎 SADECE DIAMANT ABONELERİ',nl:'💎 ALLEEN DIAMANT-ABONNEES'},
+  ac_h1:{fr:'📈 Audit de Chaîne',en:'📈 Channel Audit',es:'📈 Auditoría de Canal',ar:'📈 تدقيق القناة'},
+  ac_sub:{fr:"Entre le lien de ta chaîne YouTube : l'IA analyse les vraies statistiques (vues, engagement, fréquence) et te donne un score de santé + un plan d'action.",en:'Enter your YouTube channel link: the AI analyzes real stats (views, engagement, frequency) and gives you a health score + an action plan.',es:'Escribe el enlace de tu canal de YouTube: la IA analiza las estadísticas reales (vistas, engagement, frecuencia) y te da una puntuación de salud + un plan de acción.',ar:'أدخل رابط قناتك على يوتيوب: يحلّل الذكاء الاصطناعي الإحصاءات الحقيقية (المشاهدات، التفاعل، التكرار) ويمنحك نقاط صحّة + خطّة عمل.'},
+  ac_ph:{fr:'Lien de ta chaîne — ex : youtube.com/@maChaine ou youtube.com/channel/UC...',en:'Your channel link — e.g. youtube.com/@myChannel or youtube.com/channel/UC...',es:'Enlace de tu canal — ej: youtube.com/@miCanal o youtube.com/channel/UC...',ar:'رابط قناتك — مثال: youtube.com/@قناتي أو youtube.com/channel/UC...'},
+  ac_btn:{fr:'📈 Auditer ma chaîne',en:'📈 Audit my channel',es:'📈 Auditar mi canal',ar:'📈 دقّق قناتي'},
+  ac_q1:{fr:'Quelles données sont analysées ?',en:'What data is analyzed?',es:'¿Qué datos se analizan?',ar:'ما البيانات التي تُحلَّل؟'},
+  ac_a1:{fr:"L'audit analyse les 25 dernières vidéos : vues moyennes, engagement (likes+commentaires/vues), fréquence d'upload, utilisation des tags, longueur des titres et les meilleures/pires performances.",en:'The audit analyzes the last 25 videos: average views, engagement (likes+comments/views), upload frequency, tag usage, title length and the best/worst performers.',es:'La auditoría analiza los últimos 25 vídeos: vistas medias, engagement (likes+comentarios/vistas), frecuencia de subida, uso de etiquetas, longitud de títulos y los mejores/peores rendimientos.',ar:'يحلّل التدقيق آخر 25 فيديو: متوسّط المشاهدات، التفاعل (إعجابات+تعليقات/مشاهدات)، تكرار النشر، استخدام الوسوم، طول العناوين، وأفضل/أسوأ الأداء.'},
+  ac_q2:{fr:"Quelle est la fréquence d'upload recommandée ?",en:'What is the recommended upload frequency?',es:'¿Cuál es la frecuencia de subida recomendada?',ar:'ما تكرار النشر الموصى به؟'},
+  ac_a2:{fr:"Pour les petites chaînes : 1-2 vidéos/semaine. Pour les grandes : 3-5. L'important c'est la régularité — YouTube favorise les chaînes qui publient à intervalles réguliers.",en:'For small channels: 1-2 videos/week. For large ones: 3-5. Consistency is key — YouTube favors channels that post at regular intervals.',es:'Para canales pequeños: 1-2 vídeos/semana. Para grandes: 3-5. La clave es la constancia — YouTube favorece a los canales que publican con regularidad.',ar:'للقنوات الصغيرة: 1-2 فيديو/أسبوع. للكبيرة: 3-5. المهم هو الانتظام — يفضّل يوتيوب القنوات التي تنشر بانتظام.'},
+  ac_up_h:{fr:'💎 Plan Diamant — Multi-chaînes',en:'💎 Diamant Plan — Multi-channel',es:'💎 Plan Diamant — Multicanal',ar:'💎 خطة Diamant — متعدّدة القنوات'},
+  ac_up_p:{fr:"Avec le plan Diamant, audite jusqu'à 10 chaînes YouTube simultanément et compare leurs performances.",en:'With the Diamant plan, audit up to 10 YouTube channels at once and compare their performance.',es:'Con el plan Diamant, audita hasta 10 canales de YouTube a la vez y compara su rendimiento.',ar:'مع خطة Diamant، دقّق حتى 10 قنوات يوتيوب دفعة واحدة وقارن أداءها.'},
+  ac_up_btn:{fr:'Découvrir le Plan Diamant — 49€/mois',en:'Discover the Diamant Plan — €49/mo',es:'Descubre el Plan Diamant — 49€/mes',ar:'اكتشف خطة Diamant — 49€ شهريًا'},
+  ac_min:{fr:'❌ Entre le lien de ta chaîne.',en:'❌ Enter your channel link.',es:'❌ Escribe el enlace de tu canal.',ar:'❌ أدخل رابط قناتك.'},
+  ac_spin:{fr:'Audit de la chaîne en cours (peut prendre 15s)…',en:'Auditing the channel (may take 15s)…',es:'Auditando el canal (puede tardar 15s)…',ar:'جارٍ تدقيق القناة (قد يستغرق 15 ثانية)…'},
+  ac_health:{fr:'SCORE DE SANTÉ DE LA CHAÎNE',en:'CHANNEL HEALTH SCORE',es:'PUNTUACIÓN DE SALUD DEL CANAL',ar:'نقاط صحّة القناة'},
+  ac_subs:{fr:'Abonnés',en:'Subscribers',es:'Suscriptores',ar:'المشتركون'},
+  ac_avgv:{fr:'Vues moy.',en:'Avg. views',es:'Vistas medias',ar:'متوسّط المشاهدات'},
+  ac_eng:{fr:'Engagement',en:'Engagement',es:'Engagement',ar:'التفاعل'},
+  ac_freq:{fr:'Upload freq.',en:'Upload freq.',es:'Frec. subida',ar:'تكرار النشر'},
+  ac_perv:{fr:'j/vidéo',en:'d/video',es:'d/vídeo',ar:'يوم/فيديو'},
+  ac_plan:{fr:"🎯 PLAN D'ACTION",en:'🎯 ACTION PLAN',es:'🎯 PLAN DE ACCIÓN',ar:'🎯 خطّة العمل'}
+});
 async function go(){
   const channel=document.getElementById('channel').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(channel.length<3){r.innerHTML='<div class="err">❌ Entre le lien de ta chaîne.</div>';return;}
-  r.innerHTML=spinner('Audit de la chaîne en cours (peut prendre 15s)…');
+  if(channel.length<3){r.innerHTML='<div class="err">'+t('ac_min')+'</div>';return;}
+  r.innerHTML=spinner(t('ac_spin'));
   try{
     const d=await aiCall('/api/diamant/audit',{channel_url:channel,language:lang});
     const health=d.health_score||0;
@@ -61,22 +84,22 @@ async function go(){
     r.innerHTML=`
       <div style="text-align:center;padding:20px;background:#1b2330;border-radius:12px;border:2px solid ${c};margin-bottom:16px">
         <div style="font-size:18px;font-weight:700;margin-bottom:4px">${esc(d.channel_name||'')}</div>
-        <div style="font-size:11px;color:#8888a0;margin-bottom:10px">SCORE DE SANTÉ DE LA CHAÎNE</div>
+        <div style="font-size:11px;color:#8888a0;margin-bottom:10px">${t('ac_health')}</div>
         <div style="font-size:56px;font-weight:900;color:${c}">${health}<span style="font-size:22px">/100</span></div>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
         ${[
-          {label:'Abonnés',val:(d.subscribers||0).toLocaleString()},
-          {label:'Vues moy.',val:(d.avg_views||0).toLocaleString()},
-          {label:'Engagement',val:(d.avg_engagement||0)+'%'},
-          {label:'Upload freq.',val:d.upload_freq_days?d.upload_freq_days+'j/vidéo':'—'},
+          {label:t('ac_subs'),val:(d.subscribers||0).toLocaleString()},
+          {label:t('ac_avgv'),val:(d.avg_views||0).toLocaleString()},
+          {label:t('ac_eng'),val:(d.avg_engagement||0)+'%'},
+          {label:t('ac_freq'),val:d.upload_freq_days?d.upload_freq_days+t('ac_perv'):'—'},
         ].map(k=>`<div style="flex:1;min-width:100px;text-align:center;padding:12px;background:#1b2330;border-radius:8px;border:1.5px solid #2b3647">
           <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${k.label}</div>
           <div style="font-size:18px;font-weight:700;color:#f7941d">${k.val}</div>
         </div>`).join('')}
       </div>
       ${d.recommendations&&d.recommendations.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🎯 PLAN D'ACTION</div>
+        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">${t('ac_plan')}</div>
         ${d.recommendations.map(rec=>`<div style="padding:6px 0;font-size:13px;border-bottom:1px solid #1b2330">▸ ${esc(rec)}</div>`).join('')}
       </div>`:''}
     `;
