@@ -15,58 +15,75 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>✨ Générateur de Titres YouTube</h1>
-    <p>Décris ta vidéo : l'IA propose 5 titres optimisés (SEO, clics, viral, Shorts, tendance), chacun noté sur 100.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="gt_h1">✨ Générateur de Titres YouTube</h1>
+    <p data-i18n="gt_sub">Décris ta vidéo : l'IA propose 5 titres optimisés (SEO, clics, viral, Shorts, tendance), chacun noté sur 100.</p>
   </div>
 
   <div class="tool-box">
     <div class="row">
-      <input type="text" id="topic" placeholder="Ex : j'ai testé la voiture la moins chère du monde" onkeydown="if(event.key==='Enter')go()">
+      <input type="text" id="topic" data-i18n-ph="gt_ph" placeholder="Ex : j'ai testé la voiture la moins chère du monde" onkeydown="if(event.key==='Enter')run(this,go)">
       <select id="lang">
         <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="hi">हिन्दी</option><option value="tr">Türkçe</option>
       </select>
-      <button class="btn" onclick="run(this,go)">✨ Générer 5 titres</button>
+      <button class="btn" onclick="run(this,go)" data-i18n="gt_btn">✨ Générer 5 titres</button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Qu'est-ce qui fait un bon titre YouTube ?</h3><p>Un bon titre fait 40 à 70 caractères, contient le mot-clé principal au début, crée de la curiosité (question, chiffre, mot fort) et reste fidèle au contenu de la vidéo.</p></div>
-    <div class="faq-item"><h3>Que signifient les types SEO, CTR, Viral… ?</h3><p>SEO = optimisé pour la recherche YouTube/Google. CTR = maximise le taux de clics. Viral = joue sur l'émotion et la curiosité. Shorts = court et percutant. Trending = surfe sur les formulations à la mode.</p></div>
-    <div class="faq-item"><h3>Puis-je générer en arabe ou en anglais ?</h3><p>Oui, choisis la langue dans le menu : l'IA écrit des titres natifs dans 8 langues, dont l'arabe.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="gt_q1">Qu'est-ce qui fait un bon titre YouTube ?</h3><p data-i18n="gt_a1">Un bon titre fait 40 à 70 caractères, contient le mot-clé principal au début, crée de la curiosité (question, chiffre, mot fort) et reste fidèle au contenu de la vidéo.</p></div>
+    <div class="faq-item"><h3 data-i18n="gt_q2">Que signifient les types SEO, CTR, Viral… ?</h3><p data-i18n="gt_a2">SEO = optimisé pour la recherche YouTube/Google. CTR = maximise le taux de clics. Viral = joue sur l'émotion et la curiosité. Shorts = court et percutant. Trending = surfe sur les formulations à la mode.</p></div>
+    <div class="faq-item"><h3 data-i18n="gt_q3">Puis-je générer en arabe ou en anglais ?</h3><p data-i18n="gt_a3">Oui, choisis la langue dans le menu : l'IA écrit des titres natifs dans 8 langues, dont l'arabe.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>🩺 Va plus loin avec le Title Doctor</h3>
-    <p>L'extension VidSpark AI note ton titre EN DIRECT pendant que tu l'écris, et l'A/B test prédit lequel de deux titres gagnera.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="gt_up_h">🩺 Va plus loin avec le Title Doctor</h3>
+    <p data-i18n="gt_up_p">L'extension VidSpark AI note ton titre EN DIRECT pendant que tu l'écris, et l'A/B test prédit lequel de deux titres gagnera.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/api.js"></script>
 <script src="/js/auth.js"></script>
-<script src="tools.js?v=3"></script>
+<script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  gt_h1:{fr:'✨ Générateur de Titres YouTube',en:'✨ YouTube Title Generator',es:'✨ Generador de Títulos YouTube',ar:'✨ مولّد عناوين يوتيوب'},
+  gt_sub:{fr:"Décris ta vidéo : l'IA propose 5 titres optimisés (SEO, clics, viral, Shorts, tendance), chacun noté sur 100.",en:'Describe your video: the AI suggests 5 optimized titles (SEO, clicks, viral, Shorts, trending), each scored out of 100.',es:'Describe tu vídeo: la IA propone 5 títulos optimizados (SEO, clics, viral, Shorts, tendencia), cada uno puntuado sobre 100.',ar:'صف فيديوك: يقترح الذكاء الاصطناعي 5 عناوين محسّنة (SEO، نقرات، انتشار، Shorts، رائج)، كل منها بنتيجة من 100.'},
+  gt_ph:{fr:"Ex : j'ai testé la voiture la moins chère du monde",en:'E.g. I tested the cheapest car in the world',es:'Ej: probé el coche más barato del mundo',ar:'مثال: جرّبت أرخص سيارة في العالم'},
+  gt_btn:{fr:'✨ Générer 5 titres',en:'✨ Generate 5 titles',es:'✨ Generar 5 títulos',ar:'✨ توليد 5 عناوين'},
+  gt_q1:{fr:'Qu\'est-ce qui fait un bon titre YouTube ?',en:'What makes a good YouTube title?',es:'¿Qué hace un buen título de YouTube?',ar:'ما الذي يصنع عنوان يوتيوب جيّدًا؟'},
+  gt_a1:{fr:'Un bon titre fait 40 à 70 caractères, contient le mot-clé principal au début, crée de la curiosité (question, chiffre, mot fort) et reste fidèle au contenu de la vidéo.',en:'A good title is 40–70 characters, has the main keyword early, sparks curiosity (question, number, power word) and stays true to the video.',es:'Un buen título tiene 40-70 caracteres, incluye la palabra clave al inicio, genera curiosidad (pregunta, número, palabra potente) y es fiel al vídeo.',ar:'العنوان الجيّد بين 40 و70 حرفًا، يحوي الكلمة المفتاحية مبكرًا، يثير الفضول (سؤال، رقم، كلمة قوية)، ويبقى صادقًا للمحتوى.'},
+  gt_q2:{fr:'Que signifient les types SEO, CTR, Viral… ?',en:'What do the SEO, CTR, Viral types mean?',es:'¿Qué significan los tipos SEO, CTR, Viral…?',ar:'ماذا تعني أنواع SEO وCTR وViral…؟'},
+  gt_a2:{fr:'SEO = optimisé pour la recherche YouTube/Google. CTR = maximise le taux de clics. Viral = joue sur l\'émotion et la curiosité. Shorts = court et percutant. Trending = surfe sur les formulations à la mode.',en:'SEO = optimized for YouTube/Google search. CTR = maximizes click rate. Viral = plays on emotion and curiosity. Shorts = short and punchy. Trending = rides trendy phrasings.',es:'SEO = optimizado para búsqueda YouTube/Google. CTR = maximiza clics. Viral = juega con emoción y curiosidad. Shorts = corto y contundente. Trending = usa frases de moda.',ar:'SEO = محسّن لبحث يوتيوب/جوجل. CTR = يزيد معدّل النقر. Viral = يلعب على العاطفة والفضول. Shorts = قصير ومؤثّر. Trending = يركب الصيغ الرائجة.'},
+  gt_q3:{fr:'Puis-je générer en arabe ou en anglais ?',en:'Can I generate in Arabic or English?',es:'¿Puedo generar en árabe o inglés?',ar:'هل يمكنني التوليد بالعربية أو الإنجليزية؟'},
+  gt_a3:{fr:'Oui, choisis la langue dans le menu : l\'IA écrit des titres natifs dans 8 langues, dont l\'arabe.',en:'Yes, pick the language in the menu: the AI writes native titles in 8 languages, including Arabic.',es:'Sí, elige el idioma en el menú: la IA escribe títulos nativos en 8 idiomas, incluido el árabe.',ar:'نعم، اختر اللغة من القائمة: يكتب الذكاء الاصطناعي عناوين أصلية بـ8 لغات، منها العربية.'},
+  gt_up_h:{fr:'🩺 Va plus loin avec le Title Doctor',en:'🩺 Go further with the Title Doctor',es:'🩺 Ve más allá con el Title Doctor',ar:'🩺 اذهب أبعد مع طبيب العناوين'},
+  gt_up_p:{fr:"L'extension VidSpark AI note ton titre EN DIRECT pendant que tu l'écris, et l'A/B test prédit lequel de deux titres gagnera.",en:'The VidSpark AI extension scores your title LIVE as you type, and the A/B test predicts which of two titles wins.',es:'La extensión VidSpark AI puntúa tu título EN VIVO mientras escribes, y el A/B test predice cuál de dos títulos gana.',ar:'تقيّم إضافة VidSpark AI عنوانك مباشرةً أثناء الكتابة، واختبار A/B يتوقّع أيّ العنوانين يفوز.'},
+  gt_spin:{fr:"L'IA écrit tes titres…",en:'The AI is writing your titles…',es:'La IA escribe tus títulos…',ar:'الذكاء الاصطناعي يكتب عناوينك…'},
+  gt_min:{fr:'❌ Entre un sujet (3 caractères min).',en:'❌ Enter a topic (3 chars min).',es:'❌ Escribe un tema (mín. 3 caracteres).',ar:'❌ أدخل موضوعًا (3 أحرف على الأقل).'},
+  gt_none:{fr:'Aucun titre généré, réessaie.',en:'No title generated, try again.',es:'No se generó ningún título, inténtalo de nuevo.',ar:'لم يُولَّد أي عنوان، حاول مجددًا.'}
+});
 async function go(){
   const topic=document.getElementById('topic').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(topic.length<3){r.innerHTML='<div class="err">❌ Entre un sujet (3 caractères min).</div>';return;}
-  r.innerHTML=spinner('L\'IA écrit tes titres…');
+  if(topic.length<3){r.innerHTML='<div class="err">'+t('gt_min')+'</div>';return;}
+  r.innerHTML=spinner(t('gt_spin'));
   try{
     const d=await aiCall('/api/public/ai/titles',{topic,language:lang});
     const titles=d.titles||[];
-    if(!titles.length)throw new Error('Aucun titre généré, réessaie.');
-    r.innerHTML=titles.map(t=>{
-      const c=(t.score||70)>=70?'#22c55e':(t.score||70)>=45?'#f5b301':'#ef4444';
+    if(!titles.length)throw new Error(t('gt_none'));
+    r.innerHTML=titles.map(ti=>{
+      const c=(ti.score||70)>=70?'#22c55e':(ti.score||70)>=45?'#f5b301':'#ef4444';
       return `<div class="title-item">
-        <div class="tx">${esc(t.text)}</div>
-        ${t.hook?`<span class="tag">${esc(t.hook)}</span>`:''}
-        <span class="sc" style="color:${c}">${t.score||'—'}/100</span>
-        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(t.text||"")},this)'>⧉</button>
+        <div class="tx">${esc(ti.text)}</div>
+        ${ti.hook?`<span class="tag">${esc(ti.hook)}</span>`:''}
+        <span class="sc" style="color:${c}">${ti.score||'—'}/100</span>
+        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(ti.text||"")},this)'>⧉</button>
       </div>`;
     }).join('');
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
