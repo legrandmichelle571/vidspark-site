@@ -1076,8 +1076,8 @@
     var l=document.getElementById('loading'); if(l) l.style.display='none';
     document.getElementById('studioWrap').style.display='block';
     var f=document.getElementById('studioFrame');
-    if(!studioLoaded){ f.src='diamant.html?embed=1&v=3#'+view; studioLoaded=true; }
-    else { try{ f.contentWindow.postMessage({studioNav:view},'*'); }catch(e){ f.src='diamant.html?embed=1&v=3#'+view; } }
+    if(!studioLoaded){ f.src='diamant.html?embed=1&v=4#'+view; studioLoaded=true; }
+    else { try{ f.contentWindow.postMessage({studioNav:view},'*'); }catch(e){ f.src='diamant.html?embed=1&v=4#'+view; } }
     setActiveLink(view);
     window.scrollTo(0,0);
   }

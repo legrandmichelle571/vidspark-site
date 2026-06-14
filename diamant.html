@@ -606,8 +606,17 @@
       if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
       const cc = data.competition==='forte'?'var(--red)':data.competition==='moyenne'?'var(--amber)':'var(--green)';
+      const dif = data.difficulty || {};
+      const difColor = dif.color || 'var(--muted)';
       const chips=(data.suggestions||[]).map(s=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:16px;padding:6px 12px;margin:4px;font-size:13px;cursor:pointer;" onclick="document.getElementById('kwQuery').value=this.textContent;runKeywords();">${s}</span>`).join('')||'<span class="muted">—</span>';
       $('kwResult').innerHTML=`
+        ${dif.score!==undefined?`<div style="text-align:center;padding:16px;background:var(--bg);border-radius:12px;border:2px solid ${difColor};margin-bottom:14px;">
+          <div class="k" style="margin-bottom:4px;">DIFFICULTÉ DE RANKING</div>
+          <div style="font-size:40px;font-weight:900;color:${difColor};line-height:1;">${dif.score}<span style="font-size:18px;">/100</span></div>
+          <div style="font-size:16px;font-weight:800;color:${difColor};margin-top:4px;">${dif.label||''}</div>
+          ${dif.advice?`<div class="muted" style="margin-top:8px;font-size:13px;">${dif.advice}</div>`:''}
+          <div style="height:7px;background:var(--b2);border-radius:4px;overflow:hidden;margin-top:10px;"><div style="height:100%;width:${dif.score}%;background:${difColor};border-radius:4px;"></div></div>
+        </div>`:''}
         <div class="stats" style="margin-bottom:14px;">
           <div class="stat"><div class="v" style="color:${cc};text-transform:capitalize;">${data.competition||'—'}</div><div class="k">Concurrence</div></div>
           <div class="stat"><div class="v">${fmtN(data.top_avg_views||0)}</div><div class="k">Vues moy. du top</div></div>
