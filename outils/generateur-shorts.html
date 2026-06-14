@@ -12,35 +12,35 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>🎬 Générateur de Shorts</h1>
-    <p>Décris ta vidéo longue : l'IA génère 3 idées de Shorts avec hook percutant, script complet, hashtags et les passages exacts à extraire.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="gs_h1">🎬 Générateur de Shorts</h1>
+    <p data-i18n="gs_sub">Décris ta vidéo longue : l'IA génère 3 idées de Shorts avec hook percutant, script complet, hashtags et les passages exacts à extraire.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="topic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€" style="width:100%">
-      <textarea id="desc" placeholder="Résumé de ta vidéo (optionnel) — pour des Shorts plus précis" rows="3" style="width:100%;background:#12121a;border:1.5px solid #2b3647;color:#e8e8f0;border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
+      <input type="text" id="topic" data-i18n-ph="gs_ph_topic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€" style="width:100%">
+      <textarea id="desc" data-i18n-ph="gs_ph_desc" placeholder="Résumé de ta vidéo (optionnel) — pour des Shorts plus précis" rows="3" style="width:100%;background:#12121a;border:1.5px solid #2b3647;color:#e8e8f0;border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
         </select>
-        <button class="btn" onclick="run(this,go)" style="flex:1">🎬 Générer 3 Shorts</button>
+        <button class="btn" onclick="run(this,go)" style="flex:1" data-i18n="gs_btn">🎬 Générer 3 Shorts</button>
       </div>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Quelle longueur idéale pour un Short ?</h3><p>Entre 30 et 60 secondes. L'algorithme YouTube favorise les Shorts où les gens regardent jusqu'à la fin — donc plus c'est court et accrocheur, mieux c'est.</p></div>
-    <div class="faq-item"><h3>Comment extraire un Short depuis ma vidéo longue ?</h3><p>Utilise YouTube Studio (option "Couper" ou "Shorts"), CapCut, ou DaVinci Resolve. L'IA te donne les timestamps exacts à couper.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="gs_q1">Quelle longueur idéale pour un Short ?</h3><p data-i18n="gs_a1">Entre 30 et 60 secondes. L'algorithme YouTube favorise les Shorts où les gens regardent jusqu'à la fin — donc plus c'est court et accrocheur, mieux c'est.</p></div>
+    <div class="faq-item"><h3 data-i18n="gs_q2">Comment extraire un Short depuis ma vidéo longue ?</h3><p data-i18n="gs_a2">Utilise YouTube Studio (option "Couper" ou "Shorts"), CapCut, ou DaVinci Resolve. L'IA te donne les timestamps exacts à couper.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>📱 Extension complète pour Shorts</h3>
-    <p>L'extension VidSpark analyse directement ta vidéo YouTube et propose les meilleurs moments à couper en Shorts.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="gs_up_h">📱 Extension complète pour Shorts</h3>
+    <p data-i18n="gs_up_p">L'extension VidSpark analyse directement ta vidéo YouTube et propose les meilleurs moments à couper en Shorts.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -49,17 +49,34 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  gs_h1:{fr:'🎬 Générateur de Shorts',en:'🎬 Shorts Generator',es:'🎬 Generador de Shorts',ar:'🎬 مولّد Shorts'},
+  gs_sub:{fr:"Décris ta vidéo longue : l'IA génère 3 idées de Shorts avec hook percutant, script complet, hashtags et les passages exacts à extraire.",en:'Describe your long video: the AI generates 3 Shorts ideas with a punchy hook, full script, hashtags and the exact clips to extract.',es:'Describe tu vídeo largo: la IA genera 3 ideas de Shorts con gancho potente, guion completo, hashtags y los fragmentos exactos a extraer.',ar:'صف فيديوك الطويل: يولّد الذكاء الاصطناعي 3 أفكار Shorts مع خطّاف قوي ونص كامل وهاشتاغات والمقاطع الدقيقة للاقتطاع.'},
+  gs_ph_topic:{fr:"Ex : J'ai comparé 5 smartphones à moins de 200€",en:'E.g. I compared 5 phones under €200',es:'Ej: Comparé 5 móviles de menos de 200€',ar:'مثال: قارنت 5 هواتف بأقل من 200€'},
+  gs_ph_desc:{fr:'Résumé de ta vidéo (optionnel) — pour des Shorts plus précis',en:'Your video summary (optional) — for more accurate Shorts',es:'Resumen de tu vídeo (opcional) — para Shorts más precisos',ar:'ملخّص فيديوك (اختياري) — لـShorts أدق'},
+  gs_btn:{fr:'🎬 Générer 3 Shorts',en:'🎬 Generate 3 Shorts',es:'🎬 Generar 3 Shorts',ar:'🎬 توليد 3 Shorts'},
+  gs_q1:{fr:'Quelle longueur idéale pour un Short ?',en:'What is the ideal Short length?',es:'¿Cuál es la duración ideal de un Short?',ar:'ما الطول المثالي لـShort؟'},
+  gs_a1:{fr:"Entre 30 et 60 secondes. L'algorithme YouTube favorise les Shorts où les gens regardent jusqu'à la fin — donc plus c'est court et accrocheur, mieux c'est.",en:'Between 30 and 60 seconds. The YouTube algorithm favors Shorts watched to the end — so shorter and catchier is better.',es:'Entre 30 y 60 segundos. El algoritmo de YouTube favorece los Shorts vistos hasta el final — así que cuanto más corto y enganchoso, mejor.',ar:'بين 30 و60 ثانية. تفضّل خوارزمية يوتيوب الـShorts التي تُشاهَد حتى النهاية — فكلما كان أقصر وأكثر جذبًا كان أفضل.'},
+  gs_q2:{fr:'Comment extraire un Short depuis ma vidéo longue ?',en:'How do I extract a Short from my long video?',es:'¿Cómo extraigo un Short de mi vídeo largo?',ar:'كيف أستخرج Short من فيديوي الطويل؟'},
+  gs_a2:{fr:'Utilise YouTube Studio (option "Couper" ou "Shorts"), CapCut, ou DaVinci Resolve. L\'IA te donne les timestamps exacts à couper.',en:'Use YouTube Studio (the “Trim” or “Shorts” option), CapCut, or DaVinci Resolve. The AI gives you the exact timestamps to cut.',es:'Usa YouTube Studio (opción “Recortar” o “Shorts”), CapCut o DaVinci Resolve. La IA te da los timestamps exactos a cortar.',ar:'استخدم YouTube Studio (خيار «قص» أو «Shorts»)، أو CapCut، أو DaVinci Resolve. يمنحك الذكاء الاصطناعي الطوابع الزمنية الدقيقة للقص.'},
+  gs_up_h:{fr:'📱 Extension complète pour Shorts',en:'📱 Full extension for Shorts',es:'📱 Extensión completa para Shorts',ar:'📱 إضافة كاملة لـShorts'},
+  gs_up_p:{fr:"L'extension VidSpark analyse directement ta vidéo YouTube et propose les meilleurs moments à couper en Shorts.",en:'The VidSpark extension analyzes your YouTube video directly and suggests the best moments to cut into Shorts.',es:'La extensión VidSpark analiza tu vídeo de YouTube directamente y sugiere los mejores momentos para cortar en Shorts.',ar:'تحلّل إضافة VidSpark فيديوك على يوتيوب مباشرةً وتقترح أفضل اللحظات للاقتطاع كـShorts.'},
+  gs_spin:{fr:"L'IA génère tes 3 Shorts…",en:'The AI is generating your 3 Shorts…',es:'La IA genera tus 3 Shorts…',ar:'الذكاء الاصطناعي يولّد 3 Shorts…'},
+  gs_min:{fr:'❌ Entre un sujet (3 caractères min).',en:'❌ Enter a topic (3 chars min).',es:'❌ Escribe un tema (mín. 3 caracteres).',ar:'❌ أدخل موضوعًا (3 أحرف على الأقل).'},
+  gs_none:{fr:'Aucun Short généré, réessaie.',en:'No Short generated, try again.',es:'No se generó ningún Short, inténtalo de nuevo.',ar:'لم يُولَّد أي Short، حاول مجددًا.'},
+  gs_copy:{fr:'⧉ Copier tout',en:'⧉ Copy all',es:'⧉ Copiar todo',ar:'⧉ نسخ الكل'}
+});
 async function go(){
   const topic=document.getElementById('topic').value.trim();
   const desc=document.getElementById('desc').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(topic.length<3){r.innerHTML='<div class="err">❌ Entre un sujet (3 caractères min).</div>';return;}
-  r.innerHTML=spinner('L\'IA génère tes 3 Shorts…');
+  if(topic.length<3){r.innerHTML='<div class="err">'+t('gs_min')+'</div>';return;}
+  r.innerHTML=spinner(t('gs_spin'));
   try{
     const d=await aiCall('/api/public/ai/shorts-generator',{topic,description:desc,language:lang});
     const shorts=d.shorts||[];
-    if(!shorts.length)throw new Error('Aucun Short généré, réessaie.');
+    if(!shorts.length)throw new Error(t('gs_none'));
     r.innerHTML=shorts.map((s,i)=>`
       <div style="padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;margin-bottom:14px">
         <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🎬 SHORT ${i+1}</div>
@@ -68,7 +85,7 @@ async function go(){
         ${s.script?`<div style="padding:8px;background:#12121a;border-radius:6px;margin-bottom:8px;font-size:13px;line-height:1.6"><span style="color:#8888a0;font-weight:700">📝 SCRIPT :</span><br>${esc(s.script)}</div>`:''}
         ${s.timestamp?`<div style="padding:6px 10px;background:rgba(59,130,246,.1);border-radius:6px;margin-bottom:8px;font-size:13px;color:#3b82f6"><span style="font-weight:700">⏱ MOMENT :</span> ${esc(s.timestamp)}</div>`:''}
         ${s.hashtags?`<div style="font-size:13px;color:#8888a0">${esc(s.hashtags)}</div>`:''}
-        <button class="copy-mini" onclick='copyTxt(${JSON.stringify((s.title||"")+" "+( s.script||""))},this)' style="margin-top:10px">⧉ Copier tout</button>
+        <button class="copy-mini" onclick='copyTxt(${JSON.stringify((s.title||"")+" "+( s.script||""))},this)' style="margin-top:10px">${t('gs_copy')}</button>
       </div>
     `).join('');
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
