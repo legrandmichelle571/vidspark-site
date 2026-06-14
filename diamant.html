@@ -268,11 +268,11 @@
 
     <!-- Trending -->
     <section class="view" id="view-trending">
-      <div class="head"><h1>🚀 Trending</h1><p>Les vidéos récentes qui explosent dans ta niche (fortes vues/heure).</p></div>
+      <div class="head"><h1>🚀 <span data-i18n="db_trending">Trending</span></h1><p data-i18n="dt_trend_desc">Les vidéos récentes qui explosent dans ta niche (fortes vues/heure).</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field"><label>Niche / sujet</label><input id="trKw" placeholder="ex: gaming fps"></div>
-          <button class="btn" id="trBtn" onclick="run(this,runTrending)">Voir les tendances</button>
+          <div class="field"><label data-i18n="dt_niche_topic">Niche / sujet</label><input id="trKw" data-i18n-ph="dt_trend_ph" placeholder="ex: gaming fps"></div>
+          <button class="btn" id="trBtn" onclick="run(this,runTrending)" data-i18n="dt_trend_btn">Voir les tendances</button>
         </div>
         <div id="trErr" class="err"></div>
       </div>
@@ -281,11 +281,11 @@
 
     <!-- Keywords -->
     <section class="view" id="view-keywords">
-      <div class="head"><h1>🔑 Recherche de mots-clés</h1><p>Suggestions, questions associées et niveau de concurrence pour un mot-clé.</p></div>
+      <div class="head"><h1>🔑 <span data-i18n="dt_kw_title">Recherche de mots-clés</span></h1><p data-i18n="dt_kw_desc">Suggestions, questions associées et niveau de concurrence pour un mot-clé.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field"><label>Mot-clé</label><input id="kwQuery" placeholder="ex: apprendre la guitare"></div>
-          <button class="btn" id="kwBtn" onclick="run(this,runKeywords)">Analyser</button>
+          <div class="field"><label data-i18n="dt_keyword">Mot-clé</label><input id="kwQuery" data-i18n-ph="dt_kw_ph" placeholder="ex: apprendre la guitare"></div>
+          <button class="btn" id="kwBtn" onclick="run(this,runKeywords)" data-i18n="dt_analyze_btn">Analyser</button>
         </div>
         <div id="kwErr" class="err"></div>
         <div id="kwResult" style="display:none;margin-top:14px;"></div>
@@ -294,11 +294,11 @@
 
     <!-- Analyze -->
     <section class="view" id="view-analyze">
-      <div class="head"><h1>🎬 Analyser une vidéo</h1><p>Colle l'URL ou l'ID d'une vidéo YouTube pour voir ses stats et ses tags.</p></div>
+      <div class="head"><h1>🎬 <span data-i18n="db_analyze">Analyser une vidéo</span></h1><p data-i18n="dt_an_desc">Colle l'URL ou l'ID d'une vidéo YouTube pour voir ses stats et ses tags.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>URL ou ID de la vidéo</label><input id="anVid" placeholder="https://youtube.com/watch?v=..."></div>
-          <button class="btn" id="anBtn" onclick="run(this,runAnalyze)">Analyser</button>
+          <div class="field" style="flex:2;"><label data-i18n="dt_vurl">URL ou ID de la vidéo</label><input id="anVid" placeholder="https://youtube.com/watch?v=..."></div>
+          <button class="btn" id="anBtn" onclick="run(this,runAnalyze)" data-i18n="dt_analyze_btn">Analyser</button>
         </div>
         <div id="anErr" class="err"></div>
         <div id="anResult" style="display:none;margin-top:14px;"></div>
@@ -307,11 +307,11 @@
 
     <!-- Comments -->
     <section class="view" id="view-comments">
-      <div class="head"><h1>💬 Analyse des commentaires</h1><p>Sentiment global, thèmes récurrents et idées de vidéos à partir des commentaires (IA).</p></div>
+      <div class="head"><h1>💬 <span data-i18n="dt_co_title">Analyse des commentaires</span></h1><p data-i18n="dt_co_desc">Sentiment global, thèmes récurrents et idées de vidéos à partir des commentaires (IA).</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>URL ou ID de la vidéo</label><input id="coVid" placeholder="https://youtube.com/watch?v=..."></div>
-          <button class="btn" id="coBtn" onclick="run(this,runComments)">Analyser</button>
+          <div class="field" style="flex:2;"><label data-i18n="dt_vurl">URL ou ID de la vidéo</label><input id="coVid" placeholder="https://youtube.com/watch?v=..."></div>
+          <button class="btn" id="coBtn" onclick="run(this,runComments)" data-i18n="dt_analyze_btn">Analyser</button>
         </div>
         <div id="coErr" class="err"></div>
         <div id="coResult" style="display:none;margin-top:14px;"></div>
@@ -319,26 +319,26 @@
     </section>
 
     <section class="view" id="view-viral">
-      <div class="head"><h1>🔥 Score Viral</h1><p>Calcule la probabilité de viralité de ton titre : hook, émotion, chiffres. Score actuel vs potentiel.</p></div>
+      <div class="head"><h1>🔥 <span data-i18n="db_viral">Score Viral</span></h1><p data-i18n="dt_vi_desc">Calcule la probabilité de viralité de ton titre : hook, émotion, chiffres. Score actuel vs potentiel.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>Titre de ta vidéo</label><input id="viTitle" placeholder="Ex : J'ai testé 10 régimes en 30 jours"></div>
+          <div class="field" style="flex:2;"><label data-i18n="dt_vtitle">Titre de ta vidéo</label><input id="viTitle" data-i18n-ph="dt_vi_ph" placeholder="Ex : J'ai testé 10 régimes en 30 jours"></div>
           <select id="viLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
-          <button class="btn" onclick="run(this,runViral)">Calculer</button>
+          <button class="btn" onclick="run(this,runViral)" data-i18n="dt_calc_btn">Calculer</button>
         </div>
-        <div class="field"><label>Description (optionnel)</label><textarea id="viDesc" rows="2" placeholder="Description de ta vidéo…" style="width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--text);border-radius:8px;padding:8px;font-size:14px;resize:vertical"></textarea></div>
+        <div class="field"><label data-i18n="dt_tr_d">Description (optionnel)</label><textarea id="viDesc" rows="2" data-i18n-ph="dt_vi_phd" placeholder="Description de ta vidéo…" style="width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--text);border-radius:8px;padding:8px;font-size:14px;resize:vertical"></textarea></div>
         <div id="viErr" class="err"></div>
         <div id="viResult" style="display:none;margin-top:14px;"></div>
       </div>
     </section>
 
     <section class="view" id="view-shorts">
-      <div class="head"><h1>🎬 Générateur de Shorts</h1><p>3 idées de Shorts avec hook, script, hashtags et les timestamps à extraire de ta vidéo.</p></div>
+      <div class="head"><h1>🎬 <span data-i18n="dt_sh_title">Générateur de Shorts</span></h1><p data-i18n="dt_sh_desc">3 idées de Shorts avec hook, script, hashtags et les timestamps à extraire de ta vidéo.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>Sujet de ta vidéo</label><input id="shTopic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€"></div>
+          <div class="field" style="flex:2;"><label data-i18n="dt_gen_lbl">Sujet de ta vidéo</label><input id="shTopic" data-i18n-ph="dt_sh_ph" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€"></div>
           <select id="shLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
-          <button class="btn" onclick="run(this,runShorts)">Générer</button>
+          <button class="btn" onclick="run(this,runShorts)" data-i18n="dt_generate_btn">Générer</button>
         </div>
         <div id="shErr" class="err"></div>
         <div id="shResult" style="display:none;margin-top:14px;"></div>
@@ -346,12 +346,12 @@
     </section>
 
     <section class="view" id="view-hook">
-      <div class="head"><h1>🪝 Hook Analyzer</h1><p>Colle tes 30 premières secondes : rétention prédite, moment de décrochage et hook réécrit.</p></div>
+      <div class="head"><h1>🪝 <span data-i18n="db_hook">Hook Analyzer</span></h1><p data-i18n="dt_hk_desc">Colle tes 30 premières secondes : rétention prédite, moment de décrochage et hook réécrit.</p></div>
       <div class="panel">
-        <div class="field"><label>Intro / Hook (30 premières secondes)</label><textarea id="hkText" rows="4" placeholder="Colle ici tes 30 premières secondes de script…" style="width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--text);border-radius:8px;padding:8px;font-size:14px;resize:vertical"></textarea></div>
+        <div class="field"><label data-i18n="dt_hk_lbl">Intro / Hook (30 premières secondes)</label><textarea id="hkText" rows="4" data-i18n-ph="dt_hk_ph" placeholder="Colle ici tes 30 premières secondes de script…" style="width:100%;background:var(--bg);border:1px solid var(--b2);color:var(--text);border-radius:8px;padding:8px;font-size:14px;resize:vertical"></textarea></div>
         <div class="row">
           <select id="hkLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option><option value="es">ES</option></select>
-          <button class="btn" onclick="run(this,runHook)">Analyser mon hook</button>
+          <button class="btn" onclick="run(this,runHook)" data-i18n="dt_hk_btn">Analyser mon hook</button>
         </div>
         <div id="hkErr" class="err"></div>
         <div id="hkResult" style="display:none;margin-top:14px;"></div>
@@ -359,23 +359,23 @@
     </section>
 
     <section class="view" id="view-abthumbs">
-      <div class="head"><h1>📸 A/B Test Miniatures</h1><p>Upload 2 miniatures : l'IA Vision prédit laquelle génère le plus de clics.</p></div>
+      <div class="head"><h1>📸 <span data-i18n="dt_at_title">A/B Test Miniatures</span></h1><p data-i18n="dt_at_desc">Upload 2 miniatures : l'IA Vision prédit laquelle génère le plus de clics.</p></div>
       <div class="panel">
         <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px">
           <div style="flex:1;min-width:160px">
             <label style="display:block;margin-bottom:6px;font-size:12px;color:#3b82f6;font-weight:700">MINIATURE A</label>
-            <div onclick="document.getElementById('atFileA').click()" style="border:2px dashed #3b82f6;border-radius:8px;padding:16px;text-align:center;cursor:pointer;font-size:12px;color:#8888a0">📷 Choisir<input type="file" id="atFileA" accept="image/*" style="display:none" onchange="atPreview('A',this)"></div>
+            <div onclick="document.getElementById('atFileA').click()" style="border:2px dashed #3b82f6;border-radius:8px;padding:16px;text-align:center;cursor:pointer;font-size:12px;color:#8888a0"><span data-i18n="dt_choose">📷 Choisir</span><input type="file" id="atFileA" accept="image/*" style="display:none" onchange="atPreview('A',this)"></div>
             <img id="atPrevA" style="display:none;max-width:100%;border-radius:6px;margin-top:6px;border:2px solid #3b82f6">
           </div>
           <div style="flex:1;min-width:160px">
             <label style="display:block;margin-bottom:6px;font-size:12px;color:#ef4444;font-weight:700">MINIATURE B</label>
-            <div onclick="document.getElementById('atFileB').click()" style="border:2px dashed #ef4444;border-radius:8px;padding:16px;text-align:center;cursor:pointer;font-size:12px;color:#8888a0">📷 Choisir<input type="file" id="atFileB" accept="image/*" style="display:none" onchange="atPreview('B',this)"></div>
+            <div onclick="document.getElementById('atFileB').click()" style="border:2px dashed #ef4444;border-radius:8px;padding:16px;text-align:center;cursor:pointer;font-size:12px;color:#8888a0"><span data-i18n="dt_choose">📷 Choisir</span><input type="file" id="atFileB" accept="image/*" style="display:none" onchange="atPreview('B',this)"></div>
             <img id="atPrevB" style="display:none;max-width:100%;border-radius:6px;margin-top:6px;border:2px solid #ef4444">
           </div>
         </div>
         <div class="row">
           <select id="atLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
-          <button class="btn" onclick="run(this,runAbThumbs)">Comparer</button>
+          <button class="btn" onclick="run(this,runAbThumbs)" data-i18n="dt_compare_btn">Comparer</button>
         </div>
         <div id="atErr" class="err"></div>
         <div id="atResult" style="display:none;margin-top:14px;"></div>
@@ -383,17 +383,17 @@
     </section>
 
     <section class="view" id="view-thumbnail">
-      <div class="head"><h1>🖼 Analyse Miniature IA</h1><p>L'IA Vision note ta miniature sur 100 : contraste, visage, émotion, texte + CTR estimé.</p></div>
+      <div class="head"><h1>🖼 <span data-i18n="dt_th_title">Analyse Miniature IA</span></h1><p data-i18n="dt_th_desc">L'IA Vision note ta miniature sur 100 : contraste, visage, émotion, texte + CTR estimé.</p></div>
       <div class="panel">
         <div onclick="document.getElementById('thFile').click()" style="border:2px dashed #f7941d;border-radius:8px;padding:20px;text-align:center;cursor:pointer;margin-bottom:12px">
           <div style="font-size:28px">🖼</div>
-          <div style="font-size:13px;color:#8888a0">Clique pour choisir ta miniature (JPG/PNG)</div>
+          <div style="font-size:13px;color:#8888a0" data-i18n="dt_th_choose">Clique pour choisir ta miniature (JPG/PNG)</div>
           <input type="file" id="thFile" accept="image/*" style="display:none" onchange="thPreview(this)">
         </div>
         <img id="thPrev" style="display:none;max-width:100%;border-radius:8px;margin-bottom:12px;border:1.5px solid #f7941d">
         <div class="row">
           <select id="thLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
-          <button class="btn" onclick="run(this,runThumbnail)">Analyser</button>
+          <button class="btn" onclick="run(this,runThumbnail)" data-i18n="dt_analyze_btn">Analyser</button>
         </div>
         <div id="thErr" class="err"></div>
         <div id="thResult" style="display:none;margin-top:14px;"></div>
@@ -401,17 +401,17 @@
     </section>
 
     <section class="view" id="view-audience">
-      <div class="head"><h1>🌍 Optimiseur d'Audience</h1><p>Meilleures heures, tendances locales et hashtags selon ta région et ta niche.</p></div>
+      <div class="head"><h1>🌍 <span data-i18n="dt_au_title">Optimiseur d'Audience</span></h1><p data-i18n="dt_au_desc">Meilleures heures, tendances locales et hashtags selon ta région et ta niche.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>Ta niche</label><input id="auNiche" placeholder="Ex : cuisine marocaine, gaming mobile, finance"></div>
+          <div class="field" style="flex:2;"><label data-i18n="dt_niche">Ta niche</label><input id="auNiche" data-i18n-ph="dt_au_ph" placeholder="Ex : cuisine marocaine, gaming mobile, finance"></div>
           <select id="auRegion" class="sel">
             <option value="FR">🇫🇷 France</option><option value="MA">🇲🇦 Maroc</option><option value="DZ">🇩🇿 Algérie</option>
             <option value="TN">🇹🇳 Tunisie</option><option value="SA">🇸🇦 Arabie Saoudite</option><option value="EG">🇪🇬 Égypte</option>
             <option value="US">🇺🇸 USA</option><option value="GB">🇬🇧 UK</option><option value="DE">🇩🇪 DE</option>
           </select>
           <select id="auLang" class="sel"><option value="fr">FR</option><option value="en">EN</option><option value="ar">AR</option></select>
-          <button class="btn" onclick="run(this,runAudience)">Analyser</button>
+          <button class="btn" onclick="run(this,runAudience)" data-i18n="dt_analyze_btn">Analyser</button>
         </div>
         <div id="auErr" class="err"></div>
         <div id="auResult" style="display:none;margin-top:14px;"></div>
@@ -419,16 +419,16 @@
     </section>
 
     <section class="view" id="view-revenue">
-      <div class="head"><h1>💰 Estimateur de Revenus</h1><p>Vues à 7 jours et revenus AdSense estimés selon ta niche, ton pays et tes abonnés.</p></div>
+      <div class="head"><h1>💰 <span data-i18n="dt_rv_title">Estimateur de Revenus</span></h1><p data-i18n="dt_rv_desc">Vues à 7 jours et revenus AdSense estimés selon ta niche, ton pays et tes abonnés.</p></div>
       <div class="panel">
         <div class="row">
-          <div class="field" style="flex:2;"><label>Ta niche</label><input id="rvNiche" placeholder="Ex : finance personnelle, gaming, cuisine"></div>
-          <div class="field"><label>Abonnés</label><input id="rvSubs" type="number" placeholder="10000" style="width:110px"></div>
+          <div class="field" style="flex:2;"><label data-i18n="dt_niche">Ta niche</label><input id="rvNiche" data-i18n-ph="dt_rv_ph" placeholder="Ex : finance personnelle, gaming, cuisine"></div>
+          <div class="field"><label data-i18n="dt_subs">Abonnés</label><input id="rvSubs" type="number" placeholder="10000" style="width:110px"></div>
           <select id="rvCountry" class="sel">
             <option value="FR">🇫🇷 FR</option><option value="US">🇺🇸 US</option><option value="MA">🇲🇦 MA</option>
             <option value="DZ">🇩🇿 DZ</option><option value="SA">🇸🇦 SA</option><option value="GB">🇬🇧 GB</option>
           </select>
-          <button class="btn" onclick="run(this,runRevenue)">Estimer</button>
+          <button class="btn" onclick="run(this,runRevenue)" data-i18n="dt_estimate_btn">Estimer</button>
         </div>
         <div id="rvErr" class="err"></div>
         <div id="rvResult" style="display:none;margin-top:14px;"></div>
