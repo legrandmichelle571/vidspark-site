@@ -6,57 +6,77 @@
 <meta name="description" content="Extrais gratuitement les tags (mots-clés SEO) de n'importe quelle vidéo YouTube. Analyse les tags de tes concurrents, sans inscription.">
 <link rel="stylesheet" href="tools.css">
 <style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
 .card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free">100% GRATUIT · SANS INSCRIPTION</div>
-    <h1>🔎 Extracteur de Tags YouTube</h1>
-    <p>Colle l'URL d'une vidéo : découvre les tags SEO qu'elle utilise. Parfait pour analyser les vidéos qui cartonnent dans ta niche.</p>
+    <div class="badge-free" data-i18n="et_badge"></div>
+    <h1 data-i18n="et_h1"></h1>
+    <p data-i18n="et_sub"></p>
   </div>
 
   <div class="tool-box">
     <div class="row">
-      <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')go()">
-      <button class="btn" onclick="run(this,go)">🔎 Extraire les tags</button>
+      <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')run(this,go)">
+      <button class="btn" onclick="run(this,go)" data-i18n="et_btn"></button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Pourquoi extraire les tags des concurrents ?</h3><p>Les vidéos qui cartonnent utilisent des mots-clés efficaces. En les analysant, tu découvres les termes exacts que ton audience recherche — et tu peux les réutiliser (intelligemment) dans tes propres vidéos.</p></div>
-    <div class="faq-item"><h3>Ça marche avec toutes les vidéos ?</h3><p>Oui, tant que le créateur a défini des tags. Certaines vidéos n'en ont aucun (l'outil te le dira).</p></div>
-    <div class="faq-item"><h3>Est-ce légal ?</h3><p>Oui : les tags sont des métadonnées publiques fournies par l'API officielle YouTube.</p></div>
+    <h2 data-i18n="et_faq_title"></h2>
+    <div class="faq-item"><h3 data-i18n="et_q1"></h3><p data-i18n="et_a1"></p></div>
+    <div class="faq-item"><h3 data-i18n="et_q2"></h3><p data-i18n="et_a2"></p></div>
+    <div class="faq-item"><h3 data-i18n="et_q3"></h3><p data-i18n="et_a3"></p></div>
   </div>
 
   <div class="upsell">
-    <h3>🏆 Va plus loin : analyse complète des concurrents</h3>
-    <p>L'extension VidSpark AI montre les vues/heure des concurrents, les mots-clés en hausse, le score d'opportunité et les tendances de ta niche en direct.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="et_up_h"></h3>
+    <p data-i18n="et_up_p"></p>
+    <a href="/pricing.html" class="btn" data-i18n="et_up_btn"></a>
   </div>
 </div>
 
 <script src="tools.js?v=3"></script>
 <script>
+registerI18n({
+  et_badge:{fr:'100% GRATUIT · SANS INSCRIPTION',en:'100% FREE · NO SIGN-UP',es:'100% GRATIS · SIN REGISTRO',ar:'مجاني 100% · بدون تسجيل'},
+  et_h1:{fr:'🔎 Extracteur de Tags YouTube',en:'🔎 YouTube Tag Extractor',es:'🔎 Extractor de Etiquetas YouTube',ar:'🔎 مستخرج وسوم يوتيوب'},
+  et_sub:{fr:"Colle l'URL d'une vidéo : découvre les tags SEO qu'elle utilise. Parfait pour analyser les vidéos qui cartonnent dans ta niche.",en:'Paste a video URL: discover the SEO tags it uses. Perfect to analyze the top videos in your niche.',es:'Pega la URL de un vídeo: descubre las etiquetas SEO que usa. Perfecto para analizar los vídeos top de tu nicho.',ar:'الصق رابط فيديو: اكتشف وسوم SEO التي يستخدمها. مثالي لتحليل الفيديوهات الناجحة في مجالك.'},
+  et_btn:{fr:'🔎 Extraire les tags',en:'🔎 Extract tags',es:'🔎 Extraer etiquetas',ar:'🔎 استخراج الوسوم'},
+  et_faq_title:{fr:'Questions fréquentes',en:'FAQ',es:'Preguntas frecuentes',ar:'أسئلة شائعة'},
+  et_q1:{fr:'Pourquoi extraire les tags des concurrents ?',en:'Why extract competitors’ tags?',es:'¿Por qué extraer las etiquetas de la competencia?',ar:'لماذا استخراج وسوم المنافسين؟'},
+  et_a1:{fr:'Les vidéos qui cartonnent utilisent des mots-clés efficaces. En les analysant, tu découvres les termes exacts que ton audience recherche — et tu peux les réutiliser (intelligemment) dans tes propres vidéos.',en:'Top videos use effective keywords. By analyzing them you discover the exact terms your audience searches — and you can reuse them (smartly) in your own videos.',es:'Los vídeos top usan palabras clave efectivas. Al analizarlas descubres los términos exactos que busca tu audiencia — y puedes reutilizarlos (con cabeza) en tus vídeos.',ar:'الفيديوهات الناجحة تستخدم كلمات مفتاحية فعّالة. بتحليلها تكتشف المصطلحات الدقيقة التي يبحث عنها جمهورك — ويمكنك إعادة استخدامها بذكاء في فيديوهاتك.'},
+  et_q2:{fr:'Ça marche avec toutes les vidéos ?',en:'Does it work with all videos?',es:'¿Funciona con todos los vídeos?',ar:'هل يعمل مع كل الفيديوهات؟'},
+  et_a2:{fr:'Oui, tant que le créateur a défini des tags. Certaines vidéos n’en ont aucun (l’outil te le dira).',en:'Yes, as long as the creator set tags. Some videos have none (the tool will tell you).',es:'Sí, siempre que el creador haya puesto etiquetas. Algunos vídeos no tienen (la herramienta te lo dirá).',ar:'نعم، طالما حدّد المنشئ وسومًا. بعض الفيديوهات لا تحتوي أيًّا (ستخبرك الأداة).'},
+  et_q3:{fr:'Est-ce légal ?',en:'Is it legal?',es:'¿Es legal?',ar:'هل هذا قانوني؟'},
+  et_a3:{fr:'Oui : les tags sont des métadonnées publiques fournies par l’API officielle YouTube.',en:'Yes: tags are public metadata provided by the official YouTube API.',es:'Sí: las etiquetas son metadatos públicos provistos por la API oficial de YouTube.',ar:'نعم: الوسوم بيانات وصفية عامة توفّرها واجهة يوتيوب الرسمية.'},
+  et_up_h:{fr:'🏆 Va plus loin : analyse complète des concurrents',en:'🏆 Go further: full competitor analysis',es:'🏆 Ve más allá: análisis completo de competidores',ar:'🏆 اذهب أبعد: تحليل كامل للمنافسين'},
+  et_up_p:{fr:'L’extension VidSpark AI montre les vues/heure des concurrents, les mots-clés en hausse, le score d’opportunité et les tendances de ta niche en direct.',en:'The VidSpark AI extension shows competitors’ views/hour, rising keywords, the opportunity score and your niche trends in real time.',es:'La extensión VidSpark AI muestra las vistas/hora de los competidores, las palabras en alza, la puntuación de oportunidad y las tendencias de tu nicho en vivo.',ar:'تعرض إضافة VidSpark AI مشاهدات/ساعة المنافسين، والكلمات الصاعدة، ودرجة الفرصة، واتجاهات مجالك مباشرةً.'},
+  et_up_btn:{fr:'Découvrir VidSpark AI — dès 9,99€/mois',en:'Discover VidSpark AI — from €9.99/mo',es:'Descubre VidSpark AI — desde 9,99€/mes',ar:'اكتشف VidSpark AI — من 9.99€ شهريًا'},
+  et_spin:{fr:'Extraction des tags…',en:'Extracting tags…',es:'Extrayendo etiquetas…',ar:'جارٍ استخراج الوسوم…'},
+  et_invalid:{fr:'❌ URL YouTube invalide.',en:'❌ Invalid YouTube URL.',es:'❌ URL de YouTube no válida.',ar:'❌ رابط يوتيوب غير صالح.'},
+  et_none:{fr:'Cette vidéo n’a aucun tag public. 🤔',en:'This video has no public tags. 🤔',es:'Este vídeo no tiene etiquetas públicas. 🤔',ar:'لا يحتوي هذا الفيديو على وسوم عامة. 🤔'},
+  et_tags:{fr:'tags',en:'tags',es:'etiquetas',ar:'وسوم'},
+  et_copy:{fr:'📋 Copier tous les tags',en:'📋 Copy all tags',es:'📋 Copiar todas las etiquetas',ar:'📋 نسخ كل الوسوم'}
+});
+
 async function go(){
   const id=vidId(document.getElementById('url').value);
   const r=document.getElementById('res');
-  if(!id){r.innerHTML='<div class="err">❌ URL YouTube invalide.</div>';return;}
-  r.innerHTML=spinner('Extraction des tags…');
+  if(!id){r.innerHTML='<div class="err">'+t('et_invalid')+'</div>';return;}
+  r.innerHTML=spinner(t('et_spin'));
   try{
     const res=await fetch(`${API}/api/public/video?videoId=${id}`);
     const d=await res.json();
     if(!res.ok)throw new Error(d.error||'Erreur');
-    if(!d.tags||!d.tags.length){r.innerHTML='<div class="muted">Cette vidéo n\'a aucun tag public. 🤔</div>';return;}
-    r.innerHTML=`<div class="muted" style="margin-bottom:8px">📹 ${esc(d.title)} — <b>${d.tags.length} tags</b></div>
-      <div>${d.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
-      <button class="btn green" style="margin-top:14px" onclick='copyTxt(${JSON.stringify((d.tags||[]).join(", "))},this)'>📋 Copier tous les tags</button>`;
+    if(!d.tags||!d.tags.length){r.innerHTML='<div class="muted">'+t('et_none')+'</div>';return;}
+    r.innerHTML=`<div class="muted" style="margin-bottom:8px">📹 ${esc(d.title)} — <b>${d.tags.length} ${t('et_tags')}</b></div>
+      <div>${d.tags.map(tg=>`<span class="tag">${esc(tg)}</span>`).join('')}</div>
+      <button class="btn green" style="margin-top:14px" onclick='copyTxt(${JSON.stringify((d.tags||[]).join(", "))},this)'>${t('et_copy')}</button>`;
   }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
 }
 </script>

@@ -6,53 +6,70 @@
 <meta name="description" content="Télécharge gratuitement la miniature de n'importe quelle vidéo YouTube en HD 1280×720, sans filigrane ni inscription.">
 <link rel="stylesheet" href="tools.css">
 <style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
 .card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free">100% GRATUIT · HD · SANS INSCRIPTION</div>
-    <h1>🖼️ Téléchargeur de Miniatures YouTube</h1>
-    <p>Colle l'URL d'une vidéo ou d'un Short : récupère sa miniature en HD (1280×720) et autres tailles, sans filigrane.</p>
+    <div class="badge-free" data-i18n="tm_badge"></div>
+    <h1 data-i18n="tm_h1"></h1>
+    <p data-i18n="tm_sub"></p>
   </div>
 
   <div class="tool-box">
     <div class="row">
-      <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')go()">
-      <button class="btn" onclick="run(this,go)">🖼️ Récupérer</button>
+      <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')run(this,go)">
+      <button class="btn" onclick="run(this,go)" data-i18n="tm_btn"></button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Quelles tailles sont disponibles ?</h3><p>HD 1280×720 (maxres), SD 640×480, HQ 480×360 et MQ 320×180 — selon ce que la vidéo propose. Si la HD n'apparaît pas, la vidéo n'a pas de miniature maxres.</p></div>
-    <div class="faq-item"><h3>Ça marche avec les Shorts ?</h3><p>Oui, colle l'URL du Short (youtube.com/shorts/…) et l'outil récupère sa miniature.</p></div>
-    <div class="faq-item"><h3>Puis-je utiliser la miniature d'un autre créateur ?</h3><p>Pour t'en inspirer oui, mais la réutiliser telle quelle peut violer ses droits d'auteur. Utilise cet outil pour analyser, étudier ou sauvegarder tes propres miniatures.</p></div>
+    <h2 data-i18n="tm_faq_title"></h2>
+    <div class="faq-item"><h3 data-i18n="tm_q1"></h3><p data-i18n="tm_a1"></p></div>
+    <div class="faq-item"><h3 data-i18n="tm_q2"></h3><p data-i18n="tm_a2"></p></div>
+    <div class="faq-item"><h3 data-i18n="tm_q3"></h3><p data-i18n="tm_a3"></p></div>
   </div>
 
   <div class="upsell">
-    <h3>📸 Compare 2 miniatures avec l'IA Vision</h3>
-    <p>L'extension VidSpark AI te dit laquelle de tes 2 miniatures fera le plus de clics — et pourquoi (contraste, visage, émotion, lisibilité TV/mobile).</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="tm_up_h"></h3>
+    <p data-i18n="tm_up_p"></p>
+    <a href="/pricing.html" class="btn" data-i18n="tm_up_btn"></a>
   </div>
 </div>
 
 <script src="tools.js?v=3"></script>
 <script>
+registerI18n({
+  tm_badge:{fr:'100% GRATUIT · HD · SANS INSCRIPTION',en:'100% FREE · HD · NO SIGN-UP',es:'100% GRATIS · HD · SIN REGISTRO',ar:'مجاني 100% · HD · بدون تسجيل'},
+  tm_h1:{fr:'🖼️ Téléchargeur de Miniatures YouTube',en:'🖼️ YouTube Thumbnail Downloader',es:'🖼️ Descargador de Miniaturas YouTube',ar:'🖼️ تنزيل الصور المصغّرة من يوتيوب'},
+  tm_sub:{fr:"Colle l'URL d'une vidéo ou d'un Short : récupère sa miniature en HD (1280×720) et autres tailles, sans filigrane.",en:'Paste a video or Short URL: get its thumbnail in HD (1280×720) and other sizes, watermark-free.',es:'Pega la URL de un vídeo o Short: obtén su miniatura en HD (1280×720) y otros tamaños, sin marca de agua.',ar:'الصق رابط فيديو أو Short: احصل على صورته المصغّرة بدقة HD (1280×720) وأحجام أخرى، بدون علامة مائية.'},
+  tm_btn:{fr:'🖼️ Récupérer',en:'🖼️ Get it',es:'🖼️ Obtener',ar:'🖼️ احصل عليها'},
+  tm_faq_title:{fr:'Questions fréquentes',en:'FAQ',es:'Preguntas frecuentes',ar:'أسئلة شائعة'},
+  tm_q1:{fr:'Quelles tailles sont disponibles ?',en:'Which sizes are available?',es:'¿Qué tamaños están disponibles?',ar:'ما الأحجام المتاحة؟'},
+  tm_a1:{fr:'HD 1280×720 (maxres), SD 640×480, HQ 480×360 et MQ 320×180 — selon ce que la vidéo propose. Si la HD n’apparaît pas, la vidéo n’a pas de miniature maxres.',en:'HD 1280×720 (maxres), SD 640×480, HQ 480×360 and MQ 320×180 — depending on what the video offers. If HD is missing, the video has no maxres thumbnail.',es:'HD 1280×720 (maxres), SD 640×480, HQ 480×360 y MQ 320×180 — según lo que ofrezca el vídeo. Si no aparece HD, el vídeo no tiene miniatura maxres.',ar:'HD 1280×720 (maxres)، SD 640×480، HQ 480×360 و MQ 320×180 — حسب ما يوفّره الفيديو. إن لم تظهر HD فالفيديو ليس لديه صورة maxres.'},
+  tm_q2:{fr:'Ça marche avec les Shorts ?',en:'Does it work with Shorts?',es:'¿Funciona con los Shorts?',ar:'هل يعمل مع Shorts؟'},
+  tm_a2:{fr:'Oui, colle l’URL du Short (youtube.com/shorts/…) et l’outil récupère sa miniature.',en:'Yes, paste the Short URL (youtube.com/shorts/…) and the tool grabs its thumbnail.',es:'Sí, pega la URL del Short (youtube.com/shorts/…) y la herramienta obtiene su miniatura.',ar:'نعم، الصق رابط Short (youtube.com/shorts/…) وستحصل الأداة على صورته المصغّرة.'},
+  tm_q3:{fr:'Puis-je utiliser la miniature d’un autre créateur ?',en:'Can I use another creator’s thumbnail?',es:'¿Puedo usar la miniatura de otro creador?',ar:'هل يمكنني استخدام صورة منشئ آخر؟'},
+  tm_a3:{fr:'Pour t’en inspirer oui, mais la réutiliser telle quelle peut violer ses droits d’auteur. Utilise cet outil pour analyser, étudier ou sauvegarder tes propres miniatures.',en:'For inspiration yes, but reusing it as-is may infringe copyright. Use this tool to analyze, study or save your own thumbnails.',es:'Para inspirarte sí, pero reutilizarla tal cual puede violar sus derechos de autor. Usa esta herramienta para analizar, estudiar o guardar tus propias miniaturas.',ar:'للاستلهام نعم، لكن إعادة استخدامها كما هي قد تنتهك حقوق النشر. استخدم الأداة للتحليل أو الدراسة أو حفظ صورك الخاصة.'},
+  tm_up_h:{fr:'📸 Compare 2 miniatures avec l’IA Vision',en:'📸 Compare 2 thumbnails with Vision AI',es:'📸 Compara 2 miniaturas con IA Vision',ar:'📸 قارن صورتين مصغّرتين بالذكاء البصري'},
+  tm_up_p:{fr:'L’extension VidSpark AI te dit laquelle de tes 2 miniatures fera le plus de clics — et pourquoi (contraste, visage, émotion, lisibilité TV/mobile).',en:'The VidSpark AI extension tells you which of your 2 thumbnails will get more clicks — and why (contrast, face, emotion, TV/mobile readability).',es:'La extensión VidSpark AI te dice cuál de tus 2 miniaturas tendrá más clics — y por qué (contraste, rostro, emoción, legibilidad TV/móvil).',ar:'تخبرك إضافة VidSpark AI أيّ من صورتيك ستحصل على نقرات أكثر — ولماذا (التباين، الوجه، العاطفة، وضوح التلفاز/الجوال).'},
+  tm_up_btn:{fr:'Découvrir VidSpark AI — dès 9,99€/mois',en:'Discover VidSpark AI — from €9.99/mo',es:'Descubre VidSpark AI — desde 9,99€/mes',ar:'اكتشف VidSpark AI — من 9.99€ شهريًا'},
+  tm_invalid:{fr:'❌ URL YouTube invalide.',en:'❌ Invalid YouTube URL.',es:'❌ URL de YouTube no válida.',ar:'❌ رابط يوتيوب غير صالح.'},
+  tm_dl:{fr:'⬇ Télécharger',en:'⬇ Download',es:'⬇ Descargar',ar:'⬇ تنزيل'}
+});
+
 function go(){
   const id=vidId(document.getElementById('url').value);
   const r=document.getElementById('res');
-  if(!id){r.innerHTML='<div class="err">❌ URL YouTube invalide.</div>';return;}
+  if(!id){r.innerHTML='<div class="err">'+t('tm_invalid')+'</div>';return;}
   const sizes=[['maxresdefault','HD 1280×720'],['sddefault','SD 640×480'],['hqdefault','HQ 480×360'],['mqdefault','MQ 320×180']];
   r.innerHTML='<div class="thumbs">'+sizes.map(([q,lbl])=>`
     <div class="thumb-card">
       <img src="https://i.ytimg.com/vi/${id}/${q}.jpg" onerror="this.parentNode.style.display='none'">
-      <div class="meta"><span>${lbl}</span><a href="https://i.ytimg.com/vi/${id}/${q}.jpg" target="_blank" download>⬇ Télécharger</a></div>
+      <div class="meta"><span>${lbl}</span><a href="https://i.ytimg.com/vi/${id}/${q}.jpg" target="_blank" download>${t('tm_dl')}</a></div>
     </div>`).join('')+'</div>';
 }
 </script>

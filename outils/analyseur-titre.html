@@ -6,56 +6,77 @@
 <meta name="description" content="Analyse gratuitement ton titre YouTube : score CTR instantané sur 100 et les 5 critères qui font cliquer (longueur, chiffre, émotion, hook, ponctuation).">
 <link rel="stylesheet" href="tools.css">
 <style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
 .card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free">100% GRATUIT · INSTANTANÉ · SANS INSCRIPTION</div>
-    <h1>📊 Analyseur de Titre YouTube</h1>
-    <p>Tape ton titre : le score CTR se met à jour en direct, avec les 5 critères qui font cliquer les spectateurs.</p>
+    <div class="badge-free" data-i18n="at_badge"></div>
+    <h1 data-i18n="at_h1"></h1>
+    <p data-i18n="at_sub"></p>
   </div>
 
   <div class="tool-box">
-    <input type="text" id="titleIn" placeholder="Ton titre de vidéo…" oninput="go()" style="width:100%">
+    <input type="text" id="titleIn" data-i18n-ph="at_ph" oninput="go()" style="width:100%">
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Qu'est-ce que le CTR ?</h3><p>Le taux de clics (Click-Through Rate) : le % de personnes qui cliquent sur ta vidéo quand elles la voient. C'est l'un des signaux les plus importants pour l'algorithme YouTube.</p></div>
-    <div class="faq-item"><h3>Sur quoi se base le score ?</h3><p>5 critères éprouvés : longueur idéale (40-70 caractères), présence d'un chiffre, mot émotionnel/puissant, accroche au début (Comment, Pourquoi, question…) et ponctuation expressive (? ou !).</p></div>
-    <div class="faq-item"><h3>Un score de 100 garantit-il des vues ?</h3><p>Non — le score mesure le potentiel de clic du titre. La miniature, le sujet et la rétention comptent aussi. L'extension VidSpark AI analyse tout ça ensemble.</p></div>
+    <h2 data-i18n="at_faq_title"></h2>
+    <div class="faq-item"><h3 data-i18n="at_q1"></h3><p data-i18n="at_a1"></p></div>
+    <div class="faq-item"><h3 data-i18n="at_q2"></h3><p data-i18n="at_a2"></p></div>
+    <div class="faq-item"><h3 data-i18n="at_q3"></h3><p data-i18n="at_a3"></p></div>
   </div>
 
   <div class="upsell">
-    <h3>🩺 Le Title Doctor fait mieux</h3>
-    <p>Dans l'extension VidSpark AI, l'IA diagnostique ton titre, te dit ce qui manque et le RÉÉCRIT pour plus de clics — directement sur YouTube.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="at_up_h"></h3>
+    <p data-i18n="at_up_p"></p>
+    <a href="/pricing.html" class="btn" data-i18n="at_up_btn"></a>
   </div>
 </div>
 
 <script src="tools.js?v=3"></script>
 <script>
+registerI18n({
+  at_badge:{fr:'100% GRATUIT · INSTANTANÉ · SANS INSCRIPTION',en:'100% FREE · INSTANT · NO SIGN-UP',es:'100% GRATIS · INSTANTÁNEO · SIN REGISTRO',ar:'مجاني 100% · فوري · بدون تسجيل'},
+  at_h1:{fr:'📊 Analyseur de Titre YouTube',en:'📊 YouTube Title Analyzer',es:'📊 Analizador de Título YouTube',ar:'📊 محلّل عناوين يوتيوب'},
+  at_sub:{fr:'Tape ton titre : le score CTR se met à jour en direct, avec les 5 critères qui font cliquer les spectateurs.',en:'Type your title: the CTR score updates live, with the 5 criteria that make viewers click.',es:'Escribe tu título: la puntuación CTR se actualiza en vivo, con los 5 criterios que hacen clic.',ar:'اكتب عنوانك: تتحدّث نتيجة CTR مباشرةً، مع المعايير الخمسة التي تدفع للنقر.'},
+  at_ph:{fr:'Ton titre de vidéo…',en:'Your video title…',es:'El título de tu vídeo…',ar:'عنوان الفيديو الخاص بك…'},
+  at_faq_title:{fr:'Questions fréquentes',en:'FAQ',es:'Preguntas frecuentes',ar:'أسئلة شائعة'},
+  at_q1:{fr:'Qu’est-ce que le CTR ?',en:'What is CTR?',es:'¿Qué es el CTR?',ar:'ما هو CTR؟'},
+  at_a1:{fr:'Le taux de clics (Click-Through Rate) : le % de personnes qui cliquent sur ta vidéo quand elles la voient. C’est l’un des signaux les plus importants pour l’algorithme YouTube.',en:'Click-Through Rate: the % of people who click your video when they see it. It’s one of the most important signals for the YouTube algorithm.',es:'Tasa de clics (Click-Through Rate): el % de personas que hacen clic en tu vídeo cuando lo ven. Es una de las señales más importantes para el algoritmo de YouTube.',ar:'معدّل النقر (CTR): نسبة من ينقرون على فيديوك عند رؤيته. وهو من أهم الإشارات لخوارزمية يوتيوب.'},
+  at_q2:{fr:'Sur quoi se base le score ?',en:'What is the score based on?',es:'¿En qué se basa la puntuación?',ar:'على ماذا تعتمد النتيجة؟'},
+  at_a2:{fr:'5 critères éprouvés : longueur idéale (40-70 caractères), présence d’un chiffre, mot émotionnel/puissant, accroche au début (Comment, Pourquoi, question…) et ponctuation expressive (? ou !).',en:'5 proven criteria: ideal length (40-70 chars), a number, an emotional/power word, a hook at the start (How, Why, a question…) and expressive punctuation (? or !).',es:'5 criterios probados: longitud ideal (40-70 caracteres), un número, una palabra emocional/potente, un gancho al inicio (Cómo, Por qué, una pregunta…) y puntuación expresiva (¿? o !).',ar:'5 معايير مُجرّبة: الطول المثالي (40-70 حرفًا)، وجود رقم، كلمة عاطفية/قوية، خطّاف في البداية (كيف، لماذا، سؤال…) وعلامات ترقيم معبّرة (؟ أو !).'},
+  at_q3:{fr:'Un score de 100 garantit-il des vues ?',en:'Does a score of 100 guarantee views?',es:'¿Una puntuación de 100 garantiza vistas?',ar:'هل تضمن نتيجة 100 المشاهدات؟'},
+  at_a3:{fr:'Non — le score mesure le potentiel de clic du titre. La miniature, le sujet et la rétention comptent aussi. L’extension VidSpark AI analyse tout ça ensemble.',en:'No — the score measures the title’s click potential. The thumbnail, topic and retention also matter. The VidSpark AI extension analyzes it all together.',es:'No — la puntuación mide el potencial de clic del título. La miniatura, el tema y la retención también cuentan. La extensión VidSpark AI lo analiza todo junto.',ar:'لا — النتيجة تقيس إمكانية النقر للعنوان. الصورة المصغّرة والموضوع والاحتفاظ مهمّة أيضًا. إضافة VidSpark AI تحلّلها كلّها معًا.'},
+  at_up_h:{fr:'🩺 Le Title Doctor fait mieux',en:'🩺 The Title Doctor does more',es:'🩺 El Title Doctor hace más',ar:'🩺 طبيب العناوين يفعل أكثر'},
+  at_up_p:{fr:'Dans l’extension VidSpark AI, l’IA diagnostique ton titre, te dit ce qui manque et le RÉÉCRIT pour plus de clics — directement sur YouTube.',en:'In the VidSpark AI extension, the AI diagnoses your title, tells you what’s missing and REWRITES it for more clicks — right on YouTube.',es:'En la extensión VidSpark AI, la IA diagnostica tu título, te dice qué falta y lo REESCRIBE para más clics — directo en YouTube.',ar:'في إضافة VidSpark AI، يُشخّص الذكاء الاصطناعي عنوانك ويخبرك بما ينقص ويُعيد كتابته لمزيد من النقرات — مباشرةً على يوتيوب.'},
+  at_up_btn:{fr:'Découvrir VidSpark AI — dès 9,99€/mois',en:'Discover VidSpark AI — from €9.99/mo',es:'Descubre VidSpark AI — desde 9,99€/mes',ar:'اكتشف VidSpark AI — من 9.99€ شهريًا'},
+  at_chars:{fr:'caractères',en:'characters',es:'caracteres',ar:'حرفًا'},
+  at_c_len:{fr:'Longueur idéale (40-70 caractères)',en:'Ideal length (40-70 characters)',es:'Longitud ideal (40-70 caracteres)',ar:'الطول المثالي (40-70 حرفًا)'},
+  at_c_num:{fr:'Contient un chiffre',en:'Contains a number',es:'Contiene un número',ar:'يحتوي على رقم'},
+  at_c_emo:{fr:'Mot émotionnel/puissant',en:'Emotional/power word',es:'Palabra emocional/potente',ar:'كلمة عاطفية/قوية'},
+  at_c_hook:{fr:'Accroche au début (Comment, Pourquoi, ?…)',en:'Hook at the start (How, Why, ?…)',es:'Gancho al inicio (Cómo, Por qué, ?…)',ar:'خطّاف في البداية (كيف، لماذا، ؟…)'},
+  at_c_punct:{fr:'Ponctuation expressive (? ou !)',en:'Expressive punctuation (? or !)',es:'Puntuación expresiva (? o !)',ar:'علامات ترقيم معبّرة (؟ أو !)'}
+});
+
 function go(){
-  const t=(document.getElementById('titleIn').value||'').trim();
+  const txt=(document.getElementById('titleIn').value||'').trim();
   const r=document.getElementById('res');
-  if(!t){r.innerHTML='';return;}
-  const s=titleScore(t);
+  if(!txt){r.innerHTML='';return;}
+  const s=titleScore(txt);
   const col=s.score>=70?'#22c55e':s.score>=45?'#f5b301':'#ef4444';
   const chk=(ok,lbl)=>`<div class="check">${ok?'✅':'⬜'} ${lbl}</div>`;
   r.innerHTML=`
-    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;"><div style="font-size:28px;font-weight:800;color:${col}">${s.score}</div><div class="muted">/100 · ${s.len} caractères</div></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;"><div style="font-size:28px;font-weight:800;color:${col}">${s.score}</div><div class="muted">/100 · ${s.len} ${t('at_chars')}</div></div>
     <div class="score-bar"><div style="width:${s.score}%;background:${col}"></div></div>
-    ${chk(s.okLen,'Longueur idéale (40-70 caractères)')}
-    ${chk(s.okNum,'Contient un chiffre')}
-    ${chk(s.okEmo,'Mot émotionnel/puissant')}
-    ${chk(s.okHook,'Accroche au début (Comment, Pourquoi, ?…)')}
-    ${chk(s.okPunct,'Ponctuation expressive (? ou !)')}`;
+    ${chk(s.okLen,t('at_c_len'))}
+    ${chk(s.okNum,t('at_c_num'))}
+    ${chk(s.okEmo,t('at_c_emo'))}
+    ${chk(s.okHook,t('at_c_hook'))}
+    ${chk(s.okPunct,t('at_c_punct'))}`;
 }
 </script>
 </body>
