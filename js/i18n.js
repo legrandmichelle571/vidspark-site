@@ -29,6 +29,8 @@
     document.documentElement.lang = code;
     document.documentElement.dir = RTL.has(code) ? 'rtl' : 'ltr';
     applyI18n();
+    // Permet aux pages avec contenu généré en JS de se re-rendre
+    try { document.dispatchEvent(new CustomEvent('vslangchange',{detail:code})); } catch(e){}
     // Synchroniser les iframes enfants et la fenêtre parente (même origine)
     if(!fromMsg){
       try { document.querySelectorAll('iframe').forEach(f=>f.contentWindow && f.contentWindow.postMessage({vsLang:code},'*')); } catch(e){}
