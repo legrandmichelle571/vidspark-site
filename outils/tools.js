@@ -1,25 +1,78 @@
 /* Outils gratuits VidSpark — helpers partagés */
 const API = 'https://vidspark-ai-production-9ac7.up.railway.app';
 
+/* ════════════ i18n — 14 langues (comme l'extension) ════════════ */
+const LANGS = [
+  {c:'fr',n:'Français'},{c:'en',n:'English'},{c:'es',n:'Español'},{c:'ar',n:'العربية',rtl:1},
+  {c:'pt',n:'Português'},{c:'de',n:'Deutsch'},{c:'it',n:'Italiano'},{c:'ru',n:'Русский'},
+  {c:'ja',n:'日本語'},{c:'ko',n:'한국어'},{c:'hi',n:'हिन्दी'},{c:'zh',n:'中文'},
+  {c:'tr',n:'Türkçe'},{c:'nl',n:'Nederlands'}
+];
+const RTL = new Set(['ar']);
+
+/* Dictionnaire commun (nav, footer, boutons) — appliqué à TOUTES les pages */
+const I18N = {
+  nav_tools:{fr:'🛠️ Tous les outils',en:'🛠️ All tools',es:'🛠️ Todas las herramientas',ar:'🛠️ كل الأدوات',pt:'🛠️ Todas as ferramentas',de:'🛠️ Alle Tools',it:'🛠️ Tutti gli strumenti',ru:'🛠️ Все инструменты',ja:'🛠️ すべてのツール',ko:'🛠️ 모든 도구',hi:'🛠️ सभी टूल',zh:'🛠️ 所有工具',tr:'🛠️ Tüm araçlar',nl:'🛠️ Alle tools'},
+  nav_pro:{fr:'⭐ Passer Pro',en:'⭐ Go Pro',es:'⭐ Hazte Pro',ar:'⭐ الترقية إلى Pro',pt:'⭐ Seja Pro',de:'⭐ Pro werden',it:'⭐ Passa a Pro',ru:'⭐ Перейти на Pro',ja:'⭐ Proにアップ',ko:'⭐ Pro 업그레이드',hi:'⭐ Pro लें',zh:'⭐ 升级 Pro',tr:'⭐ Pro\'ya geç',nl:'⭐ Word Pro'},
+  f_home:{fr:'Accueil',en:'Home',es:'Inicio',ar:'الرئيسية',pt:'Início',de:'Startseite',it:'Home',ru:'Главная',ja:'ホーム',ko:'홈',hi:'होम',zh:'首页',tr:'Ana sayfa',nl:'Home'},
+  f_tools:{fr:'Outils gratuits',en:'Free tools',es:'Herramientas gratis',ar:'أدوات مجانية',pt:'Ferramentas grátis',de:'Kostenlose Tools',it:'Strumenti gratis',ru:'Бесплатные инструменты',ja:'無料ツール',ko:'무료 도구',hi:'मुफ़्त टूल',zh:'免费工具',tr:'Ücretsiz araçlar',nl:'Gratis tools'},
+  f_pricing:{fr:'Tarifs',en:'Pricing',es:'Precios',ar:'الأسعار',pt:'Preços',de:'Preise',it:'Prezzi',ru:'Цены',ja:'料金',ko:'요금',hi:'मूल्य',zh:'价格',tr:'Fiyatlar',nl:'Prijzen'},
+  f_privacy:{fr:'Confidentialité',en:'Privacy',es:'Privacidad',ar:'الخصوصية',pt:'Privacidade',de:'Datenschutz',it:'Privacy',ru:'Конфиденциальность',ja:'プライバシー',ko:'개인정보',hi:'गोपनीयता',zh:'隐私',tr:'Gizlilik',nl:'Privacy'},
+  wait:{fr:'Veuillez patienter…',en:'Please wait…',es:'Espera…',ar:'يرجى الانتظار…',pt:'Aguarde…',de:'Bitte warten…',it:'Attendi…',ru:'Подождите…',ja:'お待ちください…',ko:'잠시만요…',hi:'कृपया रुकें…',zh:'请稍候…',tr:'Lütfen bekleyin…',nl:'Even geduld…'}
+};
+
+/* Les pages ajoutent leurs propres clés via registerI18n({key:{fr,en,...}}) */
+function registerI18n(dict){ for(const k in dict) I18N[k]=Object.assign(I18N[k]||{},dict[k]); }
+
+function getLang(){
+  let l = localStorage.getItem('vs_site_lang');
+  if(!l){ l=(navigator.language||'fr').slice(0,2); if(!LANGS.some(x=>x.c===l)) l='en'; }
+  return l;
+}
+/* Repli : langue choisie → anglais → français */
+function t(key){ const e=I18N[key]; if(!e) return key; const l=getLang(); return e[l]||e.en||e.fr||key; }
+
+function setLang(code){
+  localStorage.setItem('vs_site_lang', code);
+  document.documentElement.lang = code;
+  document.documentElement.dir = RTL.has(code) ? 'rtl' : 'ltr';
+  applyI18n();
+}
+/* Applique les traductions à tout élément [data-i18n] / [data-i18n-ph] (placeholder) */
+function applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML = t(el.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder = t(el.getAttribute('data-i18n-ph')); });
+}
+
 /* Nav + footer communs injectés sur chaque page outil */
 document.addEventListener('DOMContentLoaded', () => {
+  const lang = getLang();
+  document.documentElement.lang = lang;
+  document.documentElement.dir = RTL.has(lang) ? 'rtl' : 'ltr';
+
   const nav = document.createElement('div');
   nav.className = 'nav';
   nav.innerHTML = `
     <a href="/index.html" class="logo"><span class="lb">✦</span> VidSpark AI</a>
     <div class="nav-right">
-      <a href="/outils.html">🛠️ Tous les outils</a>
-      <a href="/pricing.html" class="cta">⭐ Passer Pro</a>
+      <select id="vsLang" style="background:#1b2330;color:#e8e8f0;border:1px solid #2b3647;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer;">
+        ${LANGS.map(l=>`<option value="${l.c}"${l.c===lang?' selected':''}>${l.n}</option>`).join('')}
+      </select>
+      <a href="/outils.html" data-i18n="nav_tools"></a>
+      <a href="/pricing.html" class="cta" data-i18n="nav_pro"></a>
     </div>`;
   document.body.prepend(nav);
 
   const foot = document.createElement('footer');
   foot.innerHTML = `© 2026 VidSpark AI ·
-    <a href="/index.html">Accueil</a> ·
-    <a href="/outils.html">Outils gratuits</a> ·
-    <a href="/pricing.html">Tarifs</a> ·
-    <a href="/privacy.html">Confidentialité</a>`;
+    <a href="/index.html" data-i18n="f_home"></a> ·
+    <a href="/outils.html" data-i18n="f_tools"></a> ·
+    <a href="/pricing.html" data-i18n="f_pricing"></a> ·
+    <a href="/privacy.html" data-i18n="f_privacy"></a>`;
   document.body.appendChild(foot);
+
+  document.getElementById('vsLang').addEventListener('change', e => setLang(e.target.value));
+  applyI18n();
 });
 
 function vidId(u){
@@ -40,7 +93,7 @@ async function run(btn, fn){
   btn.disabled = true;
   btn.style.opacity = '.65';
   btn.style.cursor = 'wait';
-  btn.innerHTML = '<span class="spin"></span> Veuillez patienter…';
+  btn.innerHTML = '<span class="spin"></span> ' + (typeof t==='function' ? t('wait') : 'Veuillez patienter…');
   try { await fn(); }
   finally {
     btn.disabled = false;

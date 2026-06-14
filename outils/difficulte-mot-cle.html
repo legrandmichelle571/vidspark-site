@@ -12,78 +12,126 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free">100% GRATUIT · SANS INSCRIPTION</div>
-    <h1>🎯 Difficulté de Mot-clé YouTube</h1>
-    <p>Entre un mot-clé : on analyse les meilleures vidéos qui le ciblent et on te dit si c'est <strong>facile ou difficile</strong> de ranker dessus — avec un score sur 100.</p>
+    <div class="badge-free" data-i18n="kd_badge"></div>
+    <h1 data-i18n="kd_h1"></h1>
+    <p data-i18n="kd_sub"></p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="kw" placeholder="Ex : recette pancakes, gaming fortnite, méditation…" style="width:100%" onkeydown="if(event.key==='Enter')run(this,go)">
-      <button class="btn" onclick="run(this,go)">🎯 Vérifier la difficulté</button>
+      <input type="text" id="kw" data-i18n-ph="kd_ph" style="width:100%" onkeydown="if(event.key==='Enter')run(this,go)">
+      <button class="btn" onclick="run(this,go)" data-i18n="kd_btn"></button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Comment le score de difficulté est calculé ?</h3><p>On analyse les meilleures vidéos qui rankent déjà sur ce mot-clé : leurs vues moyennes et leur fraîcheur (vues par heure). Plus le top est dominé par de grosses vidéos actives, plus c'est dur de ranker.</p></div>
-    <div class="faq-item"><h3>Quel mot-clé choisir ?</h3><p>Vise les mots-clés <strong>Faciles</strong> et <strong>Moyens</strong> si ta chaîne est récente : tu rankeras plus vite. Garde les mots-clés <strong>Difficiles</strong> pour quand tu auras de l'autorité.</p></div>
-    <div class="faq-item"><h3>C'est vraiment gratuit ?</h3><p>Oui, sans inscription. Pour la recherche de mots-clés avancée, les générateurs IA et les 25 outils, passe à VidSpark Pro.</p></div>
+    <h2 data-i18n="kd_faq_title"></h2>
+    <div class="faq-item"><h3 data-i18n="kd_q1"></h3><p data-i18n="kd_a1"></p></div>
+    <div class="faq-item"><h3 data-i18n="kd_q2"></h3><p data-i18n="kd_a2"></p></div>
+    <div class="faq-item"><h3 data-i18n="kd_q3"></h3><p data-i18n="kd_a3"></p></div>
   </div>
 
   <div class="upsell">
-    <h3>🔑 Recherche de mots-clés complète</h3>
-    <p>VidSpark AI te donne les suggestions, la difficulté, la concurrence et génère titres + tags optimisés pour chaque mot-clé.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="kd_up_h"></h3>
+    <p data-i18n="kd_up_p"></p>
+    <a href="/pricing.html" class="btn" data-i18n="kd_up_btn"></a>
   </div>
 </div>
 
 <script src="/js/api.js"></script>
-<script src="tools.js?v=2"></script>
+<script src="tools.js?v=3"></script>
 <script>
+/* Traductions de la page — courtes en 14 langues, longues en FR/EN/ES/AR (repli EN) */
+registerI18n({
+  kd_badge:{fr:'100% GRATUIT · SANS INSCRIPTION',en:'100% FREE · NO SIGN-UP',es:'100% GRATIS · SIN REGISTRO',ar:'مجاني 100% · بدون تسجيل',pt:'100% GRÁTIS · SEM CADASTRO',de:'100% KOSTENLOS · OHNE ANMELDUNG',it:'100% GRATIS · SENZA REGISTRAZIONE',ru:'100% БЕСПЛАТНО · БЕЗ РЕГИСТРАЦИИ',ja:'100%無料・登録不要',ko:'100% 무료 · 가입 불필요',hi:'100% मुफ़्त · बिना साइन-अप',zh:'100%免费 · 无需注册',tr:'%100 ÜCRETSİZ · KAYIT YOK',nl:'100% GRATIS · GEEN REGISTRATIE'},
+  kd_h1:{fr:'🎯 Difficulté de Mot-clé YouTube',en:'🎯 YouTube Keyword Difficulty',es:'🎯 Dificultad de Palabra Clave YouTube',ar:'🎯 صعوبة الكلمة المفتاحية في يوتيوب',pt:'🎯 Dificuldade de Palavra-chave YouTube',de:'🎯 YouTube Keyword-Schwierigkeit',it:'🎯 Difficoltà Parola Chiave YouTube',ru:'🎯 Сложность ключевого слова YouTube',ja:'🎯 YouTubeキーワード難易度',ko:'🎯 YouTube 키워드 난이도',hi:'🎯 YouTube कीवर्ड कठिनाई',zh:'🎯 YouTube 关键词难度',tr:'🎯 YouTube Anahtar Kelime Zorluğu',nl:'🎯 YouTube Zoekwoord-moeilijkheid'},
+  kd_sub:{fr:"Entre un mot-clé : on analyse les meilleures vidéos qui le ciblent et on te dit si c'est <strong>facile ou difficile</strong> de ranker dessus — avec un score sur 100.",en:'Enter a keyword: we analyze the top videos targeting it and tell you if it’s <strong>easy or hard</strong> to rank for — with a score out of 100.',es:'Escribe una palabra clave: analizamos los mejores vídeos que la usan y te decimos si es <strong>fácil o difícil</strong> posicionarse — con una puntuación sobre 100.',ar:'أدخل كلمة مفتاحية: نحلّل أفضل الفيديوهات التي تستهدفها ونخبرك إن كان من <strong>السهل أو الصعب</strong> التصدّر لها — مع نتيجة من 100.'},
+  kd_ph:{fr:'Ex : recette pancakes, gaming fortnite, méditation…',en:'E.g. pancake recipe, fortnite gaming, meditation…',es:'Ej: receta de panqueques, gaming fortnite, meditación…',ar:'مثال: وصفة بانكيك، ألعاب فورتنايت، تأمل…',pt:'Ex: receita de panquecas, gaming fortnite, meditação…',de:'z.B. Pfannkuchen Rezept, Fortnite Gaming, Meditation…',it:'Es: ricetta pancake, gaming fortnite, meditazione…',ru:'Напр.: рецепт блинов, fortnite, медитация…',ja:'例：パンケーキ レシピ、フォートナイト、瞑想…',ko:'예: 팬케이크 레시피, 포트나이트, 명상…',hi:'जैसे: पैनकेक रेसिपी, गेमिंग, ध्यान…',zh:'例如：松饼食谱、堡垒之夜、冥想…',tr:'Örn: pankek tarifi, fortnite, meditasyon…',nl:'Bijv: pannenkoek recept, fortnite gaming, meditatie…'},
+  kd_btn:{fr:'🎯 Vérifier la difficulté',en:'🎯 Check difficulty',es:'🎯 Verificar dificultad',ar:'🎯 تحقّق من الصعوبة',pt:'🎯 Verificar dificuldade',de:'🎯 Schwierigkeit prüfen',it:'🎯 Verifica difficoltà',ru:'🎯 Проверить сложность',ja:'🎯 難易度をチェック',ko:'🎯 난이도 확인',hi:'🎯 कठिनाई जांचें',zh:'🎯 检查难度',tr:'🎯 Zorluğu kontrol et',nl:'🎯 Moeilijkheid checken'},
+  kd_diff:{fr:'DIFFICULTÉ DE RANKING',en:'RANKING DIFFICULTY',es:'DIFICULTAD DE RANKING',ar:'صعوبة التصدّر',pt:'DIFICULDADE DE RANKING',de:'RANKING-SCHWIERIGKEIT',it:'DIFFICOLTÀ DI RANKING',ru:'СЛОЖНОСТЬ РАНЖИРОВАНИЯ',ja:'ランキング難易度',ko:'랭킹 난이도',hi:'रैंकिंग कठिनाई',zh:'排名难度',tr:'SIRALAMA ZORLUĞU',nl:'RANGSCHIKKING MOEILIJKHEID'},
+  kd_comp:{fr:'Concurrence',en:'Competition',es:'Competencia',ar:'المنافسة',pt:'Concorrência',de:'Konkurrenz',it:'Concorrenza',ru:'Конкуренция',ja:'競合',ko:'경쟁',hi:'प्रतिस्पर्धा',zh:'竞争',tr:'Rekabet',nl:'Concurrentie'},
+  kd_avg:{fr:'Vues moy. du top',en:'Avg. views of top',es:'Vistas medias del top',ar:'متوسط مشاهدات الأفضل',pt:'Visus. médias do topo',de:'Ø Aufrufe der Top',it:'Visual. medie top',ru:'Ср. просмотры топа',ja:'上位の平均再生',ko:'상위 평균 조회수',hi:'टॉप के औसत व्यू',zh:'前列平均观看',tr:'Üst sıra ort. izlenme',nl:'Gem. weergaven top'},
+  kd_analyzed:{fr:'Vidéos analysées',en:'Videos analyzed',es:'Vídeos analizados',ar:'الفيديوهات المُحلَّلة',pt:'Vídeos analisados',de:'Analysierte Videos',it:'Video analizzati',ru:'Видео проанализировано',ja:'分析した動画',ko:'분석한 영상',hi:'विश्लेषित वीडियो',zh:'已分析视频',tr:'Analiz edilen video',nl:'Geanalyseerde video’s'},
+  kd_sugg:{fr:'💡 SUGGESTIONS (clique pour tester)',en:'💡 SUGGESTIONS (click to test)',es:'💡 SUGERENCIAS (clic para probar)',ar:'💡 اقتراحات (انقر للتجربة)',pt:'💡 SUGESTÕES (clique para testar)',de:'💡 VORSCHLÄGE (zum Testen klicken)',it:'💡 SUGGERIMENTI (clicca per testare)',ru:'💡 ПОДСКАЗКИ (нажми, чтобы проверить)',ja:'💡 候補（クリックで試す）',ko:'💡 추천 (클릭하여 테스트)',hi:'💡 सुझाव (परखने के लिए क्लिक करें)',zh:'💡 建议（点击测试）',tr:'💡 ÖNERİLER (test için tıkla)',nl:'💡 SUGGESTIES (klik om te testen)'},
+  kd_spin:{fr:'Analyse des meilleures vidéos sur ce mot-clé…',en:'Analyzing the top videos for this keyword…',es:'Analizando los mejores vídeos de esta palabra clave…',ar:'جارٍ تحليل أفضل الفيديوهات لهذه الكلمة…',pt:'Analisando os melhores vídeos desta palavra-chave…',de:'Analysiere die Top-Videos für dieses Keyword…',it:'Analisi dei migliori video per questa parola chiave…',ru:'Анализ топ-видео по этому ключу…',ja:'このキーワードの上位動画を分析中…',ko:'이 키워드의 상위 영상 분석 중…',hi:'इस कीवर्ड के टॉप वीडियो विश्लेषण…',zh:'正在分析该关键词的热门视频…',tr:'Bu kelimenin en iyi videoları analiz ediliyor…',nl:'Topvideo’s voor dit zoekwoord analyseren…'},
+  kd_min:{fr:'❌ Entre un mot-clé (2 caractères min).',en:'❌ Enter a keyword (2 chars min).',es:'❌ Escribe una palabra clave (mín. 2 caracteres).',ar:'❌ أدخل كلمة مفتاحية (حرفان على الأقل).',pt:'❌ Digite uma palavra-chave (mín. 2 caracteres).',de:'❌ Keyword eingeben (min. 2 Zeichen).',it:'❌ Inserisci una parola chiave (min 2 caratteri).',ru:'❌ Введите ключ (мин. 2 символа).',ja:'❌ キーワードを入力（2文字以上）。',ko:'❌ 키워드를 입력하세요(최소 2자).',hi:'❌ कीवर्ड दर्ज करें (न्यूनतम 2 अक्षर)।',zh:'❌ 请输入关键词（至少2个字符）。',tr:'❌ Bir kelime girin (en az 2 karakter).',nl:'❌ Voer een zoekwoord in (min. 2 tekens).'},
+  /* concurrence */
+  kd_c_high:{fr:'Forte',en:'High',es:'Alta',ar:'عالية',pt:'Alta',de:'Hoch',it:'Alta',ru:'Высокая',ja:'高い',ko:'높음',hi:'उच्च',zh:'高',tr:'Yüksek',nl:'Hoog'},
+  kd_c_med:{fr:'Moyenne',en:'Medium',es:'Media',ar:'متوسطة',pt:'Média',de:'Mittel',it:'Media',ru:'Средняя',ja:'中',ko:'보통',hi:'मध्यम',zh:'中',tr:'Orta',nl:'Gemiddeld'},
+  kd_c_low:{fr:'Faible',en:'Low',es:'Baja',ar:'منخفضة',pt:'Baixa',de:'Niedrig',it:'Bassa',ru:'Низкая',ja:'低い',ko:'낮음',hi:'कम',zh:'低',tr:'Düşük',nl:'Laag'},
+  /* paliers de difficulté */
+  kd_t_easy:{fr:'Facile',en:'Easy',es:'Fácil',ar:'سهل',pt:'Fácil',de:'Leicht',it:'Facile',ru:'Легко',ja:'簡単',ko:'쉬움',hi:'आसान',zh:'容易',tr:'Kolay',nl:'Makkelijk'},
+  kd_t_med:{fr:'Moyen',en:'Medium',es:'Medio',ar:'متوسط',pt:'Médio',de:'Mittel',it:'Medio',ru:'Средне',ja:'普通',ko:'보통',hi:'मध्यम',zh:'中等',tr:'Orta',nl:'Gemiddeld'},
+  kd_t_hard:{fr:'Difficile',en:'Hard',es:'Difícil',ar:'صعب',pt:'Difícil',de:'Schwer',it:'Difficile',ru:'Сложно',ja:'難しい',ko:'어려움',hi:'कठिन',zh:'困难',tr:'Zor',nl:'Moeilijk'},
+  kd_t_vhard:{fr:'Très difficile',en:'Very hard',es:'Muy difícil',ar:'صعب جدًا',pt:'Muito difícil',de:'Sehr schwer',it:'Molto difficile',ru:'Очень сложно',ja:'非常に難しい',ko:'매우 어려움',hi:'बहुत कठिन',zh:'非常困难',tr:'Çok zor',nl:'Zeer moeilijk'},
+  /* conseils (FR/EN/ES/AR, repli EN) */
+  kd_a_easy:{fr:'Bonne opportunité — tu peux ranker rapidement.',en:'Great opportunity — you can rank quickly.',es:'Buena oportunidad — puedes posicionarte rápido.',ar:'فرصة جيدة — يمكنك التصدّر بسرعة.'},
+  kd_a_med:{fr:'Faisable avec un bon titre, une bonne miniature et du SEO.',en:'Doable with a strong title, thumbnail and SEO.',es:'Posible con buen título, miniatura y SEO.',ar:'ممكن مع عنوان وصورة مصغّرة و SEO جيّد.'},
+  kd_a_hard:{fr:'Concurrence forte — vise un angle plus précis (longue traîne).',en:'Strong competition — target a more specific angle (long tail).',es:'Mucha competencia — apunta a un ángulo más específico (long tail).',ar:'منافسة قوية — استهدف زاوية أدق (الذيل الطويل).'},
+  kd_a_vhard:{fr:'Dominé par de grosses chaînes — cherche un mot-clé de niche.',en:'Dominated by big channels — find a niche keyword.',es:'Dominado por grandes canales — busca una palabra de nicho.',ar:'تهيمن عليه قنوات كبيرة — ابحث عن كلمة في مجال متخصّص.'},
+  /* FAQ + upsell (FR/EN/ES/AR, repli EN) */
+  kd_faq_title:{fr:'Questions fréquentes',en:'FAQ',es:'Preguntas frecuentes',ar:'أسئلة شائعة'},
+  kd_q1:{fr:'Comment le score de difficulté est calculé ?',en:'How is the difficulty score calculated?',es:'¿Cómo se calcula la puntuación de dificultad?',ar:'كيف تُحتسب درجة الصعوبة؟'},
+  kd_a1:{fr:'On analyse les meilleures vidéos qui rankent déjà sur ce mot-clé : leurs vues moyennes et leur fraîcheur (vues par heure). Plus le top est dominé par de grosses vidéos actives, plus c’est dur de ranker.',en:'We analyze the top videos already ranking for this keyword: their average views and freshness (views per hour). The more the top is dominated by big active videos, the harder it is to rank.',es:'Analizamos los mejores vídeos que ya posicionan para esta palabra: sus vistas medias y su frescura (vistas por hora). Cuanto más dominen el top vídeos grandes y activos, más difícil es posicionarse.',ar:'نحلّل أفضل الفيديوهات المتصدّرة لهذه الكلمة: متوسّط مشاهداتها وحداثتها (مشاهدات في الساعة). كلّما هيمنت فيديوهات كبيرة ونشطة، صَعُب التصدّر.'},
+  kd_q2:{fr:'Quel mot-clé choisir ?',en:'Which keyword should I pick?',es:'¿Qué palabra clave elegir?',ar:'أي كلمة مفتاحية أختار؟'},
+  kd_a2:{fr:'Vise les mots-clés Faciles et Moyens si ta chaîne est récente : tu rankeras plus vite. Garde les Difficiles pour quand tu auras de l’autorité.',en:'Target Easy and Medium keywords if your channel is new: you’ll rank faster. Save the Hard ones for when you have authority.',es:'Apunta a palabras Fáciles y Medias si tu canal es nuevo: posicionarás más rápido. Deja las Difíciles para cuando tengas autoridad.',ar:'استهدف الكلمات السهلة والمتوسطة إن كانت قناتك جديدة: ستتصدّر أسرع. واترك الصعبة حتى تكتسب قوّة.'},
+  kd_q3:{fr:'C’est vraiment gratuit ?',en:'Is it really free?',es:'¿Es realmente gratis?',ar:'هل هو مجاني فعلاً؟'},
+  kd_a3:{fr:'Oui, sans inscription. Pour la recherche avancée, les générateurs IA et les 25 outils, passe à VidSpark Pro.',en:'Yes, no sign-up. For advanced research, AI generators and the 25 tools, upgrade to VidSpark Pro.',es:'Sí, sin registro. Para búsqueda avanzada, generadores IA y las 25 herramientas, pásate a VidSpark Pro.',ar:'نعم، بدون تسجيل. للبحث المتقدّم ومولّدات الذكاء الاصطناعي والأدوات الـ25، ارتقِ إلى VidSpark Pro.'},
+  kd_up_h:{fr:'🔑 Recherche de mots-clés complète',en:'🔑 Full keyword research',es:'🔑 Investigación de palabras clave completa',ar:'🔑 بحث كامل عن الكلمات المفتاحية'},
+  kd_up_p:{fr:'VidSpark AI te donne les suggestions, la difficulté, la concurrence et génère titres + tags optimisés pour chaque mot-clé.',en:'VidSpark AI gives you suggestions, difficulty, competition and generates optimized titles + tags for each keyword.',es:'VidSpark AI te da sugerencias, dificultad, competencia y genera títulos + tags optimizados para cada palabra.',ar:'يمنحك VidSpark AI الاقتراحات والصعوبة والمنافسة ويولّد عناوين ووسوم محسّنة لكل كلمة.'},
+  kd_up_btn:{fr:'Découvrir VidSpark AI — dès 9,99€/mois',en:'Discover VidSpark AI — from €9.99/mo',es:'Descubre VidSpark AI — desde 9,99€/mes',ar:'اكتشف VidSpark AI — من 9.99€ شهريًا'}
+});
+
+function tierFromScore(s){
+  if(s<35) return {k:'kd_t_easy',a:'kd_a_easy',c:'#22c55e'};
+  if(s<55) return {k:'kd_t_med', a:'kd_a_med', c:'#f5b301'};
+  if(s<75) return {k:'kd_t_hard',a:'kd_a_hard',c:'#f7941d'};
+  return       {k:'kd_t_vhard',a:'kd_a_vhard',c:'#ef4444'};
+}
+function compLabel(comp){ return comp==='forte'?t('kd_c_high'):comp==='moyenne'?t('kd_c_med'):t('kd_c_low'); }
+function compColor(comp){ return comp==='forte'?'#ef4444':comp==='moyenne'?'#f5b301':'#22c55e'; }
+
 async function go(){
   const q=document.getElementById('kw').value.trim();
   const r=document.getElementById('res');
-  if(q.length<2){r.innerHTML='<div class="err">❌ Entre un mot-clé (2 caractères min).</div>';return;}
-  r.innerHTML=spinner('Analyse des meilleures vidéos sur ce mot-clé…');
+  if(q.length<2){r.innerHTML='<div class="err">'+t('kd_min')+'</div>';return;}
+  r.innerHTML=spinner(t('kd_spin'));
   try{
     const resp=await fetch(API+'/api/public/ai/keyword-difficulty',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({query:q})
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})
     });
     const d=await resp.json().catch(()=>({}));
     if(!resp.ok) throw new Error(d.error||'Service indisponible');
 
-    const dif=d.difficulty||{};
-    const c=dif.color||'#8888a0';
-    const cc=d.competition==='forte'?'#ef4444':d.competition==='moyenne'?'#f5b301':'#22c55e';
-    const chips=(d.suggestions||[]).map(s=>`<span style="display:inline-block;background:#1b2330;border:1px solid #2b3647;border-radius:16px;padding:6px 12px;margin:4px;font-size:13px;cursor:pointer" onclick="document.getElementById('kw').value=this.textContent;run({disabled:false,innerHTML:'',dataset:{}},go)">${esc(s)}</span>`).join('')||'<span style="color:#8888a0">—</span>';
+    const score=(d.difficulty&&d.difficulty.score!==undefined)?d.difficulty.score:undefined;
+    const tier=score!==undefined?tierFromScore(score):null;
+    const cCol=compColor(d.competition);
+    const chips=(d.suggestions||[]).map(s=>`<span style="display:inline-block;background:#1b2330;border:1px solid #2b3647;border-radius:16px;padding:6px 12px;margin:4px;font-size:13px;cursor:pointer" onclick="document.getElementById('kw').value=this.textContent;go()">${esc(s)}</span>`).join('');
 
     r.innerHTML=`
-      ${dif.score!==undefined?`<div style="text-align:center;padding:18px;background:#1b2330;border-radius:12px;border:2px solid ${c};margin-bottom:14px">
-        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">DIFFICULTÉ DE RANKING</div>
-        <div style="font-size:46px;font-weight:900;color:${c};line-height:1">${dif.score}<span style="font-size:20px">/100</span></div>
-        <div style="font-size:18px;font-weight:800;color:${c};margin-top:4px">${esc(dif.label||'')}</div>
-        ${dif.advice?`<div style="color:#8888a0;font-size:13px;margin-top:8px">${esc(dif.advice)}</div>`:''}
-        <div style="height:8px;background:#2b3647;border-radius:4px;overflow:hidden;margin-top:12px"><div style="height:100%;width:${dif.score}%;background:${c};border-radius:4px"></div></div>
+      ${tier?`<div style="text-align:center;padding:18px;background:#1b2330;border-radius:12px;border:2px solid ${tier.c};margin-bottom:14px">
+        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('kd_diff')}</div>
+        <div style="font-size:46px;font-weight:900;color:${tier.c};line-height:1">${score}<span style="font-size:20px">/100</span></div>
+        <div style="font-size:18px;font-weight:800;color:${tier.c};margin-top:4px">${t(tier.k)}</div>
+        <div style="color:#8888a0;font-size:13px;margin-top:8px">${t(tier.a)}</div>
+        <div style="height:8px;background:#2b3647;border-radius:4px;overflow:hidden;margin-top:12px"><div style="height:100%;width:${score}%;background:${tier.c};border-radius:4px"></div></div>
       </div>`:''}
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
         <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;min-width:120px">
-          <div style="font-size:22px;font-weight:800;color:${cc};text-transform:capitalize">${esc(d.competition||'—')}</div>
-          <div style="font-size:11px;color:#8888a0">Concurrence</div>
+          <div style="font-size:22px;font-weight:800;color:${cCol}">${esc(compLabel(d.competition))}</div>
+          <div style="font-size:11px;color:#8888a0">${t('kd_comp')}</div>
         </div>
         <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;min-width:120px">
           <div style="font-size:22px;font-weight:800">${(d.top_avg_views||0).toLocaleString()}</div>
-          <div style="font-size:11px;color:#8888a0">Vues moy. du top</div>
+          <div style="font-size:11px;color:#8888a0">${t('kd_avg')}</div>
         </div>
         <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;min-width:120px">
           <div style="font-size:22px;font-weight:800">${d.sampled||0}</div>
-          <div style="font-size:11px;color:#8888a0">Vidéos analysées</div>
+          <div style="font-size:11px;color:#8888a0">${t('kd_analyzed')}</div>
         </div>
       </div>
-      ${chips!=='<span style="color:#8888a0">—</span>'?`<div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:6px">💡 SUGGESTIONS (clique pour tester)</div><div>${chips}</div>`:''}
+      ${chips?`<div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:6px">${t('kd_sugg')}</div><div>${chips}</div>`:''}
     `;
   }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
 }
