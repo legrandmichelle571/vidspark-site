@@ -12,14 +12,14 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>🌍 Optimiseur d'Audience</h1>
-    <p>Sélectionne ta région et ta niche : l'IA te donne les meilleures heures de publication, les tendances locales, hashtags et sujets pour exploser dans ton marché.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="oa_h1">🌍 Optimiseur d'Audience</h1>
+    <p data-i18n="oa_sub">Sélectionne ta région et ta niche : l'IA te donne les meilleures heures de publication, les tendances locales, hashtags et sujets pour exploser dans ton marché.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="niche" placeholder="Ta niche — ex : cuisine marocaine, gaming mobile, fitness" style="width:100%">
+      <input type="text" id="niche" data-i18n-ph="oa_ph" placeholder="Ta niche — ex : cuisine marocaine, gaming mobile, fitness" style="width:100%">
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <select id="region" style="flex:1">
           <option value="FR">🇫🇷 France</option>
@@ -38,21 +38,21 @@
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
         </select>
       </div>
-      <button class="btn" onclick="run(this,go)">🌍 Optimiser pour mon audience</button>
+      <button class="btn" onclick="run(this,go)" data-i18n="oa_btn">🌍 Optimiser pour mon audience</button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Quelle est la meilleure heure pour publier sur YouTube ?</h3><p>Ça dépend de ton audience. En général : 17h-21h en semaine, 10h-13h le week-end. Mais l'IA personnalise selon ta région et ta niche.</p></div>
-    <div class="faq-item"><h3>Comment cibler le marché arabophone ?</h3><p>Le Maghreb (Maroc, Algérie, Tunisie) est très actif le soir (20h-23h). Pendant le Ramadan, les pics sont après Iftar. L'IA tient compte de ces spécificités.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="oa_q1">Quelle est la meilleure heure pour publier sur YouTube ?</h3><p data-i18n="oa_a1">Ça dépend de ton audience. En général : 17h-21h en semaine, 10h-13h le week-end. Mais l'IA personnalise selon ta région et ta niche.</p></div>
+    <div class="faq-item"><h3 data-i18n="oa_q2">Comment cibler le marché arabophone ?</h3><p data-i18n="oa_a2">Le Maghreb (Maroc, Algérie, Tunisie) est très actif le soir (20h-23h). Pendant le Ramadan, les pics sont après Iftar. L'IA tient compte de ces spécificités.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>📡 Données YouTube réelles</h3>
-    <p>L'extension VidSpark analyse les vraies tendances de ta niche en temps réel avec les données YouTube Live.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="oa_up_h">📡 Données YouTube réelles</h3>
+    <p data-i18n="oa_up_p">L'extension VidSpark analyse les vraies tendances de ta niche en temps réel avec les données YouTube Live.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -61,13 +61,27 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  oa_h1:{fr:"🌍 Optimiseur d'Audience",en:'🌍 Audience Optimizer',es:'🌍 Optimizador de Audiencia',ar:'🌍 مُحسّن الجمهور'},
+  oa_sub:{fr:"Sélectionne ta région et ta niche : l'IA te donne les meilleures heures de publication, les tendances locales, hashtags et sujets pour exploser dans ton marché.",en:'Pick your region and niche: the AI gives you the best posting hours, local trends, hashtags and topics to blow up in your market.',es:'Elige tu región y nicho: la IA te da las mejores horas de publicación, tendencias locales, hashtags y temas para explotar en tu mercado.',ar:'اختر منطقتك ومجالك: يمنحك الذكاء الاصطناعي أفضل أوقات النشر والاتجاهات المحلية والهاشتاغات والمواضيع للنجاح في سوقك.'},
+  oa_ph:{fr:'Ta niche — ex : cuisine marocaine, gaming mobile, fitness',en:'Your niche — e.g. Moroccan cooking, mobile gaming, fitness',es:'Tu nicho — ej: cocina marroquí, gaming móvil, fitness',ar:'مجالك — مثال: الطبخ المغربي، ألعاب الجوال، اللياقة'},
+  oa_btn:{fr:'🌍 Optimiser pour mon audience',en:'🌍 Optimize for my audience',es:'🌍 Optimizar para mi audiencia',ar:'🌍 حسّن لجمهوري'},
+  oa_q1:{fr:'Quelle est la meilleure heure pour publier sur YouTube ?',en:'What is the best time to post on YouTube?',es:'¿Cuál es la mejor hora para publicar en YouTube?',ar:'ما أفضل وقت للنشر على يوتيوب؟'},
+  oa_a1:{fr:"Ça dépend de ton audience. En général : 17h-21h en semaine, 10h-13h le week-end. Mais l'IA personnalise selon ta région et ta niche.",en:'It depends on your audience. Generally: 5-9pm on weekdays, 10am-1pm on weekends. But the AI personalizes it to your region and niche.',es:'Depende de tu audiencia. En general: 17-21h entre semana, 10-13h los fines de semana. Pero la IA lo personaliza según tu región y nicho.',ar:'يعتمد على جمهورك. عمومًا: 17-21 في أيام الأسبوع، 10-13 في العطلات. لكن الذكاء الاصطناعي يخصّصه حسب منطقتك ومجالك.'},
+  oa_q2:{fr:'Comment cibler le marché arabophone ?',en:'How to target the Arabic-speaking market?',es:'¿Cómo dirigirse al mercado árabe?',ar:'كيف أستهدف السوق العربي؟'},
+  oa_a2:{fr:"Le Maghreb (Maroc, Algérie, Tunisie) est très actif le soir (20h-23h). Pendant le Ramadan, les pics sont après Iftar. L'IA tient compte de ces spécificités.",en:'The Maghreb (Morocco, Algeria, Tunisia) is very active in the evening (8-11pm). During Ramadan, peaks are after Iftar. The AI accounts for these specifics.',es:'El Magreb (Marruecos, Argelia, Túnez) es muy activo por la noche (20-23h). En Ramadán, los picos son tras el Iftar. La IA tiene en cuenta estas particularidades.',ar:'المغرب العربي (المغرب، الجزائر، تونس) نشط جدًّا مساءً (20-23). في رمضان تكون الذروة بعد الإفطار. يراعي الذكاء الاصطناعي هذه الخصوصيات.'},
+  oa_up_h:{fr:'📡 Données YouTube réelles',en:'📡 Real YouTube data',es:'📡 Datos reales de YouTube',ar:'📡 بيانات يوتيوب حقيقية'},
+  oa_up_p:{fr:"L'extension VidSpark analyse les vraies tendances de ta niche en temps réel avec les données YouTube Live.",en:'The VidSpark extension analyzes your niche’s real trends in real time with live YouTube data.',es:'La extensión VidSpark analiza las tendencias reales de tu nicho en tiempo real con datos de YouTube en vivo.',ar:'تحلّل إضافة VidSpark اتجاهات مجالك الحقيقية فوريًا ببيانات يوتيوب المباشرة.'},
+  oa_spin:{fr:'Analyse de ton audience…',en:'Analyzing your audience…',es:'Analizando tu audiencia…',ar:'جارٍ تحليل جمهورك…'},
+  oa_min:{fr:'❌ Entre ta niche (2 caractères min).',en:'❌ Enter your niche (2 chars min).',es:'❌ Escribe tu nicho (mín. 2 caracteres).',ar:'❌ أدخل مجالك (حرفان على الأقل).'}
+});
 async function go(){
   const niche=document.getElementById('niche').value.trim();
   const region=document.getElementById('region').value;
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(niche.length<2){r.innerHTML='<div class="err">❌ Entre ta niche (2 caractères min).</div>';return;}
-  r.innerHTML=spinner('Analyse de ton audience…');
+  if(niche.length<2){r.innerHTML='<div class="err">'+t('oa_min')+'</div>';return;}
+  r.innerHTML=spinner(t('oa_spin'));
   try{
     const d=await aiCall('/api/public/ai/audience-optimizer',{niche,region,language:lang});
     r.innerHTML=`
