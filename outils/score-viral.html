@@ -12,35 +12,35 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
-    <h1>🔥 Score Viral</h1>
-    <p>Colle le titre et la description de ta vidéo : l'IA calcule la probabilité de viralité (hook, émotion, chiffres) — score actuel vs potentiel.</p>
+    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <h1 data-i18n="sv_h1">🔥 Score Viral</h1>
+    <p data-i18n="sv_sub">Colle le titre et la description de ta vidéo : l'IA calcule la probabilité de viralité (hook, émotion, chiffres) — score actuel vs potentiel.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="title" placeholder="Titre de ta vidéo" style="width:100%">
-      <textarea id="desc" placeholder="Description de ta vidéo (optionnel)" rows="3" style="width:100%;background:#12121a;border:1.5px solid #2b3647;color:#e8e8f0;border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
+      <input type="text" id="title" data-i18n-ph="sv_ph_title" placeholder="Titre de ta vidéo" style="width:100%">
+      <textarea id="desc" data-i18n-ph="sv_ph_desc" placeholder="Description de ta vidéo (optionnel)" rows="3" style="width:100%;background:#12121a;border:1.5px solid #2b3647;color:#e8e8f0;border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
         </select>
-        <button class="btn" onclick="run(this,go)" style="flex:1">🔥 Calculer le score viral</button>
+        <button class="btn" onclick="run(this,go)" style="flex:1" data-i18n="sv_btn">🔥 Calculer le score viral</button>
       </div>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2>Questions fréquentes</h2>
-    <div class="faq-item"><h3>Comment est calculé le score viral ?</h3><p>L'IA analyse plusieurs facteurs : la présence d'un hook fort, les émotions suscitées, les chiffres/données, la longueur du titre, les mots déclencheurs et le potentiel de partage.</p></div>
-    <div class="faq-item"><h3>Quelle différence entre score actuel et potentiel ?</h3><p>Le score actuel reflète ton titre/description tel quel. Le score potentiel montre ce que tu pourrais atteindre avec les améliorations suggérées.</p></div>
+    <h2 data-i18n="faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="sv_q1">Comment est calculé le score viral ?</h3><p data-i18n="sv_a1">L'IA analyse plusieurs facteurs : la présence d'un hook fort, les émotions suscitées, les chiffres/données, la longueur du titre, les mots déclencheurs et le potentiel de partage.</p></div>
+    <div class="faq-item"><h3 data-i18n="sv_q2">Quelle différence entre score actuel et potentiel ?</h3><p data-i18n="sv_a2">Le score actuel reflète ton titre/description tel quel. Le score potentiel montre ce que tu pourrais atteindre avec les améliorations suggérées.</p></div>
   </div>
 
   <div class="upsell">
-    <h3>🚀 Extension VidSpark AI</h3>
-    <p>Score viral en temps réel directement sur YouTube Studio, avec suggestions d'amélioration instantanées.</p>
-    <a href="/pricing.html" class="btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
+    <h3 data-i18n="sv_up_h">🚀 Extension VidSpark AI</h3>
+    <p data-i18n="sv_up_p">Score viral en temps réel directement sur YouTube Studio, avec suggestions d'amélioration instantanées.</p>
+    <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
 </div>
 
@@ -49,13 +49,30 @@
 <script src="/js/auth.js"></script>
 <script src="tools.js?v=4"></script>
 <script>
+registerI18n({
+  sv_h1:{fr:'🔥 Score Viral',en:'🔥 Viral Score',es:'🔥 Puntuación Viral',ar:'🔥 نقاط الانتشار'},
+  sv_sub:{fr:"Colle le titre et la description de ta vidéo : l'IA calcule la probabilité de viralité (hook, émotion, chiffres) — score actuel vs potentiel.",en:'Paste your video title and description: the AI computes virality potential (hook, emotion, numbers) — current vs potential score.',es:'Pega el título y la descripción de tu vídeo: la IA calcula el potencial viral (gancho, emoción, números) — puntuación actual vs potencial.',ar:'الصق عنوان ووصف فيديوك: يحسب الذكاء الاصطناعي احتمال الانتشار (الخطّاف، العاطفة، الأرقام) — النتيجة الحالية مقابل المحتملة.'},
+  sv_ph_title:{fr:'Titre de ta vidéo',en:'Your video title',es:'Título de tu vídeo',ar:'عنوان فيديوك'},
+  sv_ph_desc:{fr:'Description de ta vidéo (optionnel)',en:'Your video description (optional)',es:'Descripción de tu vídeo (opcional)',ar:'وصف فيديوك (اختياري)'},
+  sv_btn:{fr:'🔥 Calculer le score viral',en:'🔥 Calculate viral score',es:'🔥 Calcular puntuación viral',ar:'🔥 احسب نقاط الانتشار'},
+  sv_q1:{fr:'Comment est calculé le score viral ?',en:'How is the viral score calculated?',es:'¿Cómo se calcula la puntuación viral?',ar:'كيف تُحتسب نقاط الانتشار؟'},
+  sv_a1:{fr:"L'IA analyse plusieurs facteurs : la présence d'un hook fort, les émotions suscitées, les chiffres/données, la longueur du titre, les mots déclencheurs et le potentiel de partage.",en:'The AI analyzes several factors: a strong hook, the emotions triggered, numbers/data, title length, trigger words and share potential.',es:'La IA analiza varios factores: un gancho fuerte, las emociones, los números/datos, la longitud del título, las palabras gatillo y el potencial de compartir.',ar:'يحلّل الذكاء الاصطناعي عدّة عوامل: خطّاف قوي، العواطف المثارة، الأرقام/البيانات، طول العنوان، الكلمات المحفّزة، وإمكانية المشاركة.'},
+  sv_q2:{fr:'Quelle différence entre score actuel et potentiel ?',en:'What’s the difference between current and potential score?',es:'¿Qué diferencia hay entre puntuación actual y potencial?',ar:'ما الفرق بين النتيجة الحالية والمحتملة؟'},
+  sv_a2:{fr:'Le score actuel reflète ton titre/description tel quel. Le score potentiel montre ce que tu pourrais atteindre avec les améliorations suggérées.',en:'The current score reflects your title/description as-is. The potential score shows what you could reach with the suggested improvements.',es:'La puntuación actual refleja tu título/descripción tal cual. La potencial muestra lo que podrías alcanzar con las mejoras sugeridas.',ar:'النتيجة الحالية تعكس عنوانك/وصفك كما هو. النتيجة المحتملة تُظهر ما يمكنك بلوغه مع التحسينات المقترحة.'},
+  sv_up_h:{fr:'🚀 Extension VidSpark AI',en:'🚀 VidSpark AI extension',es:'🚀 Extensión VidSpark AI',ar:'🚀 إضافة VidSpark AI'},
+  sv_up_p:{fr:"Score viral en temps réel directement sur YouTube Studio, avec suggestions d'amélioration instantanées.",en:'Real-time viral score right in YouTube Studio, with instant improvement suggestions.',es:'Puntuación viral en tiempo real en YouTube Studio, con sugerencias de mejora instantáneas.',ar:'نقاط انتشار فورية مباشرةً في YouTube Studio، مع اقتراحات تحسين لحظية.'},
+  sv_spin:{fr:'Calcul du score viral…',en:'Calculating viral score…',es:'Calculando puntuación viral…',ar:'جارٍ حساب نقاط الانتشار…'},
+  sv_min:{fr:'❌ Entre un titre (3 caractères min).',en:'❌ Enter a title (3 chars min).',es:'❌ Escribe un título (mín. 3 caracteres).',ar:'❌ أدخل عنوانًا (3 أحرف على الأقل).'},
+  sv_cur:{fr:'SCORE ACTUEL',en:'CURRENT SCORE',es:'PUNTUACIÓN ACTUAL',ar:'النتيجة الحالية'},
+  sv_pot:{fr:'POTENTIEL',en:'POTENTIAL',es:'POTENCIAL',ar:'المحتملة'}
+});
 async function go(){
   const title=document.getElementById('title').value.trim();
   const desc=document.getElementById('desc').value.trim();
   const lang=document.getElementById('lang').value;
   const r=document.getElementById('res');
-  if(title.length<3){r.innerHTML='<div class="err">❌ Entre un titre (3 caractères min).</div>';return;}
-  r.innerHTML=spinner('Calcul du score viral…');
+  if(title.length<3){r.innerHTML='<div class="err">'+t('sv_min')+'</div>';return;}
+  r.innerHTML=spinner(t('sv_spin'));
   try{
     const d=await aiCall('/api/public/ai/viral-score',{title,description:desc,language:lang});
     const score=d.current_score||0;
@@ -64,11 +81,11 @@ async function go(){
     r.innerHTML=`
       <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px">
         <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">SCORE ACTUEL</div>
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('sv_cur')}</div>
           <div style="font-size:40px;font-weight:800;color:${c}">${score}<span style="font-size:18px">/100</span></div>
         </div>
         <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #22c55e">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">POTENTIEL</div>
+          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('sv_pot')}</div>
           <div style="font-size:40px;font-weight:800;color:#22c55e">${potential}<span style="font-size:18px">/100</span></div>
         </div>
       </div>
