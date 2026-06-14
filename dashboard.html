@@ -436,6 +436,7 @@
 .tool-tile{border:none !important;}
 </style>
   <script src="/js/i18n.js"></script>
+  <script src="/js/i18n-labels.js"></script>
   <script>
     registerI18n({
       db_home:{fr:'Tableau de bord',en:'Dashboard',es:'Panel',ar:'لوحة التحكم',pt:'Painel',de:'Dashboard',it:'Dashboard',ru:'Панель',ja:'ダッシュボード',ko:'대시보드',hi:'डैशबोर्ड',zh:'仪表板',tr:'Panel',nl:'Dashboard'},
@@ -600,39 +601,39 @@
       <!-- 2 colonnes : Activation + Démarrage -->
       <div class="grid-2">
         <div class="card primary">
-          <div class="section-title">🔑 Activation de l'extension</div>
-          <div id="codesHint" style="font-size:12px;color:var(--muted);margin-bottom:14px;">Utilise ces codes pour activer ton extension Chrome.</div>
+          <div class="section-title" data-i18n="db_act_title">🔑 Activation de l'extension</div>
+          <div id="codesHint" style="font-size:12px;color:var(--muted);margin-bottom:14px;" data-i18n="db_act_hint">Utilise ces codes pour activer ton extension Chrome.</div>
           <div id="codesContainer"></div>
           <input type="hidden" id="activationId"><input type="hidden" id="activationSecret">
           <div style="margin-top:8px;padding:11px 14px;background:rgba(34,197,94,.08);border-left:3px solid var(--green);border-radius:6px;">
-            <span style="font-size:12px;color:var(--green);">✅ Code valide — extension prête à l'emploi.</span>
+            <span style="font-size:12px;color:var(--green);" data-i18n="db_act_valid">✅ Code valide — extension prête à l'emploi.</span>
           </div>
-          <button onclick="releaseDevices()" style="width:100%;margin-top:12px;background:transparent;border:1px solid var(--b2);color:var(--muted);padding:10px;border-radius:8px;font-size:12px;cursor:pointer;">🔓 PC perdu ? Libérer mes codes</button>
+          <button onclick="releaseDevices()" style="width:100%;margin-top:12px;background:transparent;border:1px solid var(--b2);color:var(--muted);padding:10px;border-radius:8px;font-size:12px;cursor:pointer;" data-i18n="db_act_release">🔓 PC perdu ? Libérer mes codes</button>
           <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
         </div>
 
         <div class="card">
-          <div class="section-title">🚀 Démarrage rapide</div>
+          <div class="section-title" data-i18n="db_qs_title">🚀 Démarrage rapide</div>
           <ul class="checklist">
-            <li><input type="checkbox" id="task1" style="cursor:pointer;"><label for="task1" style="cursor:pointer;flex:1;">Installer l'extension Chrome</label></li>
-            <li><input type="checkbox" id="task2" style="cursor:pointer;"><label for="task2" style="cursor:pointer;flex:1;">Connecter ma chaîne YouTube</label></li>
-            <li><input type="checkbox" id="task3" style="cursor:pointer;"><label for="task3" style="cursor:pointer;flex:1;">Lancer ma première analyse</label></li>
+            <li><input type="checkbox" id="task1" style="cursor:pointer;"><label for="task1" style="cursor:pointer;flex:1;" data-i18n="db_qs_1">Installer l'extension Chrome</label></li>
+            <li><input type="checkbox" id="task2" style="cursor:pointer;"><label for="task2" style="cursor:pointer;flex:1;" data-i18n="db_qs_2">Connecter ma chaîne YouTube</label></li>
+            <li><input type="checkbox" id="task3" style="cursor:pointer;"><label for="task3" style="cursor:pointer;flex:1;" data-i18n="db_qs_3">Lancer ma première analyse</label></li>
           </ul>
-          <a class="btn btn-secondary" href="https://vidsparkpro.com/pricing.html" style="width:100%;margin-top:16px;">🏷️ Voir les forfaits</a>
+          <a class="btn btn-secondary" href="https://vidsparkpro.com/pricing.html" style="width:100%;margin-top:16px;" data-i18n="db_qs_plans">🏷️ Voir les forfaits</a>
         </div>
       </div>
 
       <!-- Outils IA -->
-      <div class="section-title">✦ Outils IA — lancement rapide</div>
+      <div class="section-title" data-i18n="db_tools_title">✦ Outils IA — lancement rapide</div>
       <div class="tools-grid">
-        <button class="tool-tile" onclick="openTool('discover')"><div class="tt-ic">🔍</div><div class="tt-name">Discover</div><div class="tt-desc">Explorer des idées</div></button>
-        <button class="tool-tile" onclick="openTool('generate')"><div class="tt-ic">✨</div><div class="tt-name">Générer (IA)</div><div class="tt-desc">Titres & descriptions</div></button>
-        <button class="tool-tile" onclick="openTool('abtitles')"><div class="tt-ic">🆚</div><div class="tt-name">A/B Test titres</div><div class="tt-desc">Comparer 2 titres</div></button>
-        <button class="tool-tile" onclick="openTool('analyze')"><div class="tt-ic">🎬</div><div class="tt-name">Analyser</div><div class="tt-desc">Audit d'une vidéo</div></button>
-        <button class="tool-tile" onclick="openTool('keywords')"><div class="tt-ic">🔑</div><div class="tt-name">Mots-clés</div><div class="tt-desc">SEO YouTube</div></button>
-        <button class="tool-tile" onclick="openTool('audit')"><div class="tt-ic">📊</div><div class="tt-name">Audit de chaîne</div><div class="tt-desc">Score /100</div></button>
-        <button class="tool-tile" onclick="openTool('rank')"><div class="tt-ic">🎯</div><div class="tt-name">Suivi de position</div><div class="tt-desc">Classement</div></button>
-        <button class="tool-tile" onclick="openTool('trending')"><div class="tt-ic">🚀</div><div class="tt-name">Trending</div><div class="tt-desc">Tendances</div></button>
+        <button class="tool-tile" onclick="openTool('discover')"><div class="tt-ic">🔍</div><div class="tt-name" data-i18n="db_discover">Discover</div><div class="tt-desc" data-i18n="db_td_discover">Explorer des idées</div></button>
+        <button class="tool-tile" onclick="openTool('generate')"><div class="tt-ic">✨</div><div class="tt-name" data-i18n="db_generate">Générer (IA)</div><div class="tt-desc" data-i18n="db_td_generate">Titres & descriptions</div></button>
+        <button class="tool-tile" onclick="openTool('abtitles')"><div class="tt-ic">🆚</div><div class="tt-name" data-i18n="db_abtitles">A/B Test titres</div><div class="tt-desc" data-i18n="db_td_abtitles">Comparer 2 titres</div></button>
+        <button class="tool-tile" onclick="openTool('analyze')"><div class="tt-ic">🎬</div><div class="tt-name" data-i18n="db_td_analyze_n">Analyser</div><div class="tt-desc" data-i18n="db_td_analyze">Audit d'une vidéo</div></button>
+        <button class="tool-tile" onclick="openTool('keywords')"><div class="tt-ic">🔑</div><div class="tt-name" data-i18n="db_keywords">Mots-clés</div><div class="tt-desc" data-i18n="db_td_keywords">SEO YouTube</div></button>
+        <button class="tool-tile" onclick="openTool('audit')"><div class="tt-ic">📊</div><div class="tt-name" data-i18n="db_audit">Audit de chaîne</div><div class="tt-desc" data-i18n="db_td_audit">Score /100</div></button>
+        <button class="tool-tile" onclick="openTool('rank')"><div class="tt-ic">🎯</div><div class="tt-name" data-i18n="db_rank">Suivi de position</div><div class="tt-desc" data-i18n="db_td_rank">Classement</div></button>
+        <button class="tool-tile" onclick="openTool('trending')"><div class="tt-ic">🚀</div><div class="tt-name" data-i18n="db_trending">Trending</div><div class="tt-desc" data-i18n="db_td_trending">Tendances</div></button>
       </div>
 
       <!-- ════════ EMPLACEMENT PUBLICITAIRE (non-agressif) ════════
