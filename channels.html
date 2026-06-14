@@ -176,6 +176,24 @@
 /* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
+  <script src="/js/i18n.js"></script>
+  <script>
+    registerI18n({
+      ch_sub:{fr:'Sélectionnez votre chaîne YouTube',en:'Select your YouTube channel',es:'Selecciona tu canal de YouTube',ar:'اختر قناتك على يوتيوب'},
+      ch_choose:{fr:'Choisir une chaîne:',en:'Choose a channel:',es:'Elegir un canal:',ar:'اختر قناة:'},
+      ch_select_opt:{fr:'-- Sélectionner une chaîne --',en:'-- Select a channel --',es:'-- Seleccionar un canal --',ar:'-- اختر قناة --'},
+      ch_multilabel:{fr:'Ajouter vos chaînes YouTube :',en:'Add your YouTube channels:',es:'Añade tus canales de YouTube:',ar:'أضف قنواتك على يوتيوب:'},
+      ch_add:{fr:'+ Ajouter',en:'+ Add',es:'+ Añadir',ar:'+ إضافة'},
+      ch_continue:{fr:'Continuer',en:'Continue',es:'Continuar',ar:'متابعة'},
+      ch_hint:{fr:"👉 Colle le <strong>lien de ta chaîne</strong> (<em>youtube.com/@maChaine</em>) — ou même le <strong>lien d'une de tes vidéos</strong>, on remonte à la chaîne.",en:'👉 Paste your <strong>channel link</strong> (<em>youtube.com/@myChannel</em>) — or even a <strong>link to one of your videos</strong>, we’ll trace it back to the channel.',es:'👉 Pega el <strong>enlace de tu canal</strong> (<em>youtube.com/@miCanal</em>) — o incluso el <strong>enlace de uno de tus vídeos</strong>, lo rastreamos hasta el canal.',ar:'👉 الصق <strong>رابط قناتك</strong> (<em>youtube.com/@قناتي</em>) — أو حتى <strong>رابط أحد فيديوهاتك</strong>، وسنصل إلى القناة.'},
+      ch_manual_label:{fr:'Lien de votre chaîne YouTube :',en:'Your YouTube channel link:',es:'Enlace de tu canal de YouTube:',ar:'رابط قناتك على يوتيوب:'},
+      ch_plan_free:{fr:'Plan GRATUIT : vous pouvez analyser 1 seule chaîne YouTube',en:'FREE plan: you can analyze 1 YouTube channel',es:'Plan GRATIS: puedes analizar 1 canal de YouTube',ar:'الباقة المجانية: يمكنك تحليل قناة يوتيوب واحدة'},
+      ch_plan_pro:{fr:'Plan PRO : vous pouvez analyser 1 seule chaîne YouTube',en:'PRO plan: you can analyze 1 YouTube channel',es:'Plan PRO: puedes analizar 1 canal de YouTube',ar:'باقة PRO: يمكنك تحليل قناة يوتيوب واحدة'},
+      ch_plan_business:{fr:"Plan BUSINESS : sélectionnez jusqu'à 5 chaînes YouTube",en:'BUSINESS plan: select up to 5 YouTube channels',es:'Plan BUSINESS: selecciona hasta 5 canales de YouTube',ar:'باقة BUSINESS: اختر حتى 5 قنوات يوتيوب'},
+      ch_plan_diamant:{fr:"Plan DIAMANT : sélectionnez jusqu'à 10 chaînes YouTube",en:'DIAMANT plan: select up to 10 YouTube channels',es:'Plan DIAMANT: selecciona hasta 10 canales de YouTube',ar:'باقة DIAMANT: اختر حتى 10 قنوات يوتيوب'},
+      ch_multi_n:{fr:'Ajouter vos chaînes YouTube (jusqu\'à {n}) :',en:'Add your YouTube channels (up to {n}):',es:'Añade tus canales de YouTube (hasta {n}):',ar:'أضف قنواتك على يوتيوب (حتى {n}):'}
+    });
+  </script>
 </head>
 <body>
   <aside class="app-side">
@@ -194,7 +212,7 @@
   <div class="container">
     <div class="logo">⚡</div>
     <h1>VidSpark AI</h1>
-    <p>Sélectionnez votre chaîne YouTube</p>
+    <p data-i18n="ch_sub">Sélectionnez votre chaîne YouTube</p>
 
     <div id="error" class="error" style="display: none;"></div>
 
@@ -204,9 +222,9 @@
       <!-- Mode GRATUIT/PRO: Dropdown simple -->
       <div id="simpleMode" style="display: none;">
         <div class="form-group">
-          <label for="channelSelect">Choisir une chaîne:</label>
+          <label for="channelSelect" data-i18n="ch_choose">Choisir une chaîne:</label>
           <select id="channelSelect">
-            <option value="">-- Sélectionner une chaîne --</option>
+            <option value="" data-i18n="ch_select_opt">-- Sélectionner une chaîne --</option>
           </select>
         </div>
       </div>
@@ -214,12 +232,12 @@
       <!-- Mode BUSINESS/DIAMANT: ajout manuel de plusieurs chaînes -->
       <div id="businessMode" style="display: none;">
         <div class="form-group">
-          <label id="multiLabel">Ajouter vos chaînes YouTube :</label>
+          <label id="multiLabel" data-i18n="ch_multilabel">Ajouter vos chaînes YouTube :</label>
           <div style="display:flex; gap:8px;">
             <input id="multiChannelInput" type="text" placeholder="ex: https://youtube.com/@maChaine">
-            <button type="button" id="addChannelBtn" class="btn" style="width:auto; padding:12px 18px; white-space:nowrap;">+ Ajouter</button>
+            <button type="button" id="addChannelBtn" class="btn" style="width:auto; padding:12px 18px; white-space:nowrap;" data-i18n="ch_add">+ Ajouter</button>
           </div>
-          <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
+          <p style="font-size: 12px; color: #8888a0; margin-top: 8px;" data-i18n="ch_hint">
             👉 Colle le <strong>lien de ta chaîne</strong> (<em>youtube.com/@maChaine</em>) — ou même le <strong>lien d'une de tes vidéos</strong>, on remonte à la chaîne.
           </p>
           <div id="channelsGrid" class="channels-grid" style="margin-top:12px; display:none;"></div>
@@ -229,7 +247,7 @@
         </div>
       </div>
 
-      <button id="submitBtn" class="btn">Continuer</button>
+      <button id="submitBtn" class="btn" data-i18n="ch_continue">Continuer</button>
     </div>
 
     <div id="loading" class="loading">
@@ -285,10 +303,10 @@
 
         // Afficher les infos du plan
         const planInfo = {
-          free: 'Plan GRATUIT: Vous pouvez analyser 1 seule chaîne YouTube',
-          pro: 'Plan PRO: Vous pouvez analyser 1 seule chaîne YouTube',
-          business: 'Plan BUSINESS: Sélectionnez jusqu\'à 5 chaînes YouTube',
-          diamant: 'Plan DIAMANT: Sélectionnez jusqu\'à 10 chaînes YouTube'
+          free: t('ch_plan_free'),
+          pro: t('ch_plan_pro'),
+          business: t('ch_plan_business'),
+          diamant: t('ch_plan_diamant')
         };
         document.getElementById('planInfo').textContent = planInfo[currentUserPlan] || planInfo.free;
         maxChannels = PLAN_LIMITS[currentUserPlan] || 1;
@@ -297,7 +315,7 @@
         if (currentUserPlan === 'business' || currentUserPlan === 'diamant') {
           document.getElementById('businessMode').style.display = 'block';
           document.getElementById('maxCount').textContent = maxChannels;
-          document.getElementById('multiLabel').textContent = `Ajouter vos chaînes YouTube (jusqu'à ${maxChannels}) :`;
+          document.getElementById('multiLabel').textContent = t('ch_multi_n').replace('{n}', maxChannels);
           setupBusinessMode();
         } else {
           document.getElementById('simpleMode').style.display = 'block';
@@ -305,12 +323,9 @@
           const container = document.querySelector('#simpleMode .form-group');
           if (container) {
             container.innerHTML = `
-              <label for="manualChannelId">Lien de votre chaîne YouTube :</label>
+              <label for="manualChannelId">${t('ch_manual_label')}</label>
               <input id="manualChannelId" type="text" placeholder="ex: https://youtube.com/@maChaine">
-              <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
-                👉 Colle le <strong>lien de ta chaîne</strong> (<em>youtube.com/@maChaine</em>)<br>
-                — ou même le <strong>lien d'une de tes vidéos</strong>, on remonte à la chaîne.
-              </p>
+              <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">${t('ch_hint')}</p>
             `;
           }
           setupSimpleMode();
