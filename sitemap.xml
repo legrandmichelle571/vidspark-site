@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://vidsparkpro.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://vidsparkpro.com/pricing.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://vidsparkpro.com/outils.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://vidsparkpro.com/contact.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://vidsparkpro.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://vidsparkpro.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+
+  <!-- Outils SEO (pages d'atterrissage par mot-clé) -->
+  <url><loc>https://vidsparkpro.com/outils/difficulte-mot-cle.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/analyseur-titre.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/generateur-titres.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/generateur-tags.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/generateur-description.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/extracteur-tags.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/telecharger-miniature.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/analyse-miniature.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/ab-test-miniatures.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/ab-test-titres.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/score-viral.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/hook-analyzer.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/generateur-shorts.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/idees-videos.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/audit-chaine.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/estimateur-revenus.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/optimiseur-audience.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vidsparkpro.com/outils/analyse-commentaires.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+</urlset>

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Pages privées / application (inutiles à indexer)
+Disallow: /admin/
+Disallow: /control-panel.html
+Disallow: /dashboard.html
+Disallow: /account.html
+Disallow: /channels.html
+Disallow: /billing.html
+Disallow: /onboarding.html
+Disallow: /success.html
+Disallow: /diamant.html
+Disallow: /google-oauth-test.html
+Disallow: /quick-oauth-setup.html
+
+Sitemap: https://vidsparkpro.com/sitemap.xml
