@@ -707,7 +707,7 @@ footer {
 
       <!-- Form card -->
       <div class="form-card">
-        <form action="mailto:contact@vidsparkpro.com" method="post" enctype="text/plain" novalidate>
+        <form id="contact-form" novalidate>
 
           <div class="form-row">
             <div class="form-group">
@@ -766,6 +766,7 @@ footer {
               <option value="free">Gratuit</option>
               <option value="pro">Pro</option>
               <option value="business">Business</option>
+              <option value="diamant">💎 Diamant</option>
               <option value="unknown">Je ne sais pas</option>
             </select>
           </div>
@@ -794,9 +795,11 @@ footer {
             </label>
           </div>
 
+          <div id="form-status" role="status" style="display:none;font-size:14px;font-weight:600;padding:12px 16px;border-radius:var(--r);margin-bottom:16px"></div>
+
           <div class="form-submit-row">
             <p class="form-note">
-              En soumettant, votre client email s'ouvrira avec votre message pré-rempli.<br>
+              Votre message est envoyé directement à notre équipe.<br>
               Voir notre <a href="privacy.html">politique de confidentialité</a>.
             </p>
             <button type="submit" class="btn-submit">
@@ -891,6 +894,78 @@ registerI18n({
   ct_form_p:{fr:'Préférez-vous ne pas ouvrir votre client email ? Remplissez ce formulaire et votre message sera acheminé vers le bon service.',en:'Prefer not to open your email client? Fill out this form and your message will be routed to the right team.',es:'¿Prefieres no abrir tu cliente de correo? Rellena este formulario y tu mensaje se enviará al equipo adecuado.',ar:'تفضّل ألّا تفتح بريدك؟ املأ هذا النموذج وسيُوجَّه رسالتك إلى الفريق المناسب.'},
   ct_send:{fr:'Envoyer le message',en:'Send message',es:'Enviar mensaje',ar:'إرسال الرسالة'}
 });
+</script>
+
+<script>
+/* Envoi du formulaire de contact via le backend (repli mailto si indisponible) */
+(function () {
+  const API_BASE = localStorage.getItem('VIDSPARK_API_URL')
+    || 'https://vidspark-ai-production-9ac7.up.railway.app/api';
+  const form   = document.getElementById('contact-form');
+  const status = document.getElementById('form-status');
+  if (!form) return;
+
+  function showStatus(msg, ok) {
+    status.textContent = msg;
+    status.style.display = 'block';
+    status.style.background = ok ? 'rgba(34,197,94,.12)' : 'rgba(239,68,68,.12)';
+    status.style.color = ok ? '#86efac' : '#fca5a5';
+    status.style.border = '1px solid ' + (ok ? 'rgba(34,197,94,.3)' : 'rgba(239,68,68,.3)');
+  }
+
+  /* Repli : ouvre le client email pré-rempli */
+  function mailtoFallback(d) {
+    const body = `Nom : ${d.nom}\nEmail : ${d.email}\nSujet : ${d.sujet}\nPlan : ${d.plan}\n\n${d.message}`;
+    window.location.href = 'mailto:contact@vidsparkpro.com'
+      + '?subject=' + encodeURIComponent('[Contact] ' + (d.sujet || '') + ' — ' + d.nom)
+      + '&body=' + encodeURIComponent(body);
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const data = {
+      nom: fd.get('nom'), email: fd.get('email'), sujet: fd.get('sujet'),
+      plan: fd.get('plan'), message: fd.get('message'), rgpd: form.querySelector('[name="rgpd"]').checked
+    };
+
+    if (!data.nom || !data.email || !data.message || data.message.trim().length < 20 || !data.rgpd) {
+      showStatus('Merci de remplir tous les champs requis (message : 20 caractères min) et d\'accepter la politique de confidentialité.', false);
+      return;
+    }
+
+    const btn = form.querySelector('.btn-submit');
+    const old = btn.innerHTML;
+    btn.disabled = true; btn.style.opacity = '.7';
+    btn.querySelector('[data-i18n="ct_send"]').textContent = 'Envoi…';
+
+    try {
+      const r = await fetch(API_BASE + '/public/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (r.ok) {
+        form.reset();
+        showStatus('✅ Message envoyé ! Notre équipe vous répondra rapidement.', true);
+      } else {
+        const j = await r.json().catch(() => ({}));
+        if (j.code === 'EMAIL_NOT_CONFIGURED') {
+          showStatus('Ouverture de votre client email…', true);
+          mailtoFallback(data);
+        } else {
+          showStatus('⚠️ ' + (j.error || 'Envoi impossible.') + ' Réessayez ou écrivez à support@vidsparkpro.com.', false);
+        }
+      }
+    } catch (err) {
+      /* Réseau coupé → repli mailto */
+      showStatus('Ouverture de votre client email…', true);
+      mailtoFallback(data);
+    } finally {
+      btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = old;
+    }
+  });
+})();
 </script>
 
 </body>

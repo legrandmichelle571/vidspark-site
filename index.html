@@ -583,8 +583,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 ════════════════════════════════════════════════════════════ */
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
   margin-top: 56px;
   align-items: start;
 }
@@ -648,8 +648,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .pricing-features li.dim { color: var(--b3); }
 .pricing-note { font-size: 12px; color: var(--faint); text-align: center; margin-top: 12px; }
 
-@media (max-width: 900px) {
-  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+@media (max-width: 1100px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 760px; margin-left: auto; margin-right: auto; }
+}
+@media (max-width: 600px) {
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
   .pricing-card.featured { order: -1; }
 }
 
@@ -810,7 +813,10 @@ footer {
       ix_desc:{fr:'VidSpark AI vous aide à optimiser vos vidéos YouTube en temps réel. Scores SEO, Viral et Miniature. Titres, tags et descriptions IA. Gestion multi-chaînes. Rapports complets.',en:'VidSpark AI helps you optimize your YouTube videos in real time. SEO, Viral and Thumbnail scores. AI titles, tags and descriptions. Multi-channel management. Full reports.',es:'VidSpark AI te ayuda a optimizar tus vídeos de YouTube en tiempo real. Puntuaciones SEO, Viral y Miniatura. Títulos, tags y descripciones con IA. Gestión multicanal. Informes completos.',ar:'يساعدك VidSpark AI على تحسين فيديوهاتك على يوتيوب فوريًا. نتائج SEO والانتشار والصورة المصغّرة. عناوين ووسوم وأوصاف بالذكاء الاصطناعي. إدارة متعدّدة القنوات. تقارير كاملة.'},
       ix_cta1:{fr:'Commencer gratuitement',en:'Start for free',es:'Empezar gratis',ar:'ابدأ مجانًا',pt:'Começar grátis',de:'Kostenlos starten',it:'Inizia gratis',ru:'Начать бесплатно',ja:'無料で始める',ko:'무료로 시작',hi:'मुफ़्त शुरू करें',zh:'免费开始',tr:'Ücretsiz başla',nl:'Gratis starten'},
       ix_cta2:{fr:'Voir les fonctionnalités →',en:'See features →',es:'Ver funciones →',ar:'عرض الميزات ←',pt:'Ver recursos →',de:'Funktionen ansehen →',it:'Vedi le funzioni →',ru:'Смотреть возможности →',ja:'機能を見る →',ko:'기능 보기 →',hi:'सुविधाएँ देखें →',zh:'查看功能 →',tr:'Özellikleri gör →',nl:'Bekijk functies →'},
-      ix_trust:{fr:'✓ Plan gratuit disponible · ✓ Aucune carte bancaire requise · ✓ Passez à Pro quand vous voulez',en:'✓ Free plan available · ✓ No credit card required · ✓ Upgrade to Pro anytime',es:'✓ Plan gratis disponible · ✓ Sin tarjeta de crédito · ✓ Pásate a Pro cuando quieras',ar:'✓ خطة مجانية متاحة · ✓ بدون بطاقة ائتمان · ✓ الترقية إلى Pro متى شئت'}
+      ix_trust:{fr:'✓ Plan gratuit disponible · ✓ Aucune carte bancaire requise · ✓ Passez à Pro quand vous voulez',en:'✓ Free plan available · ✓ No credit card required · ✓ Upgrade to Pro anytime',es:'✓ Plan gratis disponible · ✓ Sin tarjeta de crédito · ✓ Pásate a Pro cuando quieras',ar:'✓ خطة مجانية متاحة · ✓ بدون بطاقة ائتمان · ✓ الترقية إلى Pro متى شئت'},
+      ix_video_label:{fr:'🎬 Démo',en:'🎬 Demo',es:'🎬 Demo',ar:'🎬 عرض',pt:'🎬 Demo',de:'🎬 Demo',it:'🎬 Demo',ru:'🎬 Демо',ja:'🎬 デモ',ko:'🎬 데모',hi:'🎬 डेमो',zh:'🎬 演示',tr:'🎬 Demo',nl:'🎬 Demo'},
+      ix_video_title:{fr:"Découvrez VidSpark AI en vidéo",en:'See VidSpark AI in action',es:'Descubre VidSpark AI en vídeo',ar:'شاهد VidSpark AI بالفيديو',pt:'Veja o VidSpark AI em ação',de:'VidSpark AI im Video',it:'Scopri VidSpark AI in video',ru:'VidSpark AI в действии',ja:'VidSpark AIを動画で見る',ko:'영상으로 보는 VidSpark AI',hi:'वीडियो में VidSpark AI देखें',zh:'通过视频了解 VidSpark AI',tr:'VidSpark AI’yi videoda keşfet',nl:'Bekijk VidSpark AI in video'},
+      ix_video_sub:{fr:"En 2 minutes, voyez comment optimiser vos vidéos YouTube.",en:'In 2 minutes, see how to optimize your YouTube videos.',es:'En 2 minutos, mira cómo optimizar tus vídeos de YouTube.',ar:'في دقيقتين، شاهد كيف تحسّن فيديوهاتك على يوتيوب.',pt:'Em 2 minutos, veja como otimizar seus vídeos do YouTube.',de:'In 2 Minuten: So optimierst du deine YouTube-Videos.',it:'In 2 minuti, scopri come ottimizzare i tuoi video YouTube.',ru:'За 2 минуты узнайте, как оптимизировать ваши видео на YouTube.',ja:'2分でYouTube動画の最適化方法がわかります。',ko:'2분 만에 YouTube 영상 최적화 방법을 확인하세요.',hi:'2 मिनट में जानें अपने YouTube वीडियो कैसे ऑप्टिमाइज़ करें।',zh:'2 分钟了解如何优化你的 YouTube 视频。',tr:'2 dakikada YouTube videolarınızı nasıl optimize edeceğinizi görün.',nl:'In 2 minuten zie je hoe je je YouTube-video’s optimaliseert.'}
     });
   </script>
 </head>
@@ -963,6 +969,24 @@ footer {
     </div>
   </div>
 </div>
+
+<!-- ════════════════════════════════════════════════════
+     VIDÉO PROMO (dynamique — configurée depuis l'admin)
+════════════════════════════════════════════════════ -->
+<section class="section" id="promo-video-section" style="display:none">
+  <div class="wrap">
+    <div class="centered">
+      <div class="label" data-i18n="ix_video_label">🎬 Démo</div>
+      <h2 class="section-title" data-i18n="ix_video_title">Découvrez VidSpark AI en vidéo</h2>
+      <p class="section-sub" data-i18n="ix_video_sub">En 2 minutes, voyez comment optimiser vos vidéos YouTube.</p>
+    </div>
+    <div style="max-width:900px;margin:48px auto 0">
+      <div id="promo-video-embed" style="position:relative;width:100%;padding-top:56.25%;border-radius:var(--r3);overflow:hidden;border:1.5px solid #f7941d;background:#000;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+        <!-- iframe / video injecté en JS -->
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ════════════════════════════════════════════════════
      AI ANALYSIS FEATURES
@@ -1189,7 +1213,7 @@ footer {
       <!-- Free -->
       <div class="pricing-card">
         <div class="pricing-plan">Gratuit</div>
-        <div class="pricing-price">0 €</div>
+        <div class="pricing-price"><sup>$</sup>0</div>
         <p class="pricing-desc">Parfait pour découvrir VidSpark AI.</p>
         <ul class="pricing-features">
           <li>10 analyses/mois</li>
@@ -1212,30 +1236,30 @@ footer {
       <div class="pricing-card featured">
         <div class="pricing-popular">Le plus populaire</div>
         <div class="pricing-plan" style="color:var(--purple-l)">Pro</div>
-        <div class="pricing-price"><sup>€</sup>9<span>,99/mois</span></div>
+        <div class="pricing-price"><sup>$</sup>9<span>.99/mois</span></div>
         <p class="pricing-desc">Tout illimité pour créateurs sérieux.</p>
         <ul class="pricing-features">
           <li><strong style="color:var(--text)">500 analyses/mois</strong></li>
           <li><strong style="color:var(--text)">100 rapports IA/mois</strong></li>
           <li>Scores SEO, Viral &amp; Miniature</li>
-          <li><strong style="color:var(--text)">Titres IA — 5 variantes</strong></li>
+          <li><strong style="color:var(--text)">Titres IA — illimités</strong></li>
           <li><strong style="color:var(--text)">Description &amp; Tags IA</strong></li>
           <li><strong style="color:var(--text)">Rapports PDF illimités</strong></li>
           <li><strong style="color:var(--text)">Historique complet</strong></li>
-          <li>10 chaînes maximum</li>
+          <li>1 chaîne maximum</li>
           <li>14 langues supportées</li>
           <li>Support prioritaire</li>
         </ul>
         <a href="pricing.html" class="btn btn-primary" style="width:100%;justify-content:center">
           Choisir le plan Pro
         </a>
-        <p class="pricing-note">107,89 €/an · Économisez 10% · Résiliation facile</p>
+        <p class="pricing-note">$107.89/an · Économisez 10% · Résiliation facile</p>
       </div>
 
       <!-- Business -->
       <div class="pricing-card">
-        <div class="pricing-plan">Entreprise</div>
-        <div class="pricing-price"><sup>€</sup>29<span>,99/mois</span></div>
+        <div class="pricing-plan">Business</div>
+        <div class="pricing-price"><sup>$</sup>29<span>.99/mois</span></div>
         <p class="pricing-desc">Pour agences et équipes multi-chaînes.</p>
         <ul class="pricing-features">
           <li><strong style="color:var(--text)">10k analyses/mois</strong></li>
@@ -1250,9 +1274,30 @@ footer {
           <li>Facturation entreprise</li>
         </ul>
         <a href="pricing.html" class="btn btn-primary" style="width:100%;justify-content:center">
-          Choisir le plan Entreprise
+          Choisir le plan Business
         </a>
-        <p class="pricing-note">323,89 €/an · Économisez 10% · Contact sales</p>
+        <p class="pricing-note">$323.89/an · Économisez 10% · Contact sales</p>
+      </div>
+
+      <!-- Diamant -->
+      <div class="pricing-card">
+        <div class="pricing-plan" style="color:#22d3ee">💎 Diamant</div>
+        <div class="pricing-price"><sup>$</sup>49<span>.99/mois</span></div>
+        <p class="pricing-desc">Pour les experts SEO YouTube.</p>
+        <ul class="pricing-features">
+          <li><strong style="color:var(--text)">Tout ce qui est dans Business</strong></li>
+          <li><strong style="color:var(--text)">10 chaînes maximum</strong></li>
+          <li><strong style="color:var(--text)">💎 Audit de chaîne avancé</strong></li>
+          <li><strong style="color:var(--text)">💎 Rank Tracker</strong></li>
+          <li>150k analyses/mois</li>
+          <li>Rapports IA illimités</li>
+          <li>14 langues supportées</li>
+          <li>Support prioritaire</li>
+        </ul>
+        <a href="pricing.html" class="btn btn-primary" style="width:100%;justify-content:center">
+          Choisir le plan Diamant
+        </a>
+        <p class="pricing-note">$539.89/an · Économisez 10% · Premium</p>
       </div>
 
     </div>
@@ -1334,8 +1379,9 @@ footer {
         <summary data-i18n="ixf_q3">Quelle est la différence entre les plans ?</summary>
         <div class="faq-answer" data-i18n="ixf_a3">
           <strong>Gratuit</strong> : 10 analyses/mois, scores basiques, 1 chaîne.
-          <strong>Pro</strong> : 500 analyses/mois, rapports IA complets, titres IA, historique, 10 chaînes.
-          <strong>Entreprise</strong> : 10k analyses/mois, gestion d'équipe, API, 5 chaînes (même owner), support 24/7.
+          <strong>Pro</strong> : 500 analyses/mois, rapports IA complets, titres IA, historique, 1 chaîne.
+          <strong>Business</strong> : 10k analyses/mois, gestion d'équipe, API, 5 chaînes (même owner), support 24/7.
+          <strong>💎 Diamant</strong> : 150k analyses/mois, 10 chaînes, audit avancé, Rank Tracker, support prioritaire.
         </div>
       </details>
 
@@ -1370,7 +1416,7 @@ footer {
       <details>
         <summary data-i18n="ixf_q7">Existe-t-il une API pour les développeurs ?</summary>
         <div class="faq-answer" data-i18n="ixf_a7">
-          Oui ! Le plan <strong>Entreprise</strong> inclut l'accès API complet pour intégrer VidSpark AI
+          Oui ! Le plan <strong>Business</strong> inclut l'accès API complet pour intégrer VidSpark AI
           dans vos outils ou services. <a href="mailto:api@vidsparkpro.com">Contactez notre équipe</a> pour
           les détails et la documentation.
         </div>
@@ -1397,7 +1443,7 @@ registerI18n({
   ixf_q2:{fr:'Quelles vidéos YouTube puis-je analyser ?',en:'Which YouTube videos can I analyze?',es:'¿Qué vídeos de YouTube puedo analizar?',ar:'ما فيديوهات يوتيوب التي يمكنني تحليلها؟'},
   ixf_a2:{fr:"Vous pouvez analyser <strong>n'importe quelle vidéo YouTube</strong> — la vôtre ou celle d'un concurrent. Utile pour analyser les meilleures pratiques de votre niche et rester compétitif. Ajoutez simplement l'URL de la vidéo dans le dashboard.",en:'You can analyze <strong>any YouTube video</strong> — yours or a competitor’s. Great for studying your niche’s best practices and staying competitive. Just add the video URL in the dashboard.',es:'Puedes analizar <strong>cualquier vídeo de YouTube</strong> — el tuyo o el de un competidor. Útil para estudiar las mejores prácticas de tu nicho y seguir siendo competitivo. Solo añade la URL del vídeo en el panel.',ar:'يمكنك تحليل <strong>أي فيديو على يوتيوب</strong> — فيديوك أو فيديو منافس. مفيد لدراسة أفضل ممارسات مجالك والبقاء منافسًا. فقط أضف رابط الفيديو في لوحة التحكم.'},
   ixf_q3:{fr:'Quelle est la différence entre les plans ?',en:'What’s the difference between the plans?',es:'¿Cuál es la diferencia entre los planes?',ar:'ما الفرق بين الباقات؟'},
-  ixf_a3:{fr:"<strong>Gratuit</strong> : 10 analyses/mois, scores basiques, 1 chaîne. <strong>Pro</strong> : 500 analyses/mois, rapports IA complets, titres IA, historique, 10 chaînes. <strong>Entreprise</strong> : 10k analyses/mois, gestion d'équipe, API, 5 chaînes (même owner), support 24/7.",en:'<strong>Free</strong>: 10 analyses/month, basic scores, 1 channel. <strong>Pro</strong>: 500 analyses/month, full AI reports, AI titles, history, 10 channels. <strong>Business</strong>: 10k analyses/month, team management, API, 5 channels (same owner), 24/7 support.',es:'<strong>Gratis</strong>: 10 análisis/mes, puntuaciones básicas, 1 canal. <strong>Pro</strong>: 500 análisis/mes, informes IA completos, títulos IA, historial, 10 canales. <strong>Empresa</strong>: 10k análisis/mes, gestión de equipo, API, 5 canales (mismo dueño), soporte 24/7.',ar:'<strong>مجاني</strong>: 10 تحليلات/شهر، نتائج أساسية، قناة واحدة. <strong>Pro</strong>: 500 تحليل/شهر، تقارير ذكاء اصطناعي كاملة، عناوين، سجلّ، 10 قنوات. <strong>Business</strong>: 10 آلاف تحليل/شهر، إدارة فريق، API، 5 قنوات (نفس المالك)، دعم 24/7.'},
+  ixf_a3:{fr:"<strong>Gratuit</strong> : 10 analyses/mois, scores basiques, 1 chaîne. <strong>Pro</strong> : 500 analyses/mois, rapports IA complets, titres IA, historique, 1 chaîne. <strong>Business</strong> : 10k analyses/mois, gestion d'équipe, API, 5 chaînes (même owner), support 24/7. <strong>💎 Diamant</strong> : 150k analyses/mois, 10 chaînes, audit avancé, Rank Tracker.",en:'<strong>Free</strong>: 10 analyses/month, basic scores, 1 channel. <strong>Pro</strong>: 500 analyses/month, full AI reports, AI titles, history, 1 channel. <strong>Business</strong>: 10k analyses/month, team management, API, 5 channels (same owner), 24/7 support. <strong>💎 Diamant</strong>: 150k analyses/month, 10 channels, advanced audit, Rank Tracker.',es:'<strong>Gratis</strong>: 10 análisis/mes, puntuaciones básicas, 1 canal. <strong>Pro</strong>: 500 análisis/mes, informes IA completos, títulos IA, historial, 1 canal. <strong>Business</strong>: 10k análisis/mes, gestión de equipo, API, 5 canales (mismo dueño), soporte 24/7. <strong>💎 Diamant</strong>: 150k análisis/mes, 10 canales, auditoría avanzada, Rank Tracker.',ar:'<strong>مجاني</strong>: 10 تحليلات/شهر، نتائج أساسية، قناة واحدة. <strong>Pro</strong>: 500 تحليل/شهر، تقارير ذكاء اصطناعي كاملة، عناوين، سجلّ، قناة واحدة. <strong>Business</strong>: 10 آلاف تحليل/شهر، إدارة فريق، API، 5 قنوات (نفس المالك)، دعم 24/7. <strong>💎 Diamant</strong>: 150 ألف تحليل/شهر، 10 قنوات، تدقيق متقدّم، Rank Tracker.'},
   ixf_q4:{fr:'Puis-je résilier mon abonnement à tout moment ?',en:'Can I cancel my subscription anytime?',es:'¿Puedo cancelar mi suscripción en cualquier momento?',ar:'هل يمكنني إلغاء اشتراكي في أي وقت؟'},
   ixf_a4:{fr:"Oui, sans condition ni frais. Vous pouvez résilier depuis votre compte à tout moment. La résiliation prend effet à la fin de la période en cours — vous conservez l'accès jusqu'à cette date. Conformément à la loi, un droit de rétractation de 14 jours s'applique.",en:'Yes, with no conditions or fees. You can cancel from your account anytime. Cancellation takes effect at the end of the current period — you keep access until then. By law, a 14-day right of withdrawal applies.',es:'Sí, sin condiciones ni cargos. Puedes cancelar desde tu cuenta en cualquier momento. La cancelación surte efecto al final del periodo actual — conservas el acceso hasta esa fecha. Por ley, se aplica un derecho de desistimiento de 14 días.',ar:'نعم، دون شروط أو رسوم. يمكنك الإلغاء من حسابك في أي وقت. يسري الإلغاء في نهاية الفترة الحالية — تحتفظ بالوصول حتى ذلك التاريخ. وفقًا للقانون، ينطبق حق انسحاب لمدة 14 يومًا.'},
   ixf_q5:{fr:'Mes données YouTube sont-elles sécurisées ?',en:'Is my YouTube data secure?',es:'¿Mis datos de YouTube están seguros?',ar:'هل بيانات يوتيوب الخاصة بي آمنة؟'},
@@ -1405,7 +1451,7 @@ registerI18n({
   ixf_q6:{fr:'Quelle IA utilisez-vous ?',en:'Which AI do you use?',es:'¿Qué IA utilizan?',ar:'أيّ ذكاء اصطناعي تستخدمون؟'},
   ixf_a6:{fr:"Nous utilisons <strong>Claude Sonnet d'Anthropic</strong>, l'un des modèles les plus performants. Seuls le titre et la description sont transmis. Ces données ne sont pas utilisées pour entraîner des modèles (politique API d'Anthropic). Aucune donnée personnelle n'est transmise à l'IA.",en:'We use <strong>Anthropic’s Claude Sonnet</strong>, one of the most capable models. Only the title and description are sent. This data is not used to train models (Anthropic’s API policy). No personal data is sent to the AI.',es:'Usamos <strong>Claude Sonnet de Anthropic</strong>, uno de los modelos más capaces. Solo se envían el título y la descripción. Estos datos no se usan para entrenar modelos (política API de Anthropic). No se envían datos personales a la IA.',ar:'نستخدم <strong>Claude Sonnet من Anthropic</strong>، أحد أقوى النماذج. يُرسَل العنوان والوصف فقط. لا تُستخدم هذه البيانات لتدريب النماذج (سياسة Anthropic). لا تُرسَل أي بيانات شخصية للذكاء الاصطناعي.'},
   ixf_q7:{fr:'Existe-t-il une API pour les développeurs ?',en:'Is there an API for developers?',es:'¿Hay una API para desarrolladores?',ar:'هل توجد واجهة API للمطوّرين؟'},
-  ixf_a7:{fr:'Oui ! Le plan <strong>Entreprise</strong> inclut l\'accès API complet pour intégrer VidSpark AI dans vos outils ou services. <a href="mailto:api@vidsparkpro.com">Contactez notre équipe</a> pour les détails et la documentation.',en:'Yes! The <strong>Business</strong> plan includes full API access to integrate VidSpark AI into your tools or services. <a href="mailto:api@vidsparkpro.com">Contact our team</a> for details and documentation.',es:'¡Sí! El plan <strong>Empresa</strong> incluye acceso API completo para integrar VidSpark AI en tus herramientas o servicios. <a href="mailto:api@vidsparkpro.com">Contacta a nuestro equipo</a> para detalles y documentación.',ar:'نعم! تتضمّن باقة <strong>Business</strong> وصولًا كاملًا لواجهة API لدمج VidSpark AI في أدواتك أو خدماتك. <a href="mailto:api@vidsparkpro.com">تواصل مع فريقنا</a> للتفاصيل والتوثيق.'},
+  ixf_a7:{fr:'Oui ! Le plan <strong>Business</strong> inclut l\'accès API complet pour intégrer VidSpark AI dans vos outils ou services. <a href="mailto:api@vidsparkpro.com">Contactez notre équipe</a> pour les détails et la documentation.',en:'Yes! The <strong>Business</strong> plan includes full API access to integrate VidSpark AI into your tools or services. <a href="mailto:api@vidsparkpro.com">Contact our team</a> for details and documentation.',es:'¡Sí! El plan <strong>Business</strong> incluye acceso API completo para integrar VidSpark AI en tus herramientas o servicios. <a href="mailto:api@vidsparkpro.com">Contacta a nuestro equipo</a> para detalles y documentación.',ar:'نعم! تتضمّن باقة <strong>Business</strong> وصولًا كاملًا لواجهة API لدمج VidSpark AI في أدواتك أو خدماتك. <a href="mailto:api@vidsparkpro.com">تواصل مع فريقنا</a> للتفاصيل والتوثيق.'},
   ixf_q8:{fr:'En quelles langues est disponible VidSpark AI ?',en:'Which languages is VidSpark AI available in?',es:'¿En qué idiomas está disponible VidSpark AI?',ar:'بأيّ لغات يتوفّر VidSpark AI؟'},
   ixf_a8:{fr:"L'interface est disponible en <strong>14 langues</strong> : Français, English, Español, Deutsch, Português, Italiano, Nederlands, Русский, 日本語, 한국어, 中文, العربية, हिन्दी, Türkçe. L'IA détecte automatiquement la langue de la vidéo analysée.",en:'The interface is available in <strong>14 languages</strong>: Français, English, Español, Deutsch, Português, Italiano, Nederlands, Русский, 日本語, 한국어, 中文, العربية, हिन्दी, Türkçe. The AI automatically detects the analyzed video’s language.',es:'La interfaz está disponible en <strong>14 idiomas</strong>: Français, English, Español, Deutsch, Português, Italiano, Nederlands, Русский, 日本語, 한국어, 中文, العربية, हिन्दी, Türkçe. La IA detecta automáticamente el idioma del vídeo analizado.',ar:'الواجهة متاحة بـ<strong>14 لغة</strong>: Français، English، Español، Deutsch، Português، Italiano، Nederlands، Русский، 日本語، 한국어، 中文، العربية، हिन्दी، Türkçe. يكتشف الذكاء الاصطناعي تلقائيًا لغة الفيديو المُحلَّل.'},
   ixc_h1:{fr:"Prêt à optimiser vos vidéos ?<br><span class=\"gradient-text\">Rejoignez VidSpark AI aujourd'hui</span>",en:'Ready to optimize your videos?<br><span class="gradient-text">Join VidSpark AI today</span>',es:'¿Listo para optimizar tus vídeos?<br><span class="gradient-text">Únete a VidSpark AI hoy</span>',ar:'مستعدّ لتحسين فيديوهاتك؟<br><span class="gradient-text">انضمّ إلى VidSpark AI اليوم</span>'},
@@ -1572,8 +1618,32 @@ registerI18n({
   function fill(sel, html){ if(html) document.querySelectorAll(sel).forEach(function(e){ injectAd(e, html); }); }
   fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/public/ads')
     .then(function(r){return r.json();})
-    .then(function(d){ if(!d) return; fill('.ad-inner', d.home); fill('.ad-inner-left', d.home_left); fill('.ad-inner-right', d.home_right); })
+    .then(function(d){ if(!d) return; fill('.ad-inner', d.home); fill('.ad-inner-left', d.home_left); fill('.ad-inner-right', d.home_right); renderPromoVideo(d.promo_video); })
     .catch(function(){});
+
+  /* Affiche la vidéo promo configurée dans l'admin (YouTube, Vimeo ou MP4) */
+  function renderPromoVideo(src){
+    if(!src) return;
+    src = String(src).trim();
+    var box = document.getElementById('promo-video-embed');
+    var section = document.getElementById('promo-video-section');
+    if(!box || !section) return;
+    var html = '';
+    var yt = src.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if(!yt && /^[A-Za-z0-9_-]{11}$/.test(src)) yt = [null, src]; // ID brut
+    if(yt){
+      html = '<iframe src="https://www.youtube.com/embed/'+yt[1]+'?rel=0" title="VidSpark AI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%"></iframe>';
+    } else if(/vimeo\.com\/(\d+)/.test(src)){
+      var vid = src.match(/vimeo\.com\/(\d+)/)[1];
+      html = '<iframe src="https://player.vimeo.com/video/'+vid+'" title="VidSpark AI" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%"></iframe>';
+    } else if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(src)){
+      html = '<video src="'+src+'" controls playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>';
+    } else {
+      return; // format non reconnu → on n'affiche rien
+    }
+    box.innerHTML = html;
+    section.style.display = '';
+  }
 })();
 </script>
 

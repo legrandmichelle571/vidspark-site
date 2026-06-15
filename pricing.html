@@ -646,23 +646,42 @@
     }
 
     function handlePlanClick(planId) {
+      // Plan gratuit → inscription directe (aucune carte requise)
       if (planId === 'free') {
-        alert('Start with FREE tier - no credit card needed!');
-        return;
-      }
-
-      // Check if user is logged in
-      const user = JSON.parse(localStorage.getItem('VIDSPARK_USER') || '{}');
-      if (!user.id) {
-        alert('Please log in first to upgrade');
         window.location.href = '/login.html';
         return;
       }
 
-      // Start checkout with interval parameter
+      // Vérifier la connexion ; sinon mémoriser l'intention et rediriger vers login
+      const user = JSON.parse(localStorage.getItem('VIDSPARK_USER') || '{}');
+      if (!user.id) {
+        try {
+          localStorage.setItem('VIDSPARK_PENDING_PLAN', JSON.stringify({
+            plan: planId, interval: currentBillingInterval
+          }));
+        } catch (e) {}
+        window.location.href = '/login.html?next=pricing';
+        return;
+      }
+
+      // Lancer le checkout avec l'intervalle choisi
       BillingAPI.checkout(planId, currentBillingInterval).catch(err => {
-        alert('Error: ' + err.message);
+        alert('Erreur : ' + err.message);
       });
+    }
+
+    // Reprendre un checkout en attente après connexion (?next=pricing)
+    function resumePendingCheckout() {
+      const user = JSON.parse(localStorage.getItem('VIDSPARK_USER') || '{}');
+      if (!user.id) return;
+      let pending = null;
+      try { pending = JSON.parse(localStorage.getItem('VIDSPARK_PENDING_PLAN') || 'null'); } catch (e) {}
+      if (pending && pending.plan) {
+        localStorage.removeItem('VIDSPARK_PENDING_PLAN');
+        BillingAPI.checkout(pending.plan, pending.interval || 'month').catch(err => {
+          alert('Erreur : ' + err.message);
+        });
+      }
     }
 
     // Initialize
@@ -671,6 +690,7 @@
       renderPlans();
       renderComparisonTable();
       renderFAQ();
+      resumePendingCheckout();
     });
     // Re-render le contenu généré en JS quand la langue change
     document.addEventListener('vslangchange', () => {

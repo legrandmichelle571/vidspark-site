@@ -323,7 +323,13 @@ async function loadAds(){
     ['ad_dashboard',"📊 Dashboard — bannière du bas"],
     ['ad_dashboard_right',"➡️ Dashboard — pub à droite (grand écran)"]
   ];
-  m.innerHTML=`<div class="page-title">📢 Publicités</div>
+  m.innerHTML=`<div class="page-title">📢 Publicités & Vidéo</div>
+    <div class="card" style="margin-bottom:20px;border-color:#f7941d;">
+      <div style="font-weight:700;margin-bottom:6px;">🎬 Vidéo promo — page d'accueil</div>
+      <div class="muted" style="margin-bottom:8px;font-size:13px;">Colle le lien YouTube, Vimeo, l'ID YouTube, ou une URL .mp4. Laisse vide pour masquer la section vidéo sur l'accueil.</div>
+      <input id="ta_promo_video" type="text" style="width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:11px;color:var(--text);font-size:13px;" placeholder="https://www.youtube.com/watch?v=…  ou  dQw4w9WgXcQ  ou  https://…/promo.mp4">
+      <button class="btn btn-sm btn-green" style="margin-top:8px;" onclick="saveAd('promo_video','ta_promo_video')">💾 Enregistrer la vidéo</button>
+    </div>
     <div class="muted" style="margin-bottom:16px;">Colle ton code (image+lien, HTML ou AdSense). Laisse vide pour ne rien afficher. Les pubs latérales n'apparaissent que sur grand écran.</div>`+
     slots.map(s=>`<div class="card" style="margin-bottom:14px;">
       <div style="font-weight:700;margin-bottom:8px;">${s[1]}</div>
@@ -331,8 +337,9 @@ async function loadAds(){
       <button class="btn btn-sm btn-green" style="margin-top:8px;" onclick="saveAd('${s[0]}','ta_${s[0]}')">💾 Enregistrer</button>
     </div>`).join('');
   try{
-    const res=await Promise.all(slots.map(s=>api('/config/'+s[0])));
-    slots.forEach((s,i)=>{ const el=document.getElementById('ta_'+s[0]); if(el) el.value=res[i].value||''; });
+    const allKeys=slots.concat([['promo_video']]);
+    const res=await Promise.all(allKeys.map(s=>api('/config/'+s[0])));
+    allKeys.forEach((s,i)=>{ const el=document.getElementById('ta_'+s[0]); if(el) el.value=res[i].value||''; });
   }catch(e){toast('❌ '+e.message);}
 }
 async function saveAd(key,elId){
