@@ -171,7 +171,10 @@ const GoogleAuth = {
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/dashboard.html`,
-          scopes: 'https://www.googleapis.com/auth/youtube.readonly',
+          // Connexion = email + profil uniquement (accès NON sensibles).
+          // Pas de scope YouTube : les données YouTube passent par la clé
+          // API serveur, jamais par le compte du client → évite l'écran
+          // d'avertissement "Google n'a pas validé cette application".
           queryParams: {
             // Forcer le choix du compte Google à chaque fois
             // 'select_account' = affiche le choix même si déjà connecté
