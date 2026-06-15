@@ -479,6 +479,7 @@
       db_k_daysleft:{fr:'jours restants',en:'days remaining',es:'días restantes',ar:'الأيام المتبقّية',pt:'dias restantes',de:'verbleibende Tage',it:'giorni rimanenti',ru:'дней осталось',ja:'残り日数',ko:'남은 일수',hi:'शेष दिन',zh:'剩余天数',tr:'kalan gün',nl:'resterende dagen'}
     });
   </script>
+  <script src="/js/meta-pixel.js"></script>
 </head>
 <body>
   <!-- Barre latérale commune -->
@@ -1134,5 +1135,15 @@
 
   <!-- Pub à droite (gérée depuis le panel) -->
   <div class="ad-right"><div class="ad-lbl">Publicité</div><div class="ad-inner-right" style="width:100%;"></div></div>
+
+  <!-- Meta Pixel : événement "Inscription" déclenché une seule fois par utilisateur -->
+  <script>
+    try {
+      if (typeof fbq === 'function' && !localStorage.getItem('vs_fb_registered')) {
+        fbq('track', 'CompleteRegistration');
+        localStorage.setItem('vs_fb_registered', '1');
+      }
+    } catch (e) {}
+  </script>
 </body>
 </html>

@@ -25,6 +25,7 @@
 .tool-tile{border:none !important;}
 </style>
   <script src="/js/i18n.js"></script>
+  <script src="/js/meta-pixel.js"></script>
 </head>
 <body>
   <div class="card" id="card">
@@ -39,7 +40,18 @@
     const API = 'https://vidspark-ai-production-9ac7.up.railway.app';
     const card = document.getElementById('card');
 
+    const PLAN_PRICES = { pro: 9.99, business: 29.99, diamant: 49.99 };
+    function trackPurchase(plan){
+      if (typeof fbq !== 'function') return;
+      fbq('track', 'Purchase', {
+        currency: 'USD',
+        value: PLAN_PRICES[(plan || '').toLowerCase()] || 0,
+        content_name: plan || 'subscription'
+      });
+    }
+
     function ok(plan){
+      trackPurchase(plan);
       card.innerHTML = `
         <div class="icon">✅</div>
         <div class="plan">💎 ${plan}</div>
@@ -62,6 +74,7 @@
 
       // Stripe : le webhook active déjà le plan → simple confirmation
       if (type !== 'paypal'){
+        if (typeof fbq === 'function') fbq('track', 'Purchase', { currency: 'USD', value: 0 });
         card.innerHTML = `<div class="icon">✅</div><h1>Paiement reçu !</h1>
           <p>Ton abonnement est en cours d'activation.</p>
           <a class="btn" href="/dashboard.html">Aller au tableau de bord →</a>`;
