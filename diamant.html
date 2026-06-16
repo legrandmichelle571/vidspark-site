@@ -539,7 +539,8 @@
     d_subscount:{fr:'abonnés',en:'subscribers',ar:'مشترك'},
     d_analyzed:{fr:'commentaires analysés',en:'comments analyzed',ar:'تعليق تم تحليله'},
     d_betterTitle:{fr:'✨ Titre encore meilleur (IA)',en:'✨ Even better title (AI)',ar:'✨ عنوان أفضل (ذكاء اصطناعي)'},
-    d_title:{fr:'Titre',en:'Title',ar:'العنوان'}
+    d_title:{fr:'Titre',en:'Title',ar:'العنوان'},
+    d_relatedkw:{fr:'🔑 Mots-clés similaires (difficulté + vues)',en:'🔑 Related keywords (difficulty + views)',ar:'🔑 كلمات مفتاحية مشابهة (الصعوبة + المشاهدات)'}
   });
   async function apiPost(path, body){
     // Injecte la langue de l'interface par défaut ; un body avec sa propre "language" la garde
@@ -667,6 +668,15 @@
       const dif = data.difficulty || {};
       const difColor = dif.color || 'var(--muted)';
       const chips=(data.suggestions||[]).map(s=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:16px;padding:6px 12px;margin:4px;font-size:13px;cursor:pointer;" onclick="document.getElementById('kwQuery').value=this.textContent;runKeywords();">${s}</span>`).join('')||'<span class="muted">—</span>';
+      // Liste enrichie : chaque mot-clé similaire avec sa difficulté + vues moyennes
+      const related=(data.related||[]).map(r=>{const d=r.difficulty||{};const kwEsc=(r.keyword||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');return `
+        <div onclick="document.getElementById('kwQuery').value='${kwEsc}';runKeywords();" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg);border:1px solid var(--b2);border-radius:10px;padding:10px 12px;margin-bottom:6px;cursor:pointer;">
+          <span style="font-size:13px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.keyword}</span>
+          <span style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <span class="muted" style="font-size:12px;">👁️ ${fmtN(r.top_avg_views||0)}</span>
+            <span style="background:${d.color||'var(--b2)'}22;color:${d.color||'var(--muted)'};border:1px solid ${d.color||'var(--b2)'};border-radius:8px;padding:3px 9px;font-size:12px;font-weight:800;white-space:nowrap;">${d.score??'—'} · ${d.label||''}</span>
+          </span>
+        </div>`;}).join('');
       $('kwResult').innerHTML=`
         ${dif.score!==undefined?`<div style="text-align:center;padding:16px;background:var(--bg);border-radius:12px;border:2px solid ${difColor};margin-bottom:14px;">
           <div class="k" style="margin-bottom:4px;">${t('d_rankdiff')}</div>
@@ -680,7 +690,7 @@
           <div class="stat"><div class="v">${fmtN(data.top_avg_views||0)}</div><div class="k">${t('d_topavgviews')}</div></div>
           <div class="stat"><div class="v">${data.sampled||0}</div><div class="k">${t('d_vidsanalyzed')}</div></div>
         </div>
-        <div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">${t('d_kwsugg')}</div><div>${chips}</div>`;
+        ${related?`<div class="muted" style="font-weight:700;color:var(--text);margin-bottom:8px;">${t('d_relatedkw')}</div>${related}`:`<div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">${t('d_kwsugg')}</div><div>${chips}</div>`}`;
       $('kwResult').style.display='block';
     }catch(e){ $('kwErr').textContent='❌ '+e.message; $('kwErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Analyser'; }
