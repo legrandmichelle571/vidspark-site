@@ -136,7 +136,19 @@ function fmtEnd(d){
   return `<span style="color:${col}">${date}</span><div class="muted">${days} j restants</div>`;
 }
 async function api(path,opts={}){
-  const r=await fetch(API+'/api/admin'+path,{...opts,headers:{'Content-Type':'application/json','x-admin-key':KEY,...(opts.headers||{})}});
+  // Délai d'attente : évite que la page reste muette si le backend est injoignable
+  const ctrl=new AbortController();
+  const timer=setTimeout(()=>ctrl.abort(),12000);
+  let r;
+  try{
+    r=await fetch(API+'/api/admin'+path,{...opts,signal:ctrl.signal,headers:{'Content-Type':'application/json','x-admin-key':KEY,...(opts.headers||{})}});
+  }catch(err){
+    clearTimeout(timer);
+    if(err.name==='AbortError') throw new Error("Backend injoignable (délai dépassé). Vérifie ta connexion internet/WiFi, ou essaie en 4G.");
+    throw new Error("Impossible de joindre le backend. Vérifie ta connexion (WiFi/4G) ou réessaie dans 1 min.");
+  }
+  clearTimeout(timer);
+  if(r.status===401||r.status===403) throw new Error("Clé admin incorrecte. Vérifie ta clé (ADMIN_API_KEY sur Railway).");
   if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error||('HTTP '+r.status));}
   return r.json();
 }
