@@ -487,8 +487,12 @@
   function hideToolMsg(){ const el=$('toolMsg'); if(el) el.style.display='none'; }
 
   async function token(){ const s = await Auth.getSession(); return s?.access_token || ''; }
+  /* Langue de l'interface (partagée via localStorage par i18n.js) → l'IA répond dans cette langue */
+  function uiLang(){ try { return localStorage.getItem('vs_site_lang') || 'fr'; } catch(e){ return 'fr'; } }
   async function apiPost(path, body){
-    const r = await fetch(API+path, { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+(await token())}, body:JSON.stringify(body||{}) });
+    // Injecte la langue de l'interface par défaut ; un body avec sa propre "language" la garde
+    const payload = Object.assign({ language: uiLang() }, body || {});
+    const r = await fetch(API+path, { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+(await token())}, body:JSON.stringify(payload) });
     const data = await r.json().catch(()=>({})); return { ok:r.ok, status:r.status, data };
   }
   function showLock(){ $('app').style.display='none'; $('loading').style.display='none'; $('lock').style.display='flex'; }
