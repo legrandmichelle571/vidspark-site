@@ -138,7 +138,7 @@ function fmtEnd(d){
 async function api(path,opts={}){
   // Délai d'attente : évite que la page reste muette si le backend est injoignable
   const ctrl=new AbortController();
-  const timer=setTimeout(()=>ctrl.abort(),12000);
+  const timer=setTimeout(()=>ctrl.abort(),30000);
   let r;
   try{
     r=await fetch(API+'/api/admin'+path,{...opts,signal:ctrl.signal,headers:{'Content-Type':'application/json','x-admin-key':KEY,...(opts.headers||{})}});
