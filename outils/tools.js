@@ -112,10 +112,12 @@ async function aiCall(path, body){
   let token = null;
   try { const s = await Auth.getSession(); token = s?.access_token || null; } catch(e) {}
   if (!token) throw new Error('LOGIN_REQUIRED');
+  // Injecte la langue de l'interface par défaut → l'IA répond dans cette langue
+  const payload = Object.assign({ language: getLang() }, body || {});
   const r = await fetch(API + path, {
     method: 'POST',
     headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
-    body: JSON.stringify(body)
+    body: JSON.stringify(payload)
   });
   const d = await r.json().catch(()=>({}));
   if (r.status === 401) throw new Error('LOGIN_REQUIRED');
