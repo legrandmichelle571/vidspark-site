@@ -489,6 +489,58 @@
   async function token(){ const s = await Auth.getSession(); return s?.access_token || ''; }
   /* Langue de l'interface (partagée via localStorage par i18n.js) → l'IA répond dans cette langue */
   function uiLang(){ try { return localStorage.getItem('vs_site_lang') || 'fr'; } catch(e){ return 'fr'; } }
+
+  /* Étiquettes des résultats (traduites). t('clé') renvoie la valeur dans la langue courante. */
+  if (window.registerI18n) registerI18n({
+    d_engagement:{fr:'Engagement',en:'Engagement',ar:'التفاعل'},
+    d_regularite:{fr:'Régularité',en:'Consistency',ar:'الانتظام'},
+    d_seotags:{fr:'SEO / Tags',en:'SEO / Tags',ar:'SEO / وسوم'},
+    d_titres:{fr:'Titres',en:'Titles',ar:'العناوين'},
+    d_subs:{fr:'Abonnés',en:'Subscribers',ar:'المشتركون'},
+    d_avgviews:{fr:'Vues moy.',en:'Avg. views',ar:'متوسط المشاهدات'},
+    d_betweenvids:{fr:'Entre vidéos',en:'Between videos',ar:'بين الفيديوهات'},
+    d_withtags:{fr:'Avec tags',en:'With tags',ar:'مع وسوم'},
+    d_videos:{fr:'Vidéos',en:'Videos',ar:'فيديوهات'},
+    d_recos:{fr:'💡 Recommandations',en:'💡 Recommendations',ar:'💡 توصيات'},
+    d_ctrscore:{fr:'Score CTR du titre',en:'Title CTR score',ar:'نتيجة CTR للعنوان'},
+    d_ctrest:{fr:'CTR estimé',en:'Est. CTR',ar:'CTR المقدّر'},
+    d_improvedtitle:{fr:'✨ Titre amélioré (IA)',en:'✨ Improved title (AI)',ar:'✨ عنوان محسّن (ذكاء اصطناعي)'},
+    d_rectags:{fr:"🏷️ Tags recommandés par l'IA",en:'🏷️ AI-recommended tags',ar:'🏷️ وسوم موصى بها بالذكاء الاصطناعي'},
+    d_opps:{fr:'💡 Opportunités à exploiter',en:'💡 Opportunities to seize',ar:'💡 فرص للاستغلال'},
+    d_angles:{fr:'🎬 Angles originaux',en:'🎬 Original angles',ar:'🎬 زوايا مبتكرة'},
+    d_views:{fr:'Vues',en:'Views',ar:'المشاهدات'},
+    d_likes:{fr:'Likes',en:'Likes',ar:'الإعجابات'},
+    d_comments:{fr:'Commentaires',en:'Comments',ar:'التعليقات'},
+    d_viewsph:{fr:'Vues/heure',en:'Views/hour',ar:'مشاهدات/ساعة'},
+    d_summary:{fr:'📝 Résumé',en:'📝 Summary',ar:'📝 ملخّص'},
+    d_positive:{fr:'Positif',en:'Positive',ar:'إيجابي'},
+    d_neutral:{fr:'Neutre',en:'Neutral',ar:'محايد'},
+    d_negative:{fr:'Négatif',en:'Negative',ar:'سلبي'},
+    d_themes:{fr:'🔁 Thèmes récurrents',en:'🔁 Recurring themes',ar:'🔁 مواضيع متكرّرة'},
+    d_requests:{fr:'🙋 Demandes du public',en:'🙋 Audience requests',ar:'🙋 طلبات الجمهور'},
+    d_videoideas:{fr:'🎬 Idées de vidéos',en:'🎬 Video ideas',ar:'🎬 أفكار فيديو'},
+    d_scoreactuel:{fr:'Score actuel /100',en:'Current score /100',ar:'النتيجة الحالية /100'},
+    d_potentiel:{fr:'Potentiel /100',en:'Potential /100',ar:'المحتملة /100'},
+    d_titlesclick:{fr:'📝 Titres (clique pour copier)',en:'📝 Titles (click to copy)',ar:'📝 العناوين (انقر للنسخ)'},
+    d_descr:{fr:'📄 Description',en:'📄 Description',ar:'📄 الوصف'},
+    d_seotagslbl:{fr:'🏷️ Tags SEO',en:'🏷️ SEO tags',ar:'🏷️ وسوم SEO'},
+    d_hashtags:{fr:'#️⃣ Hashtags',en:'#️⃣ Hashtags',ar:'#️⃣ هاشتاغات'},
+    d_copy:{fr:'Copier',en:'Copy',ar:'نسخ'},
+    d_concurrence:{fr:'Concurrence',en:'Competition',ar:'المنافسة'},
+    d_topavgviews:{fr:'Vues moy. du top',en:'Top avg. views',ar:'متوسط مشاهدات الأفضل'},
+    d_vidsanalyzed:{fr:'Vidéos analysées',en:'Videos analyzed',ar:'فيديوهات محلّلة'},
+    d_rankdiff:{fr:'DIFFICULTÉ DE RANKING',en:'RANKING DIFFICULTY',ar:'صعوبة الترتيب'},
+    d_kwsugg:{fr:'💡 Suggestions (clique pour relancer)',en:'💡 Suggestions (click to rerun)',ar:'💡 اقتراحات (انقر للإعادة)'},
+    d_outoftop:{fr:'Hors du top',en:'Outside top',ar:'خارج أفضل'},
+    d_optimseo:{fr:'Optimise ton SEO !',en:'Optimize your SEO!',ar:'حسّن SEO!'},
+    d_posfor:{fr:'position pour',en:'position for',ar:'الترتيب لـ'},
+    d_results:{fr:'résultats',en:'results',ar:'نتيجة'},
+    d_engsuffix:{fr:"d'engagement",en:'engagement',ar:'تفاعل'},
+    d_subscount:{fr:'abonnés',en:'subscribers',ar:'مشترك'},
+    d_analyzed:{fr:'commentaires analysés',en:'comments analyzed',ar:'تعليق تم تحليله'},
+    d_betterTitle:{fr:'✨ Titre encore meilleur (IA)',en:'✨ Even better title (AI)',ar:'✨ عنوان أفضل (ذكاء اصطناعي)'},
+    d_title:{fr:'Titre',en:'Title',ar:'العنوان'}
+  });
   async function apiPost(path, body){
     // Injecte la langue de l'interface par défaut ; un body avec sa propre "language" la garde
     const payload = Object.assign({ language: uiLang() }, body || {});
@@ -553,10 +605,10 @@
       $('auditResult').innerHTML=`
         <div class="gauge-wrap">
           <div class="score">${data.health_score}<small>/100</small></div>
-          <div class="bars">${bar('💬 Engagement',b.engagement||0,30)}${bar('📅 Régularité',b.regularite||0,30)}${bar('🏷️ SEO / Tags',b.seo_tags||0,25)}${bar('✍️ Titres',b.titres||0,15)}</div>
+          <div class="bars">${bar('💬 '+t('d_engagement'),b.engagement||0,30)}${bar('📅 '+t('d_regularite'),b.regularite||0,30)}${bar('🏷️ '+t('d_seotags'),b.seo_tags||0,25)}${bar('✍️ '+t('d_titres'),b.titres||0,15)}</div>
         </div>
-        <div class="stats">${stat(fmtN(data.subs),'Abonnés')}${stat(fmtN(data.avg_views),'Vues moy.')}${stat(data.avg_engagement+'%','Engagement')}${stat((data.upload_freq_days??'—')+' j','Entre vidéos')}${stat(data.tags_usage_pct+'%','Avec tags')}${stat(fmtN(data.total_videos),'Vidéos')}</div>
-        <div class="muted" style="font-weight:700;color:var(--text);margin-bottom:8px;">💡 Recommandations</div>${recs}`;
+        <div class="stats">${stat(fmtN(data.subs),t('d_subs'))}${stat(fmtN(data.avg_views),t('d_avgviews'))}${stat(data.avg_engagement+'%',t('d_engagement'))}${stat((data.upload_freq_days??'—')+' j',t('d_betweenvids'))}${stat(data.tags_usage_pct+'%',t('d_withtags'))}${stat(fmtN(data.total_videos),t('d_videos'))}</div>
+        <div class="muted" style="font-weight:700;color:var(--text);margin-bottom:8px;">${t('d_recos')}</div>${recs}`;
       $('auditResult').style.display='block';
     }catch(e){ $('auditErr').textContent='❌ '+e.message; $('auditErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Relancer l\'audit'; }
@@ -573,8 +625,8 @@
       if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
       $('rankResult').innerHTML = data.found
-        ? `<div class="rankbox"><div class="n">#${data.rank}</div><div class="muted">position pour « ${data.keyword} » (sur ${data.scanned} résultats)</div></div>`
-        : `<div class="rankbox"><div class="n">—</div><div class="muted">Hors du top ${data.scanned} pour « ${data.keyword} ». Optimise ton SEO !</div></div>`;
+        ? `<div class="rankbox"><div class="n">#${data.rank}</div><div class="muted">${t('d_posfor')} « ${data.keyword} » (${data.scanned} ${t('d_results')})</div></div>`
+        : `<div class="rankbox"><div class="n">—</div><div class="muted">${t('d_outoftop')} ${data.scanned} « ${data.keyword} ». ${t('d_optimseo')}</div></div>`;
       $('rankResult').style.display='block';
     }catch(e){ $('rankErr').textContent='❌ '+e.message; $('rankErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Vérifier'; }
@@ -617,18 +669,18 @@
       const chips=(data.suggestions||[]).map(s=>`<span style="display:inline-block;background:var(--bg);border:1px solid var(--b2);border-radius:16px;padding:6px 12px;margin:4px;font-size:13px;cursor:pointer;" onclick="document.getElementById('kwQuery').value=this.textContent;runKeywords();">${s}</span>`).join('')||'<span class="muted">—</span>';
       $('kwResult').innerHTML=`
         ${dif.score!==undefined?`<div style="text-align:center;padding:16px;background:var(--bg);border-radius:12px;border:2px solid ${difColor};margin-bottom:14px;">
-          <div class="k" style="margin-bottom:4px;">DIFFICULTÉ DE RANKING</div>
+          <div class="k" style="margin-bottom:4px;">${t('d_rankdiff')}</div>
           <div style="font-size:40px;font-weight:900;color:${difColor};line-height:1;">${dif.score}<span style="font-size:18px;">/100</span></div>
           <div style="font-size:16px;font-weight:800;color:${difColor};margin-top:4px;">${dif.label||''}</div>
           ${dif.advice?`<div class="muted" style="margin-top:8px;font-size:13px;">${dif.advice}</div>`:''}
           <div style="height:7px;background:var(--b2);border-radius:4px;overflow:hidden;margin-top:10px;"><div style="height:100%;width:${dif.score}%;background:${difColor};border-radius:4px;"></div></div>
         </div>`:''}
         <div class="stats" style="margin-bottom:14px;">
-          <div class="stat"><div class="v" style="color:${cc};text-transform:capitalize;">${data.competition||'—'}</div><div class="k">Concurrence</div></div>
-          <div class="stat"><div class="v">${fmtN(data.top_avg_views||0)}</div><div class="k">Vues moy. du top</div></div>
-          <div class="stat"><div class="v">${data.sampled||0}</div><div class="k">Vidéos analysées</div></div>
+          <div class="stat"><div class="v" style="color:${cc};text-transform:capitalize;">${data.competition||'—'}</div><div class="k">${t('d_concurrence')}</div></div>
+          <div class="stat"><div class="v">${fmtN(data.top_avg_views||0)}</div><div class="k">${t('d_topavgviews')}</div></div>
+          <div class="stat"><div class="v">${data.sampled||0}</div><div class="k">${t('d_vidsanalyzed')}</div></div>
         </div>
-        <div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">💡 Suggestions (clique pour relancer)</div><div>${chips}</div>`;
+        <div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">${t('d_kwsugg')}</div><div>${chips}</div>`;
       $('kwResult').style.display='block';
     }catch(e){ $('kwErr').textContent='❌ '+e.message; $('kwErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Analyser'; }
@@ -651,7 +703,7 @@
 
       // Verdict de performance
       const perfColor = perf.level==='excellent'?'var(--green)':perf.level==='good'?'var(--cyan)':perf.level==='average'?'var(--amber)':'var(--red)';
-      const perfHtml = perf.label?`<div class="panel" style="border-left:4px solid ${perfColor};margin-bottom:14px;"><div style="font-weight:700;font-size:14px;">${perf.label}</div><div class="muted" style="margin-top:3px;">${perf.engagement_verdict||''} · ${data.engagement_rate}% d'engagement</div></div>`:'';
+      const perfHtml = perf.label?`<div class="panel" style="border-left:4px solid ${perfColor};margin-bottom:14px;"><div style="font-weight:700;font-size:14px;">${perf.label}</div><div class="muted" style="margin-top:3px;">${perf.engagement_verdict||''} · ${data.engagement_rate}% ${t('d_engsuffix')}</div></div>`:'';
 
       // Title Doctor (IA)
       const tdMissing=(td.missing||[]).map(m=>chip('⚠️ '+m,'var(--amber)')).join('');
@@ -659,10 +711,10 @@
       const tdHtml = td.score!=null?`
         <div class="panel" style="margin-bottom:14px;">
           <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:10px;">
-            <div><div style="font-size:32px;font-weight:800;color:${td.score>=70?'var(--green)':td.score>=45?'var(--amber)':'var(--red)'}">${td.score}<span style="font-size:13px;color:var(--muted)">/100</span></div><div class="k" style="font-size:11px;color:var(--muted)">Score CTR du titre</div></div>
-            <div><div style="font-size:22px;font-weight:800;">${td.ctr_estimate||'—'}%</div><div class="k" style="font-size:11px;color:var(--muted)">CTR estimé</div></div>
+            <div><div style="font-size:32px;font-weight:800;color:${td.score>=70?'var(--green)':td.score>=45?'var(--amber)':'var(--red)'}">${td.score}<span style="font-size:13px;color:var(--muted)">/100</span></div><div class="k" style="font-size:11px;color:var(--muted)">${t('d_ctrscore')}</div></div>
+            <div><div style="font-size:22px;font-weight:800;">${td.ctr_estimate||'—'}%</div><div class="k" style="font-size:11px;color:var(--muted)">${t('d_ctrest')}</div></div>
           </div>
-          ${td.improved?`<div style="background:var(--bg);border-radius:9px;padding:11px;margin-bottom:8px;"><div class="muted" style="font-size:11px;margin-bottom:3px;">✨ Titre amélioré (IA)</div><div style="font-weight:600;font-size:14px;">${td.improved}</div></div>`:''}
+          ${td.improved?`<div style="background:var(--bg);border-radius:9px;padding:11px;margin-bottom:8px;"><div class="muted" style="font-size:11px;margin-bottom:3px;">${t('d_improvedtitle')}</div><div style="font-weight:600;font-size:14px;">${td.improved}</div></div>`:''}
           ${tdMissing?`<div style="margin-bottom:8px;">${tdMissing}</div>`:''}
           ${tdTips}
         </div>`:'';
@@ -675,14 +727,14 @@
       $('anResult').innerHTML=`
         <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px;">
           <img src="https://i.ytimg.com/vi/${data.videoId}/mqdefault.jpg" style="width:180px;border-radius:10px;">
-          <div style="flex:1;min-width:200px;"><div style="font-weight:700;font-size:15px;margin-bottom:4px;">${data.title}</div><div class="muted">${data.channel} · ${fmtN(data.channel_subs)} abonnés${ins.niche?' · '+ins.niche:''}</div></div>
+          <div style="flex:1;min-width:200px;"><div style="font-weight:700;font-size:15px;margin-bottom:4px;">${data.title}</div><div class="muted">${data.channel} · ${fmtN(data.channel_subs)} ${t('d_subscount')}${ins.niche?' · '+ins.niche:''}</div></div>
         </div>
         ${perfHtml}
-        <div class="stats">${stat(fmtN(data.views),'Vues')}${stat(fmtN(data.likes),'Likes')}${stat(fmtN(data.comments),'Commentaires')}${stat(fmtN(data.views_per_hour)+'/h','Vues/heure')}${stat(data.engagement_rate+'%','Engagement')}</div>
+        <div class="stats">${stat(fmtN(data.views),t('d_views'))}${stat(fmtN(data.likes),t('d_likes'))}${stat(fmtN(data.comments),t('d_comments'))}${stat(fmtN(data.views_per_hour)+'/h',t('d_viewsph'))}${stat(data.engagement_rate+'%',t('d_engagement'))}</div>
         ${tdHtml}
-        <div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">🏷️ Tags recommandés par l'IA</div><div>${sugTags}</div>
-        ${opps?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">💡 Opportunités à exploiter</div>${opps}`:''}
-        ${angles?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">🎬 Angles originaux</div>${angles}`:''}`;
+        <div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">${t('d_rectags')}</div><div>${sugTags}</div>
+        ${opps?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">${t('d_opps')}</div>${opps}`:''}
+        ${angles?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">${t('d_angles')}</div>${angles}`:''}`;
       $('anResult').style.display='block';
     }catch(e){ $('anErr').textContent='❌ '+e.message; $('anErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Analyser'; }
@@ -704,17 +756,17 @@
       const s=data.sentiment;
       if(s && typeof s==='object'){
         const st=(val,k,c)=>`<div class="stat"><div class="v" style="color:${c}">${val??'—'}${typeof val==='number'?'%':''}</div><div class="k">${k}</div></div>`;
-        sent=`<div class="stats" style="margin-bottom:14px;">${st(s.positive,'Positif','var(--green)')}${st(s.neutral,'Neutre','var(--muted)')}${st(s.negative,'Négatif','var(--red)')}</div>`;
+        sent=`<div class="stats" style="margin-bottom:14px;">${st(s.positive,t('d_positive'),'var(--green)')}${st(s.neutral,t('d_neutral'),'var(--muted)')}${st(s.negative,t('d_negative'),'var(--red)')}</div>`;
       } else if(typeof s==='string'){
         sent=`<div style="margin-bottom:12px;"><span style="background:var(--bg);border:1px solid var(--b2);border-radius:14px;padding:5px 12px;font-size:13px;">Sentiment : ${s}</span></div>`;
       }
       $('coResult').innerHTML=`
-        ${data.summary?`<div class="panel" style="margin-bottom:14px;"><div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">📝 Résumé</div><div style="font-size:14px;line-height:1.6;">${data.summary}</div></div>`:''}
+        ${data.summary?`<div class="panel" style="margin-bottom:14px;"><div class="muted" style="font-weight:700;color:var(--text);margin-bottom:6px;">${t('d_summary')}</div><div style="font-size:14px;line-height:1.6;">${data.summary}</div></div>`:''}
         ${sent}
-        ${data.themes&&data.themes.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:6px 0;">🔁 Thèmes récurrents</div>${list(data.themes,'💬')}`:''}
-        ${data.requests&&data.requests.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">🙋 Demandes du public</div>${list(data.requests,'❓')}`:''}
-        ${data.video_ideas&&data.video_ideas.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">🎬 Idées de vidéos</div>${list(data.video_ideas,'💡')}`:''}
-        <div class="muted" style="margin-top:10px;">${data.count||0} commentaires analysés</div>`;
+        ${data.themes&&data.themes.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:6px 0;">${t('d_themes')}</div>${list(data.themes,'💬')}`:''}
+        ${data.requests&&data.requests.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">${t('d_requests')}</div>${list(data.requests,'❓')}`:''}
+        ${data.video_ideas&&data.video_ideas.length?`<div class="muted" style="font-weight:700;color:var(--text);margin:12px 0 6px;">${t('d_videoideas')}</div>${list(data.video_ideas,'💡')}`:''}
+        <div class="muted" style="margin-top:10px;">${data.count||0} ${t('d_analyzed')}</div>`;
       $('coResult').style.display='block';
     }catch(e){ $('coErr').textContent='❌ '+e.message; $('coErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Analyser'; }
@@ -735,10 +787,10 @@
       const hashtags=(data.hashtags||[]).map(h=>`<span style="display:inline-block;background:rgba(247,148,29,.12);border:1px solid rgba(247,148,29,.4);color:var(--cyan);border-radius:14px;padding:5px 11px;margin:3px;font-size:12px;">${h}</span>`).join('');
       const desc=(data.description||'').replace(/`/g,"'");
       $('genResult').innerHTML=`
-        <div class="panel"><div class="muted" style="font-weight:700;color:var(--text);margin-bottom:8px;">📝 Titres (clique pour copier)</div>${titles}</div>
-        ${desc?`<div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span class="muted" style="font-weight:700;color:var(--text);">📄 Description</span><button class="btn" style="padding:6px 12px;font-size:12px;" onclick="navigator.clipboard.writeText(\`${desc}\`);this.textContent='Copié !'">Copier</button></div><div style="font-size:14px;line-height:1.6;white-space:pre-wrap;">${data.description}</div></div>`:''}
-        ${tags?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">🏷️ Tags SEO</div><div>${tags}</div>`:''}
-        ${hashtags?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">#️⃣ Hashtags</div><div>${hashtags}</div>`:''}`;
+        <div class="panel"><div class="muted" style="font-weight:700;color:var(--text);margin-bottom:8px;">${t('d_titlesclick')}</div>${titles}</div>
+        ${desc?`<div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span class="muted" style="font-weight:700;color:var(--text);">${t('d_descr')}</span><button class="btn" style="padding:6px 12px;font-size:12px;" onclick="navigator.clipboard.writeText(\`${desc}\`);this.textContent='✓'">${t('d_copy')}</button></div><div style="font-size:14px;line-height:1.6;white-space:pre-wrap;">${data.description}</div></div>`:''}
+        ${tags?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">${t('d_seotagslbl')}</div><div>${tags}</div>`:''}
+        ${hashtags?`<div class="muted" style="font-weight:700;color:var(--text);margin:14px 0 6px;">${t('d_hashtags')}</div><div>${hashtags}</div>`:''}`;
       $('genResult').style.display='block';
     }catch(e){ $('genErr').textContent='❌ '+e.message; $('genErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Générer'; }
@@ -770,11 +822,11 @@
       const {ok,status,data}=await apiPost('/api/diamant/ab-titles',{titleA:a,titleB:b});
       if(status===403){ toolLocked(data); return; }
       if(!ok) throw new Error(data.error||'Indisponible');
-      const side=(label,obj,win)=>`<div class="panel" style="border:1px solid ${win?'var(--cyan)':'var(--b1)'};"><div style="display:flex;justify-content:space-between;gap:8px;"><b>Titre ${label}${win?' 🏆':''}</b><span style="color:var(--cyan);white-space:nowrap;">${obj.ctr_estimate||'—'}% · ${obj.score||0}/100</span></div>${(obj.strengths||[]).map(s=>`<div class="muted" style="margin-top:4px;">✅ ${s}</div>`).join('')}${(obj.weaknesses||[]).map(s=>`<div class="muted" style="margin-top:4px;">⚠️ ${s}</div>`).join('')}</div>`;
+      const side=(label,obj,win)=>`<div class="panel" style="border:1px solid ${win?'var(--cyan)':'var(--b1)'};"><div style="display:flex;justify-content:space-between;gap:8px;"><b>${t('d_title')} ${label}${win?' 🏆':''}</b><span style="color:var(--cyan);white-space:nowrap;">${obj.ctr_estimate||'—'}% · ${obj.score||0}/100</span></div>${(obj.strengths||[]).map(s=>`<div class="muted" style="margin-top:4px;">✅ ${s}</div>`).join('')}${(obj.weaknesses||[]).map(s=>`<div class="muted" style="margin-top:4px;">⚠️ ${s}</div>`).join('')}</div>`;
       $('abResult').innerHTML=`
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">${side('A',data.a||{},data.winner==='A')}${side('B',data.b||{},data.winner==='B')}</div>
         ${data.verdict?`<div class="rec" style="margin-top:12px;"><span>🧠</span><span>${data.verdict}</span></div>`:''}
-        ${data.improved?`<div class="panel" style="margin-top:12px;"><div class="muted" style="font-size:11px;margin-bottom:3px;">✨ Titre encore meilleur (IA)</div><div style="font-weight:600;">${data.improved}</div></div>`:''}`;
+        ${data.improved?`<div class="panel" style="margin-top:12px;"><div class="muted" style="font-size:11px;margin-bottom:3px;">${t('d_betterTitle')}</div><div style="font-weight:600;">${data.improved}</div></div>`:''}`;
       $('abResult').style.display='block';
     }catch(e){ $('abErr').textContent='❌ '+e.message; $('abErr').style.display='block'; }
     finally{ btn.disabled=false; btn.textContent='Comparer'; }
@@ -813,8 +865,8 @@
       const c=sc>=70?'var(--green)':sc>=45?'var(--amber)':'var(--red)';
       $('viResult').innerHTML=`
         <div class="stats" style="margin-bottom:14px;">
-          <div class="stat"><div class="v" style="color:${c}">${sc}</div><div class="k">Score actuel /100</div></div>
-          <div class="stat"><div class="v" style="color:var(--green)">${pt}</div><div class="k">Potentiel /100</div></div>
+          <div class="stat"><div class="v" style="color:${c}">${sc}</div><div class="k">${t('d_scoreactuel')}</div></div>
+          <div class="stat"><div class="v" style="color:var(--green)">${pt}</div><div class="k">${t('d_potentiel')}</div></div>
         </div>
         ${(data.factors||[]).map(f=>`<div class="rec"><span>${f.ok?'✅':'❌'}</span><span><b>${f.label}</b> — ${f.comment}</span></div>`).join('')}
         ${data.suggestion?`<div class="panel" style="margin-top:12px;border-left:3px solid var(--cyan)"><div class="muted" style="font-size:11px;margin-bottom:4px;">💡 Titre amélioré</div><div style="font-size:14px;font-weight:600">${data.suggestion}</div></div>`:''}`;
