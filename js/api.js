@@ -25,7 +25,17 @@ const API = {
    * Rafraîchit le token si expiré
    */
   async request(method, endpoint, body = null) {
-    const token = localStorage.getItem('VIDSPARK_ACCESS_TOKEN');
+    // Récupère le token d'auth depuis Supabase (la source de vérité du site),
+    // avec un repli sur l'ancien localStorage pour rester compatible.
+    let token = null;
+    try {
+      if (window.Auth && typeof window.Auth.getSession === 'function') {
+        const session = await window.Auth.getSession();
+        token = session?.access_token || null;
+      }
+    } catch (e) { /* repli ci-dessous */ }
+    if (!token) token = localStorage.getItem('VIDSPARK_ACCESS_TOKEN');
+
     const headers = {
       'Content-Type': 'application/json',
     };
