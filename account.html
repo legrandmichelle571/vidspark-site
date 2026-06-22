@@ -581,7 +581,15 @@
         });
       } catch (err) {
         console.error('[Account] Load channels error:', err);
-        msg.innerHTML = '<div class="error-message">Failed to load channels</div>';
+        // Message d'erreur détaillé : aide à diagnostiquer (auth manquante vs erreur backend)
+        let detail = err && err.message ? err.message : 'unknown error';
+        try {
+          if (window.Auth) {
+            const s = await window.Auth.getSession();
+            if (!s || !s.access_token) detail = 'Not signed in — please log in again.';
+          }
+        } catch (e) {}
+        msg.innerHTML = '<div class="error-message">Failed to load channels: ' + detail + '</div>';
       }
     }
 
