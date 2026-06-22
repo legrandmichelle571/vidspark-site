@@ -567,16 +567,23 @@
           const name = channel.channel_name || channel.name || id;
           const el = document.createElement('div');
           el.style.cssText = 'padding: 16px; background: var(--b2); border-radius: 8px; display: flex; align-items: center; justify-content: space-between;';
-          el.innerHTML = `
-            <div>
-              <div style="font-weight: 600; margin-bottom: 4px;"></div>
-              <div style="font-size: 12px; color: var(--muted);"></div>
-            </div>
-            <button type="button" class="btn btn-danger">Remove</button>
-          `;
-          el.querySelector('div > div:first-child').textContent = name;
-          el.querySelector('div > div:nth-child(2)').textContent = id;
-          el.querySelector('button').addEventListener('click', () => removeChannel(id));
+
+          const info = document.createElement('div');
+          const nameEl = document.createElement('div');
+          nameEl.style.cssText = 'font-weight: 600; margin-bottom: 4px;';
+          nameEl.textContent = name;
+          const idEl = document.createElement('div');
+          idEl.style.cssText = 'font-size: 12px; color: var(--muted);';
+          idEl.textContent = id;
+          info.appendChild(nameEl); info.appendChild(idEl);
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn btn-danger';
+          btn.textContent = 'Remove';
+          btn.addEventListener('click', () => removeChannel(id));
+
+          el.appendChild(info); el.appendChild(btn);
           list.appendChild(el);
         });
       } catch (err) {
