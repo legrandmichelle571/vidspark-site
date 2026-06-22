@@ -543,16 +543,16 @@
     }
 
     // Charger chaînes YouTube
-    // Cache local des chaînes (utilisé pour ajouter/retirer via /channels/select)
+    // Cache local des chaînes (table activation_channels via /api/user/channels —
+    // la même que le dashboard, l'extension et la page channels.html)
     let _channels = [];
 
     async function loadChannels() {
       const msg = document.getElementById('channelsMessage');
       msg.innerHTML = '';
       try {
-        const response = await ChannelsAPI.list();
-        // Backend renvoie { success: true, data: [...] }, pas { channels: [...] }
-        _channels = response.data || response.channels || [];
+        const response = await API.get('/user/channels');
+        _channels = response.channels || [];
 
         const list = document.getElementById('channelsList');
         list.innerHTML = '';
@@ -563,7 +563,7 @@
         }
 
         _channels.forEach(channel => {
-          const id   = channel.youtube_channel_id || channel.id || '';
+          const id   = channel.channel_id || channel.youtube_channel_id || channel.id || '';
           const name = channel.channel_name || channel.name || id;
           const el = document.createElement('div');
           el.style.cssText = 'padding: 16px; background: var(--b2); border-radius: 8px; display: flex; align-items: center; justify-content: space-between;';
@@ -600,7 +600,8 @@
       }
     }
 
-    // Ajoute une chaîne en réenvoyant la liste actuelle + la nouvelle au backend (/channels/select)
+    // Ajoute une chaîne via POST /api/user/channels (table activation_channels — la même
+    // que le dashboard, l'extension et la page channels.html)
     async function addChannel() {
       const input = document.getElementById('newChannelInput');
       const btn   = document.getElementById('addChannelBtn');
@@ -610,12 +611,8 @@
       if (!raw) { msg.innerHTML = '<div class="error-message">Paste your YouTube channel URL first.</div>'; return; }
       btn.disabled = true; const oldTxt = btn.textContent; btn.textContent = 'Adding...';
       try {
-        const existing = (_channels || []).map(c => ({
-          youtube_channel_id: c.youtube_channel_id || c.id,
-          channel_name:       c.channel_name       || c.name || (c.youtube_channel_id || c.id)
-        }));
-        const next = existing.concat([{ youtube_channel_id: raw, channel_name: raw }]);
-        await API.post('/channels/select', { channels: next });
+        // Le backend résout @handle / URL → UC... et applique la limite du plan
+        await API.post('/user/channels', { channel_url: raw });
         input.value = '';
         msg.innerHTML = '<div class="success-message">Channel added.</div>';
         loadChannels();
@@ -627,19 +624,13 @@
       }
     }
 
-    // Supprime une chaîne en renvoyant la liste sans elle (/channels/select)
+    // Supprime une chaîne via DELETE /api/user/channels/:channel_id
     async function removeChannel(channelId) {
       if (!confirm('Remove this channel?')) return;
       const msg = document.getElementById('channelsMessage');
       msg.innerHTML = '';
       try {
-        const next = (_channels || [])
-          .filter(c => (c.youtube_channel_id || c.id) !== channelId)
-          .map(c => ({
-            youtube_channel_id: c.youtube_channel_id || c.id,
-            channel_name:       c.channel_name       || c.name || (c.youtube_channel_id || c.id)
-          }));
-        await API.post('/channels/select', { channels: next });
+        await API.delete('/user/channels/' + encodeURIComponent(channelId));
         loadChannels();
       } catch (err) {
         console.error('[Account] Remove channel error:', err);
