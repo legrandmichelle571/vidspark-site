@@ -476,7 +476,13 @@
       db_k_managch:{fr:'Gérer mes chaînes →',en:'Manage my channels →',es:'Gestionar mis canales →',ar:'إدارة قنواتي ←',pt:'Gerenciar meus canais →',de:'Kanäle verwalten →',it:'Gestisci i canali →',ru:'Управление каналами →',ja:'チャンネル管理 →',ko:'채널 관리 →',hi:'चैनल प्रबंधित करें →',zh:'管理我的频道 →',tr:'Kanallarımı yönet →',nl:'Kanalen beheren →'},
       db_k_sub:{fr:'Abonnement',en:'Subscription',es:'Suscripción',ar:'الاشتراك',pt:'Assinatura',de:'Abonnement',it:'Abbonamento',ru:'Подписка',ja:'サブスク',ko:'구독',hi:'सदस्यता',zh:'订阅',tr:'Abonelik',nl:'Abonnement'},
       db_k_d:{fr:'j',en:'d',es:'d',ar:'يوم',pt:'d',de:'T',it:'g',ru:'дн',ja:'日',ko:'일',hi:'दिन',zh:'天',tr:'g',nl:'d'},
-      db_k_daysleft:{fr:'jours restants',en:'days remaining',es:'días restantes',ar:'الأيام المتبقّية',pt:'dias restantes',de:'verbleibende Tage',it:'giorni rimanenti',ru:'дней осталось',ja:'残り日数',ko:'남은 일수',hi:'शेष दिन',zh:'剩余天数',tr:'kalan gün',nl:'resterende dagen'}
+      db_k_daysleft:{fr:'jours restants',en:'days remaining',es:'días restantes',ar:'الأيام المتبقّية',pt:'dias restantes',de:'verbleibende Tage',it:'giorni rimanenti',ru:'дней осталось',ja:'残り日数',ko:'남은 일수',hi:'शेष दिन',zh:'剩余天数',tr:'kalan gün',nl:'resterende dagen'},
+      db_s_coach:{fr:'Coach',en:'Coach'}, db_s_analyser:{fr:'🔍 ANALYSER',en:'🔍 ANALYZE'}, db_s_creer:{fr:'✍️ CRÉER',en:'✍️ CREATE'}, db_s_studio:{fr:'🎨 STUDIO',en:'🎨 STUDIO'}, db_s_croissance:{fr:'📈 CROISSANCE',en:'📈 GROWTH'},
+      db_coach_title:{fr:'Ton plan cette semaine',en:'Your plan this week'}, db_coach_sub:{fr:'Applique ces actions pour booster ta chaîne. Commence par la plus impactante.',en:'Apply these actions to grow your channel. Start with the most impactful one.'}, db_coach_cta:{fr:'Corriger',en:'Fix it'},
+      db_coach_a1:{fr:'Analyse ta dernière vidéo',en:'Analyze your latest video'}, db_coach_w1:{fr:'Trouve quoi corriger pour plus de vues',en:'Find what to fix for more views'},
+      db_coach_a2:{fr:'Crée une miniature qui convertit',en:'Create a thumbnail that converts'}, db_coach_w2:{fr:'Concepts IA + texte dans ta langue',en:'AI concepts + text in your language'},
+      db_coach_a3:{fr:'Publie un Short sur un sujet tendance',en:'Post a Short on a trending topic'}, db_coach_w3:{fr:'Capte la vague avant les autres',en:'Catch the wave before others'},
+      db_coach_a4:{fr:'Suis tes mots-clés',en:'Track your keywords'}, db_coach_w4:{fr:'Vois ton classement progresser dans le temps',en:'See your ranking improve over time'}
     });
   </script>
   <script src="/js/meta-pixel.js"></script>
@@ -485,26 +491,27 @@
   <!-- Barre latérale commune -->
   <aside class="app-side">
     <div class="sb-brand"><span class="lg">✦</span> <span>VidSpark AI</span></div>
-    <a class="sb-link active" id="lnkHome" onclick="backToHome()"><span>🏠</span> <span data-i18n="db_home">Tableau de bord</span></a>
-    <div class="sb-section"><span data-i18n="db_s_analyze">📊 ANALYSE</span></div>
+    <a class="sb-link active" id="lnkHome" onclick="backToHome()"><span>🧠</span> <span data-i18n="db_s_coach">Coach</span></a>
+    <div class="sb-section"><span data-i18n="db_s_analyser">🔍 ANALYSER</span></div>
     <a class="sb-link" onclick="openTool('discover')"><span>🔍</span> <span data-i18n="db_discover">Discover</span></a>
     <a class="sb-link" onclick="openTool('analyze')"><span>🎬</span> <span data-i18n="db_analyze">Analyser une vidéo</span></a>
     <a class="sb-link" onclick="openTool('audit')"><span>📊</span> <span data-i18n="db_audit">Audit de chaîne</span></a>
-    <a class="sb-link" onclick="openTool('rank')"><span>🎯</span> <span data-i18n="db_rank">Suivi de position</span></a>
     <a class="sb-link" onclick="openTool('viral')"><span>🔥</span> <span data-i18n="db_viral">Score Viral</span></a>
     <a class="sb-link" onclick="openTool('comments')"><span>💬</span> <span data-i18n="db_comments">Commentaires</span></a>
-    <div class="sb-section"><span data-i18n="db_s_generate">✨ GÉNÉRER</span></div>
+    <div class="sb-section"><span data-i18n="db_s_creer">✍️ CRÉER</span></div>
     <a class="sb-link" onclick="openTool('generate')"><span>✨</span> <span data-i18n="db_generate">Générer (IA)</span></a>
     <a class="sb-link" onclick="openTool('ideas')"><span>💡</span> <span data-i18n="db_ideas">Idées de vidéos</span></a>
     <a class="sb-link" onclick="openTool('shorts')"><span>🎬</span> <span data-i18n="db_shorts">Générateur Shorts</span></a>
     <a class="sb-link" onclick="openTool('hook')"><span>🪝</span> <span data-i18n="db_hook">Hook Analyzer</span></a>
     <a class="sb-link" onclick="openTool('keywords')"><span>🔑</span> <span data-i18n="db_keywords">Mots-clés</span></a>
     <a class="sb-link" onclick="openTool('translate')"><span>🌍</span> <span data-i18n="db_translate">Traduire</span></a>
-    <a class="sb-link" onclick="openTool('trending')"><span>🚀</span> <span data-i18n="db_trending">Trending</span></a>
-    <div class="sb-section"><span data-i18n="db_s_optimize">⚔️ OPTIMISER</span></div>
     <a class="sb-link" onclick="openTool('abtitles')"><span>🆚</span> <span data-i18n="db_abtitles">A/B Test titres</span></a>
-    <a class="sb-link" onclick="openTool('abthumbs')"><span>📸</span> <span data-i18n="db_abthumbs">A/B Test miniatures</span></a>
+    <div class="sb-section"><span data-i18n="db_s_studio">🎨 STUDIO</span></div>
     <a class="sb-link" onclick="openTool('thumbnail')"><span>🖼</span> <span data-i18n="db_thumbnail">Analyse miniature</span></a>
+    <a class="sb-link" onclick="openTool('abthumbs')"><span>📸</span> <span data-i18n="db_abthumbs">A/B Test miniatures</span></a>
+    <div class="sb-section"><span data-i18n="db_s_croissance">📈 CROISSANCE</span></div>
+    <a class="sb-link" onclick="openTool('trending')"><span>🚀</span> <span data-i18n="db_trending">Trending</span></a>
+    <a class="sb-link" onclick="openTool('rank')"><span>🎯</span> <span data-i18n="db_rank">Suivi de position</span></a>
     <a class="sb-link" onclick="openTool('audience')"><span>🌍</span> <span data-i18n="db_audience">Audience</span></a>
     <a class="sb-link" onclick="openTool('revenue')"><span>💰</span> <span data-i18n="db_revenue">Revenus estimés</span></a>
     <a class="sb-link" href="channels.html"><span>📺</span> <span data-i18n="db_channels">Mes chaînes</span></a>
@@ -567,6 +574,44 @@
           <button class="btn btn-secondary" onclick="window.location.href='account.html'" data-i18n="db_myaccount">⚙️ Mon compte</button>
           <button class="btn btn-primary" onclick="goToYouTube()" style="background:#ff0000" data-i18n="db_openyt">🎥 Ouvrir YouTube</button>
           <button class="btn btn-primary" onclick="window.location.href='billing.html'" data-i18n="db_upgrade">⬆️ Améliorer mon forfait</button>
+        </div>
+      </div>
+
+      <!-- 🧠 Coach : plan d'action de la semaine -->
+      <div class="card" style="margin-bottom:18px;border:1px solid #f7941d;">
+        <div class="section-title">🎯 <span data-i18n="db_coach_title">Ton plan cette semaine</span></div>
+        <div style="font-size:12px;color:var(--muted);margin:-4px 0 14px;" data-i18n="db_coach_sub">Applique ces actions pour booster ta chaîne. Commence par la plus impactante.</div>
+
+        <div style="display:flex;align-items:center;gap:12px;border-left:3px solid #ef4444;background:rgba(255,255,255,.02);border-radius:8px;padding:12px;margin-bottom:10px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:170px;">
+            <div style="font-weight:700;">🔴 ✍️ <span data-i18n="db_coach_a1">Analyse ta dernière vidéo</span> <span style="color:#22c55e;font-weight:800;">+18</span></div>
+            <div style="font-size:12px;color:var(--muted);" data-i18n="db_coach_w1">Trouve quoi corriger pour plus de vues</div>
+          </div>
+          <button class="btn btn-primary" onclick="openTool('analyze')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;border-left:3px solid #f5b301;background:rgba(255,255,255,.02);border-radius:8px;padding:12px;margin-bottom:10px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:170px;">
+            <div style="font-weight:700;">🟠 🎨 <span data-i18n="db_coach_a2">Crée une miniature qui convertit</span> <span style="color:#22c55e;font-weight:800;">+12</span></div>
+            <div style="font-size:12px;color:var(--muted);" data-i18n="db_coach_w2">Concepts IA + texte dans ta langue</div>
+          </div>
+          <button class="btn btn-primary" onclick="openTool('thumbnail')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;border-left:3px solid #facc15;background:rgba(255,255,255,.02);border-radius:8px;padding:12px;margin-bottom:10px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:170px;">
+            <div style="font-weight:700;">🟡 📱 <span data-i18n="db_coach_a3">Publie un Short sur un sujet tendance</span> <span style="color:#22c55e;font-weight:800;">+8</span></div>
+            <div style="font-size:12px;color:var(--muted);" data-i18n="db_coach_w3">Capte la vague avant les autres</div>
+          </div>
+          <button class="btn btn-primary" onclick="openTool('shorts')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;border-left:3px solid #facc15;background:rgba(255,255,255,.02);border-radius:8px;padding:12px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:170px;">
+            <div style="font-weight:700;">🟡 🎯 <span data-i18n="db_coach_a4">Suis tes mots-clés</span> <span style="color:#22c55e;font-weight:800;">+6</span></div>
+            <div style="font-size:12px;color:var(--muted);" data-i18n="db_coach_w4">Vois ton classement progresser dans le temps</div>
+          </div>
+          <button class="btn btn-primary" onclick="openTool('rank')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
         </div>
       </div>
 
