@@ -482,7 +482,15 @@
       db_coach_a1:{fr:'Analyse ta dernière vidéo',en:'Analyze your latest video'}, db_coach_w1:{fr:'Trouve quoi corriger pour plus de vues',en:'Find what to fix for more views'},
       db_coach_a2:{fr:'Crée une miniature qui convertit',en:'Create a thumbnail that converts'}, db_coach_w2:{fr:'Concepts IA + texte dans ta langue',en:'AI concepts + text in your language'},
       db_coach_a3:{fr:'Publie un Short sur un sujet tendance',en:'Post a Short on a trending topic'}, db_coach_w3:{fr:'Capte la vague avant les autres',en:'Catch the wave before others'},
-      db_coach_a4:{fr:'Suis tes mots-clés',en:'Track your keywords'}, db_coach_w4:{fr:'Vois ton classement progresser dans le temps',en:'See your ranking improve over time'}
+      db_coach_a4:{fr:'Suis tes mots-clés',en:'Track your keywords'}, db_coach_w4:{fr:'Vois ton classement progresser dans le temps',en:'See your ranking improve over time'},
+      coach_score_lbl:{fr:'Potentiel de ta chaîne',en:'Your channel potential'}, coach_pts:{fr:'points',en:'points'},
+      coach_sum_seo:{fr:'Ton contenu est bon mais peu visible. Ton frein n°1 est le SEO — optimise tes titres et descriptions pour débloquer plus de vues.',en:'Your content is good but hard to find. Your #1 blocker is SEO — optimize titles and descriptions to unlock more views.'},
+      coach_sum_ctr:{fr:'Ta chaîne va bien. Ton point faible n°1 est le CTR : ta miniature limite tes clics. La corriger peut nettement booster tes performances.',en:'Your channel is healthy. Your #1 weak point is CTR: your thumbnail limits clicks. Fixing it can clearly boost performance.'},
+      coach_sum_viral:{fr:'Ton SEO est correct, mais ton potentiel viral est limité. Publie des Shorts sur tes meilleurs moments pour créer des pics de croissance.',en:'Your SEO is fine, but your viral potential is limited. Post Shorts from your best moments to create growth spikes.'},
+      coach_sum_cadence:{fr:'Ton contenu est solide, mais ta cadence a chuté. L\'algorithme récompense la régularité — planifie tes prochaines vidéos.',en:'Your content is solid, but your posting cadence dropped. The algorithm rewards consistency — plan your next videos.'},
+      coach_sum_healthy:{fr:'Excellent travail — ta chaîne est bien optimisée. Plus de problème à corriger : passe en mode croissance et saisis les opportunités.',en:'Great work — your channel is well optimized. No problems left: switch to growth mode and seize opportunities.'},
+      coach_sum_new:{fr:'Tu démarres — concentrons-nous sur les fondations. Analyse ta première vidéo et soigne son packaging (titre + miniature), c\'est 80 % du CTR.',en:'You are getting started — let\'s focus on the foundations. Analyze your first video and nail its packaging (title + thumbnail), that\'s 80% of CTR.'},
+      coach_a_seo:{fr:'Optimise ton SEO',en:'Optimize your SEO'}, coach_a_thumb:{fr:'Améliore ta miniature',en:'Improve your thumbnail'}, coach_a_viral:{fr:'Publie un Short',en:'Post a Short'}, coach_a_cadence:{fr:'Planifie tes prochaines vidéos',en:'Plan your next videos'}, coach_a_grow:{fr:'Saisis une opportunité de croissance',en:'Seize a growth opportunity'}, coach_a_analyze:{fr:'Analyse ta première vidéo',en:'Analyze your first video'}, coach_a_ideas:{fr:'Génère des idées de vidéos',en:'Generate video ideas'}
     });
   </script>
   <script src="/js/meta-pixel.js"></script>
@@ -579,9 +587,11 @@
 
       <!-- 🧠 Coach : plan d'action de la semaine -->
       <div class="card" style="margin-bottom:18px;border:1px solid #f7941d;">
+        <div id="coachHeader"></div>
         <div class="section-title">🎯 <span data-i18n="db_coach_title">Ton plan cette semaine</span></div>
         <div style="font-size:12px;color:var(--muted);margin:-4px 0 14px;" data-i18n="db_coach_sub">Applique ces actions pour booster ta chaîne. Commence par la plus impactante.</div>
 
+        <div id="coachLive">
         <div style="display:flex;align-items:center;gap:12px;border-left:3px solid #ef4444;background:rgba(255,255,255,.02);border-radius:8px;padding:12px;margin-bottom:10px;flex-wrap:wrap;">
           <div style="flex:1;min-width:170px;">
             <div style="font-weight:700;">🔴 ✍️ <span data-i18n="db_coach_a1">Analyse ta dernière vidéo</span> <span style="color:#22c55e;font-weight:800;">+18</span></div>
@@ -612,6 +622,7 @@
             <div style="font-size:12px;color:var(--muted);" data-i18n="db_coach_w4">Vois ton classement progresser dans le temps</div>
           </div>
           <button class="btn btn-primary" onclick="openTool('rank')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
+        </div>
         </div>
       </div>
 
@@ -901,6 +912,7 @@
 
         // 🔌 Envoyer les infos d'authentification à l'extension Chrome
         await sendAuthToExtension();
+        loadCoach();
       } catch (err) {
         console.error('[Dashboard] Load error:', err);
         loadingEl.innerHTML = `<div class="error">Failed to load dashboard: ${err.message}</div>`;
@@ -1175,6 +1187,52 @@
     document.getElementById('studioWrap').style.display='none';
     document.getElementById('content').style.display='block';
     setActiveLink('home');
+    if(typeof loadCoach==='function') loadCoach();
+  }
+
+  /* ── Coach IA live : score de chaîne + résumé IA + plan data-driven ── */
+  async function loadCoach(){
+    try{
+      if(!window.Auth) return;
+      const session = await Auth.getSession();
+      const token = session?.access_token || '';
+      if(!token) return;
+      const r = await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/user/coach',{headers:{'Authorization':'Bearer '+token}});
+      if(!r.ok) return;
+      renderCoach(await r.json());
+    }catch(e){}
+  }
+  function renderCoach(d){
+    const head=document.getElementById('coachHeader'), live=document.getElementById('coachLive');
+    if(!head||!live||!window.t) return;
+    const sum = t('coach_sum_'+(d.main_problem||'healthy'));
+    if(d.has_data && d.score){
+      const dash=Math.round(d.score*2.01);
+      head.innerHTML=`
+        <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+          <svg viewBox="0 0 80 80" width="84" height="84" style="flex-shrink:0;">
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#222" stroke-width="7"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#f7941d" stroke-width="7" stroke-linecap="round" stroke-dasharray="${dash} 201" stroke-dashoffset="50" transform="rotate(-90 40 40)"/>
+            <text x="40" y="38" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">${d.score}</text>
+            <text x="40" y="52" text-anchor="middle" font-size="8" fill="#888">→ ${d.potential}</text>
+          </svg>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">${t('coach_score_lbl')}</div>
+            <div style="font-size:13px;color:#e8e8f0;line-height:1.5;margin-top:4px;">🧠 ${sum}</div>
+            <div style="margin-top:6px;font-weight:800;color:#22c55e;">+${d.points} ${t('coach_pts')} ↑</div>
+          </div>
+        </div>`;
+    } else {
+      head.innerHTML=`<div style="font-size:13px;color:#e8e8f0;line-height:1.5;margin-bottom:14px;">🧠 ${sum}</div>`;
+    }
+    const col={red:'#ef4444',amber:'#f5b301',yellow:'#facc15',green:'#22c55e'};
+    const dot={red:'🔴',amber:'🟠',yellow:'🟡',green:'🟢'};
+    const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    live.innerHTML=(d.actions||[]).map(a=>`
+      <div style="display:flex;align-items:center;gap:12px;border-left:3px solid ${col[a.priority]||'#888'};background:rgba(255,255,255,.02);border-radius:8px;padding:12px;margin-bottom:10px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:170px;font-weight:700;">${dot[a.priority]||''} ${esc(a.icon)} ${esc(t('coach_a_'+a.key))} <span style="color:#22c55e;font-weight:800;">+${a.gain}</span></div>
+        <button class="btn btn-primary" onclick="openTool('${esc(a.goto)}')">${t('db_coach_cta')} →</button>
+      </div>`).join('');
   }
   </script>
 
