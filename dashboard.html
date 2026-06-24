@@ -47,8 +47,8 @@
       --radius-xs: 10px;
       --shadow:    0 18px 50px -18px rgba(0,0,0,.65);
       --shadow-sm: 0 8px 24px -12px rgba(0,0,0,.6);
-      --side-w:    248px;
-      --side-w-collapsed: 76px;
+      --side-w:    270px;
+      --side-w-collapsed: 72px;
       --ease:      cubic-bezier(.4,0,.2,1);
     }
 
@@ -74,68 +74,147 @@
     ::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.08); border-radius:10px; border:2px solid transparent; background-clip:content-box; }
     ::-webkit-scrollbar-thumb:hover{ background:rgba(255,255,255,.16); background-clip:content-box; }
 
-    /* ── SIDEBAR ── */
+    /* ════ SIDEBAR (premium) ════ */
     .app-side{
       position:fixed; left:0; top:0; bottom:0; width:var(--side-w);
-      background:linear-gradient(180deg, rgba(20,28,46,.85), rgba(11,15,25,.92));
-      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      background:
+        radial-gradient(440px 220px at 50% -8%, rgba(255,157,31,.07), transparent 70%),
+        linear-gradient(180deg, rgba(23,31,51,.94), rgba(12,17,28,.97));
+      backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
       border-right:1px solid var(--b1);
-      display:flex; flex-direction:column; padding:16px 14px; z-index:60;
-      overflow-y:auto; overflow-x:hidden;
-      transition: width .28s var(--ease);
+      border-radius:0 20px 20px 0;
+      display:flex; flex-direction:column; padding:14px 12px 12px; z-index:60;
+      overflow:hidden;
+      transition: width .25s var(--ease), transform .25s var(--ease);
     }
-    .app-side::-webkit-scrollbar{ width:6px; }
-    .sb-top{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 8px 14px; }
-    .sb-brand{ display:flex; align-items:center; gap:11px; font-weight:800; font-size:15.5px; color:#fff; white-space:nowrap; }
-    .sb-brand .lg{
-      width:34px; height:34px; border-radius:10px; flex-shrink:0;
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      display:flex; align-items:center; justify-content:center; color:#0b0f19; font-size:17px;
-      box-shadow:0 6px 18px -4px var(--accent-glow);
-    }
-    .sb-toggle{
-      width:30px; height:30px; border-radius:9px; flex-shrink:0;
-      display:flex; align-items:center; justify-content:center;
-      color:var(--muted); border:1px solid var(--b1); background:rgba(255,255,255,.02);
-      transition: all .2s var(--ease);
-    }
-    .sb-toggle:hover{ color:#fff; border-color:var(--b3); background:rgba(255,255,255,.05); }
-    .sb-section{ font-size:10px; font-weight:800; letter-spacing:1.2px; color:var(--faint); padding:16px 13px 5px; text-transform:uppercase; white-space:nowrap; }
+    /* top header */
+    .sb-head{ padding:4px 6px 2px; }
+    .sb-brand-row{ display:flex; align-items:center; gap:10px; }
+    .sb-brand{ display:flex; align-items:center; gap:11px; min-width:0; flex:1; }
+    .sb-brand .lg{ width:38px; height:38px; border-radius:11px; flex-shrink:0; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; color:#0b0f19; font-size:19px; box-shadow:0 8px 20px -6px var(--accent-glow); }
+    .sb-brand .bt{ min-width:0; }
+    .sb-brand .bt .nm{ font-weight:800; font-size:14.5px; color:#fff; line-height:1.15; white-space:nowrap; display:flex; align-items:center; gap:6px; }
+    .sb-brand .bt .sub{ font-size:10px; color:var(--accent-l); font-weight:600; letter-spacing:.3px; white-space:nowrap; }
+    .sb-aibadge{ font-size:8px; font-weight:800; letter-spacing:.4px; padding:2px 5px; border-radius:5px; background:var(--accent-soft); color:var(--accent-l); border:1px solid var(--accent-line); }
+    .sb-ver{ font-size:8.5px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:1px 5px; }
+    .sb-toggle{ width:30px; height:30px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--muted); border:1px solid var(--b1); background:rgba(255,255,255,.02); transition: all .2s var(--ease); }
+    .sb-toggle:hover{ color:#fff; border-color:var(--b3); background:rgba(255,255,255,.06); }
+    .sb-toggle .chev{ display:inline-block; transition: transform .25s var(--ease); }
+    body.side-collapsed .sb-toggle .chev{ transform: rotate(180deg); }
+    /* workspace selector */
+    .sb-ws{ display:flex; align-items:center; gap:9px; width:100%; margin-top:11px; padding:8px 10px; border-radius:11px; background:rgba(255,255,255,.03); border:1px solid var(--b1); color:var(--text); transition:all .18s var(--ease); }
+    .sb-ws:hover{ border-color:var(--b3); background:rgba(255,255,255,.06); }
+    .sb-ws .ws-ic{ width:24px; height:24px; border-radius:7px; background:linear-gradient(135deg,#a78bfa,#60a5fa); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+    .sb-ws .ws-tx{ flex:1; text-align:left; min-width:0; }
+    .sb-ws .ws-tx .t{ font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .sb-ws .ws-tx .s{ font-size:9.5px; color:var(--muted); }
+    .sb-ws .ws-cv{ color:var(--muted); font-size:10px; }
+    /* search */
+    .sb-search{ position:relative; margin:11px 4px 8px; }
+    .sb-search .si{ position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--faint); font-size:12px; pointer-events:none; }
+    .sb-search input{ width:100%; padding:9px 42px 9px 31px; border-radius:11px; background:rgba(255,255,255,.03); border:1px solid var(--b1); color:var(--text); font-size:12.5px; font-family:inherit; outline:none; transition:all .2s var(--ease); }
+    .sb-search input::placeholder{ color:var(--faint); }
+    .sb-search input:focus{ border-color:var(--accent-line); background:var(--accent-soft); box-shadow:0 0 0 3px rgba(255,157,31,.13); }
+    .sb-search .kbd{ position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:9px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:2px 5px; background:rgba(255,255,255,.02); pointer-events:none; }
+    /* nav scroll area */
+    .sb-nav{ flex:1; overflow-y:auto; overflow-x:hidden; position:relative; margin:0 -2px; padding:0 2px; }
+    .sb-nav::-webkit-scrollbar{ width:6px; }
+    .sb-nav::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.07); border-radius:6px; }
+    .sb-group{ margin-bottom:3px; }
+    .sb-group-h{ position:sticky; top:0; z-index:3; display:flex; align-items:center; gap:6px; width:100%; padding:9px 12px 5px; font-size:9.5px; font-weight:800; letter-spacing:1.1px; color:var(--faint); text-transform:uppercase; background:linear-gradient(180deg, rgba(13,18,29,.97) 62%, transparent); }
+    .sb-group-h:hover{ color:var(--muted); }
+    .sb-group-h .gh-title{ flex:1; text-align:left; white-space:nowrap; }
+    .sb-group-h .gh-chev{ font-size:8px; transition:transform .2s var(--ease); }
+    .sb-group.collapsed .gh-chev{ transform:rotate(-90deg); }
+    .sb-group-items{ max-height:1200px; overflow:hidden; transition:max-height .25s var(--ease); }
+    .sb-group.collapsed .sb-group-items{ max-height:0; }
     .app-side a.sb-link{
-      display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:11px;
-      color:var(--muted); font-size:13.5px; font-weight:600; text-decoration:none; margin-bottom:2px; cursor:pointer;
-      white-space:nowrap; position:relative; transition: background .18s, color .18s, transform .18s;
+      display:flex; align-items:center; gap:11px; padding:9px 11px; border-radius:10px;
+      color:var(--muted); font-size:13px; font-weight:600; text-decoration:none; margin-bottom:1px; cursor:pointer;
+      white-space:nowrap; position:relative; transition: background .18s var(--ease), color .18s, transform .18s;
     }
-    .app-side a.sb-link .ic{ width:20px; text-align:center; font-size:16px; flex-shrink:0; }
-    .app-side a.sb-link:hover{ background:rgba(255,255,255,.045); color:#fff; transform:translateX(2px); }
-    .app-side a.sb-link.active{
-      background:linear-gradient(135deg, rgba(255,157,31,.18), rgba(255,122,24,.10));
-      color:#fff;
-    }
+    .app-side a.sb-link .ic{ width:22px; text-align:center; font-size:15.5px; flex-shrink:0; transition:transform .18s var(--ease); }
+    .app-side a.sb-link .lbl{ flex:1; overflow:hidden; text-overflow:ellipsis; }
+    .app-side a.sb-link .sb-arrow{ font-size:15px; color:var(--faint); opacity:0; transform:translateX(-5px); transition:all .18s var(--ease); }
+    .app-side a.sb-link:hover{ background:rgba(255,255,255,.05); color:#fff; transform:translateX(2px); }
+    .app-side a.sb-link:hover .ic{ transform:scale(1.14); }
+    .app-side a.sb-link:hover .sb-arrow{ opacity:1; transform:translateX(0); }
+    .app-side a.sb-link.soon{ opacity:.5; cursor:default; }
+    .app-side a.sb-link.soon:hover{ transform:none; background:rgba(255,255,255,.025); color:var(--muted); }
+    .app-side a.sb-link.active{ background:linear-gradient(135deg, rgba(255,157,31,.22), rgba(255,122,24,.10)); color:#fff; box-shadow:0 6px 18px -10px var(--accent-glow); }
+    .app-side a.sb-link.active .ic{ filter:drop-shadow(0 0 6px var(--accent-glow)); }
     .app-side a.sb-link.active::before{
-      content:""; position:absolute; left:-14px; top:50%; transform:translateY(-50%);
-      width:4px; height:22px; border-radius:0 4px 4px 0; background:linear-gradient(180deg, var(--accent), var(--accent-2));
+      content:""; position:absolute; left:-12px; top:50%; transform:translateY(-50%);
+      width:4px; height:60%; border-radius:0 4px 4px 0; background:linear-gradient(180deg,var(--accent),var(--accent-2)); box-shadow:0 0 8px var(--accent-glow);
     }
-    .sb-foot{ margin-top:auto; padding-top:10px; border-top:1px solid var(--b1); }
-    .sb-logout{ color:var(--red) !important; }
-    /* collapsed */
-    body.side-collapsed .app-side{ width:var(--side-w-collapsed); padding:16px 10px; }
-    body.side-collapsed .app-side .sb-brand span,
-    body.side-collapsed .app-side a.sb-link span,
-    body.side-collapsed .app-side .sb-section{ opacity:0; width:0; overflow:hidden; pointer-events:none; }
+    /* badges */
+    .sb-badge{ font-size:8px; font-weight:800; letter-spacing:.3px; padding:2px 6px; border-radius:6px; flex-shrink:0; text-transform:uppercase; line-height:1.4; }
+    .sb-badge.ai{ background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(96,165,250,.18)); color:#c9bafc; border:1px solid rgba(167,139,250,.3); }
+    .sb-badge.pro{ background:rgba(255,157,31,.16); color:var(--accent-l); border:1px solid var(--accent-line); }
+    .sb-badge.new{ background:rgba(34,197,94,.16); color:#4ade80; border:1px solid rgba(34,197,94,.3); }
+    .sb-badge.beta{ background:rgba(59,130,246,.16); color:#7dd3fc; border:1px solid rgba(59,130,246,.3); }
+    .sb-badge.hot{ background:rgba(239,68,68,.16); color:#fca5a5; border:1px solid rgba(239,68,68,.3); }
+    .sb-badge.soon{ background:rgba(255,255,255,.05); color:var(--faint); border:1px solid var(--b1); }
+    /* bottom user card */
+    .sb-user{ margin-top:8px; padding:11px; border-radius:14px; background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.018)); border:1px solid var(--b1); }
+    .su-main{ display:flex; align-items:center; gap:10px; }
+    .su-av{ width:38px; height:38px; border-radius:11px; flex-shrink:0; overflow:hidden; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-size:16px; color:#0b0f19; position:relative; }
+    .su-av img{ width:100%; height:100%; object-fit:cover; }
+    .su-av .on{ position:absolute; right:-1px; bottom:-1px; width:11px; height:11px; border-radius:50%; background:var(--green); border:2px solid #0c111c; }
+    .su-info{ flex:1; min-width:0; }
+    .su-name{ font-size:12.5px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .su-mail{ font-size:10px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .su-cog{ width:28px; height:28px; border-radius:8px; color:var(--muted); border:1px solid var(--b1); flex-shrink:0; transition:all .18s; }
+    .su-cog:hover{ color:#fff; border-color:var(--b3); background:rgba(255,255,255,.05); }
+    .su-meta{ display:flex; align-items:center; gap:6px; margin-top:9px; flex-wrap:wrap; }
+    .su-meta span{ font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; background:rgba(255,255,255,.04); color:var(--muted); }
+    .su-meta .su-plan{ background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(96,165,250,.16)); color:#c9bafc; }
+    .su-credits{ margin-top:10px; }
+    .su-credits .cl{ display:flex; justify-content:space-between; font-size:9.5px; color:var(--muted); margin-bottom:4px; }
+    .su-credits .cb{ height:5px; border-radius:5px; background:rgba(255,255,255,.07); overflow:hidden; }
+    .su-credits .cf{ height:100%; border-radius:5px; background:linear-gradient(90deg,var(--accent),var(--accent-l)); width:0; transition:width 1s var(--ease); }
+    .su-actions{ display:flex; gap:7px; margin-top:11px; }
+    .su-actions button{ flex:1; padding:7px; border-radius:9px; font-size:11px; font-weight:700; border:1px solid var(--b1); background:rgba(255,255,255,.03); color:var(--text); transition:all .18s; }
+    .su-actions button:hover{ border-color:var(--b3); background:rgba(255,255,255,.06); }
+    .su-actions .su-logout{ color:var(--red); border-color:rgba(239,68,68,.2); }
+    .su-actions .su-logout:hover{ background:rgba(239,68,68,.1); }
+    /* ── COLLAPSED MODE ── */
+    body.side-collapsed .app-side{ width:var(--side-w-collapsed); padding:14px 8px 12px; }
+    body.side-collapsed .sb-brand .bt,
+    body.side-collapsed .sb-ws .ws-tx, body.side-collapsed .sb-ws .ws-cv,
+    body.side-collapsed .sb-search,
+    body.side-collapsed .sb-group-h .gh-title, body.side-collapsed .sb-group-h .gh-chev,
+    body.side-collapsed .app-side a.sb-link .lbl, body.side-collapsed .app-side a.sb-link .sb-badge, body.side-collapsed .app-side a.sb-link .sb-arrow,
+    body.side-collapsed .su-info, body.side-collapsed .su-cog, body.side-collapsed .su-meta, body.side-collapsed .su-credits, body.side-collapsed .su-actions{
+      display:none;
+    }
+    body.side-collapsed .sb-brand-row{ justify-content:center; }
+    body.side-collapsed .sb-toggle{ display:none; }
+    body.side-collapsed .sb-ws{ justify-content:center; padding:8px; margin-top:9px; }
+    body.side-collapsed .sb-group-h{ justify-content:center; padding:9px 0 4px; background:transparent; }
+    body.side-collapsed .sb-group-h::after{ content:""; width:18px; height:1px; background:var(--b2); display:block; }
     body.side-collapsed .app-side a.sb-link{ justify-content:center; padding:11px 0; }
     body.side-collapsed .app-side a.sb-link .ic{ width:auto; }
-    body.side-collapsed .sb-top{ justify-content:center; }
+    body.side-collapsed .sb-user{ padding:6px; background:transparent; border:none; }
+    body.side-collapsed .su-main{ justify-content:center; }
     body.side-collapsed .main{ margin-left:var(--side-w-collapsed); }
+    /* tooltips (collapsed) */
+    body.side-collapsed .app-side a.sb-link::after{
+      content:attr(data-name); position:absolute; left:calc(100% + 12px); top:50%; transform:translateY(-50%) scale(.92);
+      background:var(--s2); color:#fff; font-size:11.5px; font-weight:600; padding:6px 10px; border-radius:8px; border:1px solid var(--b2);
+      white-space:nowrap; opacity:0; pointer-events:none; box-shadow:var(--shadow); z-index:90; transition:opacity .15s, transform .15s;
+    }
+    body.side-collapsed .app-side a.sb-link:hover::after{ opacity:1; transform:translateY(-50%) scale(1); }
+    /* mobile drawer overlay */
+    .side-overlay{ position:fixed; inset:0; background:rgba(4,7,14,.62); backdrop-filter:blur(2px); z-index:55; opacity:0; visibility:hidden; transition:opacity .25s; }
+    .side-overlay.show{ opacity:1; visibility:visible; }
 
     /* ── MAIN ── */
     .main{ margin-left:var(--side-w); padding:26px 30px 60px; max-width:1640px; transition: margin-left .28s var(--ease); }
     @media(max-width:760px){
-      .app-side{ width:var(--side-w-collapsed); padding:14px 8px; }
-      .app-side .sb-brand span, .app-side a.sb-link span, .app-side .sb-section{ display:none; }
-      .app-side a.sb-link{ justify-content:center; }
-      .sb-top{ justify-content:center; }
-      .main{ margin-left:var(--side-w-collapsed); padding:18px 14px 50px; }
+      .app-side{ transform:translateX(-100%); box-shadow:24px 0 60px -20px rgba(0,0,0,.7); }
+      .app-side.drawer-open{ transform:translateX(0); }
+      .main{ margin-left:0; padding:18px 14px 50px; }
     }
 
     /* ── TOP HEADER ── */
@@ -481,49 +560,195 @@
       ai_coach:{fr:'Coach IA',en:'AI Coach'},
       ai_online:{fr:'En ligne',en:'Online'},
       ai_intro:{fr:'Que veux-tu améliorer aujourd\'hui ?',en:'What do you want to improve today?'},
-      coach_overview:{fr:'Vue d\'ensemble',en:'Overview'}
+      coach_overview:{fr:'Vue d\'ensemble',en:'Overview'},
+      /* ── sidebar premium ── */
+      db_aipowered:{fr:'Propulsé par IA',en:'AI Powered'},
+      db_ws_label:{fr:'Mon espace',en:'My Workspace'}, db_ws_sub:{fr:'Chaîne YouTube',en:'YouTube channel'},
+      db_search_ph:{fr:'Rechercher…',en:'Search anything…'},
+      sb_soon:{fr:'Bientôt',en:'Soon'}, sb_soon_toast:{fr:'Bientôt disponible 🚀',en:'Coming soon 🚀'},
+      db_g_dashboard:{fr:'Tableau de bord',en:'Dashboard'}, db_g_analyze:{fr:'Analyser',en:'Analyze'}, db_g_create:{fr:'Créer (IA)',en:'AI Create'}, db_g_seo:{fr:'Outils SEO',en:'SEO Tools'}, db_g_growth:{fr:'Croissance',en:'Growth'}, db_g_studio:{fr:'Studio',en:'Studio'}, db_g_account:{fr:'Compte',en:'Account'}, db_g_help:{fr:'Aide',en:'Help'},
+      db_notifications:{fr:'Notifications',en:'Notifications'}, db_recent:{fr:'Activité récente',en:'Recent activity'},
+      db_seoscore:{fr:'Score SEO',en:'SEO Score'}, db_competitor:{fr:'Analyse concurrents',en:'Competitor analysis'}, db_comparison:{fr:'Comparer des chaînes',en:'Channel comparison'}, db_analytics:{fr:'Analytique',en:'Analytics'},
+      db_script:{fr:'Générateur de script',en:'Script generator'}, db_voice:{fr:'Générateur de voix',en:'Voice generator'}, db_aiassist:{fr:'Assistant IA',en:'AI assistant'}, db_thumbai:{fr:'Miniature IA',en:'Thumbnail AI'},
+      db_tagextract:{fr:'Extracteur de tags',en:'Tag extractor'}, db_descgen:{fr:'Générateur de description',en:'Description generator'}, db_titlegen:{fr:'Générateur de titres',en:'Title generator'}, db_thumbdl:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader'}, db_chextract:{fr:'Extracteur de chaîne',en:'Channel extractor'}, db_hashtag:{fr:'Générateur de hashtags',en:'Hashtag generator'},
+      db_publishtime:{fr:'Meilleur moment',en:'Best publish time'}, db_chgrowth:{fr:'Croissance chaîne',en:'Channel growth'}, db_planner:{fr:'Planificateur',en:'Content planner'},
+      db_thumbstudio:{fr:'Thumbnail Studio',en:'Thumbnail Studio'}, db_thumbgen:{fr:'Générateur de miniatures',en:'Thumbnail generator'}, db_upscaler:{fr:'Upscaler d\'image',en:'Image upscaler'},
+      db_billing2:{fr:'Facturation',en:'Billing'}, db_team:{fr:'Équipe',en:'Team'}, db_apikeys:{fr:'Clés API',en:'API keys'}, db_settings:{fr:'Paramètres',en:'Settings'},
+      db_docs:{fr:'Documentation',en:'Documentation'}, db_tutorials:{fr:'Tutoriels',en:'Tutorials'}, db_community:{fr:'Communauté',en:'Community'}, db_contact:{fr:'Contact',en:'Contact'}, db_whatsnew:{fr:'Nouveautés',en:"What's new"},
+      db_credits:{fr:'Crédits mensuels',en:'Monthly credits'}
     });
   </script>
   <script src="/js/meta-pixel.js"></script>
 </head>
 <body>
-  <!-- Barre latérale commune -->
+  <!-- ════ SIDEBAR premium ════ -->
   <aside class="app-side" id="appSide">
-    <div class="sb-top">
-      <div class="sb-brand"><span class="lg">✦</span> <span>VidSpark AI</span></div>
-      <button class="sb-toggle" onclick="toggleSidebar()" title="Réduire le menu" aria-label="Menu">⟨</button>
+    <!-- top header -->
+    <div class="sb-head">
+      <div class="sb-brand-row">
+        <div class="sb-brand">
+          <span class="lg">✦</span>
+          <span class="bt">
+            <span class="nm">VidSpark AI <span class="sb-aibadge">AI</span> <span class="sb-ver">v4.4</span></span>
+            <span class="sub" data-i18n="db_aipowered">AI Powered</span>
+          </span>
+        </div>
+        <button class="sb-toggle" onclick="toggleSidebar()" title="Réduire le menu" aria-label="Menu"><span class="chev">⟨</span></button>
+      </div>
+      <button class="sb-ws" onclick="window.location.href='channels.html'" title="Workspace">
+        <span class="ws-ic">🎬</span>
+        <span class="ws-tx"><span class="t" id="wsName" data-i18n="db_ws_label">Mon espace</span><span class="s" data-i18n="db_ws_sub">Chaîne YouTube</span></span>
+        <span class="ws-cv">▾</span>
+      </button>
     </div>
-    <a class="sb-link active" id="lnkHome" onclick="backToHome()"><span class="ic">🧠</span> <span data-i18n="db_s_coach">Coach</span></a>
-    <div class="sb-section"><span data-i18n="db_s_analyser">🔍 ANALYSER</span></div>
-    <a class="sb-link" onclick="openTool('discover')"><span class="ic">🔍</span> <span data-i18n="db_discover">Discover</span></a>
-    <a class="sb-link" onclick="openTool('analyze')"><span class="ic">🎬</span> <span data-i18n="db_analyze">Analyser une vidéo</span></a>
-    <a class="sb-link" onclick="openTool('audit')"><span class="ic">📊</span> <span data-i18n="db_audit">Audit de chaîne</span></a>
-    <a class="sb-link" onclick="openTool('viral')"><span class="ic">🔥</span> <span data-i18n="db_viral">Score Viral</span></a>
-    <a class="sb-link" onclick="openTool('comments')"><span class="ic">💬</span> <span data-i18n="db_comments">Commentaires</span></a>
-    <div class="sb-section"><span data-i18n="db_s_creer">✍️ CRÉER</span></div>
-    <a class="sb-link" onclick="openTool('generate')"><span class="ic">✨</span> <span data-i18n="db_generate">Générer (IA)</span></a>
-    <a class="sb-link" onclick="openTool('ideas')"><span class="ic">💡</span> <span data-i18n="db_ideas">Idées de vidéos</span></a>
-    <a class="sb-link" onclick="openTool('shorts')"><span class="ic">🎬</span> <span data-i18n="db_shorts">Générateur Shorts</span></a>
-    <a class="sb-link" onclick="openTool('hook')"><span class="ic">🪝</span> <span data-i18n="db_hook">Hook Analyzer</span></a>
-    <a class="sb-link" onclick="openTool('keywords')"><span class="ic">🔑</span> <span data-i18n="db_keywords">Mots-clés</span></a>
-    <a class="sb-link" onclick="openTool('translate')"><span class="ic">🌍</span> <span data-i18n="db_translate">Traduire</span></a>
-    <a class="sb-link" onclick="openTool('abtitles')"><span class="ic">🆚</span> <span data-i18n="db_abtitles">A/B Test titres</span></a>
-    <div class="sb-section"><span data-i18n="db_s_studio">🎨 STUDIO</span></div>
-    <a class="sb-link" onclick="openTool('thumbnail')"><span class="ic">🖼</span> <span data-i18n="db_thumbnail">Analyse miniature</span></a>
-    <a class="sb-link" onclick="openTool('abthumbs')"><span class="ic">📸</span> <span data-i18n="db_abthumbs">A/B Test miniatures</span></a>
-    <div class="sb-section"><span data-i18n="db_s_croissance">📈 CROISSANCE</span></div>
-    <a class="sb-link" onclick="openTool('trending')"><span class="ic">🚀</span> <span data-i18n="db_trending">Trending</span></a>
-    <a class="sb-link" onclick="openTool('rank')"><span class="ic">🎯</span> <span data-i18n="db_rank">Suivi de position</span></a>
-    <a class="sb-link" onclick="openTool('audience')"><span class="ic">🌍</span> <span data-i18n="db_audience">Audience</span></a>
-    <a class="sb-link" onclick="openTool('revenue')"><span class="ic">💰</span> <span data-i18n="db_revenue">Revenus estimés</span></a>
-    <a class="sb-link" href="channels.html"><span class="ic">📺</span> <span data-i18n="db_channels">Mes chaînes</span></a>
-    <a class="sb-link" href="billing.html"><span class="ic">💳</span> <span data-i18n="db_billing">Abonnement</span></a>
-    <a class="sb-link" href="account.html"><span class="ic">⚙️</span> <span data-i18n="db_account">Compte</span></a>
-    <div class="sb-foot">
-      <a class="sb-link" href="https://vidsparkpro.com/pricing.html"><span class="ic">🏷️</span> <span data-i18n="db_plans">Forfaits</span></a>
-      <a class="sb-link sb-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';"><span class="ic">🚪</span> <span data-i18n="db_logout">Déconnexion</span></a>
+
+    <!-- global search -->
+    <div class="sb-search">
+      <span class="si">🔍</span>
+      <input id="sideSearchInput" type="text" autocomplete="off" placeholder="Rechercher…" data-i18n-ph="db_search_ph" oninput="sideSearch(this.value)">
+      <span class="kbd">Ctrl K</span>
+    </div>
+
+    <!-- nav -->
+    <nav class="sb-nav">
+      <!-- GROUP 1 : DASHBOARD -->
+      <div class="sb-group" data-g="dash">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_dashboard">Dashboard</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link active" id="lnkHome" data-name="Dashboard Coach" onclick="backToHome()"><span class="ic">🏠</span> <span class="lbl" data-i18n="db_home">Tableau de bord</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="AI Coach" onclick="toggleAiPop()"><span class="ic">🧠</span> <span class="lbl" data-i18n="db_s_coach">Coach</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Notifications" onclick="comingSoon(event)"><span class="ic">🔔</span> <span class="lbl" data-i18n="db_notifications">Notifications</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Recent Activity" onclick="comingSoon(event)"><span class="ic">🕑</span> <span class="lbl" data-i18n="db_recent">Activité récente</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+        </div>
+      </div>
+
+      <!-- GROUP 2 : ANALYZE -->
+      <div class="sb-group" data-g="analyze">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_analyze">Analyser</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link" data-name="Discover" onclick="openTool('discover')"><span class="ic">🔍</span> <span class="lbl" data-i18n="db_discover">Discover</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Analyze Video" onclick="openTool('analyze')"><span class="ic">🎥</span> <span class="lbl" data-i18n="db_analyze">Analyser une vidéo</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Channel Audit" onclick="openTool('audit')"><span class="ic">📊</span> <span class="lbl" data-i18n="db_audit">Audit de chaîne</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Viral Score" onclick="openTool('viral')"><span class="ic">🔥</span> <span class="lbl" data-i18n="db_viral">Score Viral</span><span class="sb-badge hot">Hot</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="SEO Score" onclick="comingSoon(event)"><span class="ic">📈</span> <span class="lbl" data-i18n="db_seoscore">Score SEO</span><span class="sb-badge new">New</span></a>
+          <a class="sb-link" data-name="Comments" onclick="openTool('comments')"><span class="ic">💬</span> <span class="lbl" data-i18n="db_comments">Commentaires</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Competitor Analysis" onclick="comingSoon(event)"><span class="ic">🏆</span> <span class="lbl" data-i18n="db_competitor">Analyse concurrents</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Channel Comparison" onclick="comingSoon(event)"><span class="ic">📺</span> <span class="lbl" data-i18n="db_comparison">Comparer des chaînes</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="Analytics" onclick="goAnalyticsView()"><span class="ic">📉</span> <span class="lbl" data-i18n="db_analytics">Analytique</span><span class="sb-arrow">›</span></a>
+        </div>
+      </div>
+
+      <!-- GROUP 3 : AI CREATE -->
+      <div class="sb-group" data-g="create">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_create">Créer (IA)</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link" data-name="AI Generator" onclick="openTool('generate')"><span class="ic">✨</span> <span class="lbl" data-i18n="db_generate">Générer (IA)</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Video Ideas" onclick="openTool('ideas')"><span class="ic">💡</span> <span class="lbl" data-i18n="db_ideas">Idées de vidéos</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Shorts Generator" onclick="openTool('shorts')"><span class="ic">⚡</span> <span class="lbl" data-i18n="db_shorts">Générateur Shorts</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Hook Analyzer" onclick="openTool('hook')"><span class="ic">🎯</span> <span class="lbl" data-i18n="db_hook">Hook Analyzer</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Script Generator" onclick="comingSoon(event)"><span class="ic">📝</span> <span class="lbl" data-i18n="db_script">Générateur de script</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Voice Generator" onclick="comingSoon(event)"><span class="ic">🎙</span> <span class="lbl" data-i18n="db_voice">Générateur de voix</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="AI Assistant" onclick="toggleAiPop()"><span class="ic">🤖</span> <span class="lbl" data-i18n="db_aiassist">Assistant IA</span><span class="sb-badge beta">Beta</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Thumbnail AI" onclick="openTool('thumbnail')"><span class="ic">🎨</span> <span class="lbl" data-i18n="db_thumbai">Miniature IA</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
+        </div>
+      </div>
+
+      <!-- GROUP 4 : SEO TOOLS -->
+      <div class="sb-group" data-g="seo">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_seo">Outils SEO</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link" data-name="Keyword Research" onclick="openTool('keywords')"><span class="ic">🔑</span> <span class="lbl" data-i18n="db_keywords">Mots-clés</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Tag Extractor" onclick="comingSoon(event)"><span class="ic">🏷</span> <span class="lbl" data-i18n="db_tagextract">Extracteur de tags</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Description Generator" onclick="comingSoon(event)"><span class="ic">📝</span> <span class="lbl" data-i18n="db_descgen">Générateur de description</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Title Generator" onclick="comingSoon(event)"><span class="ic">🏆</span> <span class="lbl" data-i18n="db_titlegen">Générateur de titres</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="Title A/B Test" onclick="openTool('abtitles')"><span class="ic">🧪</span> <span class="lbl" data-i18n="db_abtitles">A/B Test titres</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Thumbnail Downloader" onclick="comingSoon(event)"><span class="ic">🖼</span> <span class="lbl" data-i18n="db_thumbdl">Téléchargeur de miniatures</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="Thumbnail Analyzer" onclick="openTool('thumbnail')"><span class="ic">🎨</span> <span class="lbl" data-i18n="db_thumbnail">Analyse miniature</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Channel Extractor" onclick="comingSoon(event)"><span class="ic">📥</span> <span class="lbl" data-i18n="db_chextract">Extracteur de chaîne</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Hashtag Generator" onclick="comingSoon(event)"><span class="ic">🔗</span> <span class="lbl" data-i18n="db_hashtag">Générateur de hashtags</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="Translate" onclick="openTool('translate')"><span class="ic">🌍</span> <span class="lbl" data-i18n="db_translate">Traduire</span><span class="sb-arrow">›</span></a>
+        </div>
+      </div>
+
+      <!-- GROUP 5 : GROWTH -->
+      <div class="sb-group" data-g="growth">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_growth">Croissance</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link" data-name="Trend Explorer" onclick="openTool('trending')"><span class="ic">📈</span> <span class="lbl" data-i18n="db_trending">Trending</span><span class="sb-badge hot">Hot</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Best Publish Time" onclick="comingSoon(event)"><span class="ic">🚀</span> <span class="lbl" data-i18n="db_publishtime">Meilleur moment</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Channel Growth" onclick="comingSoon(event)"><span class="ic">📊</span> <span class="lbl" data-i18n="db_chgrowth">Croissance chaîne</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="Audience Insights" onclick="openTool('audience')"><span class="ic">🎯</span> <span class="lbl" data-i18n="db_audience">Audience</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Rank Tracking" onclick="openTool('rank')"><span class="ic">📌</span> <span class="lbl" data-i18n="db_rank">Suivi de position</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Estimated Revenue" onclick="openTool('revenue')"><span class="ic">💰</span> <span class="lbl" data-i18n="db_revenue">Revenus estimés</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Content Planner" onclick="comingSoon(event)"><span class="ic">📅</span> <span class="lbl" data-i18n="db_planner">Planificateur</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+        </div>
+      </div>
+
+      <!-- GROUP 6 : STUDIO -->
+      <div class="sb-group" data-g="studio">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_studio">Studio</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link" data-name="Thumbnail Studio" onclick="openTool('thumbnail')"><span class="ic">🎬</span> <span class="lbl" data-i18n="db_thumbstudio">Thumbnail Studio</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Thumbnail A/B Test" onclick="openTool('abthumbs')"><span class="ic">🧪</span> <span class="lbl" data-i18n="db_abthumbs">A/B Test miniatures</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Thumbnail Generator" onclick="comingSoon(event)"><span class="ic">🎨</span> <span class="lbl" data-i18n="db_thumbgen">Générateur de miniatures</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Image Upscaler" onclick="comingSoon(event)"><span class="ic">🖌</span> <span class="lbl" data-i18n="db_upscaler">Upscaler d'image</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+        </div>
+      </div>
+
+      <!-- GROUP 7 : ACCOUNT -->
+      <div class="sb-group" data-g="account">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_account">Compte</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link" data-name="Subscription" href="billing.html"><span class="ic">💎</span> <span class="lbl" data-i18n="db_billing">Abonnement</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Billing" href="billing.html"><span class="ic">💳</span> <span class="lbl" data-i18n="db_billing2">Facturation</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="My Channels" href="channels.html"><span class="ic">📺</span> <span class="lbl" data-i18n="db_channels">Mes chaînes</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link soon" data-name="Team" onclick="comingSoon(event)"><span class="ic">👥</span> <span class="lbl" data-i18n="db_team">Équipe</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="API Keys" onclick="comingSoon(event)"><span class="ic">🔑</span> <span class="lbl" data-i18n="db_apikeys">Clés API</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="Settings" href="account.html"><span class="ic">⚙️</span> <span class="lbl" data-i18n="db_settings">Paramètres</span><span class="sb-arrow">›</span></a>
+        </div>
+      </div>
+
+      <!-- GROUP 8 : HELP -->
+      <div class="sb-group" data-g="help">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_help">Aide</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link soon" data-name="Documentation" onclick="comingSoon(event)"><span class="ic">📚</span> <span class="lbl" data-i18n="db_docs">Documentation</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Tutorials" onclick="comingSoon(event)"><span class="ic">🎥</span> <span class="lbl" data-i18n="db_tutorials">Tutoriels</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link soon" data-name="Community" onclick="comingSoon(event)"><span class="ic">💬</span> <span class="lbl" data-i18n="db_community">Communauté</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="Contact" href="contact.html"><span class="ic">📧</span> <span class="lbl" data-i18n="db_contact">Contact</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="What's New" href="https://vidsparkpro.com/pricing.html"><span class="ic">🚀</span> <span class="lbl" data-i18n="db_whatsnew">Nouveautés</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- bottom user card -->
+    <div class="sb-user">
+      <div class="su-main">
+        <div class="su-av" id="ucAvatar">🙂<span class="on"></span></div>
+        <div class="su-info">
+          <div class="su-name" id="ucName">—</div>
+          <div class="su-mail" id="ucEmail">—</div>
+        </div>
+        <button class="su-cog" onclick="window.location.href='account.html'" title="Réglages">⚙</button>
+      </div>
+      <div class="su-meta">
+        <span class="su-plan" id="ucPlan">—</span>
+        <span id="ucChannels">📺 —</span>
+        <span id="ucDays">⏳ —</span>
+      </div>
+      <div class="su-credits">
+        <div class="cl"><span data-i18n="db_credits">Crédits mensuels</span><span id="ucCredLbl">—</span></div>
+        <div class="cb"><div class="cf" id="ucCredFill"></div></div>
+      </div>
+      <div class="su-actions">
+        <button onclick="window.location.href='account.html'">⚙ <span data-i18n="db_settings">Paramètres</span></button>
+        <button class="su-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';">🚪 <span data-i18n="db_logout">Déconnexion</span></button>
+      </div>
     </div>
   </aside>
+
+  <!-- overlay tiroir mobile -->
+  <div class="side-overlay" id="sideOverlay" onclick="closeDrawer()"></div>
 
   <!-- Navigation (masquée — éléments avatar/menu déplacés dans le header) -->
   <nav class="nav"></nav>
@@ -1221,7 +1446,8 @@
       await loadChannelsCount();
       // Animations premium une fois les données réelles posées
       try { initCharts(); } catch (e) {}
-      setTimeout(() => { try { runCounters(); } catch (e) {} }, 400);
+      try { syncUserCard(); } catch (e) {}
+      setTimeout(() => { try { runCounters(); } catch (e) {} try { syncUserCard(); } catch (e) {} }, 500);
     });
   </script>
 
@@ -1336,12 +1562,95 @@
 
   <!-- ════ UI premium : sidebar collapse · compteurs animés · charts SVG · coach flottant ════ -->
   <script>
-  /* Sidebar repliable (persistée) */
+  /* ===== Sidebar premium ===== */
+  function isMobileSide(){ return window.innerWidth<=760; }
   function toggleSidebar(){
-    document.body.classList.toggle('side-collapsed');
-    try{ localStorage.setItem('vs_side_collapsed', document.body.classList.contains('side-collapsed')?'1':'0'); }catch(e){}
+    if(isMobileSide()){
+      var s=document.getElementById('appSide'), o=document.getElementById('sideOverlay');
+      var open=s.classList.toggle('drawer-open'); if(o) o.classList.toggle('show', open);
+    } else {
+      document.body.classList.toggle('side-collapsed');
+      try{ localStorage.setItem('vs_side_collapsed', document.body.classList.contains('side-collapsed')?'1':'0'); }catch(e){}
+    }
   }
-  (function(){ try{ if(localStorage.getItem('vs_side_collapsed')==='1') document.body.classList.add('side-collapsed'); }catch(e){} })();
+  function closeDrawer(){
+    var s=document.getElementById('appSide'), o=document.getElementById('sideOverlay');
+    if(s) s.classList.remove('drawer-open'); if(o) o.classList.remove('show');
+  }
+  (function(){ try{ if(!isMobileSide() && localStorage.getItem('vs_side_collapsed')==='1') document.body.classList.add('side-collapsed'); }catch(e){} })();
+  window.addEventListener('resize', function(){
+    if(isMobileSide()){ document.body.classList.remove('side-collapsed'); }
+    else { closeDrawer(); try{ if(localStorage.getItem('vs_side_collapsed')==='1') document.body.classList.add('side-collapsed'); }catch(e){} }
+  });
+
+  /* Groupes repliables (persistés) */
+  function toggleGroup(h){
+    var g=h.closest('.sb-group'); if(!g) return;
+    g.classList.toggle('collapsed');
+    try{ var s=JSON.parse(localStorage.getItem('vs_side_groups')||'{}'); s[g.getAttribute('data-g')]=g.classList.contains('collapsed'); localStorage.setItem('vs_side_groups',JSON.stringify(s)); }catch(e){}
+  }
+  (function(){ try{ var s=JSON.parse(localStorage.getItem('vs_side_groups')||'{}'); document.querySelectorAll('.sb-group').forEach(function(g){ if(s[g.getAttribute('data-g')]) g.classList.add('collapsed'); }); }catch(e){} })();
+
+  /* Recherche live */
+  function sideSearch(q){
+    q=(q||'').trim().toLowerCase(); var any=q.length>0;
+    document.querySelectorAll('.sb-group').forEach(function(g){
+      var vis=0;
+      g.querySelectorAll('a.sb-link').forEach(function(a){
+        var n=(a.getAttribute('data-name')||a.textContent||'').toLowerCase();
+        var show=!any || n.indexOf(q)>-1; a.style.display=show?'':'none'; if(show) vis++;
+      });
+      g.style.display=vis?'':'none';
+      if(any) g.classList.remove('collapsed');
+    });
+  }
+
+  /* Raccourci Ctrl/⌘+K + Échap */
+  document.addEventListener('keydown', function(e){
+    if((e.ctrlKey||e.metaKey) && (e.key==='k'||e.key==='K')){
+      e.preventDefault();
+      var i=document.getElementById('sideSearchInput'); if(!i) return;
+      if(isMobileSide()){ var s=document.getElementById('appSide'),o=document.getElementById('sideOverlay'); if(s)s.classList.add('drawer-open'); if(o)o.classList.add('show'); }
+      i.focus(); i.select();
+    } else if(e.key==='Escape'){
+      var i2=document.getElementById('sideSearchInput'); if(i2 && document.activeElement===i2){ i2.value=''; sideSearch(''); i2.blur(); }
+    }
+  });
+
+  /* Fermer le tiroir au clic d'un lien (mobile) */
+  document.addEventListener('click', function(e){
+    if(e.target.closest && e.target.closest('.sb-nav a.sb-link') && isMobileSide()) closeDrawer();
+  });
+
+  /* Vue Analytique (retour home + scroll) */
+  function goAnalyticsView(){ if(typeof backToHome==='function') backToHome(); setTimeout(function(){ var c=document.querySelector('.charts-grid'); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); },70); }
+
+  /* Coming soon → toast */
+  var _vsToastT;
+  function showToast(msg){
+    var el=document.getElementById('vsToast');
+    if(!el){ el=document.createElement('div'); el.id='vsToast'; el.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#141c2e;border:1px solid rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:12px;box-shadow:0 18px 50px -18px rgba(0,0,0,.7);z-index:400;opacity:0;transition:opacity .25s,transform .25s;'; document.body.appendChild(el); }
+    el.textContent=msg; requestAnimationFrame(function(){ el.style.opacity='1'; el.style.transform='translateX(-50%) translateY(0)'; });
+    clearTimeout(_vsToastT); _vsToastT=setTimeout(function(){ el.style.opacity='0'; el.style.transform='translateX(-50%) translateY(20px)'; }, 2200);
+  }
+  function comingSoon(e){ if(e){ e.preventDefault(); e.stopPropagation(); } showToast(window.t? t('sb_soon_toast') : 'Bientôt disponible 🚀'); }
+
+  /* Carte utilisateur — synchro depuis les données déjà chargées */
+  function syncUserCard(){
+    var g=function(id){ var e=document.getElementById(id); return e? e.textContent.trim() : ''; };
+    var name=(g('userName')||'').replace(/^welcome,\s*/i,'') || 'Creator';
+    var set=function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+    set('ucName', name);
+    set('ucEmail', g('userEmail'));
+    var av=document.getElementById('avatarContent'), uca=document.getElementById('ucAvatar');
+    if(av && uca && av.innerHTML.indexOf('img')>-1){ uca.innerHTML=av.innerHTML+'<span class="on"></span>'; }
+    var ws=document.getElementById('wsName'); if(ws && name && name!=='Creator') ws.textContent=name;
+    var plan=g('planName'); if(plan && plan!=='—'){ set('ucPlan', plan.charAt(0).toUpperCase()+plan.slice(1).toLowerCase()); }
+    var ch=g('channelsCount'); if(ch) set('ucChannels', '📺 '+ch);
+    var dys=g('daysRemaining'); if(dys && dys!=='—') set('ucDays', '⏳ '+dys+'j');
+    var u=g('usageText'); var m=u.match(/(\d+)\s*\/\s*(\d+)/);
+    if(m){ var used=+m[1], lim=+m[2]||1; set('ucCredLbl', used+' / '+lim); var f=document.getElementById('ucCredFill'); if(f) f.style.width=Math.min(100, used/lim*100)+'%'; }
+  }
 
   /* Coach flottant */
   function toggleAiPop(){
