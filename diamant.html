@@ -1238,14 +1238,14 @@
 <!-- Téléchargeur de miniatures — 100% client (i.ytimg.com), aucun backend / aucun service externe -->
 <script>
   if (window.registerI18n) registerI18n({
-    db_thumbdl:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader'},
-    dt_td_title:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader'},
-    dt_td_desc:{fr:'Récupère la miniature HD de n\'importe quelle vidéo YouTube et télécharge-la.',en:'Grab the HD thumbnail of any YouTube video and download it.'},
-    dt_td_t:{fr:'Lien ou ID de la vidéo',en:'Video link or ID'},
-    dt_td_ph:{fr:'https://youtube.com/watch?v=… ou l\'ID',en:'https://youtube.com/watch?v=… or the ID'},
-    dt_td_btn:{fr:'Récupérer',en:'Fetch'},
-    dt_td_invalid:{fr:'Lien ou ID YouTube invalide.',en:'Invalid YouTube link or ID.'},
-    dt_td_dl:{fr:'Télécharger',en:'Download'}
+    db_thumbdl:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader',ar:'تنزيل الصور المصغّرة'},
+    dt_td_title:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader',ar:'تنزيل الصور المصغّرة'},
+    dt_td_desc:{fr:'Récupère la miniature HD de n\'importe quelle vidéo YouTube et télécharge-la.',en:'Grab the HD thumbnail of any YouTube video and download it.',ar:'احصل على الصورة المصغّرة بدقة عالية لأي فيديو يوتيوب وحمّلها.'},
+    dt_td_t:{fr:'Lien ou ID de la vidéo',en:'Video link or ID',ar:'رابط الفيديو أو معرّفه'},
+    dt_td_ph:{fr:'https://youtube.com/watch?v=… ou l\'ID',en:'https://youtube.com/watch?v=… or the ID',ar:'https://youtube.com/watch?v=… أو المعرّف'},
+    dt_td_btn:{fr:'Récupérer',en:'Fetch',ar:'جلب'},
+    dt_td_invalid:{fr:'Lien ou ID YouTube invalide.',en:'Invalid YouTube link or ID.',ar:'رابط أو معرّف يوتيوب غير صالح.'},
+    dt_td_dl:{fr:'Télécharger',en:'Download',ar:'تحميل'}
   });
   function ytThumbId(s){
     s=(s||'').trim();
@@ -1284,13 +1284,13 @@
 <!-- Lot 2 : outils IA (réutilisent /api/ai/* déjà déployés) -->
 <script>
   if (window.registerI18n) registerI18n({
-    db_seoscore:{fr:'Score SEO',en:'SEO Score'}, db_titlegen:{fr:'Générateur de titres',en:'Title generator'}, db_tagextract:{fr:'Extracteur de tags',en:'Tag generator'}, db_descgen:{fr:'Générateur de description',en:'Description generator'},
-    dt_need_title:{fr:'Entre un titre.',en:'Enter a title.'},
-    dt_seo_title:{fr:'Score SEO',en:'SEO Score'}, dt_seo_desc:{fr:'Analyse ton titre + description : score SEO, potentiel viral, points à corriger et suggestions.',en:'Analyze your title + description: SEO score, viral potential, things to fix and suggestions.'}, dt_seo_t:{fr:'Titre de la vidéo',en:'Video title'}, dt_seo_pht:{fr:'Ton titre YouTube',en:'Your YouTube title'}, dt_seo_d:{fr:'Description (optionnel)',en:'Description (optional)'}, dt_seo_phd:{fr:'Ta description',en:'Your description'}, dt_seo_btn:{fr:'Analyser',en:'Analyze'},
-    dt_tg_title:{fr:'Générateur de titres',en:'Title generator'}, dt_tg_desc:{fr:'5 variantes de titres optimisés (SEO, CTR, Viral, Shorts, Trending) à partir de ton titre.',en:'5 optimized title variants (SEO, CTR, Viral, Shorts, Trending) from your title.'}, dt_tg_t:{fr:'Titre de départ',en:'Starting title'}, dt_tg_pht:{fr:'Ton idée de titre',en:'Your title idea'}, dt_tg_btn:{fr:'Générer 5 titres',en:'Generate 5 titles'},
-    dt_tag_title:{fr:'Tags & Hashtags IA',en:'AI Tags & Hashtags'}, dt_tag_desc:{fr:'Génère des tags et hashtags YouTube optimisés à partir de ton titre.',en:'Generate optimized YouTube tags and hashtags from your title.'}, dt_tag_t:{fr:'Titre de la vidéo',en:'Video title'}, dt_tag_pht:{fr:'Ton titre YouTube',en:'Your YouTube title'}, dt_tag_btn:{fr:'Générer les tags',en:'Generate tags'},
-    dt_dg_title:{fr:'Générateur de description',en:'Description generator'}, dt_dg_desc:{fr:'Une description YouTube SEO optimisée (mots-clés, CTA, hashtags) prête à coller.',en:'An SEO-optimized YouTube description (keywords, CTA, hashtags) ready to paste.'}, dt_dg_t:{fr:'Titre de la vidéo',en:'Video title'}, dt_dg_pht:{fr:'Ton titre YouTube',en:'Your YouTube title'}, dt_dg_d:{fr:'Description actuelle (optionnel)',en:'Current description (optional)'}, dt_dg_phd:{fr:'Ta description actuelle',en:'Your current description'}, dt_dg_btn:{fr:'Générer la description',en:'Generate description'},
-    dt_copy:{fr:'Copier',en:'Copy'}, dt_copyall:{fr:'Copier tout',en:'Copy all'}, dt_sugg:{fr:'💡 Suggestions',en:'💡 Suggestions'}
+    db_seoscore:{fr:'Score SEO',en:'SEO Score',ar:'نقاط SEO'}, db_titlegen:{fr:'Générateur de titres',en:'Title generator',ar:'مولّد العناوين'}, db_tagextract:{fr:'Extracteur de tags',en:'Tag generator',ar:'مستخرج الوسوم'}, db_descgen:{fr:'Générateur de description',en:'Description generator',ar:'مولّد الوصف'},
+    dt_need_title:{fr:'Entre un titre.',en:'Enter a title.',ar:'أدخل عنوانًا.'},
+    dt_seo_title:{fr:'Score SEO',en:'SEO Score',ar:'نقاط SEO'}, dt_seo_desc:{fr:'Analyse ton titre + description : score SEO, potentiel viral, points à corriger et suggestions.',en:'Analyze your title + description: SEO score, viral potential, things to fix and suggestions.',ar:'حلّل عنوانك ووصفك: نقاط SEO، إمكانية الانتشار، نقاط للإصلاح واقتراحات.'}, dt_seo_t:{fr:'Titre de la vidéo',en:'Video title',ar:'عنوان الفيديو'}, dt_seo_pht:{fr:'Ton titre YouTube',en:'Your YouTube title',ar:'عنوانك على يوتيوب'}, dt_seo_d:{fr:'Description (optionnel)',en:'Description (optional)',ar:'الوصف (اختياري)'}, dt_seo_phd:{fr:'Ta description',en:'Your description',ar:'وصفك'}, dt_seo_btn:{fr:'Analyser',en:'Analyze',ar:'تحليل'},
+    dt_tg_title:{fr:'Générateur de titres',en:'Title generator',ar:'مولّد العناوين'}, dt_tg_desc:{fr:'5 variantes de titres optimisés (SEO, CTR, Viral, Shorts, Trending) à partir de ton titre.',en:'5 optimized title variants (SEO, CTR, Viral, Shorts, Trending) from your title.',ar:'٥ صيغ عناوين محسّنة (SEO، CTR، انتشار، Shorts، رائج) من عنوانك.'}, dt_tg_t:{fr:'Titre de départ',en:'Starting title',ar:'العنوان الأساسي'}, dt_tg_pht:{fr:'Ton idée de titre',en:'Your title idea',ar:'فكرة عنوانك'}, dt_tg_btn:{fr:'Générer 5 titres',en:'Generate 5 titles',ar:'توليد ٥ عناوين'},
+    dt_tag_title:{fr:'Tags & Hashtags IA',en:'AI Tags & Hashtags',ar:'الوسوم والهاشتاغات بالذكاء الاصطناعي'}, dt_tag_desc:{fr:'Génère des tags et hashtags YouTube optimisés à partir de ton titre.',en:'Generate optimized YouTube tags and hashtags from your title.',ar:'وسوم وهاشتاغات يوتيوب محسّنة من عنوانك.'}, dt_tag_t:{fr:'Titre de la vidéo',en:'Video title',ar:'عنوان الفيديو'}, dt_tag_pht:{fr:'Ton titre YouTube',en:'Your YouTube title',ar:'عنوانك على يوتيوب'}, dt_tag_btn:{fr:'Générer les tags',en:'Generate tags',ar:'توليد الوسوم'},
+    dt_dg_title:{fr:'Générateur de description',en:'Description generator',ar:'مولّد الوصف'}, dt_dg_desc:{fr:'Une description YouTube SEO optimisée (mots-clés, CTA, hashtags) prête à coller.',en:'An SEO-optimized YouTube description (keywords, CTA, hashtags) ready to paste.',ar:'وصف يوتيوب محسّن لـSEO (كلمات مفتاحية، CTA، هاشتاغات) جاهز للصق.'}, dt_dg_t:{fr:'Titre de la vidéo',en:'Video title',ar:'عنوان الفيديو'}, dt_dg_pht:{fr:'Ton titre YouTube',en:'Your YouTube title',ar:'عنوانك على يوتيوب'}, dt_dg_d:{fr:'Description actuelle (optionnel)',en:'Current description (optional)',ar:'الوصف الحالي (اختياري)'}, dt_dg_phd:{fr:'Ta description actuelle',en:'Your current description',ar:'وصفك الحالي'}, dt_dg_btn:{fr:'Générer la description',en:'Generate description',ar:'توليد الوصف'},
+    dt_copy:{fr:'Copier',en:'Copy',ar:'نسخ'}, dt_copyall:{fr:'Copier tout',en:'Copy all',ar:'نسخ الكل'}, dt_sugg:{fr:'💡 Suggestions',en:'💡 Suggestions',ar:'💡 اقتراحات'}
   });
   (function(){
     function $id(id){ return document.getElementById(id); }
@@ -1356,11 +1356,11 @@
 <!-- Lot 3 : Script, Planificateur, Analyse concurrents (endpoints /api/diamant/*) -->
 <script>
   if (window.registerI18n) registerI18n({
-    db_script:{fr:'Générateur de script',en:'Script generator'}, db_planner:{fr:'Planificateur',en:'Content planner'}, db_competitor:{fr:'Analyse concurrents',en:'Competitor analysis'},
-    dt_need_topic:{fr:'Entre un sujet.',en:'Enter a topic.'},
-    dt_sc_title:{fr:'Générateur de script',en:'Script generator'}, dt_sc_desc:{fr:'Un script vidéo complet et structuré (hook, sections, CTA, outro) à partir de ton sujet.',en:'A complete, structured video script (hook, sections, CTA, outro) from your topic.'}, dt_sc_t:{fr:'Sujet de la vidéo',en:'Video topic'}, dt_sc_pht:{fr:'Ex: 5 astuces pour monter plus vite',en:'e.g. 5 tips to edit faster'}, dt_sc_n:{fr:'Niche (optionnel)',en:'Niche (optional)'}, dt_sc_phn:{fr:'Ex: montage vidéo',en:'e.g. video editing'}, dt_sc_dur:{fr:'Durée',en:'Length'}, dt_sc_btn:{fr:'Générer le script',en:'Generate script'},
-    dt_pl_title:{fr:'Planificateur de contenu',en:'Content planner'}, dt_pl_desc:{fr:'Un planning de 7 jours (vidéos longues, Shorts, repos) adapté à ta niche.',en:'A 7-day plan (long videos, Shorts, rest days) tailored to your niche.'}, dt_pl_n:{fr:'Niche (optionnel)',en:'Niche (optional)'}, dt_pl_phn:{fr:'Ex: gaming, cuisine…',en:'e.g. gaming, cooking…'}, dt_pl_r:{fr:'Audience (optionnel)',en:'Audience (optional)'}, dt_pl_phr:{fr:'Ex: France, mondial…',en:'e.g. France, worldwide…'}, dt_pl_btn:{fr:'Générer le planning',en:'Generate plan'},
-    dt_co_title:{fr:'Analyse concurrentielle',en:'Competitor analysis'}, dt_co_desc:{fr:'Niche, opportunités, angles originaux et mots-clés à viser pour ton sujet.',en:'Niche, opportunities, original angles and keywords to target for your topic.'}, dt_co_t:{fr:'Titre / sujet de la vidéo',en:'Video title / topic'}, dt_co_pht:{fr:'Ex: tuto Premiere Pro 2026',en:'e.g. Premiere Pro 2026 tutorial'}, dt_co_btn:{fr:'Analyser',en:'Analyze'}
+    db_script:{fr:'Générateur de script',en:'Script generator',ar:'مولّد السكربت'}, db_planner:{fr:'Planificateur',en:'Content planner',ar:'مخطّط المحتوى'}, db_competitor:{fr:'Analyse concurrents',en:'Competitor analysis',ar:'تحليل المنافسين'},
+    dt_need_topic:{fr:'Entre un sujet.',en:'Enter a topic.',ar:'أدخل موضوعًا.'},
+    dt_sc_title:{fr:'Générateur de script',en:'Script generator',ar:'مولّد السكربت'}, dt_sc_desc:{fr:'Un script vidéo complet et structuré (hook, sections, CTA, outro) à partir de ton sujet.',en:'A complete, structured video script (hook, sections, CTA, outro) from your topic.',ar:'سكربت فيديو كامل ومنظّم (افتتاحية، أقسام، CTA، خاتمة) من موضوعك.'}, dt_sc_t:{fr:'Sujet de la vidéo',en:'Video topic',ar:'موضوع الفيديو'}, dt_sc_pht:{fr:'Ex: 5 astuces pour monter plus vite',en:'e.g. 5 tips to edit faster',ar:'مثال: ٥ نصائح للمونتاج الأسرع'}, dt_sc_n:{fr:'Niche (optionnel)',en:'Niche (optional)',ar:'المجال (اختياري)'}, dt_sc_phn:{fr:'Ex: montage vidéo',en:'e.g. video editing',ar:'مثال: مونتاج الفيديو'}, dt_sc_dur:{fr:'Durée',en:'Length',ar:'المدّة'}, dt_sc_btn:{fr:'Générer le script',en:'Generate script',ar:'توليد السكربت'},
+    dt_pl_title:{fr:'Planificateur de contenu',en:'Content planner',ar:'مخطّط المحتوى'}, dt_pl_desc:{fr:'Un planning de 7 jours (vidéos longues, Shorts, repos) adapté à ta niche.',en:'A 7-day plan (long videos, Shorts, rest days) tailored to your niche.',ar:'خطة ٧ أيام (فيديوهات طويلة، Shorts، راحة) حسب مجالك.'}, dt_pl_n:{fr:'Niche (optionnel)',en:'Niche (optional)',ar:'المجال (اختياري)'}, dt_pl_phn:{fr:'Ex: gaming, cuisine…',en:'e.g. gaming, cooking…',ar:'مثال: ألعاب، طبخ…'}, dt_pl_r:{fr:'Audience (optionnel)',en:'Audience (optional)',ar:'الجمهور (اختياري)'}, dt_pl_phr:{fr:'Ex: France, mondial…',en:'e.g. France, worldwide…',ar:'مثال: فرنسا، عالمي…'}, dt_pl_btn:{fr:'Générer le planning',en:'Generate plan',ar:'توليد الخطة'},
+    dt_co_title:{fr:'Analyse concurrentielle',en:'Competitor analysis',ar:'تحليل المنافسين'}, dt_co_desc:{fr:'Niche, opportunités, angles originaux et mots-clés à viser pour ton sujet.',en:'Niche, opportunities, original angles and keywords to target for your topic.',ar:'المجال، الفرص، زوايا مبتكرة وكلمات مفتاحية لاستهدافها لموضوعك.'}, dt_co_t:{fr:'Titre / sujet de la vidéo',en:'Video title / topic',ar:'عنوان / موضوع الفيديو'}, dt_co_pht:{fr:'Ex: tuto Premiere Pro 2026',en:'e.g. Premiere Pro 2026 tutorial',ar:'مثال: شرح Premiere Pro 2026'}, dt_co_btn:{fr:'Analyser',en:'Analyze',ar:'تحليل'}
   });
   (function(){
     function $id(id){ return document.getElementById(id); }
@@ -1415,9 +1415,9 @@
 <!-- Lot 3b : Hashtags + Meilleur moment (endpoints /api/diamant/{hashtags,best-time}) -->
 <script>
   if (window.registerI18n) registerI18n({
-    db_hashtag:{fr:'Générateur de hashtags',en:'Hashtag generator'}, db_publishtime:{fr:'Meilleur moment',en:'Best publish time'},
-    dt_ht_title:{fr:'Générateur de hashtags',en:'Hashtag generator'}, dt_ht_desc:{fr:'Des hashtags YouTube classés (larges, niche, tendance) à partir de ton titre.',en:'Categorized YouTube hashtags (broad, niche, trending) from your title.'}, dt_ht_t:{fr:'Titre de la vidéo',en:'Video title'}, dt_ht_pht:{fr:'Ton titre YouTube',en:'Your YouTube title'}, dt_ht_btn:{fr:'Générer',en:'Generate'},
-    dt_bt_title:{fr:'Meilleur moment de publication',en:'Best publish time'}, dt_bt_desc:{fr:'Les meilleurs jours et heures pour publier selon ta niche et ton audience.',en:'The best days and times to publish based on your niche and audience.'}, dt_bt_n:{fr:'Niche (optionnel)',en:'Niche (optional)'}, dt_bt_phn:{fr:'Ex: fitness, tech…',en:'e.g. fitness, tech…'}, dt_bt_r:{fr:'Audience (optionnel)',en:'Audience (optional)'}, dt_bt_phr:{fr:'Ex: France, USA…',en:'e.g. France, USA…'}, dt_bt_btn:{fr:'Trouver les créneaux',en:'Find slots'}
+    db_hashtag:{fr:'Générateur de hashtags',en:'Hashtag generator',ar:'مولّد الهاشتاغات'}, db_publishtime:{fr:'Meilleur moment',en:'Best publish time',ar:'أفضل وقت للنشر'},
+    dt_ht_title:{fr:'Générateur de hashtags',en:'Hashtag generator',ar:'مولّد الهاشتاغات'}, dt_ht_desc:{fr:'Des hashtags YouTube classés (larges, niche, tendance) à partir de ton titre.',en:'Categorized YouTube hashtags (broad, niche, trending) from your title.',ar:'هاشتاغات يوتيوب مصنّفة (واسعة، متخصّصة، رائجة) من عنوانك.'}, dt_ht_t:{fr:'Titre de la vidéo',en:'Video title',ar:'عنوان الفيديو'}, dt_ht_pht:{fr:'Ton titre YouTube',en:'Your YouTube title',ar:'عنوانك على يوتيوب'}, dt_ht_btn:{fr:'Générer',en:'Generate',ar:'توليد'},
+    dt_bt_title:{fr:'Meilleur moment de publication',en:'Best publish time',ar:'أفضل وقت للنشر'}, dt_bt_desc:{fr:'Les meilleurs jours et heures pour publier selon ta niche et ton audience.',en:'The best days and times to publish based on your niche and audience.',ar:'أفضل الأيام والساعات للنشر حسب مجالك وجمهورك.'}, dt_bt_n:{fr:'Niche (optionnel)',en:'Niche (optional)',ar:'المجال (اختياري)'}, dt_bt_phn:{fr:'Ex: fitness, tech…',en:'e.g. fitness, tech…',ar:'مثال: لياقة، تقنية…'}, dt_bt_r:{fr:'Audience (optionnel)',en:'Audience (optional)',ar:'الجمهور (اختياري)'}, dt_bt_phr:{fr:'Ex: France, USA…',en:'e.g. France, USA…',ar:'مثال: فرنسا، أمريكا…'}, dt_bt_btn:{fr:'Trouver les créneaux',en:'Find slots',ar:'إيجاد الأوقات'}
   });
   (function(){
     function $id(id){ return document.getElementById(id); }
@@ -1454,11 +1454,11 @@
 <!-- Lot 3c : Extracteur + Comparateur de chaînes (endpoints /api/diamant/channel-*) -->
 <script>
   if (window.registerI18n) registerI18n({
-    db_chextract:{fr:'Extracteur de chaîne',en:'Channel extractor'}, db_comparison:{fr:'Comparer des chaînes',en:'Channel comparison'},
-    dt_need_channel:{fr:'Entre le lien ou le @handle de la chaîne.',en:'Enter the channel link or @handle.'}, dt_need_two:{fr:'Entre les deux chaînes.',en:'Enter both channels.'},
-    dt_ex_title:{fr:'Extracteur de chaîne',en:'Channel extractor'}, dt_ex_desc:{fr:'Récupère les stats publiques d\'une chaîne YouTube (abonnés, vues, vidéos, meilleure vidéo).',en:'Get a YouTube channel\'s public stats (subs, views, videos, best video).'}, dt_ex_t:{fr:'Lien ou @handle de la chaîne',en:'Channel link or @handle'}, dt_ex_pht:{fr:'https://youtube.com/@MaChaine',en:'https://youtube.com/@MyChannel'}, dt_ex_btn:{fr:'Extraire',en:'Extract'},
-    dt_cm_title:{fr:'Comparer des chaînes',en:'Channel comparison'}, dt_cm_desc:{fr:'Compare deux chaînes YouTube côte à côte (abonnés, vues, vidéos).',en:'Compare two YouTube channels side by side (subs, views, videos).'}, dt_cm_a:{fr:'Chaîne A',en:'Channel A'}, dt_cm_pha:{fr:'@ChaineA ou lien',en:'@ChannelA or link'}, dt_cm_b:{fr:'Chaîne B',en:'Channel B'}, dt_cm_phb:{fr:'@ChaineB ou lien',en:'@ChannelB or link'}, dt_cm_btn:{fr:'Comparer',en:'Compare'},
-    dt_subs:{fr:'Abonnés',en:'Subscribers'}, dt_tviews:{fr:'Vues totales',en:'Total views'}, dt_videos:{fr:'Vidéos',en:'Videos'}, dt_bestvid:{fr:'🏆 Meilleure vidéo',en:'🏆 Best video'}, dt_views:{fr:'vues',en:'views'}
+    db_chextract:{fr:'Extracteur de chaîne',en:'Channel extractor',ar:'مستخرج القناة'}, db_comparison:{fr:'Comparer des chaînes',en:'Channel comparison',ar:'مقارنة القنوات'},
+    dt_need_channel:{fr:'Entre le lien ou le @handle de la chaîne.',en:'Enter the channel link or @handle.',ar:'أدخل رابط أو @معرّف القناة.'}, dt_need_two:{fr:'Entre les deux chaînes.',en:'Enter both channels.',ar:'أدخل القناتين.'},
+    dt_ex_title:{fr:'Extracteur de chaîne',en:'Channel extractor',ar:'مستخرج القناة'}, dt_ex_desc:{fr:'Récupère les stats publiques d\'une chaîne YouTube (abonnés, vues, vidéos, meilleure vidéo).',en:'Get a YouTube channel\'s public stats (subs, views, videos, best video).',ar:'احصل على إحصائيات قناة يوتيوب العامة (مشتركون، مشاهدات، فيديوهات، أفضل فيديو).'}, dt_ex_t:{fr:'Lien ou @handle de la chaîne',en:'Channel link or @handle',ar:'رابط أو @معرّف القناة'}, dt_ex_pht:{fr:'https://youtube.com/@MaChaine',en:'https://youtube.com/@MyChannel',ar:'https://youtube.com/@قناتي'}, dt_ex_btn:{fr:'Extraire',en:'Extract',ar:'استخراج'},
+    dt_cm_title:{fr:'Comparer des chaînes',en:'Channel comparison',ar:'مقارنة القنوات'}, dt_cm_desc:{fr:'Compare deux chaînes YouTube côte à côte (abonnés, vues, vidéos).',en:'Compare two YouTube channels side by side (subs, views, videos).',ar:'قارن قناتي يوتيوب جنبًا إلى جنب (مشتركون، مشاهدات، فيديوهات).'}, dt_cm_a:{fr:'Chaîne A',en:'Channel A',ar:'القناة أ'}, dt_cm_pha:{fr:'@ChaineA ou lien',en:'@ChannelA or link',ar:'@القناة-أ أو رابط'}, dt_cm_b:{fr:'Chaîne B',en:'Channel B',ar:'القناة ب'}, dt_cm_phb:{fr:'@ChaineB ou lien',en:'@ChannelB or link',ar:'@القناة-ب أو رابط'}, dt_cm_btn:{fr:'Comparer',en:'Compare',ar:'مقارنة'},
+    dt_subs:{fr:'Abonnés',en:'Subscribers',ar:'المشتركون'}, dt_tviews:{fr:'Vues totales',en:'Total views',ar:'إجمالي المشاهدات'}, dt_videos:{fr:'Vidéos',en:'Videos',ar:'الفيديوهات'}, dt_bestvid:{fr:'🏆 Meilleure vidéo',en:'🏆 Best video',ar:'🏆 أفضل فيديو'}, dt_views:{fr:'vues',en:'views',ar:'مشاهدة'}
   });
   (function(){
     function $id(id){ return document.getElementById(id); }
@@ -1499,9 +1499,9 @@
 <!-- Documentation (vue statique, free) -->
 <script>
   if (window.registerI18n) registerI18n({
-    db_docs:{fr:'Documentation',en:'Documentation'},
-    dt_doc_title:{fr:'Documentation',en:'Documentation'},
-    dt_doc_desc:{fr:'Tout pour bien démarrer et tirer le maximum de VidSpark AI.',en:'Everything to get started and get the most out of VidSpark AI.'}
+    db_docs:{fr:'Documentation',en:'Documentation',ar:'التوثيق'},
+    dt_doc_title:{fr:'Documentation',en:'Documentation',ar:'التوثيق'},
+    dt_doc_desc:{fr:'Tout pour bien démarrer et tirer le maximum de VidSpark AI.',en:'Everything to get started and get the most out of VidSpark AI.',ar:'كل ما تحتاجه للبدء وتحقيق أقصى استفادة من VidSpark AI.'}
   });
 </script>
 </body>
