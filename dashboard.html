@@ -665,7 +665,8 @@
           <a class="sb-link active" id="lnkHome" data-name="Dashboard Coach" onclick="backToHome()"><span class="ic">🏠</span> <span class="lbl" data-i18n="db_home">Tableau de bord</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="AI Coach" onclick="toggleAiPop()"><span class="ic">🧠</span> <span class="lbl" data-i18n="db_s_coach">Coach</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Notifications" onclick="toggleNotif(event)"><span class="ic">🔔</span> <span class="lbl" data-i18n="db_notifications">Notifications</span><span class="sb-badge count" id="navNotifCount">3</span></a>
-          <a class="sb-link soon" data-name="Recent Activity" onclick="comingSoon(event)"><span class="ic">🕑</span> <span class="lbl" data-i18n="db_recent">Activité récente</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <!-- Activité récente : masqué (couvert par la section « Récents » de la sidebar) -->
+
         </div>
       </div>
 
@@ -694,7 +695,8 @@
           <a class="sb-link" data-name="Shorts Generator" onclick="openTool('shorts')"><span class="ic">⚡</span> <span class="lbl" data-i18n="db_shorts">Générateur Shorts</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Hook Analyzer" onclick="openTool('hook')"><span class="ic">🎯</span> <span class="lbl" data-i18n="db_hook">Hook Analyzer</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Script Generator" onclick="openTool('script')"><span class="ic">📝</span> <span class="lbl" data-i18n="db_script">Générateur de script</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link soon" data-name="Voice Generator" onclick="comingSoon(event)"><span class="ic">🎙</span> <span class="lbl" data-i18n="db_voice">Générateur de voix</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <!-- Générateur de voix : masqué (service TTS externe — exclu) -->
+
           <a class="sb-link" data-name="AI Assistant" onclick="toggleAiPop()"><span class="ic">🤖</span> <span class="lbl" data-i18n="db_aiassist">Assistant IA</span><span class="sb-badge beta">Beta</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Thumbnail AI" onclick="openTool('thumbnail')"><span class="ic">🎨</span> <span class="lbl" data-i18n="db_thumbai">Miniature IA</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
         </div>
@@ -723,7 +725,8 @@
         <div class="sb-group-items">
           <a class="sb-link" data-name="Trend Explorer" onclick="openTool('trending')"><span class="ic">📈</span> <span class="lbl" data-i18n="db_trending">Trending</span><span class="sb-badge hot">Hot</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Best Publish Time" onclick="openTool('besttime')"><span class="ic">🚀</span> <span class="lbl" data-i18n="db_publishtime">Meilleur moment</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link soon" data-name="Channel Growth" onclick="comingSoon(event)"><span class="ic">📊</span> <span class="lbl" data-i18n="db_chgrowth">Croissance chaîne</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <!-- Croissance chaîne : masqué (nécessite un historique non stocké ; couvert par Audit + Analytique) -->
+
           <a class="sb-link" data-name="Audience Insights" onclick="openTool('audience')"><span class="ic">🎯</span> <span class="lbl" data-i18n="db_audience">Audience</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Rank Tracking" onclick="openTool('rank')"><span class="ic">📌</span> <span class="lbl" data-i18n="db_rank">Suivi de position</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Estimated Revenue" onclick="openTool('revenue')"><span class="ic">💰</span> <span class="lbl" data-i18n="db_revenue">Revenus estimés</span><span class="sb-arrow">›</span></a>
@@ -737,8 +740,10 @@
         <div class="sb-group-items">
           <a class="sb-link" data-name="Thumbnail Studio" onclick="openTool('thumbnail')"><span class="ic">🎬</span> <span class="lbl" data-i18n="db_thumbstudio">Thumbnail Studio</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Thumbnail A/B Test" onclick="openTool('abthumbs')"><span class="ic">🧪</span> <span class="lbl" data-i18n="db_abthumbs">A/B Test miniatures</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link soon" data-name="Thumbnail Generator" onclick="comingSoon(event)"><span class="ic">🎨</span> <span class="lbl" data-i18n="db_thumbgen">Générateur de miniatures</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
-          <a class="sb-link soon" data-name="Image Upscaler" onclick="comingSoon(event)"><span class="ic">🖌</span> <span class="lbl" data-i18n="db_upscaler">Upscaler d'image</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <!-- Générateur de miniatures : masqué (génération d'image IA externe — exclu) -->
+
+          <!-- Upscaler d'image : masqué (service d'agrandissement externe — exclu) -->
+
         </div>
       </div>
 
@@ -749,8 +754,10 @@
           <a class="sb-link" data-name="Subscription" href="billing.html"><span class="ic">💎</span> <span class="lbl" data-i18n="db_billing">Abonnement</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Billing" href="billing.html"><span class="ic">💳</span> <span class="lbl" data-i18n="db_billing2">Facturation</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="My Channels" href="channels.html"><span class="ic">📺</span> <span class="lbl" data-i18n="db_channels">Mes chaînes</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link soon" data-name="Team" onclick="comingSoon(event)"><span class="ic">👥</span> <span class="lbl" data-i18n="db_team">Équipe</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
-          <a class="sb-link soon" data-name="API Keys" onclick="comingSoon(event)"><span class="ic">🔑</span> <span class="lbl" data-i18n="db_apikeys">Clés API</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <!-- Équipe : masqué (feature B2B non développée) -->
+
+          <!-- Clés API : masqué (API publique non développée) -->
+
           <a class="sb-link" data-name="Settings" href="account.html"><span class="ic">⚙️</span> <span class="lbl" data-i18n="db_settings">Paramètres</span><span class="sb-arrow">›</span></a>
         </div>
       </div>
@@ -760,8 +767,10 @@
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_help">Aide</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items">
           <a class="sb-link" data-name="Documentation" onclick="openTool('docs')"><span class="ic">📚</span> <span class="lbl" data-i18n="db_docs">Documentation</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link soon" data-name="Tutorials" onclick="comingSoon(event)"><span class="ic">🎥</span> <span class="lbl" data-i18n="db_tutorials">Tutoriels</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
-          <a class="sb-link soon" data-name="Community" onclick="comingSoon(event)"><span class="ic">💬</span> <span class="lbl" data-i18n="db_community">Communauté</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <!-- Tutoriels : masqué (pas de contenu/lien vidéo pour l'instant) -->
+
+          <!-- Communauté : masqué (pas de lien Discord/forum pour l'instant) -->
+
           <a class="sb-link" data-name="Contact" href="contact.html"><span class="ic">📧</span> <span class="lbl" data-i18n="db_contact">Contact</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="What's New" href="https://vidsparkpro.com/pricing.html"><span class="ic">🚀</span> <span class="lbl" data-i18n="db_whatsnew">Nouveautés</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
         </div>
