@@ -1355,10 +1355,17 @@
           if (pb) { pb.textContent = user.plan; pb.className = 'plan-badge ' + user.plan; }
         }
         // Usage réel si fourni par le backend
-        if (typeof user.monthly_usage === 'number') {
-          const lim = user.monthly_limit || 10;
-          document.getElementById('usageText').textContent = `${user.monthly_usage}/${lim}`;
-          document.getElementById('progressFill').style.width = Math.min(user.monthly_usage / lim * 100, 100) + '%';
+        // ⚠️ Le backend (/user/me) renvoie quota_used / quota_limit
+        // (et non monthly_usage / monthly_limit) → on lit les bons champs,
+        // avec repli pour compatibilité.
+        const usedRaw = (typeof user.quota_used === 'number') ? user.quota_used
+                      : (typeof user.monthly_usage === 'number') ? user.monthly_usage : null;
+        const limRaw  = user.quota_limit || user.monthly_limit;
+        if (usedRaw !== null || limRaw) {
+          const used = usedRaw || 0;
+          const lim  = limRaw || 10;
+          document.getElementById('usageText').textContent = `${used}/${lim}`;
+          document.getElementById('progressFill').style.width = Math.min(used / lim * 100, 100) + '%';
         }
         if (user.activation_id && user.activation_secret) {
           document.getElementById('activationId').value = user.activation_id;
