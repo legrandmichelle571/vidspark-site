@@ -1037,7 +1037,8 @@
       const r = await fetch(API+'/api/user/plan', { headers:{'Authorization':'Bearer '+tk} });
       const d = await r.json().catch(()=>({}));
       const plan = (d.plan||'free').toLowerCase();
-      if(plan==='free'){ showLock(); return; }
+      // Free : accès LIMITÉ — l'app se charge, seuls les outils data-tier="free" sont utilisables ;
+      // les outils payants restent verrouillés individuellement (🔒 + invite upgrade ci-dessous).
       userTier = plan;
       $('planBadge').textContent = plan;
       $('loading').style.display='none'; $('app').style.display='flex';
