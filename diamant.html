@@ -155,6 +155,10 @@
       <button class="navitem" data-view="audience" data-tier="pro" onclick="nav('audience')"><span class="ic">🌍</span> <span data-i18n="db_audience">Audience</span></button>
       <button class="navitem" data-view="revenue" data-tier="pro" onclick="nav('revenue')"><span class="ic">💰</span> <span data-i18n="db_revenue">Revenus estimés</span></button>
       <button class="navitem" data-view="thumbdl" data-tier="free" onclick="nav('thumbdl')"><span class="ic">🖼</span> <span data-i18n="db_thumbdl">Téléchargeur de miniatures</span></button>
+      <button class="navitem" data-view="seo" data-tier="free" onclick="nav('seo')"><span class="ic">📈</span> <span data-i18n="db_seoscore">Score SEO</span></button>
+      <button class="navitem" data-view="titlegen" data-tier="pro" onclick="nav('titlegen')"><span class="ic">🏆</span> <span data-i18n="db_titlegen">Générateur de titres</span></button>
+      <button class="navitem" data-view="taggen" data-tier="pro" onclick="nav('taggen')"><span class="ic">🏷</span> <span data-i18n="db_tagextract">Extracteur de tags</span></button>
+      <button class="navitem" data-view="descgen" data-tier="pro" onclick="nav('descgen')"><span class="ic">📝</span> <span data-i18n="db_descgen">Générateur de description</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
@@ -245,6 +249,48 @@
         <button class="btn" id="tdBtn" onclick="run(this,runThumbDl)" data-i18n="dt_td_btn">Récupérer</button>
         <div id="tdErr" class="err"></div>
         <div id="tdResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-seo">
+      <div class="head"><h1>📈 <span data-i18n="dt_seo_title">Score SEO</span></h1><p data-i18n="dt_seo_desc">Analyse ton titre + description : score SEO, potentiel viral, points à corriger et suggestions.</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_seo_t">Titre de la vidéo</label><input id="seoTitle" data-i18n-ph="dt_seo_pht" placeholder="Ton titre YouTube"></div>
+        <div class="field"><label data-i18n="dt_seo_d">Description (optionnel)</label><input id="seoDesc" data-i18n-ph="dt_seo_phd" placeholder="Ta description"></div>
+        <button class="btn" id="seoBtn" onclick="run(this,runSeo)" data-i18n="dt_seo_btn">Analyser</button>
+        <div id="seoErr" class="err"></div>
+        <div id="seoResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-titlegen">
+      <div class="head"><h1>🏆 <span data-i18n="dt_tg_title">Générateur de titres</span></h1><p data-i18n="dt_tg_desc">5 variantes de titres optimisés (SEO, CTR, Viral, Shorts, Trending) à partir de ton titre.</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_tg_t">Titre de départ</label><input id="tgTitle" data-i18n-ph="dt_tg_pht" placeholder="Ton idée de titre"></div>
+        <button class="btn" id="tgBtn" onclick="run(this,runTitleGen)" data-i18n="dt_tg_btn">Générer 5 titres</button>
+        <div id="tgErr" class="err"></div>
+        <div id="tgResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-taggen">
+      <div class="head"><h1>🏷 <span data-i18n="dt_tag_title">Tags &amp; Hashtags IA</span></h1><p data-i18n="dt_tag_desc">Génère des tags et hashtags YouTube optimisés à partir de ton titre.</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_tag_t">Titre de la vidéo</label><input id="tagTitle" data-i18n-ph="dt_tag_pht" placeholder="Ton titre YouTube"></div>
+        <button class="btn" id="tagBtn" onclick="run(this,runTagGen)" data-i18n="dt_tag_btn">Générer les tags</button>
+        <div id="tagErr" class="err"></div>
+        <div id="tagResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-descgen">
+      <div class="head"><h1>📝 <span data-i18n="dt_dg_title">Générateur de description</span></h1><p data-i18n="dt_dg_desc">Une description YouTube SEO optimisée (mots-clés, CTA, hashtags) prête à coller.</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_dg_t">Titre de la vidéo</label><input id="dgTitle" data-i18n-ph="dt_dg_pht" placeholder="Ton titre YouTube"></div>
+        <div class="field"><label data-i18n="dt_dg_d">Description actuelle (optionnel)</label><input id="dgDesc" data-i18n-ph="dt_dg_phd" placeholder="Ta description actuelle"></div>
+        <button class="btn" id="dgBtn" onclick="run(this,runDescGen)" data-i18n="dt_dg_btn">Générer la description</button>
+        <div id="dgErr" class="err"></div>
+        <div id="dgResult" style="display:none;margin-top:16px;"></div>
       </div>
     </section>
 
@@ -1105,6 +1151,78 @@
       }).join('')+'</div>';
     out.style.display='block';
   }
+</script>
+
+<!-- Lot 2 : outils IA (réutilisent /api/ai/* déjà déployés) -->
+<script>
+  if (window.registerI18n) registerI18n({
+    db_seoscore:{fr:'Score SEO',en:'SEO Score'}, db_titlegen:{fr:'Générateur de titres',en:'Title generator'}, db_tagextract:{fr:'Extracteur de tags',en:'Tag generator'}, db_descgen:{fr:'Générateur de description',en:'Description generator'},
+    dt_need_title:{fr:'Entre un titre.',en:'Enter a title.'},
+    dt_seo_title:{fr:'Score SEO',en:'SEO Score'}, dt_seo_desc:{fr:'Analyse ton titre + description : score SEO, potentiel viral, points à corriger et suggestions.',en:'Analyze your title + description: SEO score, viral potential, things to fix and suggestions.'}, dt_seo_t:{fr:'Titre de la vidéo',en:'Video title'}, dt_seo_pht:{fr:'Ton titre YouTube',en:'Your YouTube title'}, dt_seo_d:{fr:'Description (optionnel)',en:'Description (optional)'}, dt_seo_phd:{fr:'Ta description',en:'Your description'}, dt_seo_btn:{fr:'Analyser',en:'Analyze'},
+    dt_tg_title:{fr:'Générateur de titres',en:'Title generator'}, dt_tg_desc:{fr:'5 variantes de titres optimisés (SEO, CTR, Viral, Shorts, Trending) à partir de ton titre.',en:'5 optimized title variants (SEO, CTR, Viral, Shorts, Trending) from your title.'}, dt_tg_t:{fr:'Titre de départ',en:'Starting title'}, dt_tg_pht:{fr:'Ton idée de titre',en:'Your title idea'}, dt_tg_btn:{fr:'Générer 5 titres',en:'Generate 5 titles'},
+    dt_tag_title:{fr:'Tags & Hashtags IA',en:'AI Tags & Hashtags'}, dt_tag_desc:{fr:'Génère des tags et hashtags YouTube optimisés à partir de ton titre.',en:'Generate optimized YouTube tags and hashtags from your title.'}, dt_tag_t:{fr:'Titre de la vidéo',en:'Video title'}, dt_tag_pht:{fr:'Ton titre YouTube',en:'Your YouTube title'}, dt_tag_btn:{fr:'Générer les tags',en:'Generate tags'},
+    dt_dg_title:{fr:'Générateur de description',en:'Description generator'}, dt_dg_desc:{fr:'Une description YouTube SEO optimisée (mots-clés, CTA, hashtags) prête à coller.',en:'An SEO-optimized YouTube description (keywords, CTA, hashtags) ready to paste.'}, dt_dg_t:{fr:'Titre de la vidéo',en:'Video title'}, dt_dg_pht:{fr:'Ton titre YouTube',en:'Your YouTube title'}, dt_dg_d:{fr:'Description actuelle (optionnel)',en:'Current description (optional)'}, dt_dg_phd:{fr:'Ta description actuelle',en:'Your current description'}, dt_dg_btn:{fr:'Générer la description',en:'Generate description'},
+    dt_copy:{fr:'Copier',en:'Copy'}, dt_copyall:{fr:'Copier tout',en:'Copy all'}, dt_sugg:{fr:'💡 Suggestions',en:'💡 Suggestions'}
+  });
+  (function(){
+    function $id(id){ return document.getElementById(id); }
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    function T(k,f){ return (window.t? t(k) : f) || f; }
+    window.vsCopy = function(txt, btn){ try{ navigator.clipboard.writeText(txt); }catch(e){} var o=btn.textContent; btn.textContent='✅'; setTimeout(function(){ btn.textContent=o; },1200); };
+    function showErr(el,msg){ el.textContent=msg; el.style.display='block'; }
+    function ok(status,data,el){ if(status===403){ toolLocked(data); return false; } if(!data || data.error){ showErr(el, (data&&data.error) || 'Service indisponible.'); return false; } return true; }
+    var MINI = 'background:#f7941d;color:#06121a;border:none;border-radius:7px;padding:5px 11px;font-size:11px;font-weight:800;cursor:pointer;flex-shrink:0;';
+    function copyBtn(txt,label){ return '<button data-cp="'+esc(txt)+'" onclick="vsCopy(this.dataset.cp,this)" style="'+MINI+'">'+esc(label)+'</button>'; }
+    function chip(t){ return '<span style="display:inline-block;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:8px;padding:5px 10px;margin:3px;font-size:12px;">'+esc(t)+'</span>'; }
+    function scoreCard(v,lbl){ v=v||0; var col=v>=70?'#22c55e':v>=45?'#f7941d':'#ef4444'; return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;text-align:center;min-width:88px;"><div style="font-size:30px;font-weight:800;color:'+col+';">'+v+'</div><div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;">'+lbl+'</div></div>'; }
+
+    window.runSeo = async function(){
+      var err=$id('seoErr'), out=$id('seoResult'); err.style.display='none'; out.style.display='none';
+      var title=$id('seoTitle').value.trim(); if(!title){ showErr(err,T('dt_need_title','Entre un titre.')); return; }
+      var r=await apiPost('/api/ai/seo-report',{title:title, description:$id('seoDesc').value.trim()}); if(!ok(r.status,r.data,err)) return;
+      var d=r.data;
+      var chk=(d.checklist||[]).map(function(c){ var good=c.status==='ok'; return '<div style="display:flex;gap:9px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);"><span>'+(good?'✅':'⚠️')+'</span><div><div style="font-weight:700;font-size:13px;">'+esc(c.item)+'</div><div style="font-size:12px;color:#94a3b8;">'+esc(c.detail||'')+'</div></div></div>'; }).join('');
+      var sug=(d.suggestions||[]).map(function(s){ return '<li style="margin:4px 0;">'+esc(s)+'</li>'; }).join('');
+      out.innerHTML='<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;">'+scoreCard(d.score,'SEO')+scoreCard(d.viral_score,'Viral')
+        +'<div style="flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;font-size:13px;line-height:1.5;">'+esc(d.viral_reason||'')+'</div></div>'
+        +(chk?'<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:4px 14px;margin-bottom:12px;">'+chk+'</div>':'')
+        +(sug?'<div style="font-weight:700;margin-bottom:6px;">'+T('dt_sugg','💡 Suggestions')+'</div><ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.5;">'+sug+'</ul>':'');
+      out.style.display='block';
+    };
+    window.runTitleGen = async function(){
+      var err=$id('tgErr'), out=$id('tgResult'); err.style.display='none'; out.style.display='none';
+      var title=$id('tgTitle').value.trim(); if(!title){ showErr(err,T('dt_need_title','Entre un titre.')); return; }
+      var r=await apiPost('/api/ai/titles',{title:title}); if(!ok(r.status,r.data,err)) return;
+      out.innerHTML=(r.data.titles||[]).map(function(t){ var sc=t.score||0, col=sc>=70?'#22c55e':sc>=45?'#f7941d':'#ef4444';
+        return '<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:10px 12px;margin-bottom:8px;">'
+          +'<span style="font-size:10px;font-weight:800;background:rgba(247,148,29,.16);color:#f7941d;border-radius:6px;padding:3px 8px;flex-shrink:0;">'+esc(t.hook||'')+'</span>'
+          +'<div style="flex:1;font-weight:600;font-size:13.5px;">'+esc(t.text||'')+'</div>'
+          +'<span style="font-weight:800;color:'+col+';flex-shrink:0;">'+sc+'</span>'+copyBtn(t.text||'','📋')+'</div>';
+      }).join('');
+      out.style.display='block';
+    };
+    window.runTagGen = async function(){
+      var err=$id('tagErr'), out=$id('tagResult'); err.style.display='none'; out.style.display='none';
+      var title=$id('tagTitle').value.trim(); if(!title){ showErr(err,T('dt_need_title','Entre un titre.')); return; }
+      var r=await apiPost('/api/ai/tags',{title:title}); if(!ok(r.status,r.data,err)) return;
+      var tags=r.data.tags||[], hts=r.data.hashtags||[];
+      out.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;"><b>🏷️ Tags</b>'+copyBtn(tags.join(', '),T('dt_copyall','Copier tout'))+'</div>'
+        +'<div style="margin-bottom:14px;">'+tags.map(chip).join('')+'</div>'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;"><b># Hashtags</b>'+copyBtn(hts.join(' '),T('dt_copyall','Copier tout'))+'</div>'
+        +'<div>'+hts.map(chip).join('')+'</div>';
+      out.style.display='block';
+    };
+    window.runDescGen = async function(){
+      var err=$id('dgErr'), out=$id('dgResult'); err.style.display='none'; out.style.display='none';
+      var title=$id('dgTitle').value.trim(); if(!title){ showErr(err,T('dt_need_title','Entre un titre.')); return; }
+      var r=await apiPost('/api/ai/description',{title:title, description:$id('dgDesc').value.trim()}); if(!ok(r.status,r.data,err)) return;
+      var hts=r.data.hashtags||[];
+      out.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;"><b>📝 Description</b>'+copyBtn(r.data.description||'',T('dt_copy','Copier'))+'</div>'
+        +'<div style="white-space:pre-wrap;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:12px;font-size:13px;line-height:1.55;margin-bottom:14px;">'+esc(r.data.description||'')+'</div>'
+        +(hts.length?'<div style="margin-bottom:6px;"><b># Hashtags</b></div><div>'+hts.map(chip).join('')+'</div>':'');
+      out.style.display='block';
+    };
+  })();
 </script>
 </body>
 </html>
