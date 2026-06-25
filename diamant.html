@@ -162,6 +162,8 @@
       <button class="navitem" data-view="script" data-tier="pro" onclick="nav('script')"><span class="ic">📝</span> <span data-i18n="db_script">Générateur de script</span></button>
       <button class="navitem" data-view="planner" data-tier="pro" onclick="nav('planner')"><span class="ic">📅</span> <span data-i18n="db_planner">Planificateur</span></button>
       <button class="navitem" data-view="competitor" data-tier="pro" onclick="nav('competitor')"><span class="ic">🏆</span> <span data-i18n="db_competitor">Analyse concurrents</span></button>
+      <button class="navitem" data-view="hashtags" data-tier="pro" onclick="nav('hashtags')"><span class="ic">🔗</span> <span data-i18n="db_hashtag">Générateur de hashtags</span></button>
+      <button class="navitem" data-view="besttime" data-tier="pro" onclick="nav('besttime')"><span class="ic">🚀</span> <span data-i18n="db_publishtime">Meilleur moment</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
@@ -331,6 +333,29 @@
         <button class="btn" id="coBtn" onclick="run(this,runCompetitor)" data-i18n="dt_co_btn">Analyser</button>
         <div id="coErr" class="err"></div>
         <div id="coResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-hashtags">
+      <div class="head"><h1>🔗 <span data-i18n="dt_ht_title">Générateur de hashtags</span></h1><p data-i18n="dt_ht_desc">Des hashtags YouTube classés (larges, niche, tendance) à partir de ton titre.</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_ht_t">Titre de la vidéo</label><input id="htTitle" data-i18n-ph="dt_ht_pht" placeholder="Ton titre YouTube"></div>
+        <button class="btn" id="htBtn" onclick="run(this,runHashtags)" data-i18n="dt_ht_btn">Générer</button>
+        <div id="htErr" class="err"></div>
+        <div id="htResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-besttime">
+      <div class="head"><h1>🚀 <span data-i18n="dt_bt_title">Meilleur moment de publication</span></h1><p data-i18n="dt_bt_desc">Les meilleurs jours et heures pour publier selon ta niche et ton audience.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field"><label data-i18n="dt_bt_n">Niche (optionnel)</label><input id="btNiche" data-i18n-ph="dt_bt_phn" placeholder="Ex: fitness, tech…"></div>
+          <div class="field"><label data-i18n="dt_bt_r">Audience (optionnel)</label><input id="btRegion" data-i18n-ph="dt_bt_phr" placeholder="Ex: France, USA…"></div>
+        </div>
+        <button class="btn" id="btBtn" onclick="run(this,runBestTime)" data-i18n="dt_bt_btn">Trouver les créneaux</button>
+        <div id="btErr" class="err"></div>
+        <div id="btResult" style="display:none;margin-top:16px;"></div>
       </div>
     </section>
 
@@ -1319,6 +1344,45 @@
       out.innerHTML=(d.niche?'<div style="margin-bottom:6px;"><span style="font-size:11px;color:#94a3b8;">Niche :</span> <b>'+esc(d.niche)+'</b></div>':'')
         +list('💡 Opportunités',d.opportunities)+list('🎬 Angles originaux',d.angles)
         +((d.keywords&&d.keywords.length)?'<div style="font-weight:700;margin:12px 0 6px;">🔑 Mots-clés</div><div>'+d.keywords.map(chip).join('')+'</div>':'');
+      out.style.display='block';
+    };
+  })();
+</script>
+
+<!-- Lot 3b : Hashtags + Meilleur moment (endpoints /api/diamant/{hashtags,best-time}) -->
+<script>
+  if (window.registerI18n) registerI18n({
+    db_hashtag:{fr:'Générateur de hashtags',en:'Hashtag generator'}, db_publishtime:{fr:'Meilleur moment',en:'Best publish time'},
+    dt_ht_title:{fr:'Générateur de hashtags',en:'Hashtag generator'}, dt_ht_desc:{fr:'Des hashtags YouTube classés (larges, niche, tendance) à partir de ton titre.',en:'Categorized YouTube hashtags (broad, niche, trending) from your title.'}, dt_ht_t:{fr:'Titre de la vidéo',en:'Video title'}, dt_ht_pht:{fr:'Ton titre YouTube',en:'Your YouTube title'}, dt_ht_btn:{fr:'Générer',en:'Generate'},
+    dt_bt_title:{fr:'Meilleur moment de publication',en:'Best publish time'}, dt_bt_desc:{fr:'Les meilleurs jours et heures pour publier selon ta niche et ton audience.',en:'The best days and times to publish based on your niche and audience.'}, dt_bt_n:{fr:'Niche (optionnel)',en:'Niche (optional)'}, dt_bt_phn:{fr:'Ex: fitness, tech…',en:'e.g. fitness, tech…'}, dt_bt_r:{fr:'Audience (optionnel)',en:'Audience (optional)'}, dt_bt_phr:{fr:'Ex: France, USA…',en:'e.g. France, USA…'}, dt_bt_btn:{fr:'Trouver les créneaux',en:'Find slots'}
+  });
+  (function(){
+    function $id(id){ return document.getElementById(id); }
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    function T(k,f){ return (window.t? t(k) : f) || f; }
+    function showErr(el,msg){ el.textContent=msg; el.style.display='block'; }
+    function okR(r,el){ if(r.status===403){ toolLocked(r.data); return false; } if(!r.data || r.data.error){ showErr(el, (r.data&&r.data.error) || 'Service indisponible.'); return false; } return true; }
+    var MINI='background:#f7941d;color:#06121a;border:none;border-radius:7px;padding:5px 11px;font-size:11px;font-weight:800;cursor:pointer;';
+    function copyBtn(txt,label){ return '<button data-cp="'+esc(txt)+'" onclick="vsCopy(this.dataset.cp,this)" style="'+MINI+'">'+esc(label)+'</button>'; }
+    function chip(t){ return '<span style="display:inline-block;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:8px;padding:5px 10px;margin:3px;font-size:12px;">'+esc(t)+'</span>'; }
+
+    window.runHashtags = async function(){
+      var err=$id('htErr'), out=$id('htResult'); err.style.display='none'; out.style.display='none';
+      var title=$id('htTitle').value.trim(); if(!title){ showErr(err,T('dt_need_title','Entre un titre.')); return; }
+      var r=await apiPost('/api/diamant/hashtags',{title:title}); if(!okR(r,err)) return;
+      var d=r.data, all=[].concat(d.broad||[],d.niche||[],d.trending||[]);
+      var grp=function(lbl,arr){ arr=arr||[]; return arr.length?'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0 6px;"><b>'+lbl+'</b>'+copyBtn(arr.join(' '),T('dt_copyall','Copier tout'))+'</div><div>'+arr.map(chip).join('')+'</div>':''; };
+      out.innerHTML='<div style="text-align:right;margin-bottom:6px;">'+copyBtn(all.join(' '),T('dt_copyall','Copier tout'))+'</div>'+grp('🌍 Larges',d.broad)+grp('🎯 Niche',d.niche)+grp('🔥 Tendance',d.trending);
+      out.style.display='block';
+    };
+    window.runBestTime = async function(){
+      var err=$id('btErr'), out=$id('btResult'); err.style.display='none'; out.style.display='none';
+      var r=await apiPost('/api/diamant/best-time',{niche:$id('btNiche').value.trim(), region:$id('btRegion').value.trim()}); if(!okR(r,err)) return;
+      var d=r.data;
+      out.innerHTML=(d.summary?'<div style="background:rgba(247,148,29,.10);border:1px solid rgba(247,148,29,.3);border-radius:11px;padding:11px 13px;margin-bottom:12px;font-size:13px;line-height:1.5;">💡 '+esc(d.summary)+'</div>':'')
+        +(d.slots||[]).map(function(s,i){ return '<div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:11px 13px;margin-bottom:8px;">'
+          +'<div style="width:30px;height:30px;border-radius:8px;background:rgba(247,148,29,.16);color:#f7941d;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">'+(i+1)+'</div>'
+          +'<div style="flex:1;"><div style="font-weight:700;font-size:13.5px;">'+esc(s.day||'')+' · '+esc(s.time||'')+'</div>'+(s.why?'<div style="font-size:12px;color:#94a3b8;margin-top:2px;">'+esc(s.why)+'</div>':'')+'</div></div>'; }).join('');
       out.style.display='block';
     };
   })();
