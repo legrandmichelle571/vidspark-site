@@ -571,7 +571,7 @@
       coach_a_seo:{fr:'Optimise ton SEO',en:'Optimize your SEO'}, coach_a_thumb:{fr:'Améliore ta miniature',en:'Improve your thumbnail'}, coach_a_viral:{fr:'Publie un Short',en:'Post a Short'}, coach_a_cadence:{fr:'Planifie tes prochaines vidéos',en:'Plan your next videos'}, coach_a_grow:{fr:'Saisis une opportunité de croissance',en:'Seize a growth opportunity'}, coach_a_analyze:{fr:'Analyse ta première vidéo',en:'Analyze your first video'}, coach_a_ideas:{fr:'Génère des idées de vidéos',en:'Generate video ideas'},
       /* ── nouvelles clés (refonte premium) ── */
       kpi_seo:{fr:'Score SEO',en:'SEO Score'},
-      kpi_videos:{fr:'Vidéos ce mois',en:'Videos this month'},
+      kpi_videos:{fr:'Vidéos aujourd\'hui',en:'Videos today'}, kpi_today:{fr:'aujourd\'hui',en:'today'},
       kpi_channels:{fr:'Chaînes connectées',en:'Connected channels'},
       kpi_days:{fr:'Jours restants',en:'Days remaining'},
       ac_title:{fr:'Centre d\'action',en:'Action Center'},
@@ -606,7 +606,7 @@
       db_thumbstudio:{fr:'Thumbnail Studio',en:'Thumbnail Studio'}, db_thumbgen:{fr:'Générateur de miniatures',en:'Thumbnail generator'}, db_upscaler:{fr:'Upscaler d\'image',en:'Image upscaler'},
       db_billing2:{fr:'Facturation',en:'Billing'}, db_team:{fr:'Équipe',en:'Team'}, db_apikeys:{fr:'Clés API',en:'API keys'}, db_settings:{fr:'Paramètres',en:'Settings'},
       db_docs:{fr:'Documentation',en:'Documentation'}, db_tutorials:{fr:'Tutoriels',en:'Tutorials'}, db_community:{fr:'Communauté',en:'Community'}, db_contact:{fr:'Contact',en:'Contact'}, db_whatsnew:{fr:'Nouveautés',en:"What's new"},
-      db_credits:{fr:'Crédits mensuels',en:'Monthly credits'},
+      db_credits:{fr:'Crédits du jour',en:'Daily credits'},
       db_favorites:{fr:'⭐ Favoris',en:'⭐ Favorites'}, db_recents:{fr:'🕘 Récents',en:'🕘 Recent'},
       nt_title:{fr:'Notifications',en:'Notifications'}, nt_clear:{fr:'Tout marquer lu',en:'Mark all read'},
       nt_empty:{fr:'Aucune notification.',en:'No notifications.'},
@@ -854,9 +854,9 @@
           <div class="kpi-lbl" data-i18n="kpi_seo">Score SEO</div>
         </div>
         <div class="kpi k-blue">
-          <div class="kpi-top"><span class="kpi-ic">📊</span><span class="trend flat">ce mois</span></div>
+          <div class="kpi-top"><span class="kpi-ic">📊</span><span class="trend flat" data-i18n="kpi_today">aujourd'hui</span></div>
           <div class="kpi-num"><span id="usageText">0/10</span></div>
-          <div class="kpi-lbl" data-i18n="kpi_videos">Vidéos ce mois</div>
+          <div class="kpi-lbl" data-i18n="kpi_videos">Vidéos aujourd'hui</div>
           <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
         </div>
         <div class="kpi k-green">
