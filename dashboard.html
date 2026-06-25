@@ -208,6 +208,37 @@
     /* mobile drawer overlay */
     .side-overlay{ position:fixed; inset:0; background:rgba(4,7,14,.62); backdrop-filter:blur(2px); z-index:55; opacity:0; visibility:hidden; transition:opacity .25s; }
     .side-overlay.show{ opacity:1; visibility:visible; }
+    /* ── Lucide icons ── */
+    .app-side .sb-link .ic{ display:inline-flex; align-items:center; justify-content:center; }
+    .app-side .sb-link .ic svg{ width:18px; height:18px; stroke-width:2; }
+    .app-side a.sb-link.active .ic svg{ stroke:var(--accent-l); }
+    .sb-search .si svg{ width:13px; height:13px; }
+    .tb-bell svg{ width:17px; height:17px; }
+    /* ── Favoris (étoile au survol) ── */
+    .sb-fav{ position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:13px; line-height:1; color:var(--faint); opacity:0; background:none; z-index:2; transition:opacity .15s, color .15s, transform .15s; }
+    .app-side .sb-link:hover .sb-fav{ opacity:.8; }
+    .sb-fav:hover{ color:var(--accent); transform:translateY(-50%) scale(1.25); }
+    .sb-fav.on{ opacity:1; color:var(--accent); }
+    .app-side .sb-link.has-fav .sb-arrow{ display:none; }
+    body.side-collapsed .sb-fav{ display:none; }
+    .sb-special .sb-group-h .gh-title{ color:var(--accent-l); }
+    /* ── Navigation clavier ── */
+    .app-side .sb-link.kbd-active{ background:var(--accent-soft); color:#fff; box-shadow:inset 0 0 0 1px var(--accent-line); }
+    /* ── Compteur de notifications ── */
+    .sb-badge.count{ background:var(--accent); color:#0b0f19; border-radius:20px; min-width:16px; height:16px; padding:0 5px; display:inline-flex; align-items:center; justify-content:center; font-size:8.5px; font-weight:800; }
+    #topNotifCount{ position:absolute; top:5px; right:5px; box-shadow:0 0 0 2px var(--bg); }
+    /* ── Dropdown notifications ── */
+    .notif-pop{ position:fixed; top:66px; right:24px; width:330px; max-width:calc(100vw - 40px); background:var(--s2); border:1px solid var(--b2); border-radius:16px; box-shadow:var(--shadow); z-index:320; padding:10px; opacity:0; transform:translateY(-8px); pointer-events:none; transition:opacity .18s var(--ease), transform .18s var(--ease); }
+    .notif-pop.open{ opacity:1; transform:translateY(0); pointer-events:auto; }
+    .notif-h{ display:flex; align-items:center; justify-content:space-between; padding:6px 8px 10px; font-weight:800; font-size:13px; }
+    .notif-h .nh-clear{ font-size:11px; font-weight:700; color:var(--accent); }
+    .notif-item{ display:flex; gap:10px; padding:10px; border-radius:11px; transition:background .15s; cursor:default; }
+    .notif-item:hover{ background:rgba(255,255,255,.04); }
+    .notif-ic{ width:32px; height:32px; border-radius:9px; background:var(--accent-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--accent-l); }
+    .notif-ic svg{ width:16px; height:16px; }
+    .notif-tx{ flex:1; min-width:0; }
+    .notif-tt{ font-size:12.5px; font-weight:600; line-height:1.35; }
+    .notif-tm{ font-size:10.5px; color:var(--faint); margin-top:2px; }
 
     /* ── MAIN ── */
     .main{ margin-left:var(--side-w); padding:26px 30px 60px; max-width:1640px; transition: margin-left .28s var(--ease); }
@@ -575,7 +606,13 @@
       db_thumbstudio:{fr:'Thumbnail Studio',en:'Thumbnail Studio'}, db_thumbgen:{fr:'Générateur de miniatures',en:'Thumbnail generator'}, db_upscaler:{fr:'Upscaler d\'image',en:'Image upscaler'},
       db_billing2:{fr:'Facturation',en:'Billing'}, db_team:{fr:'Équipe',en:'Team'}, db_apikeys:{fr:'Clés API',en:'API keys'}, db_settings:{fr:'Paramètres',en:'Settings'},
       db_docs:{fr:'Documentation',en:'Documentation'}, db_tutorials:{fr:'Tutoriels',en:'Tutorials'}, db_community:{fr:'Communauté',en:'Community'}, db_contact:{fr:'Contact',en:'Contact'}, db_whatsnew:{fr:'Nouveautés',en:"What's new"},
-      db_credits:{fr:'Crédits mensuels',en:'Monthly credits'}
+      db_credits:{fr:'Crédits mensuels',en:'Monthly credits'},
+      db_favorites:{fr:'⭐ Favoris',en:'⭐ Favorites'}, db_recents:{fr:'🕘 Récents',en:'🕘 Recent'},
+      nt_title:{fr:'Notifications',en:'Notifications'}, nt_clear:{fr:'Tout marquer lu',en:'Mark all read'},
+      nt_empty:{fr:'Aucune notification.',en:'No notifications.'},
+      nt1:{fr:'Ta vidéo dépasse 10k vues 🔥',en:'Your video passed 10k views 🔥'},
+      nt2:{fr:'+18% de portée cette semaine',en:'+18% reach this week'},
+      nt3:{fr:'Nouvel outil : Thumbnail Studio',en:'New tool: Thumbnail Studio'}
     });
   </script>
   <script src="/js/meta-pixel.js"></script>
@@ -611,13 +648,23 @@
 
     <!-- nav -->
     <nav class="sb-nav">
+      <!-- Favoris (dynamique) -->
+      <div class="sb-group sb-special" data-g="fav" id="favGroup" style="display:none;">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_favorites">⭐ Favoris</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items" id="favItems"></div>
+      </div>
+      <!-- Récemment utilisés (dynamique) -->
+      <div class="sb-group sb-special" data-g="recent" id="recentGroup" style="display:none;">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_recents">🕘 Récents</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items" id="recentItems"></div>
+      </div>
       <!-- GROUP 1 : DASHBOARD -->
       <div class="sb-group" data-g="dash">
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_dashboard">Dashboard</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items">
           <a class="sb-link active" id="lnkHome" data-name="Dashboard Coach" onclick="backToHome()"><span class="ic">🏠</span> <span class="lbl" data-i18n="db_home">Tableau de bord</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="AI Coach" onclick="toggleAiPop()"><span class="ic">🧠</span> <span class="lbl" data-i18n="db_s_coach">Coach</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link soon" data-name="Notifications" onclick="comingSoon(event)"><span class="ic">🔔</span> <span class="lbl" data-i18n="db_notifications">Notifications</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
+          <a class="sb-link" data-name="Notifications" onclick="toggleNotif(event)"><span class="ic">🔔</span> <span class="lbl" data-i18n="db_notifications">Notifications</span><span class="sb-badge count" id="navNotifCount">3</span></a>
           <a class="sb-link soon" data-name="Recent Activity" onclick="comingSoon(event)"><span class="ic">🕑</span> <span class="lbl" data-i18n="db_recent">Activité récente</span><span class="sb-badge soon" data-i18n="sb_soon">Soon</span></a>
         </div>
       </div>
@@ -784,7 +831,7 @@
         </div>
         <div class="tb-right">
           <span class="plan-chip"><span class="gem">💎</span> <span id="planName">—</span> <span class="plan-badge" id="planBadge">active</span></span>
-          <button class="icon-btn" id="notifBtn" title="Notifications" onclick="toggleAiPop()">🔔<span class="badge-dot"></span></button>
+          <button class="icon-btn" id="notifBtn" title="Notifications" onclick="toggleNotif(event)"><span class="tb-bell">🔔</span><span class="sb-badge count" id="topNotifCount">3</span></button>
           <button class="icon-btn" title="Réglages" onclick="window.location.href='account.html'">⚙️</button>
           <button class="btn btn-primary" onclick="window.location.href='billing.html'" data-i18n="db_upgrade">⬆️ Améliorer</button>
           <div class="avatar-wrap">
@@ -1594,6 +1641,7 @@
   /* Recherche live */
   function sideSearch(q){
     q=(q||'').trim().toLowerCase(); var any=q.length>0;
+    document.querySelectorAll('.sb-link.kbd-active').forEach(function(a){ a.classList.remove('kbd-active'); });
     document.querySelectorAll('.sb-group').forEach(function(g){
       var vis=0;
       g.querySelectorAll('a.sb-link').forEach(function(a){
@@ -1753,6 +1801,147 @@
   }
   document.addEventListener('DOMContentLoaded', function(){ try{ initCharts(); }catch(e){} });
   document.addEventListener('vslangchange', function(){ /* i18n re-rendu géré par applyI18n */ });
+  </script>
+
+  <!-- ════ Sidebar : icônes Lucide · favoris · récents · notifications · nav clavier ════ -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+  (function(){
+    /* Mapping data-name → icône Lucide */
+    var ICONMAP={
+      "Dashboard Coach":"layout-dashboard","AI Coach":"brain","Notifications":"bell","Recent Activity":"history",
+      "Discover":"compass","Analyze Video":"play-circle","Channel Audit":"bar-chart-3","Viral Score":"flame","SEO Score":"trending-up","Comments":"message-circle","Competitor Analysis":"swords","Channel Comparison":"git-compare","Analytics":"line-chart",
+      "AI Generator":"sparkles","Video Ideas":"lightbulb","Shorts Generator":"zap","Hook Analyzer":"target","Script Generator":"file-text","Voice Generator":"mic","AI Assistant":"bot","Thumbnail AI":"wand-2",
+      "Keyword Research":"search","Tag Extractor":"tag","Description Generator":"align-left","Title Generator":"heading","Title A/B Test":"flask-conical","Thumbnail Downloader":"download","Thumbnail Analyzer":"image","Channel Extractor":"inbox","Hashtag Generator":"hash","Translate":"languages",
+      "Trend Explorer":"trending-up","Best Publish Time":"clock","Channel Growth":"bar-chart","Audience Insights":"users","Rank Tracking":"list-ordered","Estimated Revenue":"dollar-sign","Content Planner":"calendar-days",
+      "Thumbnail Studio":"clapperboard","Thumbnail A/B Test":"flask-conical","Thumbnail Generator":"palette","Image Upscaler":"maximize-2",
+      "Subscription":"gem","Billing":"credit-card","My Channels":"tv","Team":"users","API Keys":"key-round","Settings":"settings",
+      "Documentation":"book-open","Tutorials":"graduation-cap","Community":"message-square","Contact":"mail","What's New":"rocket"
+    };
+    function esc(s){ try{ return CSS.escape(s); }catch(e){ return s.replace(/["\\]/g,'\\$&'); } }
+    function lucideIcons(){ if(window.lucide){ try{ lucide.createIcons(); }catch(e){} } }
+
+    function initSidebarIcons(){
+      if(!window.lucide) return; /* garde : conserve les emoji si Lucide indisponible */
+      document.querySelectorAll('.sb-nav .sb-link').forEach(function(a){
+        var n=a.getAttribute('data-name'), ic=a.querySelector('.ic');
+        if(ic && ICONMAP[n]) ic.innerHTML='<i data-lucide="'+ICONMAP[n]+'"></i>';
+      });
+      var si=document.querySelector('.sb-search .si'); if(si) si.innerHTML='<i data-lucide="search"></i>';
+      var bell=document.querySelector('.tb-bell'); if(bell) bell.innerHTML='<i data-lucide="bell"></i>';
+      lucideIcons();
+    }
+
+    /* ── Favoris ── */
+    function getFavs(){ try{ return JSON.parse(localStorage.getItem('vs_side_favs')||'[]'); }catch(e){ return []; } }
+    function setFavs(a){ try{ localStorage.setItem('vs_side_favs', JSON.stringify(a)); }catch(e){} }
+    function srcLink(name){ return document.querySelector('.sb-nav .sb-group:not(.sb-special) .sb-link[data-name="'+esc(name)+'"]'); }
+    function cloneLink(name){
+      var s=srcLink(name); if(!s) return null;
+      var c=s.cloneNode(true); c.classList.remove('active','kbd-active','has-fav');
+      var f=c.querySelector('.sb-fav'); if(f) f.remove();
+      return c;
+    }
+    window.toggleFav=function(ev, name){
+      if(ev){ ev.preventDefault(); ev.stopPropagation(); }
+      var favs=getFavs(), i=favs.indexOf(name);
+      if(i>-1) favs.splice(i,1); else favs.unshift(name);
+      setFavs(favs);
+      var on=favs.indexOf(name)>-1;
+      document.querySelectorAll('.sb-nav .sb-group:not(.sb-special) .sb-link[data-name="'+esc(name)+'"] .sb-fav').forEach(function(s){ s.classList.toggle('on',on); s.textContent=on?'★':'☆'; });
+      renderFavs();
+    };
+    function initFavStars(){
+      document.querySelectorAll('.sb-nav .sb-group:not(.sb-special) .sb-link:not(.soon)').forEach(function(a){
+        var n=a.getAttribute('data-name');
+        if(!n || n==='Notifications' || n==='Dashboard Coach' || a.querySelector('.sb-fav')) return;
+        a.classList.add('has-fav');
+        var b=document.createElement('button'); b.type='button'; b.title='Favori';
+        b.className='sb-fav'+(getFavs().indexOf(n)>-1?' on':''); b.textContent=getFavs().indexOf(n)>-1?'★':'☆';
+        b.setAttribute('data-fav', n); b.setAttribute('onclick', "toggleFav(event, this.getAttribute('data-fav'))");
+        a.appendChild(b);
+      });
+    }
+    function renderFavs(){
+      var box=document.getElementById('favItems'), grp=document.getElementById('favGroup'); if(!box) return;
+      box.innerHTML=''; getFavs().forEach(function(n){ var c=cloneLink(n); if(c) box.appendChild(c); });
+      if(grp) grp.style.display=box.children.length?'':'none';
+      lucideIcons(); if(window.applyI18n) try{ applyI18n(); }catch(e){}
+    }
+
+    /* ── Récemment utilisés ── */
+    function renderRecents(){
+      var box=document.getElementById('recentItems'), grp=document.getElementById('recentGroup'); if(!box) return;
+      var r=[]; try{ r=JSON.parse(localStorage.getItem('vs_side_recent')||'[]'); }catch(e){}
+      box.innerHTML=''; r.forEach(function(n){ var c=cloneLink(n); if(c) box.appendChild(c); });
+      if(grp) grp.style.display=box.children.length?'':'none';
+      lucideIcons(); if(window.applyI18n) try{ applyI18n(); }catch(e){}
+    }
+    function pushRecent(name){
+      if(!name) return;
+      try{ var r=JSON.parse(localStorage.getItem('vs_side_recent')||'[]'); r=r.filter(function(x){return x!==name;}); r.unshift(name); localStorage.setItem('vs_side_recent', JSON.stringify(r.slice(0,6))); }catch(e){}
+      renderRecents();
+    }
+    document.addEventListener('click', function(e){
+      if(!e.target.closest) return;
+      if(e.target.closest('.sb-fav')) return;
+      var a=e.target.closest('.sb-nav .sb-group:not(.sb-special) .sb-link:not(.soon)');
+      if(!a) return;
+      var n=a.getAttribute('data-name'); if(n && n!=='Notifications') pushRecent(n);
+    });
+
+    /* ── Notifications (données factices pour l'instant) ── */
+    function notifList(){ return [ {ic:'flame',k:'nt1',tm:'2h'}, {ic:'trending-up',k:'nt2',tm:'5h'}, {ic:'sparkles',k:'nt3',tm:'1j'} ]; }
+    function notifCount(){ try{ return localStorage.getItem('vs_notif_seen')==='1'?0:notifList().length; }catch(e){ return notifList().length; } }
+    window.paintNotifCount=function(){
+      var n=notifCount();
+      ['navNotifCount','topNotifCount'].forEach(function(id){ var e=document.getElementById(id); if(e){ e.textContent=n; e.style.display=n>0?'':'none'; } });
+    };
+    function buildNotifPop(){
+      var p=document.getElementById('notifPop'); if(p) return p;
+      p=document.createElement('div'); p.id='notifPop'; p.className='notif-pop';
+      var T=function(k){ return window.t? t(k):k; };
+      var items=notifList().map(function(x){ return '<div class="notif-item"><div class="notif-ic"><i data-lucide="'+x.ic+'"></i></div><div class="notif-tx"><div class="notif-tt">'+T(x.k)+'</div><div class="notif-tm">'+x.tm+'</div></div></div>'; }).join('');
+      p.innerHTML='<div class="notif-h"><span>'+T('nt_title')+'</span><button class="nh-clear" onclick="clearNotif()">'+T('nt_clear')+'</button></div>'+items;
+      document.body.appendChild(p); lucideIcons(); return p;
+    }
+    window.toggleNotif=function(e){
+      if(e){ e.preventDefault(); e.stopPropagation(); }
+      var p=buildNotifPop(), open=p.classList.toggle('open');
+      if(open){ try{ localStorage.setItem('vs_notif_seen','1'); }catch(_){} paintNotifCount(); if(typeof closeDrawer==='function' && window.innerWidth<=760) closeDrawer(); }
+    };
+    window.clearNotif=function(){ try{ localStorage.setItem('vs_notif_seen','1'); }catch(e){} paintNotifCount(); var p=document.getElementById('notifPop'); if(p) p.classList.remove('open'); };
+    document.addEventListener('click', function(e){
+      var p=document.getElementById('notifPop'); if(!p||!p.classList.contains('open')||!e.target.closest) return;
+      if(p.contains(e.target) || e.target.closest('#notifBtn') || e.target.closest('.sb-link[data-name="Notifications"]')) return;
+      p.classList.remove('open');
+    });
+
+    /* ── Navigation clavier ↑/↓/Entrée dans la recherche ── */
+    document.addEventListener('keydown', function(e){
+      var inp=document.getElementById('sideSearchInput');
+      if(!inp || document.activeElement!==inp) return;
+      if(e.key!=='ArrowDown' && e.key!=='ArrowUp' && e.key!=='Enter') return;
+      var vis=[].slice.call(document.querySelectorAll('.sb-nav .sb-group:not(.sb-special) a.sb-link')).filter(function(a){ return a.offsetParent!==null; });
+      if(!vis.length) return;
+      var cur=-1; for(var i=0;i<vis.length;i++){ if(vis[i].classList.contains('kbd-active')){ cur=i; break; } }
+      if(e.key==='Enter'){ if(cur>-1){ e.preventDefault(); vis[cur].click(); inp.blur(); } return; }
+      e.preventDefault();
+      if(cur>-1) vis[cur].classList.remove('kbd-active');
+      var ni = e.key==='ArrowDown' ? (cur+1)%vis.length : (cur<=0 ? vis.length-1 : cur-1);
+      vis[ni].classList.add('kbd-active'); vis[ni].scrollIntoView({block:'nearest'});
+    });
+
+    /* ── Init ── */
+    function init(){
+      try{ initSidebarIcons(); }catch(e){}
+      try{ initFavStars(); }catch(e){}
+      try{ renderFavs(); }catch(e){}
+      try{ renderRecents(); }catch(e){}
+      try{ paintNotifCount(); }catch(e){}
+    }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+  })();
   </script>
 
   <!-- Meta Pixel : événement "Inscription" déclenché une seule fois par utilisateur -->
