@@ -154,6 +154,7 @@
       <button class="navitem" data-view="thumbnail" data-tier="pro" onclick="nav('thumbnail')"><span class="ic">🖼</span> <span data-i18n="db_thumbnail">Analyse Miniature</span></button>
       <button class="navitem" data-view="audience" data-tier="pro" onclick="nav('audience')"><span class="ic">🌍</span> <span data-i18n="db_audience">Audience</span></button>
       <button class="navitem" data-view="revenue" data-tier="pro" onclick="nav('revenue')"><span class="ic">💰</span> <span data-i18n="db_revenue">Revenus estimés</span></button>
+      <button class="navitem" data-view="thumbdl" data-tier="free" onclick="nav('thumbdl')"><span class="ic">🖼</span> <span data-i18n="db_thumbdl">Téléchargeur de miniatures</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
@@ -234,6 +235,16 @@
         </div>
         <div id="trtErr" class="err"></div>
         <div id="trtResult" style="display:none;margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-thumbdl">
+      <div class="head"><h1>🖼 <span data-i18n="dt_td_title">Téléchargeur de miniatures</span></h1><p data-i18n="dt_td_desc">Récupère la miniature HD de n'importe quelle vidéo YouTube et télécharge-la.</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_td_t">Lien ou ID de la vidéo</label><input id="tdInput" data-i18n-ph="dt_td_ph" placeholder="https://youtube.com/watch?v=… ou l'ID"></div>
+        <button class="btn" id="tdBtn" onclick="run(this,runThumbDl)" data-i18n="dt_td_btn">Récupérer</button>
+        <div id="tdErr" class="err"></div>
+        <div id="tdResult" style="display:none;margin-top:16px;"></div>
       </div>
     </section>
 
@@ -1047,6 +1058,52 @@
       }catch(e){}
     }catch(e){ showLock(); }
   });
+</script>
+
+<!-- Téléchargeur de miniatures — 100% client (i.ytimg.com), aucun backend / aucun service externe -->
+<script>
+  if (window.registerI18n) registerI18n({
+    db_thumbdl:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader'},
+    dt_td_title:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader'},
+    dt_td_desc:{fr:'Récupère la miniature HD de n\'importe quelle vidéo YouTube et télécharge-la.',en:'Grab the HD thumbnail of any YouTube video and download it.'},
+    dt_td_t:{fr:'Lien ou ID de la vidéo',en:'Video link or ID'},
+    dt_td_ph:{fr:'https://youtube.com/watch?v=… ou l\'ID',en:'https://youtube.com/watch?v=… or the ID'},
+    dt_td_btn:{fr:'Récupérer',en:'Fetch'},
+    dt_td_invalid:{fr:'Lien ou ID YouTube invalide.',en:'Invalid YouTube link or ID.'},
+    dt_td_dl:{fr:'Télécharger',en:'Download'}
+  });
+  function ytThumbId(s){
+    s=(s||'').trim();
+    var m=s.match(/(?:v=|youtu\.be\/|\/shorts\/|\/embed\/|\/live\/)([a-zA-Z0-9_-]{11})/);
+    if(m) return m[1];
+    if(/^[a-zA-Z0-9_-]{11}$/.test(s)) return s;
+    return null;
+  }
+  async function dlThumb(url, name){
+    try{ var r=await fetch(url); if(!r.ok) throw 0; var b=await r.blob(); var u=URL.createObjectURL(b);
+      var a=document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(u); },1500);
+    }catch(e){ window.open(url,'_blank'); }
+  }
+  function runThumbDl(){
+    var inp=document.getElementById('tdInput'), err=document.getElementById('tdErr'), out=document.getElementById('tdResult');
+    err.style.display='none'; out.style.display='none';
+    var id=ytThumbId(inp.value);
+    if(!id){ err.textContent=(window.t?t('dt_td_invalid'):'Lien ou ID YouTube invalide.'); err.style.display='block'; return; }
+    var T=(window.t?t('dt_td_dl'):'Télécharger');
+    var sizes=[['maxresdefault','Max · 1280×720'],['sddefault','SD · 640×480'],['hqdefault','HQ · 480×360'],['mqdefault','MQ · 320×180']];
+    out.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;">'+
+      sizes.map(function(s){
+        var url='https://i.ytimg.com/vi/'+id+'/'+s[0]+'.jpg', nm='thumbnail-'+id+'-'+s[0]+'.jpg';
+        return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:12px;overflow:hidden;">'
+          +'<img src="'+url+'" loading="lazy" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#000;" onerror="this.closest(\'div\').style.display=\'none\'">'
+          +'<div style="padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;">'
+          +'<span style="font-size:11.5px;color:#94a3b8;font-weight:600;">'+s[1]+'</span>'
+          +'<button onclick="dlThumb(\''+url+'\',\''+nm+'\')" style="background:linear-gradient(135deg,#FF9D1F,#ff7a18);color:#0b0f19;font-weight:800;font-size:11.5px;padding:6px 12px;border-radius:8px;border:none;cursor:pointer;">⬇ '+T+'</button>'
+          +'</div></div>';
+      }).join('')+'</div>';
+    out.style.display='block';
+  }
 </script>
 </body>
 </html>
