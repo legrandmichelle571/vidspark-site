@@ -358,17 +358,21 @@
     function parseChannelInput(raw) {
       let s = (raw || '').trim();
       if (!s) return null;
+      // Décoder les liens dont le handle est en %xx (arabe, cyrillique…) :
+      // youtube.com/@%D8%B4%D8%A7%D9%87… → youtube.com/@شاهد…
+      let dec = s;
+      try { dec = decodeURIComponent(s); } catch (e) {}
       // 1) ID de chaîne (UC + 22) — direct ou dans une URL /channel/UC...
-      let m = s.match(/UC[a-zA-Z0-9_-]{22}/);
+      let m = dec.match(/UC[a-zA-Z0-9_-]{22}/);
       if (m) return { id: m[0], name: m[0] };
-      // 2) Handle : @nom (bare ou dans youtube.com/@nom)
-      let h = s.match(/@[a-zA-Z0-9._-]{2,}/);
+      // 2) Handle : @nom (bare ou dans youtube.com/@nom) — lettres Unicode acceptées
+      let h = dec.match(/@[\p{L}\p{N}._-]{2,}/u);
       if (h) return { id: h[0], name: h[0] };
       // 3) URL personnalisée : /c/Nom ou /user/Nom
-      let c = s.match(/\/(?:c|user)\/([a-zA-Z0-9._-]+)/);
+      let c = dec.match(/\/(?:c|user)\/([\p{L}\p{N}._-]+)/u);
       if (c) return { id: c[1], name: c[1] };
       // 4) Lien d'une VIDÉO (watch?v=, youtu.be/, /shorts/, /live/) → le backend remonte à la chaîne
-      let v = s.match(/(?:[?&]v=|youtu\.be\/|\/shorts\/|\/live\/|\/embed\/)([a-zA-Z0-9_-]{11})/);
+      let v = dec.match(/(?:[?&]v=|youtu\.be\/|\/shorts\/|\/live\/|\/embed\/)([a-zA-Z0-9_-]{11})/);
       if (v) return { id: 'video:' + v[1], name: 'Chaîne de la vidéo' };
       return null;
     }
