@@ -164,6 +164,8 @@
       <button class="navitem" data-view="competitor" data-tier="pro" onclick="nav('competitor')"><span class="ic">🏆</span> <span data-i18n="db_competitor">Analyse concurrents</span></button>
       <button class="navitem" data-view="hashtags" data-tier="pro" onclick="nav('hashtags')"><span class="ic">🔗</span> <span data-i18n="db_hashtag">Générateur de hashtags</span></button>
       <button class="navitem" data-view="besttime" data-tier="pro" onclick="nav('besttime')"><span class="ic">🚀</span> <span data-i18n="db_publishtime">Meilleur moment</span></button>
+      <button class="navitem" data-view="extract" data-tier="pro" onclick="nav('extract')"><span class="ic">📥</span> <span data-i18n="db_chextract">Extracteur de chaîne</span></button>
+      <button class="navitem" data-view="compare" data-tier="pro" onclick="nav('compare')"><span class="ic">📺</span> <span data-i18n="db_comparison">Comparer des chaînes</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
@@ -356,6 +358,29 @@
         <button class="btn" id="btBtn" onclick="run(this,runBestTime)" data-i18n="dt_bt_btn">Trouver les créneaux</button>
         <div id="btErr" class="err"></div>
         <div id="btResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-extract">
+      <div class="head"><h1>📥 <span data-i18n="dt_ex_title">Extracteur de chaîne</span></h1><p data-i18n="dt_ex_desc">Récupère les stats publiques d'une chaîne YouTube (abonnés, vues, vidéos, meilleure vidéo).</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_ex_t">Lien ou @handle de la chaîne</label><input id="exInput" data-i18n-ph="dt_ex_pht" placeholder="https://youtube.com/@MaChaine"></div>
+        <button class="btn" id="exBtn" onclick="run(this,runExtract)" data-i18n="dt_ex_btn">Extraire</button>
+        <div id="exErr" class="err"></div>
+        <div id="exResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-compare">
+      <div class="head"><h1>📺 <span data-i18n="dt_cm_title">Comparer des chaînes</span></h1><p data-i18n="dt_cm_desc">Compare deux chaînes YouTube côte à côte (abonnés, vues, vidéos).</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field"><label data-i18n="dt_cm_a">Chaîne A</label><input id="cmA" data-i18n-ph="dt_cm_pha" placeholder="@ChaineA ou lien"></div>
+          <div class="field"><label data-i18n="dt_cm_b">Chaîne B</label><input id="cmB" data-i18n-ph="dt_cm_phb" placeholder="@ChaineB ou lien"></div>
+        </div>
+        <button class="btn" id="cmBtn" onclick="run(this,runCompare)" data-i18n="dt_cm_btn">Comparer</button>
+        <div id="cmErr" class="err"></div>
+        <div id="cmResult" style="display:none;margin-top:16px;"></div>
       </div>
     </section>
 
@@ -1383,6 +1408,51 @@
         +(d.slots||[]).map(function(s,i){ return '<div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:11px 13px;margin-bottom:8px;">'
           +'<div style="width:30px;height:30px;border-radius:8px;background:rgba(247,148,29,.16);color:#f7941d;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">'+(i+1)+'</div>'
           +'<div style="flex:1;"><div style="font-weight:700;font-size:13.5px;">'+esc(s.day||'')+' · '+esc(s.time||'')+'</div>'+(s.why?'<div style="font-size:12px;color:#94a3b8;margin-top:2px;">'+esc(s.why)+'</div>':'')+'</div></div>'; }).join('');
+      out.style.display='block';
+    };
+  })();
+</script>
+
+<!-- Lot 3c : Extracteur + Comparateur de chaînes (endpoints /api/diamant/channel-*) -->
+<script>
+  if (window.registerI18n) registerI18n({
+    db_chextract:{fr:'Extracteur de chaîne',en:'Channel extractor'}, db_comparison:{fr:'Comparer des chaînes',en:'Channel comparison'},
+    dt_need_channel:{fr:'Entre le lien ou le @handle de la chaîne.',en:'Enter the channel link or @handle.'}, dt_need_two:{fr:'Entre les deux chaînes.',en:'Enter both channels.'},
+    dt_ex_title:{fr:'Extracteur de chaîne',en:'Channel extractor'}, dt_ex_desc:{fr:'Récupère les stats publiques d\'une chaîne YouTube (abonnés, vues, vidéos, meilleure vidéo).',en:'Get a YouTube channel\'s public stats (subs, views, videos, best video).'}, dt_ex_t:{fr:'Lien ou @handle de la chaîne',en:'Channel link or @handle'}, dt_ex_pht:{fr:'https://youtube.com/@MaChaine',en:'https://youtube.com/@MyChannel'}, dt_ex_btn:{fr:'Extraire',en:'Extract'},
+    dt_cm_title:{fr:'Comparer des chaînes',en:'Channel comparison'}, dt_cm_desc:{fr:'Compare deux chaînes YouTube côte à côte (abonnés, vues, vidéos).',en:'Compare two YouTube channels side by side (subs, views, videos).'}, dt_cm_a:{fr:'Chaîne A',en:'Channel A'}, dt_cm_pha:{fr:'@ChaineA ou lien',en:'@ChannelA or link'}, dt_cm_b:{fr:'Chaîne B',en:'Channel B'}, dt_cm_phb:{fr:'@ChaineB ou lien',en:'@ChannelB or link'}, dt_cm_btn:{fr:'Comparer',en:'Compare'},
+    dt_subs:{fr:'Abonnés',en:'Subscribers'}, dt_tviews:{fr:'Vues totales',en:'Total views'}, dt_videos:{fr:'Vidéos',en:'Videos'}, dt_bestvid:{fr:'🏆 Meilleure vidéo',en:'🏆 Best video'}, dt_views:{fr:'vues',en:'views'}
+  });
+  (function(){
+    function $id(id){ return document.getElementById(id); }
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    function T(k,f){ return (window.t? t(k) : f) || f; }
+    function showErr(el,msg){ el.textContent=msg; el.style.display='block'; }
+    function okR(r,el){ if(r.status===403){ toolLocked(r.data); return false; } if(!r.data || r.data.error){ showErr(el, (r.data&&r.data.error) || 'Service indisponible.'); return false; } return true; }
+    function fmt(n){ n=+n||0; if(n>=1e6) return (n/1e6).toFixed(n>=1e7?0:1).replace('.0','')+'M'; if(n>=1e3) return (n/1e3).toFixed(n>=1e4?0:1).replace('.0','')+'K'; return ''+n; }
+
+    window.runExtract = async function(){
+      var err=$id('exErr'), out=$id('exResult'); err.style.display='none'; out.style.display='none';
+      var v=$id('exInput').value.trim(); if(!v){ showErr(err,T('dt_need_channel','Entre le lien ou le @handle de la chaîne.')); return; }
+      var r=await apiPost('/api/diamant/channel-extract',{channelUrl:v}); if(!okR(r,err)) return;
+      var d=r.data;
+      var stat=function(lbl,val){ return '<div style="flex:1;min-width:90px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:12px;text-align:center;"><div style="font-size:22px;font-weight:800;">'+val+'</div><div style="font-size:11px;color:#94a3b8;">'+lbl+'</div></div>'; };
+      out.innerHTML='<div style="font-weight:800;font-size:16px;margin-bottom:10px;">'+esc(d.channel||'')+'</div>'
+        +'<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">'+stat(T('dt_subs','Abonnés'),fmt(d.subs))+stat(T('dt_tviews','Vues totales'),fmt(d.total_views))+stat(T('dt_videos','Vidéos'),fmt(d.total_videos))+'</div>'
+        +(d.best_video?'<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:11px 13px;"><div style="font-size:11px;color:#f7941d;font-weight:800;text-transform:uppercase;margin-bottom:3px;">'+T('dt_bestvid','🏆 Meilleure vidéo')+'</div><div style="font-weight:600;font-size:13.5px;">'+esc(d.best_video.title||'')+'</div><div style="font-size:12px;color:#94a3b8;">'+fmt(d.best_video.views)+' '+T('dt_views','vues')+'</div></div>':'');
+      out.style.display='block';
+    };
+    window.runCompare = async function(){
+      var err=$id('cmErr'), out=$id('cmResult'); err.style.display='none'; out.style.display='none';
+      var a=$id('cmA').value.trim(), b=$id('cmB').value.trim(); if(!a||!b){ showErr(err,T('dt_need_two','Entre les deux chaînes.')); return; }
+      var r=await apiPost('/api/diamant/channel-compare',{channelA:a, channelB:b}); if(!okR(r,err)) return;
+      var A=r.data.a||{}, B=r.data.b||{};
+      var row=function(lbl,va,vb){ var na=+va||0, nb=+vb||0, wa=na>nb, wb=nb>na;
+        return '<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);">'
+          +'<div style="text-align:right;font-weight:'+(wa?'800':'600')+';color:'+(wa?'#22c55e':'#e8e8f0')+';">'+fmt(va)+(wa?' 👑':'')+'</div>'
+          +'<div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px;min-width:74px;text-align:center;">'+lbl+'</div>'
+          +'<div style="font-weight:'+(wb?'800':'600')+';color:'+(wb?'#22c55e':'#e8e8f0')+';">'+(wb?'👑 ':'')+fmt(vb)+'</div></div>'; };
+      out.innerHTML='<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin-bottom:8px;font-weight:800;font-size:14px;"><div style="text-align:right;">'+esc(A.channel||'A')+'</div><div style="color:#94a3b8;">vs</div><div>'+esc(B.channel||'B')+'</div></div>'
+        +row(T('dt_subs','Abonnés'),A.subs,B.subs)+row(T('dt_tviews','Vues'),A.total_views,B.total_views)+row(T('dt_videos','Vidéos'),A.total_videos,B.total_videos);
       out.style.display='block';
     };
   })();
