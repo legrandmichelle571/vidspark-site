@@ -159,6 +159,9 @@
       <button class="navitem" data-view="titlegen" data-tier="pro" onclick="nav('titlegen')"><span class="ic">🏆</span> <span data-i18n="db_titlegen">Générateur de titres</span></button>
       <button class="navitem" data-view="taggen" data-tier="pro" onclick="nav('taggen')"><span class="ic">🏷</span> <span data-i18n="db_tagextract">Extracteur de tags</span></button>
       <button class="navitem" data-view="descgen" data-tier="pro" onclick="nav('descgen')"><span class="ic">📝</span> <span data-i18n="db_descgen">Générateur de description</span></button>
+      <button class="navitem" data-view="script" data-tier="pro" onclick="nav('script')"><span class="ic">📝</span> <span data-i18n="db_script">Générateur de script</span></button>
+      <button class="navitem" data-view="planner" data-tier="pro" onclick="nav('planner')"><span class="ic">📅</span> <span data-i18n="db_planner">Planificateur</span></button>
+      <button class="navitem" data-view="competitor" data-tier="pro" onclick="nav('competitor')"><span class="ic">🏆</span> <span data-i18n="db_competitor">Analyse concurrents</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
@@ -291,6 +294,43 @@
         <button class="btn" id="dgBtn" onclick="run(this,runDescGen)" data-i18n="dt_dg_btn">Générer la description</button>
         <div id="dgErr" class="err"></div>
         <div id="dgResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-script">
+      <div class="head"><h1>📝 <span data-i18n="dt_sc_title">Générateur de script</span></h1><p data-i18n="dt_sc_desc">Un script vidéo complet et structuré (hook, sections, CTA, outro) à partir de ton sujet.</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_sc_t">Sujet de la vidéo</label><input id="scTopic" data-i18n-ph="dt_sc_pht" placeholder="Ex: 5 astuces pour monter plus vite"></div>
+        <div class="row">
+          <div class="field"><label data-i18n="dt_sc_n">Niche (optionnel)</label><input id="scNiche" data-i18n-ph="dt_sc_phn" placeholder="Ex: montage vidéo"></div>
+          <div class="field"><label data-i18n="dt_sc_dur">Durée</label><select id="scDur"><option value="">—</option><option value="short (moins de 60s)">Short</option><option value="5-8 minutes">5-8 min</option><option value="10-15 minutes">10-15 min</option></select></div>
+        </div>
+        <button class="btn" id="scBtn" onclick="run(this,runScript)" data-i18n="dt_sc_btn">Générer le script</button>
+        <div id="scErr" class="err"></div>
+        <div id="scResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-planner">
+      <div class="head"><h1>📅 <span data-i18n="dt_pl_title">Planificateur de contenu</span></h1><p data-i18n="dt_pl_desc">Un planning de 7 jours (vidéos longues, Shorts, repos) adapté à ta niche.</p></div>
+      <div class="panel">
+        <div class="row">
+          <div class="field"><label data-i18n="dt_pl_n">Niche (optionnel)</label><input id="plNiche" data-i18n-ph="dt_pl_phn" placeholder="Ex: gaming, cuisine…"></div>
+          <div class="field"><label data-i18n="dt_pl_r">Audience (optionnel)</label><input id="plRegion" data-i18n-ph="dt_pl_phr" placeholder="Ex: France, mondial…"></div>
+        </div>
+        <button class="btn" id="plBtn" onclick="run(this,runPlanner)" data-i18n="dt_pl_btn">Générer le planning</button>
+        <div id="plErr" class="err"></div>
+        <div id="plResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-competitor">
+      <div class="head"><h1>🏆 <span data-i18n="dt_co_title">Analyse concurrentielle</span></h1><p data-i18n="dt_co_desc">Niche, opportunités, angles originaux et mots-clés à viser pour ton sujet.</p></div>
+      <div class="panel">
+        <div class="field"><label data-i18n="dt_co_t">Titre / sujet de la vidéo</label><input id="coTitle" data-i18n-ph="dt_co_pht" placeholder="Ex: tuto Premiere Pro 2026"></div>
+        <button class="btn" id="coBtn" onclick="run(this,runCompetitor)" data-i18n="dt_co_btn">Analyser</button>
+        <div id="coErr" class="err"></div>
+        <div id="coResult" style="display:none;margin-top:16px;"></div>
       </div>
     </section>
 
@@ -1220,6 +1260,65 @@
       out.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;"><b>📝 Description</b>'+copyBtn(r.data.description||'',T('dt_copy','Copier'))+'</div>'
         +'<div style="white-space:pre-wrap;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:12px;font-size:13px;line-height:1.55;margin-bottom:14px;">'+esc(r.data.description||'')+'</div>'
         +(hts.length?'<div style="margin-bottom:6px;"><b># Hashtags</b></div><div>'+hts.map(chip).join('')+'</div>':'');
+      out.style.display='block';
+    };
+  })();
+</script>
+
+<!-- Lot 3 : Script, Planificateur, Analyse concurrents (endpoints /api/diamant/*) -->
+<script>
+  if (window.registerI18n) registerI18n({
+    db_script:{fr:'Générateur de script',en:'Script generator'}, db_planner:{fr:'Planificateur',en:'Content planner'}, db_competitor:{fr:'Analyse concurrents',en:'Competitor analysis'},
+    dt_need_topic:{fr:'Entre un sujet.',en:'Enter a topic.'},
+    dt_sc_title:{fr:'Générateur de script',en:'Script generator'}, dt_sc_desc:{fr:'Un script vidéo complet et structuré (hook, sections, CTA, outro) à partir de ton sujet.',en:'A complete, structured video script (hook, sections, CTA, outro) from your topic.'}, dt_sc_t:{fr:'Sujet de la vidéo',en:'Video topic'}, dt_sc_pht:{fr:'Ex: 5 astuces pour monter plus vite',en:'e.g. 5 tips to edit faster'}, dt_sc_n:{fr:'Niche (optionnel)',en:'Niche (optional)'}, dt_sc_phn:{fr:'Ex: montage vidéo',en:'e.g. video editing'}, dt_sc_dur:{fr:'Durée',en:'Length'}, dt_sc_btn:{fr:'Générer le script',en:'Generate script'},
+    dt_pl_title:{fr:'Planificateur de contenu',en:'Content planner'}, dt_pl_desc:{fr:'Un planning de 7 jours (vidéos longues, Shorts, repos) adapté à ta niche.',en:'A 7-day plan (long videos, Shorts, rest days) tailored to your niche.'}, dt_pl_n:{fr:'Niche (optionnel)',en:'Niche (optional)'}, dt_pl_phn:{fr:'Ex: gaming, cuisine…',en:'e.g. gaming, cooking…'}, dt_pl_r:{fr:'Audience (optionnel)',en:'Audience (optional)'}, dt_pl_phr:{fr:'Ex: France, mondial…',en:'e.g. France, worldwide…'}, dt_pl_btn:{fr:'Générer le planning',en:'Generate plan'},
+    dt_co_title:{fr:'Analyse concurrentielle',en:'Competitor analysis'}, dt_co_desc:{fr:'Niche, opportunités, angles originaux et mots-clés à viser pour ton sujet.',en:'Niche, opportunities, original angles and keywords to target for your topic.'}, dt_co_t:{fr:'Titre / sujet de la vidéo',en:'Video title / topic'}, dt_co_pht:{fr:'Ex: tuto Premiere Pro 2026',en:'e.g. Premiere Pro 2026 tutorial'}, dt_co_btn:{fr:'Analyser',en:'Analyze'}
+  });
+  (function(){
+    function $id(id){ return document.getElementById(id); }
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    function T(k,f){ return (window.t? t(k) : f) || f; }
+    function showErr(el,msg){ el.textContent=msg; el.style.display='block'; }
+    function okR(r,el){ if(r.status===403){ toolLocked(r.data); return false; } if(!r.data || r.data.error){ showErr(el, (r.data&&r.data.error) || 'Service indisponible.'); return false; } return true; }
+    var MINI='background:#f7941d;color:#06121a;border:none;border-radius:7px;padding:5px 11px;font-size:11px;font-weight:800;cursor:pointer;';
+    function copyBtn(txt,label){ return '<button data-cp="'+esc(txt)+'" onclick="vsCopy(this.dataset.cp,this)" style="'+MINI+'">'+esc(label)+'</button>'; }
+    function chip(t){ return '<span style="display:inline-block;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:8px;padding:5px 10px;margin:3px;font-size:12px;">'+esc(t)+'</span>'; }
+
+    window.runScript = async function(){
+      var err=$id('scErr'), out=$id('scResult'); err.style.display='none'; out.style.display='none';
+      var topic=$id('scTopic').value.trim(); if(!topic){ showErr(err,T('dt_need_topic','Entre un sujet.')); return; }
+      var r=await apiPost('/api/diamant/script',{topic:topic, niche:$id('scNiche').value.trim(), duration:$id('scDur').value}); if(!okR(r,err)) return;
+      var d=r.data;
+      var block=function(lbl,txt){ return txt?'<div style="margin-bottom:12px;"><div style="font-size:11px;font-weight:800;color:#f7941d;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">'+lbl+'</div><div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.55;white-space:pre-wrap;">'+esc(txt)+'</div></div>':''; };
+      var secs=(d.sections||[]).map(function(s,i){ return '<div style="margin-bottom:10px;"><div style="font-weight:700;font-size:13.5px;margin-bottom:3px;">'+(i+1)+'. '+esc(s.title||'')+'</div><div style="font-size:13px;color:#c9d2e0;line-height:1.5;">'+esc(s.content||'')+'</div></div>'; }).join('');
+      var full=[d.hook,d.intro].concat((d.sections||[]).map(function(s){return (s.title||'')+': '+(s.content||'');})).concat([d.cta,d.outro]).filter(Boolean).join('\n\n');
+      out.innerHTML='<div style="text-align:right;margin-bottom:8px;">'+copyBtn(full,T('dt_copyall','Copier tout'))+'</div>'
+        +block('🪝 Hook',d.hook)+block('▶️ Intro',d.intro)
+        +(secs?'<div style="font-size:11px;font-weight:800;color:#f7941d;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">📋 Sections</div>'+secs:'')
+        +block('📣 CTA',d.cta)+block('🎬 Outro',d.outro);
+      out.style.display='block';
+    };
+    window.runPlanner = async function(){
+      var err=$id('plErr'), out=$id('plResult'); err.style.display='none'; out.style.display='none';
+      var r=await apiPost('/api/diamant/planner',{niche:$id('plNiche').value.trim(), region:$id('plRegion').value.trim()}); if(!okR(r,err)) return;
+      out.innerHTML=(r.data.plan||[]).map(function(p){ var col=/repos|rest/i.test(p.type||'')?'#94a3b8':/short/i.test(p.type||'')?'#a78bfa':'#22c55e';
+        return '<div style="display:flex;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:11px 13px;margin-bottom:8px;">'
+          +'<div style="min-width:74px;font-weight:800;font-size:13px;">'+esc(p.day||'')+'</div>'
+          +'<div style="flex:1;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;flex-wrap:wrap;"><span style="font-size:10px;font-weight:800;background:'+col+'22;color:'+col+';border-radius:6px;padding:2px 7px;">'+esc(p.type||'')+'</span>'+(p.time?'<span style="font-size:11px;color:#94a3b8;">⏰ '+esc(p.time)+'</span>':'')+'</div>'
+          +'<div style="font-weight:600;font-size:13.5px;">'+esc(p.idea||'')+'</div>'
+          +(p.why?'<div style="font-size:12px;color:#94a3b8;margin-top:2px;">'+esc(p.why)+'</div>':'')+'</div></div>';
+      }).join('');
+      out.style.display='block';
+    };
+    window.runCompetitor = async function(){
+      var err=$id('coErr'), out=$id('coResult'); err.style.display='none'; out.style.display='none';
+      var title=$id('coTitle').value.trim(); if(!title){ showErr(err,T('dt_need_title','Entre un titre.')); return; }
+      var r=await apiPost('/api/diamant/competitor',{title:title}); if(!okR(r,err)) return;
+      var d=r.data;
+      var list=function(lbl,arr){ arr=arr||[]; return arr.length?'<div style="font-weight:700;margin:12px 0 6px;">'+lbl+'</div><ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;">'+arr.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':''; };
+      out.innerHTML=(d.niche?'<div style="margin-bottom:6px;"><span style="font-size:11px;color:#94a3b8;">Niche :</span> <b>'+esc(d.niche)+'</b></div>':'')
+        +list('💡 Opportunités',d.opportunities)+list('🎬 Angles originaux',d.angles)
+        +((d.keywords&&d.keywords.length)?'<div style="font-weight:700;margin:12px 0 6px;">🔑 Mots-clés</div><div>'+d.keywords.map(chip).join('')+'</div>':'');
       out.style.display='block';
     };
   })();
