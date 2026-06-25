@@ -166,6 +166,7 @@
       <button class="navitem" data-view="besttime" data-tier="pro" onclick="nav('besttime')"><span class="ic">🚀</span> <span data-i18n="db_publishtime">Meilleur moment</span></button>
       <button class="navitem" data-view="extract" data-tier="pro" onclick="nav('extract')"><span class="ic">📥</span> <span data-i18n="db_chextract">Extracteur de chaîne</span></button>
       <button class="navitem" data-view="compare" data-tier="pro" onclick="nav('compare')"><span class="ic">📺</span> <span data-i18n="db_comparison">Comparer des chaînes</span></button>
+      <button class="navitem" data-view="docs" data-tier="free" onclick="nav('docs')"><span class="ic">📚</span> <span data-i18n="db_docs">Documentation</span></button>
     </nav>
     <div class="side-foot">
       <span class="planbadge" id="planBadge">—</span>
@@ -381,6 +382,43 @@
         <button class="btn" id="cmBtn" onclick="run(this,runCompare)" data-i18n="dt_cm_btn">Comparer</button>
         <div id="cmErr" class="err"></div>
         <div id="cmResult" style="display:none;margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-docs">
+      <div class="head"><h1>📚 <span data-i18n="dt_doc_title">Documentation</span></h1><p data-i18n="dt_doc_desc">Tout pour bien démarrer et tirer le maximum de VidSpark AI.</p></div>
+      <div class="panel" style="line-height:1.65;font-size:13.5px;">
+        <div style="font-weight:800;font-size:15px;margin-bottom:8px;">🚀 Démarrage rapide</div>
+        <ol style="margin:0 0 18px;padding-left:20px;">
+          <li><b>Active l'extension</b> — copie ton <b>ID</b> + <b>Secret</b> depuis le tableau de bord (carte « Activation de l'extension ») dans l'extension Chrome/Edge.</li>
+          <li><b>Connecte ta chaîne</b> — page « Mes chaînes », colle le lien <code>youtube.com/@taChaine</code> (les @ en arabe et autres alphabets sont acceptés).</li>
+          <li><b>Analyse</b> — ouvre une vidéo YouTube : l'extension affiche tes scores. Ou utilise les outils ci-contre directement dans le dashboard.</li>
+        </ol>
+
+        <div style="font-weight:800;font-size:15px;margin-bottom:8px;">🧰 Les outils</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:18px;">
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:12px;"><b>🔍 Analyser</b><div style="color:#94a3b8;font-size:12.5px;margin-top:4px;">Discover, Analyser une vidéo, Audit de chaîne, Score Viral, Score SEO, Commentaires, Analyse concurrents, Comparer / Extracteur de chaîne.</div></div>
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:12px;"><b>✨ Créer (IA)</b><div style="color:#94a3b8;font-size:12.5px;margin-top:4px;">Générer (titre + description), Idées de vidéos, Générateur Shorts, Hook Analyzer, Script, Assistant IA, Miniature IA.</div></div>
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:12px;"><b>🔑 SEO</b><div style="color:#94a3b8;font-size:12.5px;margin-top:4px;">Mots-clés, Tags, Description, Titres, A/B Test titres, Hashtags, Téléchargeur / Analyse de miniature, Traduire.</div></div>
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:12px;"><b>📈 Croissance</b><div style="color:#94a3b8;font-size:12.5px;margin-top:4px;">Trending, Meilleur moment de publication, Audience, Suivi de position, Revenus estimés, Planificateur de contenu.</div></div>
+        </div>
+
+        <div style="font-weight:800;font-size:15px;margin-bottom:8px;">💳 Forfaits & quotas (analyses / jour)</div>
+        <div style="overflow-x:auto;margin-bottom:18px;">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <tr style="color:#94a3b8;text-align:left;"><th style="padding:6px 8px;">Forfait</th><th style="padding:6px 8px;">Analyses/jour</th><th style="padding:6px 8px;">Chaînes</th><th style="padding:6px 8px;">Miniatures/mois</th></tr>
+            <tr style="border-top:1px solid rgba(255,255,255,.08);"><td style="padding:6px 8px;"><b>Free</b></td><td style="padding:6px 8px;">10</td><td style="padding:6px 8px;">1</td><td style="padding:6px 8px;">0</td></tr>
+            <tr style="border-top:1px solid rgba(255,255,255,.08);"><td style="padding:6px 8px;"><b>Pro</b></td><td style="padding:6px 8px;">200</td><td style="padding:6px 8px;">1</td><td style="padding:6px 8px;">30</td></tr>
+            <tr style="border-top:1px solid rgba(255,255,255,.08);"><td style="padding:6px 8px;"><b>Business</b></td><td style="padding:6px 8px;">1 000</td><td style="padding:6px 8px;">5</td><td style="padding:6px 8px;">50</td></tr>
+            <tr style="border-top:1px solid rgba(255,255,255,.08);"><td style="padding:6px 8px;"><b>Diamant 💎</b></td><td style="padding:6px 8px;">5 000</td><td style="padding:6px 8px;">10</td><td style="padding:6px 8px;">200</td></tr>
+          </table>
+        </div>
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:18px;">Le quota se remet à zéro chaque jour à minuit (UTC). Diamant débloque l'Audit de chaîne avancé + le Suivi de position.</div>
+
+        <div style="font-weight:800;font-size:15px;margin-bottom:8px;">❓ FAQ</div>
+        <div style="margin-bottom:8px;"><b>Un outil affiche 🔒 ?</b> <span style="color:#94a3b8;">Il nécessite un forfait supérieur. Score SEO et le téléchargeur de miniatures sont accessibles en Free.</span></div>
+        <div style="margin-bottom:8px;"><b>« GEMINI_API_KEY manquante » ?</b> <span style="color:#94a3b8;">Souci de configuration serveur — contacte le support.</span></div>
+        <div style="margin-bottom:8px;"><b>Besoin d'aide ?</b> <span style="color:#94a3b8;">Écris-nous depuis la page <a href="/contact.html" style="color:#f7941d;">Contact</a>.</span></div>
       </div>
     </section>
 
@@ -1456,6 +1494,15 @@
       out.style.display='block';
     };
   })();
+</script>
+
+<!-- Documentation (vue statique, free) -->
+<script>
+  if (window.registerI18n) registerI18n({
+    db_docs:{fr:'Documentation',en:'Documentation'},
+    dt_doc_title:{fr:'Documentation',en:'Documentation'},
+    dt_doc_desc:{fr:'Tout pour bien démarrer et tirer le maximum de VidSpark AI.',en:'Everything to get started and get the most out of VidSpark AI.'}
+  });
 </script>
 </body>
 </html>
