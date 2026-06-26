@@ -26,12 +26,29 @@
 </style>
   <script src="/js/i18n.js"></script>
   <script src="/js/meta-pixel.js"></script>
+  <script>
+  registerI18n({
+    sc_loading_h:{fr:'Validation du paiement…',en:'Validating payment…',ar:'جارٍ التحقق من الدفع…'},
+    sc_loading_p:{fr:'Un instant, on active ton abonnement.',en:'Just a moment, we are activating your subscription.',ar:'لحظة، جارٍ تفعيل اشتراكك.'},
+    sc_ok_h:{fr:'Paiement réussi !',en:'Payment successful!',ar:'تم الدفع بنجاح!'},
+    sc_ok_p:{fr:'Ton abonnement est maintenant actif. Profite de tes nouveaux outils.',en:'Your subscription is now active. Enjoy your new tools.',ar:'اشتراكك نشط الآن. استمتع بأدواتك الجديدة.'},
+    sc_received_h:{fr:'Paiement reçu !',en:'Payment received!',ar:'تم استلام الدفعة!'},
+    sc_received_p:{fr:'Ton abonnement est en cours d\'activation.',en:'Your subscription is being activated.',ar:'جارٍ تفعيل اشتراكك.'},
+    sc_fail_h:{fr:'Souci avec le paiement',en:'Payment issue',ar:'مشكلة في الدفع'},
+    sc_fail_p_def:{fr:'Le paiement n\'a pas pu être validé.',en:'The payment could not be validated.',ar:'تعذّر التحقق من الدفعة.'},
+    sc_fail_contact:{fr:'Si tu as été débité, contacte le support.',en:'If you were charged, please contact support.',ar:'إذا تم خصم مبلغ منك، يرجى التواصل مع الدعم.'},
+    sc_dashboard:{fr:'Aller au tableau de bord →',en:'Go to dashboard →',ar:'الانتقال إلى لوحة التحكم ←'},
+    sc_back_plans:{fr:'Retour aux forfaits',en:'Back to plans',ar:'العودة إلى الباقات'},
+    sc_err_no_ref:{fr:'Référence de commande manquante.',en:'Missing order reference.',ar:'مرجع الطلب مفقود.'},
+    sc_err_not_auth:{fr:'Tu dois être connecté pour valider le paiement.',en:'You must be logged in to validate the payment.',ar:'يجب تسجيل الدخول للتحقق من الدفع.'},
+  });
+  </script>
 </head>
 <body>
   <div class="card" id="card">
     <div class="spin"></div>
-    <h1 style="margin-top:20px;">Validation du paiement…</h1>
-    <p>Un instant, on active ton abonnement.</p>
+    <h1 style="margin-top:20px;" data-i18n="sc_loading_h">Validation du paiement…</h1>
+    <p data-i18n="sc_loading_p">Un instant, on active ton abonnement.</p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -55,16 +72,16 @@
       card.innerHTML = `
         <div class="icon">✅</div>
         <div class="plan">💎 ${plan}</div>
-        <h1>Paiement réussi !</h1>
-        <p>Ton abonnement <b>${plan.toUpperCase()}</b> est maintenant actif. Profite de tes nouveaux outils.</p>
-        <a class="btn" href="/dashboard.html">Aller au tableau de bord →</a>`;
+        <h1>${t('sc_ok_h')}</h1>
+        <p><b>${plan.toUpperCase()}</b> — ${t('sc_ok_p')}</p>
+        <a class="btn" href="/dashboard.html">${t('sc_dashboard')}</a>`;
     }
     function fail(msg){
       card.innerHTML = `
         <div class="icon">⚠️</div>
-        <h1>Souci avec le paiement</h1>
-        <p>${msg || "Le paiement n'a pas pu être validé."}<br>Si tu as été débité, contacte le support.</p>
-        <a class="btn" href="/pricing.html">Retour aux forfaits</a>`;
+        <h1>${t('sc_fail_h')}</h1>
+        <p>${msg || t('sc_fail_p_def')}<br>${t('sc_fail_contact')}</p>
+        <a class="btn" href="/pricing.html">${t('sc_back_plans')}</a>`;
     }
 
     window.addEventListener('load', async () => {
@@ -75,18 +92,18 @@
       // Stripe : le webhook active déjà le plan → simple confirmation
       if (type !== 'paypal'){
         if (typeof fbq === 'function') fbq('track', 'Purchase', { currency: 'USD', value: 0 });
-        card.innerHTML = `<div class="icon">✅</div><h1>Paiement reçu !</h1>
-          <p>Ton abonnement est en cours d'activation.</p>
-          <a class="btn" href="/dashboard.html">Aller au tableau de bord →</a>`;
+        card.innerHTML = `<div class="icon">✅</div><h1>${t('sc_received_h')}</h1>
+          <p>${t('sc_received_p')}</p>
+          <a class="btn" href="/dashboard.html">${t('sc_dashboard')}</a>`;
         return;
       }
 
-      if (!token){ fail('Référence de commande manquante.'); return; }
+      if (!token){ fail(t('sc_err_no_ref')); return; }
 
       try {
         const session = await Auth.getSession();
         if (!session?.access_token){
-          fail('Tu dois être connecté pour valider le paiement.');
+          fail(t('sc_err_not_auth'));
           return;
         }
         const r = await fetch(API + '/api/subscription/paypal/capture', {

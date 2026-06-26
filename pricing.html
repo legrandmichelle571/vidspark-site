@@ -438,13 +438,51 @@
       pr_fq5:{fr:"Y a-t-il un essai gratuit ?",en:'Is there a free trial?',es:'¿Hay una prueba gratuita?',ar:'هل توجد تجربة مجانية؟'},
       pr_fa5:{fr:"Notre offre GRATUITE est essentiellement un essai gratuit avec des limites généreuses. Passez à PRO quand vous voulez, sans engagement.",en:'Our FREE tier is essentially a free trial with generous limits. Upgrade to PRO anytime without commitment.',es:'Nuestro plan GRATIS es básicamente una prueba gratuita con límites generosos. Mejora a PRO cuando quieras, sin compromiso.',ar:'باقتنا المجانية هي عمليًّا تجربة مجانية بحدود سخيّة. ارتقِ إلى PRO متى شئت دون التزام.'},
       pr_fq6:{fr:'Quels moyens de paiement acceptez-vous ?',en:'What payment methods do you accept?',es:'¿Qué métodos de pago aceptan?',ar:'ما طرق الدفع المقبولة؟'},
-      pr_fa6:{fr:"Toutes les principales cartes bancaires via Stripe. Vos informations de paiement sont chiffrées et conformes PCI.",en:'We accept all major credit cards via Stripe. Your payment information is encrypted and PCI compliant.',es:'Aceptamos todas las tarjetas principales vía Stripe. Tu información de pago está cifrada y cumple PCI.',ar:'نقبل جميع البطاقات الرئيسية عبر Stripe. معلومات الدفع مشفّرة ومتوافقة مع PCI.'}
+      pr_fa6:{fr:"Toutes les principales cartes bancaires via Stripe. Vos informations de paiement sont chiffrées et conformes PCI.",en:'We accept all major credit cards via Stripe. Your payment information is encrypted and PCI compliant.',es:'Aceptamos todas las tarjetas principales vía Stripe. Tu información de pago está cifrada y cumple PCI.',ar:'نقبل جميع البطاقات الرئيسية عبر Stripe. معلومات الدفع مشفّرة ومتوافقة مع PCI.'},
+      /* ── NOMS & DESCRIPTIONS DES PLANS ── */
+      pr_plan_name_free:{fr:'Gratuit',en:'Free',ar:'مجاني'},
+      pr_plan_name_pro:{fr:'Pro',en:'Pro',ar:'برو'},
+      pr_plan_name_business:{fr:'Business',en:'Business',ar:'بيزنس'},
+      pr_plan_name_diamant:{fr:'Diamant',en:'Diamond',ar:'الماس'},
+      pr_plan_desc_free:{fr:'Parfait pour commencer',en:'Perfect for getting started',ar:'مثالي للبدء'},
+      pr_plan_desc_pro:{fr:'Pour les créateurs sérieux',en:'For serious creators',ar:'للمبدعين الجادّين'},
+      pr_plan_desc_business:{fr:'Pour les équipes et agences',en:'For teams and agencies',ar:'للفرق والوكالات'},
+      pr_plan_desc_diamant:{fr:'Pour les experts SEO YouTube',en:'For YouTube SEO experts',ar:'لخبراء SEO على يوتيوب'},
+      /* ── FONCTIONNALITÉS DES PLANS ── */
+      pr_feat_analyze:{fr:'Analyser des vidéos',en:'Analyze videos',ar:'تحليل مقاطع الفيديو'},
+      pr_feat_seo_score:{fr:'Score SEO',en:'SEO score',ar:'نقاط SEO'},
+      pr_feat_ai_reports:{fr:'Rapports IA',en:'AI reports',ar:'تقارير ذكاء اصطناعي'},
+      pr_feat_ai_titles:{fr:'Titres IA',en:'AI titles',ar:'عناوين ذكاء اصطناعي'},
+      pr_feat_pdf:{fr:'Export PDF',en:'PDF export',ar:'تصدير PDF'},
+      pr_feat_1_chan:{fr:'1 chaîne max',en:'Max 1 channel',ar:'قناة واحدة بحد أقصى'},
+      pr_feat_reports_100:{fr:'Rapports IA (100/mois)',en:'AI reports (100/mo)',ar:'تقارير ذكاء اصطناعي (100/شهر)'},
+      pr_feat_titles_unlim:{fr:'Titres IA (illimités)',en:'AI titles (unlimited)',ar:'عناوين ذكاء اصطناعي (غير محدودة)'},
+      pr_feat_reports_5k:{fr:'Rapports IA (5k/mois)',en:'AI reports (5k/mo)',ar:'تقارير ذكاء اصطناعي (5000/شهر)'},
+      pr_feat_multichan_5:{fr:'Multi-chaînes (jusqu\'à 5)',en:'Multi-channel (up to 5)',ar:'متعدد القنوات (حتى 5)'},
+      pr_feat_api:{fr:'Accès API',en:'API access',ar:'وصول API'},
+      pr_feat_prio:{fr:'Support prioritaire',en:'Priority support',ar:'دعم ذو أولوية'},
+      pr_feat_all_biz:{fr:'Tout le plan Business',en:'Everything in Business',ar:'كل ما في خطة بيزنس'},
+      pr_feat_10_chan:{fr:'10 chaînes max',en:'Max 10 channels',ar:'10 قنوات بحد أقصى'},
+      pr_feat_adv_audit:{fr:'💎 Audit de chaîne avancé',en:'💎 Advanced channel audit',ar:'💎 تدقيق متقدم للقناة'},
+      pr_feat_rank:{fr:'💎 Suivi de position',en:'💎 Rank tracker',ar:'💎 متتبّع الترتيب'},
+      /* ── DIVERS ── */
+      pr_err:{fr:'Erreur',en:'Error',ar:'خطأ'},
     });
   </script>
 
   <script src="js/plans-config.js"></script>
   <script src="js/api.js"></script>
   <script>
+    const FEATURE_I18N = {
+      'Analyze videos':'pr_feat_analyze','SEO score':'pr_feat_seo_score',
+      'AI reports':'pr_feat_ai_reports','AI titles':'pr_feat_ai_titles',
+      'PDF export':'pr_feat_pdf','Max 1 channel':'pr_feat_1_chan',
+      'AI reports (100/mo)':'pr_feat_reports_100','AI titles (unlimited)':'pr_feat_titles_unlim',
+      'AI reports (5k/mo)':'pr_feat_reports_5k','Multi-channel (up to 5)':'pr_feat_multichan_5',
+      'API access':'pr_feat_api','Priority support':'pr_feat_prio',
+      'Everything in Business':'pr_feat_all_biz','Max 10 channels':'pr_feat_10_chan',
+      '💎 Advanced channel audit':'pr_feat_adv_audit','💎 Rank tracker':'pr_feat_rank',
+    };
     let currentBillingInterval = 'month';
 
     function getFAQData(){
@@ -600,15 +638,15 @@
         return `
           <div class="plan-card ${isRecommended ? 'recommended' : ''}">
             ${isRecommended ? `<div class="plan-badge">${t('pr_recommended')}</div>` : ''}
-            <div class="plan-name">${plan.name}</div>
-            <div class="plan-description">${plan.description}</div>
+            <div class="plan-name">${t('pr_plan_name_' + planId) || plan.name}</div>
+            <div class="plan-description">${t('pr_plan_desc_' + planId) || plan.description}</div>
             <div class="plan-price">${isFree ? '$0' : '$' + price.toFixed(2)}</div>
             <div class="plan-price-period">${isFree ? t('pr_foreverfree') : '/' + (currentBillingInterval === 'year' ? t('pr_year') : t('pr_month'))}</div>
             <ul class="plan-features">
               ${plan.features.map(feature => `
                 <li class="${feature.included ? '' : 'disabled'}">
                   <span class="feature-icon">${feature.included ? '✓' : '✗'}</span>
-                  ${feature.name}
+                  ${FEATURE_I18N[feature.name] ? t(FEATURE_I18N[feature.name]) : feature.name}
                 </li>
               `).join('')}
             </ul>
@@ -667,7 +705,7 @@
 
       // Lancer le checkout avec l'intervalle choisi
       BillingAPI.checkout(planId, currentBillingInterval).catch(err => {
-        alert('Erreur : ' + err.message);
+        alert(t('pr_err') + ' : ' + err.message);
       });
     }
 
@@ -680,7 +718,7 @@
       if (pending && pending.plan) {
         localStorage.removeItem('VIDSPARK_PENDING_PLAN');
         BillingAPI.checkout(pending.plan, pending.interval || 'month').catch(err => {
-          alert('Erreur : ' + err.message);
+          alert(t('pr_err') + ' : ' + err.message);
         });
       }
     }

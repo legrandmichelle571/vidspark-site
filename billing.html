@@ -78,41 +78,117 @@
 </style>
   <script src="/js/i18n.js"></script>
   <script src="/js/meta-pixel.js"></script>
+  <script>
+  registerI18n({
+    /* ── SIDEBAR ── */
+    bill_sb_home:{fr:'Tableau de bord',en:'Dashboard',ar:'لوحة التحكم'},
+    bill_sb_studio:{fr:'Studio',en:'Studio',ar:'الاستوديو'},
+    bill_sb_channels:{fr:'Mes chaînes',en:'My channels',ar:'قنواتي'},
+    bill_sb_sub:{fr:'Abonnement',en:'Subscription',ar:'الاشتراك'},
+    bill_sb_account:{fr:'Compte',en:'Account',ar:'الحساب'},
+    bill_sb_plans:{fr:'Forfaits',en:'Plans',ar:'الباقات'},
+    bill_sb_logout:{fr:'Déconnexion',en:'Log out',ar:'تسجيل الخروج'},
+    /* ── PAGE STATIQUE ── */
+    bill_back:{fr:'← Tableau de bord',en:'← Dashboard',ar:'← لوحة التحكم'},
+    bill_title:{fr:'Choisis ton abonnement',en:'Choose your plan',ar:'اختر اشتراكك'},
+    bill_sub:{fr:'Débloque toute la puissance de l\'IA pour optimiser tes vidéos YouTube.',en:'Unlock the full power of AI to optimise your YouTube videos.',ar:'افتح الإمكانات الكاملة للذكاء الاصطناعي لتحسين مقاطع يوتيوب.'},
+    bill_lbl:{fr:'Ton plan actuel',en:'Your current plan',ar:'خطّتك الحالية'},
+    bill_monthly:{fr:'Mensuel',en:'Monthly',ar:'شهري'},
+    bill_yearly:{fr:'Annuel',en:'Yearly',ar:'سنوي'},
+    bill_save:{fr:'2 mois offerts /an',en:'2 months free /year',ar:'شهران مجّانًا /سنة'},
+    bill_cancel_btn:{fr:'Annuler mon abonnement',en:'Cancel my subscription',ar:'إلغاء اشتراكي'},
+    bill_secure:{fr:'🔒 Paiement sécurisé par PayPal & Cryptomus — annulable à tout moment.',en:'🔒 Secure payment via PayPal & Cryptomus — cancel anytime.',ar:'🔒 دفع آمن عبر PayPal و Cryptomus — قابل للإلغاء في أي وقت.'},
+    /* ── PLANS DYNAMIQUES ── */
+    bill_per_month:{fr:'par mois',en:'per month',ar:'في الشهر'},
+    bill_per_month_s:{fr:'/mois',en:'/mo',ar:'/شهر'},
+    bill_popular:{fr:'Le plus populaire',en:'Most popular',ar:'الأكثر شعبية'},
+    bill_current_plan:{fr:'Plan actuel',en:'Current plan',ar:'الخطة الحالية'},
+    bill_your_plan:{fr:'Ton plan actuel',en:'Your current plan',ar:'خطّتك الحالية'},
+    bill_choose:{fr:'Choisir',en:'Choose',ar:'اختر'},
+    bill_free_btn:{fr:'Gratuit',en:'Free',ar:'مجاني'},
+    bill_valid_until:{fr:'Valide jusqu\'au',en:'Valid until',ar:'صالح حتى'},
+    /* ── NOMS DES PLANS ── */
+    bill_plan_free:{fr:'Gratuit',en:'Free',ar:'مجاني'},
+    bill_plan_pro:{fr:'Pro',en:'Pro',ar:'برو'},
+    bill_plan_biz:{fr:'Business',en:'Business',ar:'بيزنس'},
+    bill_plan_dmt:{fr:'Diamant',en:'Diamond',ar:'الماس'},
+    /* ── NOTES ANNUELLES ── */
+    bill_year_pro:{fr:'soit $95.90/an',en:'i.e. $95.90/year',ar:'أي $95.90/سنة'},
+    bill_year_biz:{fr:'soit $287.90/an',en:'i.e. $287.90/year',ar:'أي $287.90/سنة'},
+    bill_year_dmt:{fr:'soit $539.89/an',en:'i.e. $539.89/year',ar:'أي $539.89/سنة'},
+    /* ── FONCTIONNALITÉS FREE ── */
+    bill_f_free_1:{fr:'Score SEO, Viral & Miniature',en:'SEO, Viral & Thumbnail score',ar:'نقاط SEO والانتشار والصور المصغّرة'},
+    bill_f_free_2:{fr:'Checklist SEO',en:'SEO Checklist',ar:'قائمة تدقيق SEO'},
+    bill_f_free_3:{fr:'Suggestions de base',en:'Basic suggestions',ar:'اقتراحات أساسية'},
+    bill_f_free_4:{fr:'Titres IA optimisés',en:'AI-optimized titles',ar:'عناوين محسّنة بالذكاء الاصطناعي'},
+    bill_f_free_5:{fr:'Rapport IA complet',en:'Full AI report',ar:'تقرير ذكاء اصطناعي كامل'},
+    bill_f_free_6:{fr:'Analyse concurrents',en:'Competitor analysis',ar:'تحليل المنافسين'},
+    /* ── FONCTIONNALITÉS PRO ── */
+    bill_f_pro_1:{fr:'Tout le plan Gratuit',en:'Everything in Free',ar:'كل ما في الخطة المجانية'},
+    bill_f_pro_2:{fr:'🎯 Titres IA optimisés',en:'🎯 AI-optimized titles',ar:'🎯 عناوين محسّنة بالذكاء الاصطناعي'},
+    bill_f_pro_3:{fr:'📊 Rapport IA complet',en:'📊 Full AI report',ar:'📊 تقرير ذكاء اصطناعي كامل'},
+    bill_f_pro_4:{fr:'🔍 Analyse concurrents',en:'🔍 Competitor analysis',ar:'🔍 تحليل المنافسين'},
+    bill_f_pro_5:{fr:'200 analyses / jour',en:'200 analyses / day',ar:'200 تحليل / يوم'},
+    bill_f_pro_6:{fr:'100 titres IA / jour',en:'100 AI titles / day',ar:'100 عنوان ذكاء اصطناعي / يوم'},
+    /* ── FONCTIONNALITÉS BUSINESS ── */
+    bill_f_biz_1:{fr:'Tout le plan Pro',en:'Everything in Pro',ar:'كل ما في خطة برو'},
+    bill_f_biz_2:{fr:'📺 Multi-chaînes (5)',en:'📺 Multi-channels (5)',ar:'📺 متعدد القنوات (5)'},
+    bill_f_biz_3:{fr:'👥 Accès équipe',en:'👥 Team access',ar:'👥 وصول الفريق'},
+    bill_f_biz_4:{fr:'🔌 Accès API',en:'🔌 API access',ar:'🔌 وصول API'},
+    bill_f_biz_5:{fr:'1000 analyses / jour',en:'1000 analyses / day',ar:'1000 تحليل / يوم'},
+    bill_f_biz_6:{fr:'500 titres IA / jour',en:'500 AI titles / day',ar:'500 عنوان ذكاء اصطناعي / يوم'},
+    /* ── FONCTIONNALITÉS DIAMANT ── */
+    bill_f_dmt_1:{fr:'Tout le plan Business',en:'Everything in Business',ar:'كل ما في خطة بيزنس'},
+    bill_f_dmt_2:{fr:'📺 10 chaînes',en:'📺 10 channels',ar:'📺 10 قنوات'},
+    bill_f_dmt_3:{fr:'💎 Audit de chaîne avancé',en:'💎 Advanced channel audit',ar:'💎 تدقيق متقدم للقناة'},
+    bill_f_dmt_4:{fr:'💎 Rank Tracker',en:'💎 Rank Tracker',ar:'💎 متتبّع الترتيب'},
+    bill_f_dmt_5:{fr:'5000 analyses / jour',en:'5000 analyses / day',ar:'5000 تحليل / يوم'},
+    bill_f_dmt_6:{fr:'2000 titres IA / jour',en:'2000 AI titles / day',ar:'2000 عنوان ذكاء اصطناعي / يوم'},
+    /* ── MESSAGES JS ── */
+    bill_loading_crypt:{fr:'⏳ Création du paiement Cryptomus...',en:'⏳ Creating Cryptomus payment...',ar:'⏳ جارٍ إنشاء دفعة Cryptomus...'},
+    bill_loading_pp:{fr:'⏳ Redirection vers PayPal...',en:'⏳ Redirecting to PayPal...',ar:'⏳ جارٍ التوجيه إلى PayPal...'},
+    bill_err_login:{fr:'⚠️ Connecte-toi d\'abord.',en:'⚠️ Please log in first.',ar:'⚠️ يرجى تسجيل الدخول أولاً.'},
+    bill_err_crypt:{fr:'Erreur Cryptomus',en:'Cryptomus error',ar:'خطأ Cryptomus'},
+    bill_err_pp:{fr:'Erreur PayPal',en:'PayPal error',ar:'خطأ PayPal'},
+    bill_ok_cancel:{fr:'✅ Abonnement annulé.',en:'✅ Subscription cancelled.',ar:'✅ تم إلغاء الاشتراك.'},
+    bill_confirm_cancel:{fr:'Annuler ton abonnement ? Tu repasseras en Gratuit à la fin de la période.',en:'Cancel your subscription? You\'ll revert to Free at end of period.',ar:'هل تريد إلغاء اشتراكك؟ ستعود إلى الخطة المجانية في نهاية الفترة.'},
+  });
+  </script>
 </head>
 <body>
   <aside class="app-side">
     <div class="sb-brand"><span class="lg">✦</span> <span>VidSpark AI</span></div>
-    <a class="sb-link" href="dashboard.html"><span>🏠</span> <span>Tableau de bord</span></a>
-    <a class="sb-link" href="diamant.html"><span>✦</span> <span>Studio</span></a>
-    <a class="sb-link" href="channels.html"><span>📺</span> <span>Mes chaînes</span></a>
-    <a class="sb-link active" href="billing.html"><span>💳</span> <span>Abonnement</span></a>
-    <a class="sb-link" href="account.html"><span>⚙️</span> <span>Compte</span></a>
+    <a class="sb-link" href="dashboard.html"><span>🏠</span> <span data-i18n="bill_sb_home">Tableau de bord</span></a>
+    <a class="sb-link" href="diamant.html"><span>✦</span> <span data-i18n="bill_sb_studio">Studio</span></a>
+    <a class="sb-link" href="channels.html"><span>📺</span> <span data-i18n="bill_sb_channels">Mes chaînes</span></a>
+    <a class="sb-link active" href="billing.html"><span>💳</span> <span data-i18n="bill_sb_sub">Abonnement</span></a>
+    <a class="sb-link" href="account.html"><span>⚙️</span> <span data-i18n="bill_sb_account">Compte</span></a>
     <div class="sb-foot">
-      <a class="sb-link" href="https://vidsparkpro.com/pricing.html"><span>🏷️</span> <span>Forfaits</span></a>
-      <a class="sb-link sb-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';"><span>🚪</span> <span>Déconnexion</span></a>
+      <a class="sb-link" href="https://vidsparkpro.com/pricing.html"><span>🏷️</span> <span data-i18n="bill_sb_plans">Forfaits</span></a>
+      <a class="sb-link sb-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';"><span>🚪</span> <span data-i18n="bill_sb_logout">Déconnexion</span></a>
     </div>
   </aside>
   <div class="nav">
     <div class="logo"><span class="logo-badge">✦</span> VidSpark AI</div>
-    <div><a href="dashboard">← Tableau de bord</a></div>
+    <div><a href="dashboard" data-i18n="bill_back">← Tableau de bord</a></div>
   </div>
 
   <div class="page">
-    <h1>Choisis ton abonnement</h1>
-    <p class="sub">Débloque toute la puissance de l'IA pour optimiser tes vidéos YouTube.</p>
+    <h1 data-i18n="bill_title">Choisis ton abonnement</h1>
+    <p class="sub" data-i18n="bill_sub">Débloque toute la puissance de l'IA pour optimiser tes vidéos YouTube.</p>
 
     <div class="current">
       <div>
-        <div class="lbl">Ton plan actuel</div>
+        <div class="lbl" data-i18n="bill_lbl">Ton plan actuel</div>
         <div class="plan"><span id="curPlan" class="pill free">FREE</span></div>
       </div>
       <div id="curExpiry" style="color:var(--muted);font-size:13px;"></div>
     </div>
 
     <div class="toggle">
-      <button id="btnMonth" class="active" onclick="setInterval_('month')">Mensuel</button>
-      <button id="btnYear" onclick="setInterval_('year')">Annuel</button>
-      <span class="save-badge">2 mois offerts /an</span>
+      <button id="btnMonth" class="active" onclick="setInterval_('month')" data-i18n="bill_monthly">Mensuel</button>
+      <button id="btnYear" onclick="setInterval_('year')" data-i18n="bill_yearly">Annuel</button>
+      <span class="save-badge" data-i18n="bill_save">2 mois offerts /an</span>
     </div>
 
     <div class="plans" id="plans"></div>
@@ -120,10 +196,10 @@
     <div id="msg"></div>
 
     <div class="cancel-row" id="cancelRow" style="display:none;">
-      <button onclick="cancelSubscription()">Annuler mon abonnement</button>
+      <button onclick="cancelSubscription()" data-i18n="bill_cancel_btn">Annuler mon abonnement</button>
     </div>
 
-    <div class="secure">🔒 Paiement sécurisé par PayPal & Cryptomus — annulable à tout moment.</div>
+    <div class="secure" data-i18n="bill_secure">🔒 Paiement sécurisé par PayPal & Cryptomus — annulable à tout moment.</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -136,51 +212,51 @@
 
     const PLANS = [
       {
-        id:'free', name:'Gratuit', icon:'', cls:'',
+        id:'free', name:'bill_plan_free', icon:'', cls:'',
         month:'$0', year:'$0', yearNote:'',
         feats:[
-          ['Score SEO, Viral & Miniature', true],
-          ['Checklist SEO', true],
-          ['Suggestions de base', true],
-          ['Titres IA optimisés', false],
-          ['Rapport IA complet', false],
-          ['Analyse concurrents', false],
+          ['bill_f_free_1', true],
+          ['bill_f_free_2', true],
+          ['bill_f_free_3', true],
+          ['bill_f_free_4', false],
+          ['bill_f_free_5', false],
+          ['bill_f_free_6', false],
         ]
       },
       {
-        id:'pro', name:'Pro', icon:'⭐', cls:'primary', popular:true,
-        month:'$9.99', year:'$7.99', yearNote:'soit $95.90/an',
+        id:'pro', name:'bill_plan_pro', icon:'⭐', cls:'primary', popular:true,
+        month:'$9.99', year:'$7.99', yearNote:'bill_year_pro',
         feats:[
-          ['Tout le plan Gratuit', true],
-          ['🎯 Titres IA optimisés', true],
-          ['📊 Rapport IA complet', true],
-          ['🔍 Analyse concurrents', true],
-          ['200 analyses / jour', true],
-          ['100 titres IA / jour', true],
+          ['bill_f_pro_1', true],
+          ['bill_f_pro_2', true],
+          ['bill_f_pro_3', true],
+          ['bill_f_pro_4', true],
+          ['bill_f_pro_5', true],
+          ['bill_f_pro_6', true],
         ]
       },
       {
-        id:'business', name:'Business', icon:'💼', cls:'gold',
-        month:'$29.99', year:'$23.99', yearNote:'soit $287.90/an',
+        id:'business', name:'bill_plan_biz', icon:'💼', cls:'gold',
+        month:'$29.99', year:'$23.99', yearNote:'bill_year_biz',
         feats:[
-          ['Tout le plan Pro', true],
-          ['📺 Multi-chaînes (5)', true],
-          ['👥 Accès équipe', true],
-          ['🔌 Accès API', true],
-          ['1000 analyses / jour', true],
-          ['500 titres IA / jour', true],
+          ['bill_f_biz_1', true],
+          ['bill_f_biz_2', true],
+          ['bill_f_biz_3', true],
+          ['bill_f_biz_4', true],
+          ['bill_f_biz_5', true],
+          ['bill_f_biz_6', true],
         ]
       },
       {
-        id:'diamant', name:'Diamant', icon:'💎', cls:'diamant',
-        month:'$49.99', year:'$44.99', yearNote:'soit $539.89/an',
+        id:'diamant', name:'bill_plan_dmt', icon:'💎', cls:'diamant',
+        month:'$49.99', year:'$44.99', yearNote:'bill_year_dmt',
         feats:[
-          ['Tout le plan Business', true],
-          ['📺 10 chaînes', true],
-          ['💎 Audit de chaîne avancé', true],
-          ['💎 Rank Tracker', true],
-          ['5000 analyses / jour', true],
-          ['2000 titres IA / jour', true],
+          ['bill_f_dmt_1', true],
+          ['bill_f_dmt_2', true],
+          ['bill_f_dmt_3', true],
+          ['bill_f_dmt_4', true],
+          ['bill_f_dmt_5', true],
+          ['bill_f_dmt_6', true],
         ]
       }
     ];
@@ -196,22 +272,22 @@
       const wrap = document.getElementById('plans');
       wrap.innerHTML = PLANS.map(p=>{
         const price = interval==='month' ? p.month : p.year;
-        const note  = p.id==='free' ? '' : (interval==='year' ? p.yearNote : 'par mois');
+        const note  = p.id==='free' ? '' : (interval==='year' ? t(p.yearNote) : t('bill_per_month'));
         const isCurrent = p.id===currentPlan;
         let btn;
         if (p.id==='free'){
-          btn = `<button class="choose ghost" disabled>${isCurrent?'Plan actuel':'Gratuit'}</button>`;
+          btn = `<button class="choose ghost" disabled>${isCurrent?t('bill_current_plan'):t('bill_free_btn')}</button>`;
         } else if (isCurrent){
-          btn = `<button class="choose ghost" disabled>✓ Ton plan actuel</button>`;
+          btn = `<button class="choose ghost" disabled>✓ ${t('bill_your_plan')}</button>`;
         } else {
-          btn = `<button class="choose ${p.cls}" onclick="checkout('${p.id}')">${p.icon} Choisir ${p.name}</button>`;
+          btn = `<button class="choose ${p.cls}" onclick="checkout('${p.id}')">${p.icon} ${t('bill_choose')} ${t(p.name)}</button>`;
         }
-        const feats = p.feats.map(f=>`<li class="${f[1]?'':'no'}"><span class="ic">${f[1]?'✓':'✕'}</span> ${f[0]}</li>`).join('');
+        const feats = p.feats.map(f=>`<li class="${f[1]?'':'no'}"><span class="ic">${f[1]?'✓':'✕'}</span> ${t(f[0])}</li>`).join('');
         return `
           <div class="plan-card ${p.popular?'popular':''}">
-            ${p.popular?'<div class="popular-tag">★ Le plus populaire</div>':''}
-            <div class="plan-name">${p.icon} ${p.name}</div>
-            <div class="plan-price">${price} <small>${p.id!=='free'?'/mois':''}</small></div>
+            ${p.popular?`<div class="popular-tag">★ ${t('bill_popular')}</div>`:''}
+            <div class="plan-name">${p.icon} ${t(p.name)}</div>
+            <div class="plan-price">${price} <small>${p.id!=='free'?t('bill_per_month_s'):''}</small></div>
             <div class="plan-year">${note}</div>
             <ul class="feats">${feats}</ul>
             ${btn}
@@ -237,10 +313,10 @@
       // Cryptomus: Appel API pour créer le paiement
       if(provider === 'cryptomus'){
         msg.style.color = 'var(--muted)';
-        msg.textContent = '⏳ Création du paiement Cryptomus...';
+        msg.textContent = t('bill_loading_crypt');
         try{
           const session = await Auth.getSession();
-          if(!session?.access_token){ msg.textContent='⚠️ Connecte-toi d\'abord.'; setTimeout(()=>location.href='login',1200); return; }
+          if(!session?.access_token){ msg.textContent=t('bill_err_login'); setTimeout(()=>location.href='login',1200); return; }
           const res = await fetch(`${API_BASE}/api/subscription/checkout/cryptomus`,{
             method:'POST',
             headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`},
@@ -251,7 +327,7 @@
             window.location.href = data.checkout_url;
           } else {
             msg.style.color='var(--red)';
-            msg.textContent = '❌ ' + (data.error || 'Erreur Cryptomus');
+            msg.textContent = '❌ ' + (data.error || t('bill_err_crypt'));
           }
         }catch(e){
           msg.style.color='var(--red)';
@@ -262,10 +338,10 @@
 
       // PayPal: Appel API
       msg.style.color = 'var(--muted)';
-      msg.textContent = '⏳ Redirection vers PayPal...';
+      msg.textContent = t('bill_loading_pp');
       try{
         const session = await Auth.getSession();
-        if(!session?.access_token){ msg.textContent='⚠️ Connecte-toi d\'abord.'; setTimeout(()=>location.href='login',1200); return; }
+        if(!session?.access_token){ msg.textContent=t('bill_err_login'); setTimeout(()=>location.href='login',1200); return; }
         const res = await fetch(`${API_BASE}/api/subscription/checkout/paypal`,{
           method:'POST',
           headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`},
@@ -276,7 +352,7 @@
           window.location.href = data.checkout_url;
         } else {
           msg.style.color='var(--red)';
-          msg.textContent = '❌ ' + (data.error || 'Erreur PayPal');
+          msg.textContent = '❌ ' + (data.error || t('bill_err_pp'));
         }
       }catch(e){
         msg.style.color='var(--red)';
@@ -285,7 +361,7 @@
     }
 
     async function cancelSubscription(){
-      if(!confirm('Annuler ton abonnement ? Tu repasseras en Gratuit à la fin de la période.')) return;
+      if(!confirm(t('bill_confirm_cancel'))) return;
       const msg = document.getElementById('msg');
       try{
         const session = await Auth.getSession();
@@ -293,7 +369,7 @@
           method:'POST',
           headers:{'Authorization':`Bearer ${session.access_token}`}
         });
-        if(res.ok){ msg.style.color='var(--green)'; msg.textContent='✅ Abonnement annulé.'; setTimeout(()=>location.reload(),1500); }
+        if(res.ok){ msg.style.color='var(--green)'; msg.textContent=t('bill_ok_cancel'); setTimeout(()=>location.reload(),1500); }
         else { const d=await res.json().catch(()=>({})); msg.style.color='var(--red)'; msg.textContent='❌ '+(d.error||'Erreur'); }
       }catch(e){ msg.style.color='var(--red)'; msg.textContent='❌ '+e.message; }
     }
@@ -313,7 +389,7 @@
             document.getElementById('cancelRow').style.display='block';
             if(u.subscription_expiry){
               const d=new Date(u.subscription_expiry);
-              document.getElementById('curExpiry').textContent = 'Valide jusqu\'au ' + d.toLocaleDateString('fr-FR');
+              document.getElementById('curExpiry').textContent = t('bill_valid_until') + ' ' + d.toLocaleDateString();
             }
           }
         }

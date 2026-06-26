@@ -191,7 +191,30 @@
       ch_plan_pro:{fr:'Plan PRO : vous pouvez analyser 1 seule chaîne YouTube',en:'PRO plan: you can analyze 1 YouTube channel',es:'Plan PRO: puedes analizar 1 canal de YouTube',ar:'باقة PRO: يمكنك تحليل قناة يوتيوب واحدة'},
       ch_plan_business:{fr:"Plan BUSINESS : sélectionnez jusqu'à 5 chaînes YouTube",en:'BUSINESS plan: select up to 5 YouTube channels',es:'Plan BUSINESS: selecciona hasta 5 canales de YouTube',ar:'باقة BUSINESS: اختر حتى 5 قنوات يوتيوب'},
       ch_plan_diamant:{fr:"Plan DIAMANT : sélectionnez jusqu'à 10 chaînes YouTube",en:'DIAMANT plan: select up to 10 YouTube channels',es:'Plan DIAMANT: selecciona hasta 10 canales de YouTube',ar:'باقة DIAMANT: اختر حتى 10 قنوات يوتيوب'},
-      ch_multi_n:{fr:'Ajouter vos chaînes YouTube (jusqu\'à {n}) :',en:'Add your YouTube channels (up to {n}):',es:'Añade tus canales de YouTube (hasta {n}):',ar:'أضف قنواتك على يوتيوب (حتى {n}):'}
+      ch_multi_n:{fr:'Ajouter vos chaînes YouTube (jusqu\'à {n}) :',en:'Add your YouTube channels (up to {n}):',es:'Añade tus canales de YouTube (hasta {n}):',ar:'أضف قنواتك على يوتيوب (حتى {n}):'},
+      /* ── SIDEBAR ── */
+      sb_home:{fr:'Tableau de bord',en:'Dashboard',ar:'لوحة التحكم'},
+      sb_studio:{fr:'Studio',en:'Studio',ar:'الاستوديو'},
+      sb_channels:{fr:'Mes chaînes',en:'My channels',ar:'قنواتي'},
+      sb_sub:{fr:'Abonnement',en:'Subscription',ar:'الاشتراك'},
+      sb_account:{fr:'Compte',en:'Account',ar:'الحساب'},
+      sb_plans:{fr:'Forfaits',en:'Plans',ar:'الباقات'},
+      sb_logout:{fr:'Déconnexion',en:'Log out',ar:'تسجيل الخروج'},
+      /* ── UI ── */
+      ch_loading:{fr:'Chargement...',en:'Loading...',ar:'جارٍ التحميل...'},
+      ch_selected:{fr:'sélectionnées',en:'selected',ar:'مختارة'},
+      ch_remove:{fr:'Retirer',en:'Remove',ar:'إزالة'},
+      ch_video_channel:{fr:'Chaîne de la vidéo',en:'Video channel',ar:'قناة الفيديو'},
+      /* ── ERREURS JS ── */
+      ch_err_not_auth:{fr:'Non authentifié',en:'Not authenticated',ar:'غير مُصادق عليه'},
+      ch_err_token:{fr:'Token invalide',en:'Invalid token',ar:'رمز غير صالح'},
+      ch_err_load:{fr:'Erreur lors du chargement',en:'Loading error',ar:'خطأ أثناء التحميل'},
+      ch_err_invalid_link:{fr:'Lien invalide. Colle le lien de ta chaîne (youtube.com/@nom) ou d\'une de tes vidéos',en:'Invalid link. Paste your channel link (youtube.com/@name) or one of your video links',ar:'رابط غير صالح. الصق رابط قناتك (youtube.com/@الاسم) أو أحد روابط مقاطعك'},
+      ch_err_already_added:{fr:'Cette chaîne est déjà ajoutée',en:'This channel is already added',ar:'هذه القناة مضافة بالفعل'},
+      ch_err_max:{fr:'Maximum {n} chaînes pour ton forfait',en:'Maximum {n} channels for your plan',ar:'الحد الأقصى {n} قنوات لخطّتك'},
+      ch_err_select_one:{fr:'Sélectionnez au moins 1 chaîne',en:'Select at least 1 channel',ar:'اختر قناة واحدة على الأقل'},
+      ch_err_add:{fr:'Erreur lors de l\'ajout de la chaîne',en:'Error adding channel',ar:'خطأ أثناء إضافة القناة'},
+      ch_err_select:{fr:'Erreur lors de la sélection',en:'Selection error',ar:'خطأ أثناء الاختيار'},
     });
   </script>
   <script src="/js/meta-pixel.js"></script>
@@ -199,14 +222,14 @@
 <body>
   <aside class="app-side">
     <div class="sb-brand"><span class="lg">✦</span> <span>VidSpark AI</span></div>
-    <a class="sb-link" href="dashboard.html"><span>🏠</span> <span>Tableau de bord</span></a>
-    <a class="sb-link" href="diamant.html"><span>✦</span> <span>Studio</span></a>
-    <a class="sb-link active" href="channels.html"><span>📺</span> <span>Mes chaînes</span></a>
-    <a class="sb-link" href="billing.html"><span>💳</span> <span>Abonnement</span></a>
-    <a class="sb-link" href="account.html"><span>⚙️</span> <span>Compte</span></a>
+    <a class="sb-link" href="dashboard.html"><span>🏠</span> <span data-i18n="sb_home">Tableau de bord</span></a>
+    <a class="sb-link" href="diamant.html"><span>✦</span> <span data-i18n="sb_studio">Studio</span></a>
+    <a class="sb-link active" href="channels.html"><span>📺</span> <span data-i18n="sb_channels">Mes chaînes</span></a>
+    <a class="sb-link" href="billing.html"><span>💳</span> <span data-i18n="sb_sub">Abonnement</span></a>
+    <a class="sb-link" href="account.html"><span>⚙️</span> <span data-i18n="sb_account">Compte</span></a>
     <div class="sb-foot">
-      <a class="sb-link" href="https://vidsparkpro.com/pricing.html"><span>🏷️</span> <span>Forfaits</span></a>
-      <a class="sb-link sb-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';"><span>🚪</span> <span>Déconnexion</span></a>
+      <a class="sb-link" href="https://vidsparkpro.com/pricing.html"><span>🏷️</span> <span data-i18n="sb_plans">Forfaits</span></a>
+      <a class="sb-link sb-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';"><span>🚪</span> <span data-i18n="sb_logout">Déconnexion</span></a>
     </div>
   </aside>
 
@@ -243,7 +266,7 @@
           </p>
           <div id="channelsGrid" class="channels-grid" style="margin-top:12px; display:none;"></div>
           <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
-            <span id="selectedCount">0</span>/<span id="maxCount">5</span> sélectionnées
+            <span id="selectedCount">0</span>/<span id="maxCount">5</span> <span data-i18n="ch_selected">sélectionnées</span>
           </p>
         </div>
       </div>
@@ -253,7 +276,7 @@
 
     <div id="loading" class="loading">
       <div class="spinner"></div>
-      <p style="margin-top: 12px;">Chargement...</p>
+      <p style="margin-top: 12px;" data-i18n="ch_loading">Chargement...</p>
     </div>
   </div>
 
@@ -277,7 +300,7 @@
         // Récupérer l'utilisateur
         const user = await Auth.getCurrentUser();
         if (!user) {
-          showError('Non authentifié');
+          showError(t('ch_err_not_auth'));
           setLoading(false);
           return;
         }
@@ -285,7 +308,7 @@
         const session = await Auth.getSession();
         const token = session?.access_token;
         if (!token) {
-          showError('Token invalide');
+          showError(t('ch_err_token'));
           setLoading(false);
           return;
         }
@@ -337,7 +360,7 @@
 
       } catch (err) {
         console.error('Erreur loadChannels:', err);
-        showError('Erreur lors du chargement: ' + err.message);
+        showError(t('ch_err_load') + ': ' + err.message);
         setLoading(false);
       }
     }
@@ -373,7 +396,7 @@
       if (c) return { id: c[1], name: c[1] };
       // 4) Lien d'une VIDÉO (watch?v=, youtu.be/, /shorts/, /live/) → le backend remonte à la chaîne
       let v = dec.match(/(?:[?&]v=|youtu\.be\/|\/shorts\/|\/live\/|\/embed\/)([a-zA-Z0-9_-]{11})/);
-      if (v) return { id: 'video:' + v[1], name: 'Chaîne de la vidéo' };
+      if (v) return { id: 'video:' + v[1], name: t('ch_video_channel') };
       return null;
     }
 
@@ -384,14 +407,14 @@
 
       const parsed = parseChannelInput(input.value);
       if (!parsed) {
-        showError('Lien invalide. Colle le lien de ta chaîne (youtube.com/@nom) ou d\'une de tes vidéos');
+        showError(t('ch_err_invalid_link'));
         return;
       }
       if (selectedChannels.some(ch => ch.id === parsed.id)) {
-        showError('Cette chaîne est déjà ajoutée'); return;
+        showError(t('ch_err_already_added')); return;
       }
       if (selectedChannels.length >= maxChannels) {
-        showError(`Maximum ${maxChannels} chaînes pour ton forfait`); return;
+        showError(t('ch_err_max').replace('{n}', maxChannels)); return;
       }
 
       selectedChannels.push(parsed);
@@ -415,7 +438,7 @@
             <div class="channel-name">${ch.name}</div>
             <div class="channel-id">${ch.id}</div>
           </div>
-          <button type="button" onclick="removeChannel('${ch.id}')" style="background:transparent;border:1px solid #2b3647;color:#ff6b6b;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;">Retirer</button>
+          <button type="button" onclick="removeChannel('${ch.id}')" style="background:transparent;border:1px solid #2b3647;color:#ff6b6b;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;">${t('ch_remove')}</button>
         </div>
       `).join('');
       document.getElementById('selectedCount').textContent = selectedChannels.length;
@@ -428,7 +451,7 @@
         const parsed = parseChannelInput(channelIdInput?.value);
 
         if (!parsed) {
-          showError('Lien invalide. Colle le lien de ta chaîne (youtube.com/@nom) ou d\'une de tes vidéos');
+          showError(t('ch_err_invalid_link'));
           return;
         }
 
@@ -442,7 +465,7 @@
 
     async function submitBusinessMode() {
       if (selectedChannels.length === 0) {
-        showError('Sélectionnez au moins 1 chaîne');
+        showError(t('ch_err_select_one'));
         return;
       }
 
@@ -492,7 +515,7 @@
             method: 'POST', headers, body: JSON.stringify(body)
           });
           const data = await res.json().catch(() => ({}));
-          if (!res.ok) throw new Error(data.error || 'Erreur lors de l\'ajout de la chaîne');
+          if (!res.ok) throw new Error(data.error || t('ch_err_add'));
         }
 
         // Succès! Aller au dashboard
@@ -500,7 +523,7 @@
 
       } catch (err) {
         console.error('Erreur:', err);
-        showError('Erreur lors de la sélection: ' + err.message);
+        showError(t('ch_err_select') + ': ' + err.message);
         setLoading(false);
       }
     }

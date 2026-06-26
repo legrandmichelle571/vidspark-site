@@ -248,16 +248,34 @@
 .tool-tile{border:none !important;}
 </style>
   <script src="/js/i18n.js"></script>
+  <script>
+  registerI18n({
+    ob_title:{fr:'Bienvenue sur VidSpark AI',en:'Welcome to VidSpark AI',ar:'مرحبًا بك في VidSpark AI'},
+    ob_sub:{fr:'Configurons ton compte',en:"Let's set up your account",ar:'لنقم بإعداد حسابك'},
+    ob_step:{fr:'Étape 1 sur 2',en:'Step 1 of 2',ar:'الخطوة 1 من 2'},
+    ob_loading:{fr:'Chargement de tes chaînes YouTube...',en:'Loading your YouTube channels...',ar:'جارٍ تحميل قنوات يوتيوب...'},
+    ob_select_h:{fr:'Sélectionner ta chaîne principale',en:'Select Your Primary Channel',ar:'اختر قناتك الرئيسية'},
+    ob_select_p:{fr:'Choisis la chaîne YouTube que tu veux analyser. Tu peux ajouter d\'autres chaînes plus tard.',en:'Choose the YouTube channel you want to analyze. You can add more channels later.',ar:'اختر قناة يوتيوب التي تريد تحليلها. يمكنك إضافة قنوات أخرى لاحقًا.'},
+    ob_back:{fr:'Retour',en:'Back',ar:'رجوع'},
+    ob_continue:{fr:'Continuer',en:'Continue',ar:'متابعة'},
+    ob_skip:{fr:'Ignorer pour l\'instant',en:'Skip for now',ar:'تخطّي الآن'},
+    ob_no_channels:{fr:'Aucune chaîne YouTube trouvée. Assure-toi que ton compte Google a des chaînes YouTube.',en:'No YouTube channels found. Make sure your Google account has YouTube channels.',ar:'لم يتم العثور على قنوات يوتيوب. تأكد من أن حساب Google لديك يحتوي على قنوات يوتيوب.'},
+    ob_err_load:{fr:'Échec du chargement de tes chaînes YouTube. Réessaie.',en:'Failed to load your YouTube channels. Please try again.',ar:'فشل تحميل قنوات يوتيوب. يرجى المحاولة مجددًا.'},
+    ob_err_save:{fr:'Échec de l\'enregistrement de ta chaîne. Réessaie.',en:'Failed to save your channel. Please try again.',ar:'فشل حفظ قناتك. يرجى المحاولة مجددًا.'},
+    ob_subscribers:{fr:'abonnés',en:'subscribers',ar:'مشترك'},
+    ob_yt_channel:{fr:'Chaîne YouTube',en:'YouTube channel',ar:'قناة يوتيوب'},
+  });
+  </script>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <div class="logo">✨</div>
-      <h1 class="title">Welcome to VidSpark AI</h1>
-      <p class="subtitle">Let's set up your account</p>
+      <h1 class="title" data-i18n="ob_title">Welcome to VidSpark AI</h1>
+      <p class="subtitle" data-i18n="ob_sub">Let's set up your account</p>
       <div class="step-indicator">
         <div class="step-dot active"></div>
-        <span>Step 1 of 2</span>
+        <span data-i18n="ob_step">Step 1 of 2</span>
         <div class="step-dot"></div>
       </div>
     </div>
@@ -267,12 +285,12 @@
 
       <div id="loading" class="loading">
         <div class="spinner"></div>
-        <p>Loading your YouTube channels...</p>
+        <p data-i18n="ob_loading">Loading your YouTube channels...</p>
       </div>
 
       <div id="channelsContent" style="display: none;">
-        <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Select Your Primary Channel</h2>
-        <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">
+        <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;" data-i18n="ob_select_h">Select Your Primary Channel</h2>
+        <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;" data-i18n="ob_select_p">
           Choose the YouTube channel you want to analyze. You can add more channels later.
         </p>
 
@@ -280,12 +298,12 @@
       </div>
 
       <div class="actions">
-        <button class="btn btn-secondary" onclick="goBack()">Back</button>
-        <button class="btn btn-primary" id="continueBtn" disabled onclick="continueSetup()">Continue</button>
+        <button class="btn btn-secondary" onclick="goBack()" data-i18n="ob_back">Back</button>
+        <button class="btn btn-primary" id="continueBtn" disabled onclick="continueSetup()" data-i18n="ob_continue">Continue</button>
       </div>
 
       <div class="skip-link">
-        <a href="#" onclick="skipOnboarding(event)">Skip for now</a>
+        <a href="#" onclick="skipOnboarding(event)" data-i18n="ob_skip">Skip for now</a>
       </div>
     </div>
   </div>
@@ -310,7 +328,7 @@
 
         if (channels.length === 0) {
           document.getElementById('error').innerHTML =
-            '<div class="error">No YouTube channels found. Make sure your Google account has YouTube channels.</div>';
+            `<div class="error">${t('ob_no_channels')}</div>`;
           return;
         }
 
@@ -320,7 +338,7 @@
         console.error('[Onboarding] Load channels error:', err);
         document.getElementById('loading').style.display = 'none';
         document.getElementById('error').innerHTML =
-          '<div class="error">Failed to load your YouTube channels. Please try again.</div>';
+          `<div class="error">${t('ob_err_load')}</div>`;
       }
     }
 
@@ -332,7 +350,7 @@
           <div class="channel-info">
             <div class="channel-name">${channel.title}</div>
             <div class="channel-meta">
-              ${channel.subscriberCount ? `${channel.subscriberCount} subscribers` : 'YouTube channel'}
+              ${channel.subscriberCount ? `${channel.subscriberCount} ${t('ob_subscribers')}` : t('ob_yt_channel')}
             </div>
           </div>
         </div>
@@ -369,7 +387,7 @@
       } catch (err) {
         console.error('[Onboarding] Setup error:', err);
         document.getElementById('error').innerHTML =
-          '<div class="error">Failed to save your channel. Please try again.</div>';
+          `<div class="error">${t('ob_err_save')}</div>`;
         document.getElementById('continueBtn').disabled = false;
       }
     }
