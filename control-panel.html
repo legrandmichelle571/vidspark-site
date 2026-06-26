@@ -107,6 +107,8 @@
       <button data-page="users" onclick="nav('users')">👥 Utilisateurs</button>
       <button data-page="payments" onclick="nav('payments')">💳 Paiements</button>
       <button data-page="promos" onclick="nav('promos')">🏷️ Codes promo</button>
+      <button data-page="licenses" onclick="nav('licenses')">🔑 Licences</button>
+      <button data-page="usage" onclick="nav('usage')">📈 Usage</button>
       <button data-page="ads" onclick="nav('ads')">📢 Publicités</button>
       <button data-page="logs" onclick="nav('logs')">📜 Journal</button>
       <button onclick="loadAll()">🔄 Actualiser</button>
@@ -175,10 +177,29 @@ function nav(p){
   else if(p==='users')loadUsers();
   else if(p==='payments')loadPayments();
   else if(p==='promos')loadPromos();
+  else if(p==='licenses')loadLicenses();
+  else if(p==='usage')loadUsage();
   else if(p==='logs')loadLogs();
   else if(p==='ads')loadAds();
 }
 function loadAll(){nav(curPage);}
+
+/* ── Helpers graphiques (SVG/HTML, sans dépendance externe) ── */
+function svgBars(data,{color='--purple',h=130,fmt=v=>v}={}){
+  if(!data||!data.length)return '<div class="muted" style="padding:20px">Aucune donnée</div>';
+  const val=d=>d.value!==undefined?d.value:d.count;
+  const max=Math.max(...data.map(val),1), n=data.length, bw=100/n;
+  const bars=data.map((d,i)=>{const v=val(d);const bh=max?(v/max)*92:0;const lbl=d.date?d.date.slice(5):(d.key||'');return `<rect x="${(i*bw+bw*0.12).toFixed(2)}" y="${(100-bh).toFixed(2)}" width="${(bw*0.76).toFixed(2)}" height="${bh.toFixed(2)}" rx="0.5" fill="var(${color})"><title>${lbl} : ${fmt(v)}</title></rect>`;}).join('');
+  return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:${h}px;background:var(--s2);border-radius:8px;display:block;">${bars}</svg>`;
+}
+function hBars(items,{color='--purple',fmt=v=>v}={}){
+  if(!items||!items.length)return '<div class="muted" style="padding:14px">Aucune donnée</div>';
+  const max=Math.max(...items.map(i=>i.count),1);
+  return '<div style="display:flex;flex-direction:column;gap:9px;">'+items.map(i=>`
+    <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>${(i.key||'—').toString().toUpperCase()}</span><span class="muted">${fmt(i.count)}</span></div>
+    <div style="background:var(--s2);border-radius:6px;height:10px;overflow:hidden;"><div style="width:${(i.count/max*100).toFixed(1)}%;height:100%;background:var(${color});border-radius:6px;"></div></div></div>`).join('')+'</div>';
+}
+function chartCard(title,inner){return `<div class="card" style="margin-bottom:16px;"><div style="font-weight:700;margin-bottom:10px;font-size:14px;">${title}</div>${inner}</div>`;}
 
 async function loadDashboard(){
   const m=document.getElementById('main');
@@ -202,8 +223,56 @@ async function loadDashboard(){
         <div class="card"><div class="lbl">Actifs (7j)</div><div class="val">${s.users.active_7d}</div></div>
         <div class="card"><div class="lbl">Analyses totales</div><div class="val">${s.analyses.total}</div></div>
         <div class="card"><div class="lbl">Conversion</div><div class="val">${s.users.conversion_rate}%</div></div>
-      </div>`;
+      </div>
+      <div id="dashCharts"><div class="muted">Chargement des graphiques…</div></div>`;
+    /* Graphiques en second (si l'endpoint n'est pas encore déployé, les KPI restent affichés) */
+    try{
+      const c=await api('/stats/charts');
+      document.getElementById('dashCharts').innerHTML=`
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+          ${chartCard('📈 Inscrits / jour (30j)',svgBars(c.signups,{color:'--blue'}))}
+          ${chartCard('💰 Revenus / jour (30j)',svgBars(c.revenue,{color:'--green',fmt:v=>'$'+v}))}
+          ${chartCard('🥧 Répartition des plans',hBars(c.by_plan,{color:'--purple'}))}
+        </div>`;
+    }catch(e){document.getElementById('dashCharts').innerHTML='<div class="muted">Graphiques indisponibles ('+e.message+'). Le backend redéploie peut-être encore, réessaie dans 1 min.</div>';}
   }catch(e){m.innerHTML='<div class="empty">❌ '+e.message+'</div>';}
+}
+
+async function loadUsage(){
+  const m=document.getElementById('main');
+  m.innerHTML='<div class="page-title">📈 Usage</div><div class="muted">Chargement…</div>';
+  try{
+    const c=await api('/stats/charts');
+    m.innerHTML=`<div class="page-title">📈 Usage</div>
+      ${chartCard('🔬 Analyses lancées / jour (30j)',svgBars(c.analyses,{color:'--purple'}))}
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+        ${chartCard('🌍 Utilisateurs par pays',hBars(c.by_country,{color:'--blue'}))}
+        ${chartCard('🗣️ Utilisateurs par langue',hBars(c.by_language,{color:'--amber'}))}
+      </div>`;
+  }catch(e){m.innerHTML='<div class="page-title">📈 Usage</div><div class="empty">❌ '+e.message+'</div>';}
+}
+
+async function loadLicenses(){
+  const m=document.getElementById('main');
+  m.innerHTML='<div class="page-title">🔑 Licences manuelles</div><div class="muted">Chargement…</div>';
+  try{
+    const d=await api('/licenses');const L=d.licenses||[];
+    const rows=L.map(x=>`<tr>
+      <td>${x.user?.email||x.user_id||'—'}</td>
+      <td><span class="pill ${x.plan==='business'?'business':x.plan==='lifetime'?'diamant':'pro'}">${(x.plan||'').toUpperCase()}</span></td>
+      <td class="muted">${x.reason||'—'}</td>
+      <td>${x.expires_at?new Date(x.expires_at).toLocaleDateString('fr-FR'):'<span class="muted">À vie</span>'}</td>
+      <td><span class="pill ${x.is_active?'active':'suspended'}">${x.is_active?'Active':'Inactive'}</span></td>
+      <td class="muted">${x.created_at?new Date(x.created_at).toLocaleDateString('fr-FR'):''}</td></tr>`).join('');
+    m.innerHTML=`<div class="page-title">🔑 Licences manuelles</div>
+      <div class="muted" style="margin-bottom:12px">Pour accorder une licence : onglet Utilisateurs → clic sur l'email → section « Licence manuelle » dans la fiche.</div>`+
+      (L.length?`<table><thead><tr><th>Utilisateur</th><th>Plan</th><th>Raison</th><th>Expire</th><th>Statut</th><th>Créée</th></tr></thead><tbody>${rows}</tbody></table>`:'<div class="empty">Aucune licence manuelle</div>');
+  }catch(e){m.innerHTML='<div class="page-title">🔑 Licences manuelles</div><div class="empty">❌ '+e.message+'</div>';}
+}
+async function grantLicense(id){
+  const plan=document.getElementById('licPlan').value;
+  const reason=document.getElementById('licReason').value.trim();
+  try{await api('/license',{method:'POST',body:JSON.stringify({user_id:id,plan,reason})});toast('✅ Licence '+plan+' accordée');userDetail(id);renderUsers();}catch(e){toast('❌ '+e.message);}
 }
 
 async function loadUsers(){
@@ -316,9 +385,18 @@ async function userDetail(id){
         <input type="date" id="expDate" style="flex:1;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:8px;color:var(--text);">
         <button class="btn btn-sm" onclick="setExpiry('${id}')">Enregistrer</button>
       </div>
-      <div style="margin-top:6px;">
+      <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-ghost" onclick="extendExpiry('${id}',-30)">−30 j</button>
         <button class="btn btn-sm btn-ghost" onclick="extendExpiry('${id}',30)">+30 j</button>
         <button class="btn btn-sm btn-ghost" onclick="extendExpiry('${id}',365)">+1 an</button>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin:16px 0 4px;">🔑 LICENCE MANUELLE</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <select id="licPlan" style="background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:8px;color:var(--text);">
+          <option value="pro">Pro</option><option value="business">Business</option><option value="lifetime">À vie (Pro)</option>
+        </select>
+        <input id="licReason" placeholder="Raison (ex: cadeau, partenaire)" style="flex:1;min-width:140px;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:8px;color:var(--text);">
+        <button class="btn btn-sm btn-green" onclick="grantLicense('${id}')">Accorder</button>
       </div>`;
   }catch(e){document.getElementById('modalBody').innerHTML='<div class="empty">❌ '+e.message+'</div>';}
 }
@@ -392,7 +470,7 @@ async function renderPromos(){
     const d=await api('/promos');const p=d.promos||[];
     if(!p.length){el.innerHTML='<div class="empty">Aucun code promo</div>';return;}
     el.innerHTML='<table><thead><tr><th>Code</th><th>Type</th><th>Valeur</th><th>Usages</th><th>Actif</th><th></th></tr></thead><tbody>'+
-      p.map(x=>`<tr><td><b>${x.code}</b></td><td class="muted">${x.type}</td><td>${x.discount_pct?x.discount_pct+'%':x.trial_days?x.trial_days+'j essai':x.plan||'—'}</td><td class="muted">${x.uses||0}/${x.max_uses||'∞'}</td><td><span class="pill ${x.active?'active':'suspended'}">${x.active?'Oui':'Non'}</span></td><td><button class="btn btn-sm btn-ghost" onclick="togglePromo('${x.id}')">${x.active?'Désactiver':'Activer'}</button></td></tr>`).join('')+
+      p.map(x=>`<tr><td><b>${x.code}</b></td><td class="muted">${x.type}</td><td>${x.discount_pct?x.discount_pct+'%':x.trial_days?x.trial_days+'j essai':x.plan||'—'}</td><td class="muted">${x.uses||0}/${x.max_uses||'∞'}</td><td><span class="pill ${x.is_active?'active':'suspended'}">${x.is_active?'Oui':'Non'}</span></td><td><button class="btn btn-sm btn-ghost" onclick="togglePromo('${x.id}')">${x.is_active?'Désactiver':'Activer'}</button></td></tr>`).join('')+
       '</tbody></table>';
   }catch(e){el.innerHTML='<div class="empty">❌ '+e.message+'</div>';}
 }
