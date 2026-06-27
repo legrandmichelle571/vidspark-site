@@ -57,8 +57,11 @@ const API = {
       const response = await fetch(`${this.baseURL}${endpoint}`, options);
       const data = await response.json();
 
-      // Si token expiré, tenter refresh
-      if (response.status === 401 && endpoint !== '/auth/refresh') {
+      // Si token expiré, tenter refresh.
+      // /auth/google et /auth/refresh sont exclus : ce sont des appels de
+      // provisionnement/auth qui ne doivent JAMAIS déclencher un logout global
+      // (sinon boucle login.html ↔ dashboard = clignotement à la connexion).
+      if (response.status === 401 && endpoint !== '/auth/refresh' && endpoint !== '/auth/google') {
         const refreshed = await this.refreshToken();
         if (refreshed) {
           // Recommencer la requête avec le nouveau token
