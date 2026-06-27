@@ -35,6 +35,12 @@
     if(!fromMsg){
       try { document.querySelectorAll('iframe').forEach(f=>f.contentWindow && f.contentWindow.postMessage({vsLang:code},'*')); } catch(e){}
       try { if(inIframe && window.parent) window.parent.postMessage({vsLang:code},'*'); } catch(e){}
+      // Recharge la page : le contenu généré en JS (résultats d'outils, listes
+      // dynamiques, cartes…) n'est pas re-traduit par applyI18n() seul. La langue
+      // est déjà persistée ci-dessus, donc au rechargement TOUT passe dans la
+      // nouvelle langue — plus besoin d'actualiser à la main. (fromMsg exclu pour
+      // éviter une boucle entre iframes/parent.)
+      try { setTimeout(function(){ location.reload(); }, 50); } catch(e){}
     }
   };
   window.addEventListener('message', e => {
