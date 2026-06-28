@@ -1616,6 +1616,7 @@
     }catch(e){}
   }
   function renderCoach(d){
+    window.__coach=d;   // mémorise pour initCharts (évite que les fausses courbes reviennent)
     const head=document.getElementById('coachHeader'), live=document.getElementById('coachLive');
     // ── Synchroniser la KPI "Score SEO" avec le score Coach ──
     try{
@@ -1934,16 +1935,12 @@
   }
 
   function initCharts(){
-    areaChart('chartSeo',    [48,52,50,58,61,65,63,70,74], '#FF9D1F');
-    areaChart('chartGrowth', [120,138,132,160,155,182,200,221,245], '#34d399');
-    barsChart('chartKw', [
-      {k:'youtube seo', v:88},
-      {k:'ai tools',    v:74},
-      {k:'tutorial',    v:63},
-      {k:'shorts',      v:55},
-      {k:'thumbnail',   v:41}
-    ]);
-    donutChart('chartOpt', 76, '#a78bfa');
+    /* Jamais de fausses courbes : si le coach a déjà répondu, on (re)peint les
+       vraies données ; sinon placeholder neutre en attendant l'hydratation. */
+    if(window.__coach){ try{ hydrateWidgets(window.__coach); }catch(e){} return; }
+    ['chartSeo','chartGrowth','chartKw','chartOpt'].forEach(function(id){
+      var e=document.getElementById(id); if(e) e.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">…</div>';
+    });
   }
   document.addEventListener('DOMContentLoaded', function(){ try{ initCharts(); }catch(e){} });
   document.addEventListener('vslangchange', function(){ /* i18n re-rendu géré par applyI18n */ });
