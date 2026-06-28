@@ -641,6 +641,8 @@
       an_leg_pot:{fr:'Potentiel',en:'Potential',ar:'الإمكانات'},
       dash_empty_rec:{fr:'Analyse ta première vidéo pour voir tes résultats ici.',en:'Analyze your first video to see your results here.',ar:'حلّل أول فيديو لك لرؤية نتائجك هنا.'},
       dash_vids:{fr:'vidéos',en:'videos',ar:'فيديو'},
+      dash_empty_trend:{fr:'Analyse une vidéo pour découvrir les tendances de ta niche.',en:'Analyze a video to discover your niche trends.',ar:'حلّل فيديو لاكتشاف رواج مجالك.'},
+      opp_vph:{fr:'vues/h',en:'views/h',ar:'مشاهدة/س'},
       ac_opp1:{fr:'« Outils IA 2026 »',en:'"AI tools 2026"',ar:'«أدوات الذكاء الاصطناعي 2026»'},
       ac_opp2:{fr:'« Algorithme YouTube »',en:'"YouTube algorithm"',ar:'«خوارزمية يوتيوب»'},
       ac_opp3:{fr:'« Chaîne sans visage »',en:'"faceless channel"',ar:'«قناة بدون وجه»'}
@@ -975,15 +977,19 @@
               </div>
               <div class="mini-panel">
                 <div class="mini-h"><span class="mh-ic">🧠</span> <span data-i18n="ac_recs">Recommandations IA</span></div>
+                <div id="acRecoList">
                 <div class="list-row"><div class="lr-ic" style="background:rgba(255,157,31,.12)">📝</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco1_t">Ajoute 3 mots-clés au titre</div><div class="lr-sub" data-i18n="ac_reco1_s">+18% de portée estimée</div></div></div>
                 <div class="list-row"><div class="lr-ic" style="background:rgba(52,211,153,.12)">⏱</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco2_t">Publie entre 18h–20h</div><div class="lr-sub" data-i18n="ac_reco2_s">Pic d'audience détecté</div></div></div>
                 <div class="list-row"><div class="lr-ic" style="background:rgba(96,165,250,.12)">🔁</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco3_t">Recycle ta vidéo en Short</div><div class="lr-sub" data-i18n="ac_reco3_s">3 moments forts repérés</div></div></div>
+                </div>
               </div>
               <div class="mini-panel">
                 <div class="mini-h"><span class="mh-ic">🚀</span> <span data-i18n="ac_opps">Opportunités tendance</span></div>
+                <div id="oppList">
                 <div class="opp-row"><span class="opp-tag hot">HOT</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp1">"AI tools 2026"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +240%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('trending')">→</button></div>
                 <div class="opp-row"><span class="opp-tag hot">HOT</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp2">"YouTube algorithm"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +180%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('trending')">→</button></div>
                 <div class="opp-row"><span class="opp-tag">UP</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp3">"faceless channel"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +95%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('ideas')">→</button></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1049,7 +1055,7 @@
         <aside class="dash-rail">
           <div class="card rail-card fade-in" style="--d:3">
             <div class="section-title"><span class="st-ic">🔑</span> <span data-i18n="rail_kw">Mots-clés tendance</span></div>
-            <div class="kw-chip-row">
+            <div class="kw-chip-row" id="kwChipRow">
               <span class="kw-chip">ai tools <span class="kw-up">▲ 240%</span></span>
               <span class="kw-chip">faceless <span class="kw-up">▲ 95%</span></span>
               <span class="kw-chip">capcut <span class="kw-up">▲ 61%</span></span>
@@ -1307,6 +1313,7 @@
         // 🔌 Envoyer les infos d'authentification à l'extension Chrome
         await sendAuthToExtension();
         loadCoach();
+        if(typeof loadTrending==='function') loadTrending();
       } catch (err) {
         console.error('[Dashboard] Load error:', err);
         loadingEl.innerHTML = `<div class="error">Failed to load dashboard: ${err.message}</div>`;
@@ -1593,6 +1600,7 @@
     document.getElementById('content').style.display='block';
     setActiveLink('home');
     if(typeof loadCoach==='function') loadCoach();
+    if(typeof loadTrending==='function') loadTrending();
   }
 
   /* ── Coach IA live : score de chaîne + résumé IA + plan data-driven ── */
@@ -1677,6 +1685,14 @@
         rec.innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-size:12.5px;">'+(window.t?t('dash_empty_rec'):'Analyse ta première vidéo pour voir tes résultats ici.')+'</div>';
       }
     }
+    /* 1b) Recommandations IA = actions priorisées du coach (réel, personnalisé) */
+    var reco=document.getElementById('acRecoList');
+    if(reco && d && d.actions && d.actions.length){
+      reco.innerHTML=d.actions.slice(0,3).map(function(a){
+        var lbl=(window.t? t('coach_a_'+a.key) : a.key);
+        return '<div class="list-row"><div class="lr-ic" style="background:rgba(255,157,31,.12)">'+esc(a.icon||'💡')+'</div><div class="lr-body"><div class="lr-title">'+esc(lbl)+'</div><div class="lr-sub">+'+a.gain+' '+(window.t?t('coach_pts'):'pts')+'</div></div></div>';
+      }).join('');
+    }
     /* 2) Charts Analytics = vrais scores de tes vidéos */
     if(has){
       var seo=d.videos.map(function(v){return v.seo;}).reverse();
@@ -1695,6 +1711,44 @@
       ['chartSeo','chartGrowth','chartKw','chartOpt'].forEach(function(id){ var e=document.getElementById(id); if(e) e.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">—</div>'; });
       ['legSeo','legViral','legScore','legPot'].forEach(function(id){ setTxt(id,'—'); });
       ['valSeo','valGrowth','valKw'].forEach(function(id){ setTxt(id,''); });
+    }
+  }
+
+  /* ── Tendances de la niche : mots-clés réels + vidéos qui montent (rail + opportunités) ── */
+  async function loadTrending(){
+    try{
+      if(!window.Auth) return;
+      var session=await Auth.getSession();
+      var token=(session&&session.access_token)||'';
+      if(!token) return;
+      var r=await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/user/trending',{headers:{'Authorization':'Bearer '+token}});
+      if(!r.ok) return;
+      renderTrending(await r.json());
+    }catch(e){}
+  }
+  function renderTrending(d){
+    var esc=function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+    var row=document.getElementById('kwChipRow');
+    if(row){
+      if(d && d.keywords && d.keywords.length){
+        row.innerHTML=d.keywords.map(function(k){
+          var lab=k.label?(' <span class="kw-up" style="color:'+(k.color||'#888')+'">'+esc(k.label)+'</span>'):'';
+          return '<span class="kw-chip">'+esc(k.term)+lab+'</span>';
+        }).join('');
+      } else if(d && d.has_data===false){
+        row.innerHTML='<span style="color:var(--muted);font-size:12px;">'+(window.t?t('dash_empty_trend'):'Analyse une vidéo pour découvrir les tendances de ta niche.')+'</span>';
+      }
+    }
+    var opp=document.getElementById('oppList');
+    if(opp){
+      if(d && d.videos && d.videos.length){
+        opp.innerHTML=d.videos.map(function(v){
+          var vph=v.vph>=1000?((Math.round(v.vph/100)/10)+'k'):v.vph;
+          return '<div class="opp-row"><span class="opp-tag hot">↑</span><div class="lr-body"><div class="lr-title">'+esc(v.title||'')+'</div><div class="lr-sub">'+esc(v.channel||'')+' · '+vph+' '+(window.t?t('opp_vph'):'vues/h')+'</div></div><a class="btn btn-ghost btn-sm" href="https://www.youtube.com/watch?v='+encodeURIComponent(v.videoId||'')+'" target="_blank" rel="noopener">→</a></div>';
+        }).join('');
+      } else if(d && d.has_data===false){
+        opp.innerHTML='<div style="padding:14px;text-align:center;color:var(--muted);font-size:12.5px;">'+(window.t?t('dash_empty_trend'):'Analyse une vidéo pour découvrir les tendances de ta niche.')+'</div>';
+      }
     }
   }
   </script>
