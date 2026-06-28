@@ -582,7 +582,7 @@
       an_title:{fr:'Analytique',en:'Analytics',ar:'التحليلات'},
       an_seo:{fr:'Progression SEO',en:'SEO progress',ar:'تقدّم SEO'},
       an_growth:{fr:'Croissance de la chaîne',en:'Channel growth',ar:'نمو القناة'},
-      an_kw:{fr:'Performance mots-clés',en:'Keyword performance',ar:'أداء الكلمات المفتاحية'},
+      an_kw:{fr:'Performance vidéos',en:'Video performance',ar:'أداء الفيديوهات'},
       an_opt:{fr:'Score d\'optimisation',en:'Optimization score',ar:'درجة التحسين'},
       rail_kw:{fr:'Mots-clés tendance',en:'Trending keywords',ar:'الكلمات المفتاحية الرائجة'},
       rail_news:{fr:'Actus YouTube',en:'YouTube news',ar:'أخبار يوتيوب'},
@@ -635,10 +635,12 @@
       ac_opp_search:{fr:'Recherche',en:'Search',ar:'بحث'},
       /* ── Labels ajoutés (traduction page complète) ── */
       db_switch:{fr:'🔄 Changer de compte',en:'🔄 Switch account',ar:'🔄 تبديل الحساب'},
-      an_leg_title:{fr:'Titre',en:'Title',ar:'العنوان'},
-      an_leg_tags:{fr:'Tags',en:'Tags',ar:'الوسوم'},
-      an_leg_desc:{fr:'Description',en:'Description',ar:'الوصف'},
-      an_leg_thumb:{fr:'Miniature',en:'Thumbnail',ar:'الصورة المصغّرة'},
+      an_leg_seo:{fr:'SEO moyen',en:'Avg SEO',ar:'متوسط SEO'},
+      an_leg_viral:{fr:'Viral moyen',en:'Avg Viral',ar:'متوسط الانتشار'},
+      an_leg_score:{fr:'Score',en:'Score',ar:'النتيجة'},
+      an_leg_pot:{fr:'Potentiel',en:'Potential',ar:'الإمكانات'},
+      dash_empty_rec:{fr:'Analyse ta première vidéo pour voir tes résultats ici.',en:'Analyze your first video to see your results here.',ar:'حلّل أول فيديو لك لرؤية نتائجك هنا.'},
+      dash_vids:{fr:'vidéos',en:'videos',ar:'فيديو'},
       ac_opp1:{fr:'« Outils IA 2026 »',en:'"AI tools 2026"',ar:'«أدوات الذكاء الاصطناعي 2026»'},
       ac_opp2:{fr:'« Algorithme YouTube »',en:'"YouTube algorithm"',ar:'«خوارزمية يوتيوب»'},
       ac_opp3:{fr:'« Chaîne sans visage »',en:'"faceless channel"',ar:'«قناة بدون وجه»'}
@@ -956,9 +958,11 @@
             <div class="ac-grid">
               <div class="mini-panel">
                 <div class="mini-h"><span class="mh-ic">🕑</span> <span data-i18n="ac_recent">Analyses récentes</span></div>
+                <div id="acRecentList">
                 <div class="list-row"><div class="lr-ic">🎬</div><div class="lr-body"><div class="lr-title" data-i18n="ac_rec1_t">Top 5 erreurs SEO</div><div class="lr-sub" data-i18n="ac_rec1_s">SEO · il y a 2h</div></div><div class="lr-score" style="color:var(--green)">87</div></div>
                 <div class="list-row"><div class="lr-ic">🔥</div><div class="lr-body"><div class="lr-title" data-i18n="ac_rec2_t">Ma formule hook viral</div><div class="lr-sub" data-i18n="ac_rec2_s">Viral · hier</div></div><div class="lr-score" style="color:var(--accent-l)">72</div></div>
                 <div class="list-row"><div class="lr-ic">🖼</div><div class="lr-body"><div class="lr-title" data-i18n="ac_rec3_t">Test A/B miniature</div><div class="lr-sub" data-i18n="ac_rec3_s">Studio · 2j</div></div><div class="lr-score" style="color:var(--amber)">64</div></div>
+                </div>
               </div>
               <div class="mini-panel">
                 <div class="mini-h"><span class="mh-ic">⚡</span> <span data-i18n="ac_quick">Actions rapides</span></div>
@@ -989,25 +993,25 @@
             <div class="section-title"><span class="st-ic">📈</span> <span data-i18n="an_title">Analytique</span><span class="st-spacer"></span><span class="link-more" onclick="openTool('audit')" data-i18n="db_audit">Audit de chaîne</span></div>
             <div class="charts-grid">
               <div class="chart-box">
-                <div class="chart-head"><span class="chart-title" data-i18n="an_seo">Progression SEO</span><span class="chart-val" style="color:var(--green)">+14%</span></div>
+                <div class="chart-head"><span class="chart-title" data-i18n="an_seo">Progression SEO</span><span class="chart-val" id="valSeo" style="color:var(--green)">+14%</span></div>
                 <div id="chartSeo"></div>
               </div>
               <div class="chart-box">
-                <div class="chart-head"><span class="chart-title" data-i18n="an_growth">Croissance de la chaîne</span><span class="chart-val" style="color:var(--green)">+8.2%</span></div>
+                <div class="chart-head"><span class="chart-title" data-i18n="an_growth">Croissance de la chaîne</span><span class="chart-val" id="valGrowth" style="color:var(--green)">+8.2%</span></div>
                 <div id="chartGrowth"></div>
               </div>
               <div class="chart-box">
-                <div class="chart-head"><span class="chart-title" data-i18n="an_kw">Performance mots-clés</span><span class="chart-val" style="color:var(--accent-l)">Top 10</span></div>
+                <div class="chart-head"><span class="chart-title" data-i18n="an_kw">Performance vidéos</span><span class="chart-val" id="valKw" style="color:var(--accent-l)">Top 10</span></div>
                 <div class="bars" id="chartKw"></div>
               </div>
               <div class="chart-box">
                 <div class="chart-head"><span class="chart-title" data-i18n="an_opt">Score d'optimisation</span></div>
                 <div class="donut-wrap"><div id="chartOpt"></div>
                   <div class="donut-legend">
-                    <span><b data-i18n="an_leg_title">Titre</b> · 92%</span>
-                    <span><b data-i18n="an_leg_tags">Tags</b> · 78%</span>
-                    <span><b data-i18n="an_leg_desc">Description</b> · 64%</span>
-                    <span><b data-i18n="an_leg_thumb">Miniature</b> · 71%</span>
+                    <span><b data-i18n="an_leg_seo">SEO moyen</b> · <span id="legSeo">—</span></span>
+                    <span><b data-i18n="an_leg_viral">Viral moyen</b> · <span id="legViral">—</span></span>
+                    <span><b data-i18n="an_leg_score">Score</b> · <span id="legScore">—</span></span>
+                    <span><b data-i18n="an_leg_pot">Potentiel</b> · <span id="legPot">—</span></span>
                   </div>
                 </div>
               </div>
@@ -1615,6 +1619,7 @@
         if(typeof runCounters==='function') runCounters();
       }
     }catch(e){}
+    try{ hydrateWidgets(d); }catch(e){}
     if(!head||!live||!window.t) return;
     const sum = t('coach_sum_'+(d.main_problem||'healthy'));
     if(d.has_data && d.score){
@@ -1648,6 +1653,48 @@
           </div>
           <button class="btn btn-primary btn-sm" onclick="openTool('${esc(a.goto)}')">${t('db_coach_cta')} →</button>
         </div>`).join('');
+    }
+  }
+
+  /* ── Hydrate les widgets du dashboard avec les VRAIES données de la chaîne (coach) ── */
+  function dashTimeAgo(iso){
+    try{ var diff=Date.now()-new Date(iso).getTime(); var h=Math.floor(diff/3.6e6);
+      if(h<1) return '•'; if(h<24) return h+'h'; return Math.floor(h/24)+'j'; }catch(e){ return ''; }
+  }
+  function dashCol(s){ return s>=80?'var(--green)':s>=60?'var(--accent-l)':'var(--amber)'; }
+  function setTxt(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; }
+  function hydrateWidgets(d){
+    var esc=function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+    var has = d && d.has_data && d.videos && d.videos.length;
+    /* 1) Analyses récentes = vraies vidéos analysées */
+    var rec=document.getElementById('acRecentList');
+    if(rec){
+      if(has){
+        rec.innerHTML=d.videos.slice(0,3).map(function(v){
+          return '<div class="list-row"><div class="lr-ic">🎬</div><div class="lr-body"><div class="lr-title">'+esc(v.title||'—')+'</div><div class="lr-sub">SEO '+v.seo+' · '+dashTimeAgo(v.created_at)+'</div></div><div class="lr-score" style="color:'+dashCol(v.score)+'">'+v.score+'</div></div>';
+        }).join('');
+      } else if(d && d.has_data===false){
+        rec.innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-size:12.5px;">'+(window.t?t('dash_empty_rec'):'Analyse ta première vidéo pour voir tes résultats ici.')+'</div>';
+      }
+    }
+    /* 2) Charts Analytics = vrais scores de tes vidéos */
+    if(has){
+      var seo=d.videos.map(function(v){return v.seo;}).reverse();
+      var sc=d.videos.map(function(v){return v.score;}).reverse();
+      try{ if(seo.length>=2){ areaChart('chartSeo',seo,'#FF9D1F'); areaChart('chartGrowth',sc,'#34d399'); } }catch(e){}
+      try{ barsChart('chartKw', d.videos.slice(0,5).map(function(v){ return {k:(v.title||'—').slice(0,16), v:v.score}; })); }catch(e){}
+      try{ donutChart('chartOpt', d.score, '#a78bfa'); }catch(e){}
+      setTxt('legSeo',(d.avg_seo!=null?d.avg_seo:'—')+'%');
+      setTxt('legViral',(d.avg_viral!=null?d.avg_viral:'—')+'%');
+      setTxt('legScore',d.score+'%');
+      setTxt('legPot',(d.potential!=null?d.potential:'—')+'%');
+      if(d.trend!=null) setTxt('valSeo',(d.trend>=0?'+':'')+d.trend+'%');
+      setTxt('valGrowth', d.points!=null?('+'+d.points):'');
+      setTxt('valKw', d.videos.length+' '+(window.t?t('dash_vids'):'vidéos'));
+    } else if(d && d.has_data===false){
+      ['chartSeo','chartGrowth','chartKw','chartOpt'].forEach(function(id){ var e=document.getElementById(id); if(e) e.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">—</div>'; });
+      ['legSeo','legViral','legScore','legPot'].forEach(function(id){ setTxt(id,'—'); });
+      ['valSeo','valGrowth','valKw'].forEach(function(id){ setTxt(id,''); });
     }
   }
   </script>
