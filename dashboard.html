@@ -1407,6 +1407,13 @@
           headers: { 'Authorization': `Bearer ${session.access_token}` }
         });
 
+        // Compte suspendu/supprimé par l'admin → on verrouille la session et on déconnecte
+        if (res.status === 403) {
+          alert(window.t ? t('db_suspended') : 'Votre compte a été suspendu. Contactez le support.');
+          try { if (window.Auth) { await Auth.logout(); } } catch (e) {}
+          window.location.href = '/login.html';
+          return;
+        }
         if (!res.ok) return;
 
         const user = await res.json();
