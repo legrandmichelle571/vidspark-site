@@ -1045,7 +1045,7 @@
                 <li><input type="checkbox" id="task2"><label for="task2" style="cursor:pointer;flex:1;" data-i18n="db_qs_2">Connecter ma chaîne YouTube</label></li>
                 <li><input type="checkbox" id="task3"><label for="task3" style="cursor:pointer;flex:1;" data-i18n="db_qs_3">Lancer ma première analyse</label></li>
               </ul>
-              <a class="btn btn-secondary" href="https://vidsparkpro.com/pricing.html" style="width:100%;margin-top:16px;" data-i18n="db_qs_plans">🏷️ Voir les forfaits</a>
+              <a id="qsCta" class="btn btn-secondary" href="https://vidsparkpro.com/pricing.html" style="width:100%;margin-top:16px;" data-i18n="db_qs_plans">🏷️ Voir les forfaits</a>
             </div>
           </div>
 
@@ -1196,6 +1196,19 @@
         } catch (err) {
           console.warn('[Dashboard] Could not fetch plan:', err);
         }
+
+        // Pas d'upsell "forfaits" pour un abonné payant : on remplace par une action utile
+        try {
+          if (userPlan && userPlan !== 'free') {
+            const qs = document.getElementById('qsCta');
+            if (qs) {
+              qs.setAttribute('data-i18n', 'db_qs_analyze');
+              qs.innerHTML = (window.t ? t('db_qs_analyze') : '🎬 Analyser une vidéo');
+              qs.setAttribute('href', 'javascript:void(0)');
+              qs.onclick = function (e) { e.preventDefault(); if (typeof openTool === 'function') openTool('analyze'); };
+            }
+          }
+        } catch (e) {}
 
         console.log('[Dashboard] 📤 Sending auth to extension:', { email: user.email, plan: userPlan });
 
