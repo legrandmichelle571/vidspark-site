@@ -1805,7 +1805,7 @@
     document.querySelectorAll('.sb-group').forEach(function(g){
       var vis=0;
       g.querySelectorAll('a.sb-link').forEach(function(a){
-        var n=(a.getAttribute('data-name')||a.textContent||'').toLowerCase();
+        var n=((a.getAttribute('data-name')||'')+' '+(a.textContent||'')).toLowerCase();
         var show=!any || n.indexOf(q)>-1; a.style.display=show?'':'none'; if(show) vis++;
       });
       g.style.display=vis?'':'none';
