@@ -288,7 +288,25 @@ async function loadUsers(){
     </div>
     <div id="usersTable"></div>`;
   renderUsers();
+  /* Rafraîchissement auto (en ligne / PC / chaînes en temps quasi-réel) */
+  clearInterval(window._usersTimer);
+  window._usersTimer=setInterval(function(){
+    if(document.getElementById('usersTable')) renderUsers();
+    else clearInterval(window._usersTimer);
+  },30000);
 }
+/* Limite PC/chaînes par plan (free/pro=1, business=5, diamant=10) */
+function planLimit(plan){ return plan==='business'?5 : plan==='diamant'?10 : 1; }
+/* Cellule "en ligne" : vert si actif < 10 min, sinon hors ligne / inconnu */
+function onlineCell(la){
+  if(!la) return '<span class="muted" title="aucune activité enregistrée">—</span>';
+  var mins=(Date.now()-new Date(la).getTime())/60000;
+  if(mins<10) return '<span style="color:#22c55e;font-weight:700" title="actif il y a '+Math.round(mins)+' min">● en ligne</span>';
+  if(mins<1440) return '<span class="muted" title="'+new Date(la).toLocaleString('fr-FR')+'">○ '+Math.round(mins/60)+'h</span>';
+  return '<span class="muted" title="'+new Date(la).toLocaleString('fr-FR')+'">○ '+Math.round(mins/1440)+'j</span>';
+}
+/* Cellule compteur x/limit : rouge si plein (= limite atteinte) */
+function countCell(n,lim){ n=n||0; var full=n>=lim; return '<span style="'+(full?'color:#fa6d6d;font-weight:700':'')+'" title="'+n+' sur '+lim+'">'+n+'/'+lim+'</span>'; }
 async function renderUsers(){
   const el=document.getElementById('usersTable');
   el.innerHTML='<div class="muted">Chargement…</div>';
@@ -299,12 +317,15 @@ async function renderUsers(){
     const d=await api(`/users?limit=100&search=${encodeURIComponent(search)}&plan=${plan}&status=${status}`);
     lastUsers=d.users;
     if(!d.users.length){el.innerHTML='<div class="empty">Aucun utilisateur</div>';return;}
-    el.innerHTML=`<table><thead><tr><th>Email</th><th>Plan</th><th>Statut</th><th>Fin forfait</th><th>Mode</th><th>Inscrit</th><th>Actions</th></tr></thead><tbody>
+    el.innerHTML=`<table><thead><tr><th>Email</th><th>Plan</th><th>Statut</th><th>En ligne</th><th>💻 PC</th><th>📺 Chaînes</th><th>Fin forfait</th><th>Mode</th><th>Inscrit</th><th>Actions</th></tr></thead><tbody>
       ${d.users.map(u=>`
         <tr>
           <td style="cursor:pointer" onclick="userDetail('${u.id}')"><div style="color:var(--purple-l)">${u.email||'—'}</div><div class="muted">${u.name||''}</div></td>
           <td><span class="pill ${u.plan}">${(u.plan||'free').toUpperCase()}</span></td>
           <td><span class="pill ${u.status}">${u.status||'active'}</span></td>
+          <td>${onlineCell(u.last_active)}</td>
+          <td>${countCell(u.devices_count, planLimit(u.plan))}</td>
+          <td>${countCell(u.channels_count, planLimit(u.plan))}</td>
           <td>${fmtEnd(u.subscription_end)}</td>
           <td class="muted">${fmtMode(u.subscription_interval)}</td>
           <td class="muted">${u.created_at?new Date(u.created_at).toLocaleDateString('fr-FR'):'—'}</td>
