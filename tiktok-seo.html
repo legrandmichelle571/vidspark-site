@@ -9,7 +9,7 @@
   :root{
     --bg:#0b0f1a; --s1:#111726; --s2:#182033; --b1:#243049; --b2:#2f3d5c;
     --text:#eef2ff; --muted:#93a0bd; --orange:#f7941d; --orange-d:#d97b06;
-    --green:#22c55e; --red:#ef4444;
+    --green:#22c55e; --red:#ef4444; --purple:#a99bff;
   }
   *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
   body{background:var(--bg);color:var(--text);min-height:100vh;}
@@ -20,7 +20,10 @@
   .logo .dot{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--orange),#ffb454);display:flex;align-items:center;justify-content:center;color:#1a1200;font-weight:900;}
   .wrap{max-width:820px;margin:0 auto;padding:24px 18px 60px;}
   h1{font-size:24px;margin-bottom:4px;}
-  .sub{color:var(--muted);font-size:14px;margin-bottom:22px;}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:18px;}
+  .tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .tool{background:var(--s1);border:1px solid var(--b1);color:var(--muted);border-radius:20px;padding:8px 14px;font-size:13px;font-weight:700;}
+  .tool.active{background:var(--orange);color:#1a1200;border-color:var(--orange);}
   .card{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:18px;margin-bottom:16px;}
   label{display:block;font-size:12px;color:var(--muted);margin:10px 0 5px;text-transform:uppercase;letter-spacing:.4px;}
   input,select,textarea{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:11px;color:var(--text);font-size:14px;}
@@ -33,17 +36,20 @@
   .btn-mini{background:var(--s2);border:1px solid var(--b2);color:var(--muted);border-radius:7px;padding:4px 10px;font-size:12px;font-weight:700;}
   .btn-mini:hover{color:var(--text);border-color:var(--orange);}
   .sec{margin-bottom:20px;}
-  .sec h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .sec h3{font-size:15px;margin-bottom:10px;}
   .cap{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:14px;line-height:1.6;font-size:15px;white-space:pre-wrap;}
   .chips{display:flex;flex-wrap:wrap;gap:7px;}
   .chip{background:rgba(247,148,29,.12);color:#ffcf8a;border:1px solid rgba(247,148,29,.3);border-radius:20px;padding:5px 12px;font-size:13px;}
   .chip.k{background:var(--s2);color:var(--text);border-color:var(--b2);}
-  .htcat{margin-bottom:12px;}
-  .htcat .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
-  .hooks li,.tips li{background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:10px 12px;margin-bottom:7px;list-style:none;font-size:14px;line-height:1.5;}
+  .chip.p{background:rgba(169,155,255,.14);color:var(--purple);border-color:rgba(169,155,255,.35);}
+  .htcat{margin-bottom:12px;} .htcat .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+  li{list-style:none;}
+  .item{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:12px;margin-bottom:8px;}
+  .item.best{border-color:var(--green);}
+  .badge{display:inline-block;background:var(--b1);color:var(--muted);border-radius:12px;padding:2px 9px;font-size:11px;font-weight:700;margin-top:4px;}
+  .score{float:right;font-weight:800;}
   .step{border-left:3px solid var(--orange);padding:6px 0 6px 12px;margin-bottom:10px;}
   .step .p{font-size:12px;color:var(--orange);font-weight:800;text-transform:uppercase;}
-  .step .c{font-size:14px;line-height:1.5;margin-top:2px;}
   .muted{color:var(--muted);}
   .empty,.err{text-align:center;padding:36px 16px;color:var(--muted);}
   .err{color:#ffb1b1;}
@@ -60,33 +66,11 @@
 
 <div class="wrap">
   <h1>🎵 SEO TikTok</h1>
-  <div class="sub">Génère la légende, les hooks, les hashtags et un script optimisés pour percer sur TikTok — propulsé par IA.</div>
+  <div class="sub">Suite complète pour percer sur TikTok — propulsée par IA.</div>
 
-  <div class="card">
-    <label for="topic">Sujet de ta vidéo *</label>
-    <input id="topic" placeholder="Ex : 3 astuces pour monter vite sur YouTube" maxlength="200">
-    <div class="row">
-      <div>
-        <label for="niche">Niche / style (optionnel)</label>
-        <input id="niche" placeholder="Ex : tech, humour, fitness…" maxlength="80">
-      </div>
-      <div>
-        <label for="lang">Langue</label>
-        <select id="lang">
-          <option value="fr">Français</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="ar">العربية</option>
-          <option value="pt">Português</option>
-          <option value="de">Deutsch</option>
-        </select>
-      </div>
-    </div>
-    <label for="desc">Contexte / description (optionnel)</label>
-    <textarea id="desc" placeholder="Décris brièvement le contenu de la vidéo…" maxlength="400"></textarea>
-    <button class="btn" id="go" onclick="generate()">✨ Générer le SEO TikTok</button>
-  </div>
-
+  <div class="tools" id="tools"></div>
+  <div class="card" id="form"></div>
+  <button class="btn" id="go" onclick="run()">✨ Générer</button>
   <div id="out"></div>
 </div>
 
@@ -95,105 +79,134 @@
 <script>
 const API_BASE = 'https://vidspark-ai-production-9ac7.up.railway.app';
 
-/* Exige une connexion : sans session, on renvoie vers le login */
-(async function(){
-  try{
-    const s = await (window.Auth?.getSession?.() || Promise.resolve(null));
-    if(!s?.access_token){
-      document.getElementById('out').innerHTML =
-        '<div class="empty">🔒 Connecte-toi pour utiliser le SEO TikTok.<br><br><a href="/login.html">Se connecter →</a></div>';
-      document.getElementById('go').disabled = true;
-    }
-  }catch(e){}
-})();
+/* Définition des 5 outils : champs + endpoint + rendu */
+const TOOLS = {
+  seo:      { label:'📝 SEO complet', ep:'/api/ai/tiktok-seo',
+              fields:[['topic','Sujet de ta vidéo *','input'],['niche','Niche (optionnel)','input'],['description','Contexte (optionnel)','textarea']] },
+  repurpose:{ label:'♻️ YouTube → TikTok', ep:'/api/ai/tiktok-tool', tool:'repurpose',
+              fields:[['title','Titre de la vidéo YouTube *','input'],['description','Description / notes (optionnel)','textarea'],['niche','Niche (optionnel)','input']] },
+  ideas:    { label:'🔥 Idées virales', ep:'/api/ai/tiktok-tool', tool:'ideas',
+              fields:[['niche','Niche','input'],['topic','Sujet/angle (optionnel)','input']] },
+  hooks:    { label:'🪝 Hooks', ep:'/api/ai/tiktok-tool', tool:'hooks',
+              fields:[['topic','Sujet de ta vidéo *','input'],['niche','Niche (optionnel)','input']] },
+  calendar: { label:'📅 Calendrier', ep:'/api/ai/tiktok-tool', tool:'calendar',
+              fields:[['niche','Niche','input'],['frequency','Rythme (ex : 1 vidéo/jour)','input']] }
+};
+let current = 'seo';
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function copy(txt,btn){navigator.clipboard.writeText(txt).then(()=>{const t=btn.textContent;btn.textContent='✓ Copié';setTimeout(()=>btn.textContent=t,1400);});}
 
-async function generate(){
-  const topic = document.getElementById('topic').value.trim();
-  const niche = document.getElementById('niche').value.trim();
-  const description = document.getElementById('desc').value.trim();
-  const language = document.getElementById('lang').value;
-  const out = document.getElementById('out');
-  const btn = document.getElementById('go');
+function renderTools(){
+  document.getElementById('tools').innerHTML = Object.entries(TOOLS)
+    .map(([k,v])=>`<button class="tool ${k===current?'active':''}" onclick="selectTool('${k}')">${v.label}</button>`).join('');
+}
+function renderForm(){
+  const t = TOOLS[current];
+  const inputs = t.fields.map(([id,lbl,type])=>{
+    const style='';
+    if(type==='textarea') return `<label>${lbl}</label><textarea id="f_${id}" placeholder="${lbl.replace(' *','')}…"></textarea>`;
+    return `<label>${lbl}</label><input id="f_${id}" placeholder="${lbl.replace(' *','')}…" maxlength="200">`;
+  }).join('');
+  document.getElementById('form').innerHTML = inputs + `
+    <label>Langue</label>
+    <select id="f_lang">
+      <option value="fr">Français</option><option value="en">English</option>
+      <option value="es">Español</option><option value="ar">العربية</option>
+      <option value="pt">Português</option><option value="de">Deutsch</option>
+    </select>`;
+}
+function selectTool(k){ current=k; document.getElementById('out').innerHTML=''; renderTools(); renderForm(); }
 
-  if(topic.length < 2){ out.innerHTML='<div class="err">Entre un sujet de vidéo.</div>'; return; }
+/* Exige une connexion */
+(async function(){
+  renderTools(); renderForm();
+  try{
+    const s = await (window.Auth?.getSession?.() || Promise.resolve(null));
+    if(!s?.access_token){
+      document.getElementById('out').innerHTML='<div class="empty">🔒 Connecte-toi pour utiliser les outils TikTok.<br><br><a href="/login.html">Se connecter →</a></div>';
+      document.getElementById('go').disabled=true;
+    }
+  }catch(e){}
+})();
 
-  btn.disabled = true; btn.innerHTML='<span class="spin"></span> Génération…';
-  out.innerHTML='<div class="empty">🎬 L’IA optimise ta vidéo TikTok…</div>';
+async function run(){
+  const t = TOOLS[current];
+  const out = document.getElementById('out'), btn = document.getElementById('go');
+  const body = { language: document.getElementById('f_lang').value };
+  t.fields.forEach(([id])=>{ body[id] = (document.getElementById('f_'+id)?.value||'').trim(); });
+  if(t.tool) body.tool = t.tool;
 
+  const reqField = t.fields.find(f=>f[1].includes('*'));
+  if(reqField && (body[reqField[0]]||'').length<2){ out.innerHTML='<div class="err">Remplis le champ obligatoire (*).</div>'; return; }
+
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Génération…';
+  out.innerHTML='<div class="empty">🎬 L’IA travaille…</div>';
   try{
     const s = await Auth.getSession();
     const token = s?.access_token;
     if(!token){ out.innerHTML='<div class="err">Session expirée — <a href="/login.html">reconnecte-toi</a>.</div>'; return; }
-
-    const res = await fetch(`${API_BASE}/api/ai/tiktok-seo`,{
+    const res = await fetch(API_BASE + t.ep, {
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
-      body:JSON.stringify({ topic, niche, description, language })
+      body:JSON.stringify(body)
     });
-    if(!res.ok){
-      const e = await res.json().catch(()=>({}));
-      throw new Error(e.error || ('Erreur '+res.status));
-    }
-    render(await res.json());
-    if(typeof fbq==='function') fbq('trackCustom','TikTokSEOGenerated');
-  }catch(err){
-    out.innerHTML = '<div class="err">❌ '+esc(err.message)+'</div>';
-  }finally{
-    btn.disabled=false; btn.innerHTML='✨ Générer le SEO TikTok';
-  }
+    if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error||('Erreur '+res.status)); }
+    const data = await res.json();
+    RENDER[current](data, out);
+    if(typeof fbq==='function') fbq('trackCustom','TikTokToolUsed',{tool:current});
+  }catch(err){ out.innerHTML='<div class="err">❌ '+esc(err.message)+'</div>'; }
+  finally{ btn.disabled=false; btn.innerHTML='✨ Générer'; }
 }
 
-function chips(arr, cls){ return '<div class="chips">'+(arr||[]).map(h=>`<span class="chip ${cls||''}">${esc(h)}</span>`).join('')+'</div>'; }
+function chips(arr,cls){ return '<div class="chips">'+(arr||[]).map(h=>`<span class="chip ${cls||''}">${esc(h)}</span>`).join('')+'</div>'; }
 
-function render(d){
-  const ht = d.hashtags || {};
-  const allTags = [].concat(ht.broad||[], ht.niche||[], ht.trending||[]).join(' ');
-  const html = `
-    <div class="card">
-      <div class="sec">
-        <div class="hd"><h3>📝 Légende optimisée</h3><button class="btn-mini" onclick='copy(${JSON.stringify(d.caption||"")},this)'>📋 Copier</button></div>
-        <div class="cap">${esc(d.caption)}</div>
-      </div>
-
-      <div class="sec">
-        <h3>🪝 Hooks (3 premières secondes)</h3>
-        <ul class="hooks">${(d.hooks||[]).map(h=>`<li>${esc(h)}</li>`).join('')}</ul>
-      </div>
-
-      <div class="sec">
-        <div class="hd"><h3># Hashtags</h3><button class="btn-mini" onclick='copy(${JSON.stringify(allTags)},this)'>📋 Tout copier</button></div>
+const RENDER = {
+  seo(d,out){
+    const ht=d.hashtags||{}; const all=[].concat(ht.broad||[],ht.niche||[],ht.trending||[]).join(' ');
+    out.innerHTML=`<div class="card">
+      <div class="sec"><div class="hd"><h3>📝 Légende</h3><button class="btn-mini" onclick='copy(${JSON.stringify(d.caption||"")},this)'>📋 Copier</button></div><div class="cap">${esc(d.caption)}</div></div>
+      <div class="sec"><h3>🪝 Hooks</h3>${(d.hooks||[]).map(h=>`<div class="item">${esc(h)}</div>`).join('')}</div>
+      <div class="sec"><div class="hd"><h3># Hashtags</h3><button class="btn-mini" onclick='copy(${JSON.stringify(all)},this)'>📋 Tout</button></div>
         <div class="htcat"><div class="lbl">Larges</div>${chips(ht.broad)}</div>
         <div class="htcat"><div class="lbl">Niche</div>${chips(ht.niche)}</div>
-        <div class="htcat"><div class="lbl">Tendance</div>${chips(ht.trending)}</div>
-      </div>
-
-      <div class="sec">
-        <h3>🔎 Mots-clés de recherche</h3>
-        ${chips(d.keywords,'k')}
-      </div>
-
-      <div class="sec">
-        <h3>🎬 Structure / script</h3>
-        ${(d.script||[]).map(s=>`<div class="step"><div class="p">${esc(s.part)}</div><div class="c">${esc(s.content)}</div></div>`).join('')}
-      </div>
-
-      ${d.sound_advice?`<div class="sec"><h3>🎧 Conseil son / musique</h3><div class="cap">${esc(d.sound_advice)}</div></div>`:''}
-
-      <div class="sec">
-        <h3>🚀 Conseils de publication</h3>
-        <ul class="tips">${(d.posting_tips||[]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
-      </div>
-
-      <div class="sec">
-        <h3>📈 Découvrabilité</h3>
-        <ul class="tips">${(d.discoverability_tips||[]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
-      </div>
+        <div class="htcat"><div class="lbl">Tendance</div>${chips(ht.trending)}</div></div>
+      <div class="sec"><h3>🔎 Mots-clés</h3>${chips(d.keywords,'k')}</div>
+      <div class="sec"><h3>🎬 Script</h3>${(d.script||[]).map(s=>`<div class="step"><div class="p">${esc(s.part)}</div><div>${esc(s.content)}</div></div>`).join('')}</div>
+      ${d.sound_advice?`<div class="sec"><h3>🎧 Son</h3><div class="cap">${esc(d.sound_advice)}</div></div>`:''}
+      <div class="sec"><h3>🚀 Conseils</h3>${[].concat(d.posting_tips||[],d.discoverability_tips||[]).map(t=>`<div class="item">${esc(t)}</div>`).join('')}</div>
     </div>`;
-  document.getElementById('out').innerHTML = html;
-}
+  },
+  repurpose(d,out){
+    out.innerHTML=`<div class="card">${(d.clips||[]).map((c,i)=>`
+      <div class="sec"><h3>▶️ Clip ${i+1} — <span class="muted">${esc(c.angle||'')}</span></h3>
+        <div class="item"><b>🪝 ${esc(c.hook||'')}</b><div style="margin-top:6px;white-space:pre-wrap;">${esc(c.script||'')}</div>
+        <div class="cap" style="margin-top:8px;">${esc(c.caption||'')}</div>${chips(c.hashtags,'p')}
+        <button class="btn-mini" style="margin-top:8px;" onclick='copy(${JSON.stringify((c.caption||"")+" "+((c.hashtags||[]).join(" ")))},this)'>📋 Copier</button></div>
+      </div>`).join('')}</div>`;
+  },
+  ideas(d,out){
+    out.innerHTML=`<div class="card"><div class="sec"><h3>🔥 Idées virales</h3>${(d.ideas||[]).map((it,i)=>`
+      <div class="item"><span class="score">${it.viral_score||'—'}</span><b>${i+1}. ${esc(it.title||'')}</b>
+        ${it.format?`<span class="badge">${esc(it.format)}</span>`:''}
+        ${it.hook?`<div style="margin-top:4px;">🪝 ${esc(it.hook)}</div>`:''}
+        ${it.why?`<div class="muted" style="font-size:12px;margin-top:2px;">✅ ${esc(it.why)}</div>`:''}</div>`).join('')}</div></div>`;
+  },
+  hooks(d,out){
+    const best=d.best_index;
+    out.innerHTML=`<div class="card"><div class="sec"><h3>🪝 Hooks (les 3 premières secondes)</h3>${(d.hooks||[]).map((h,i)=>`
+      <div class="item ${i===best?'best':''}"><span class="score">${h.score||'—'}</span>${i===best?'⭐ ':''}${esc(h.text||'')}
+        ${h.type?`<div><span class="badge">${esc(h.type)}</span></div>`:''}</div>`).join('')}
+      ${d.tip?`<div class="muted" style="margin-top:10px;">💡 ${esc(d.tip)}</div>`:''}</div></div>`;
+  },
+  calendar(d,out){
+    out.innerHTML=`<div class="card"><div class="sec"><h3>📅 Calendrier 7 jours</h3>${(d.schedule||[]).map(s=>`
+      <div class="item"><b style="color:var(--purple)">${esc(s.day||'')}</b> ${s.best_time?`<span class="muted">· ${esc(s.best_time)}</span>`:''}
+        <div style="margin-top:3px;">${esc(s.idea||'')}</div>
+        ${s.format?`<span class="badge">${esc(s.format)}</span>`:''}
+        ${s.hook?`<div style="margin-top:4px;">🪝 ${esc(s.hook)}</div>`:''}</div>`).join('')}</div></div>`;
+  }
+};
 </script>
 </body>
 </html>
