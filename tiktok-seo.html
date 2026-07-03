@@ -83,8 +83,8 @@ const API_BASE = 'https://vidspark-ai-production-9ac7.up.railway.app';
 const TOOLS = {
   seo:      { label:'📝 SEO complet', ep:'/api/ai/tiktok-seo',
               fields:[['topic','Sujet de ta vidéo *','input'],['niche','Niche (optionnel)','input'],['description','Contexte (optionnel)','textarea']] },
-  repurpose:{ label:'♻️ YouTube → TikTok', ep:'/api/ai/tiktok-tool', tool:'repurpose',
-              fields:[['title','Titre de la vidéo YouTube *','input'],['description','Description / notes (optionnel)','textarea'],['niche','Niche (optionnel)','input']] },
+  repurpose:{ label:'♻️ YouTube → TikTok', ep:'/api/ai/tiktok-repurpose',
+              fields:[['url','Lien de la vidéo YouTube *','input']] },
   ideas:    { label:'🔥 Idées virales', ep:'/api/ai/tiktok-tool', tool:'ideas',
               fields:[['niche','Niche','input'],['topic','Sujet/angle (optionnel)','input']] },
   hooks:    { label:'🪝 Hooks', ep:'/api/ai/tiktok-tool', tool:'hooks',
@@ -178,11 +178,17 @@ const RENDER = {
     </div>`;
   },
   repurpose(d,out){
-    out.innerHTML=`<div class="card">${(d.clips||[]).map((c,i)=>`
-      <div class="sec"><h3>▶️ Clip ${i+1} — <span class="muted">${esc(c.angle||'')}</span></h3>
-        <div class="item"><b>🪝 ${esc(c.hook||'')}</b><div style="margin-top:6px;white-space:pre-wrap;">${esc(c.script||'')}</div>
-        <div class="cap" style="margin-top:8px;">${esc(c.caption||'')}</div>${chips(c.hashtags,'p')}
-        <button class="btn-mini" style="margin-top:8px;" onclick='copy(${JSON.stringify((c.caption||"")+" "+((c.hashtags||[]).join(" ")))},this)'>📋 Copier</button></div>
+    const clips=d.clips||[];
+    const head = d.video?.title ? `<div class="muted" style="margin-bottom:12px;">🎬 ${esc(d.video.title)}${d.video.duration?` · ${esc(d.video.duration)}`:''}</div>` : '';
+    out.innerHTML=`<div class="card">${head}${clips.map((c,i)=>`
+      <div class="sec">
+        <h3>▶️ Clip ${i+1} <span class="chip p" style="font-size:13px;">✂️ ${esc(c.start||'?')} → ${esc(c.end||'?')}</span></h3>
+        <div class="item">
+          <div class="muted" style="font-size:12px;">${esc(c.angle||'')}</div>
+          <b style="display:block;margin-top:4px;">🪝 ${esc(c.hook||'')}</b>
+          <div class="cap" style="margin-top:8px;">${esc(c.caption||'')}</div>${chips(c.hashtags,'p')}
+          <button class="btn-mini" style="margin-top:8px;" onclick='copy(${JSON.stringify((c.caption||"")+" "+((c.hashtags||[]).join(" ")))},this)'>📋 Copier</button>
+        </div>
       </div>`).join('')}</div>`;
   },
   ideas(d,out){
