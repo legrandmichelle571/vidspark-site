@@ -257,8 +257,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .nav-toggle {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
-  padding: 8px;
+  width: 48px;
+  height: 48px;
   cursor: pointer;
 }
 .nav-toggle span {
@@ -273,20 +276,34 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 @media (max-width: 860px) {
   .nav-links, .nav-cta .btn-ghost { display: none; }
   .nav-toggle { display: flex; }
-  #nav-check:checked ~ .nav-inner .nav-links {
+  .nav-links a {
+    padding: 14px 16px;
+    font-size: 16px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  #nav-check:checked ~ .nav .nav-links {
     display: flex;
     flex-direction: column;
     position: absolute;
     top: 64px; left: 0; right: 0;
     background: var(--s1);
     border-bottom: 1px solid var(--b1);
-    padding: 16px 24px;
-    gap: 4px;
+    padding: 12px 20px calc(20px + env(safe-area-inset-bottom));
+    gap: 2px;
     z-index: 99;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    animation: navSlideDown .18s ease-out;
   }
-  #nav-check:checked ~ .nav-inner .nav-toggle span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
-  #nav-check:checked ~ .nav-inner .nav-toggle span:nth-child(2) { opacity: 0; }
-  #nav-check:checked ~ .nav-inner .nav-toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+  @keyframes navSlideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  #nav-check:checked ~ .nav .nav-toggle span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+  #nav-check:checked ~ .nav .nav-toggle span:nth-child(2) { opacity: 0; }
+  #nav-check:checked ~ .nav .nav-toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -847,6 +864,16 @@ footer {
     });
   </script>
   <script src="/js/meta-pixel.js"></script>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <!-- Pubs latérales (visibles sur grand écran) — gérées depuis le panel -->

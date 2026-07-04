@@ -8,6 +8,16 @@
 <style id="orange-frames">
 .card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -77,17 +87,15 @@ async function go(){
     const d=await aiCall('/api/public/ai/shorts-generator',{topic,description:desc,language:lang});
     const shorts=d.shorts||[];
     if(!shorts.length)throw new Error(t('gs_none'));
-    r.innerHTML=shorts.map((s,i)=>`
-      <div style="padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;margin-bottom:14px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🎬 SHORT ${i+1}</div>
-        <div style="font-weight:700;font-size:15px;margin-bottom:8px">${esc(s.title||'')}</div>
-        ${s.hook?`<div style="padding:8px;background:rgba(247,148,29,.1);border-radius:6px;margin-bottom:8px;font-size:13px"><span style="color:#f7941d;font-weight:700">🪝 HOOK :</span> ${esc(s.hook)}</div>`:''}
-        ${s.script?`<div style="padding:8px;background:#12121a;border-radius:6px;margin-bottom:8px;font-size:13px;line-height:1.6"><span style="color:#8888a0;font-weight:700">📝 SCRIPT :</span><br>${esc(s.script)}</div>`:''}
-        ${s.timestamp?`<div style="padding:6px 10px;background:rgba(59,130,246,.1);border-radius:6px;margin-bottom:8px;font-size:13px;color:#3b82f6"><span style="font-weight:700">⏱ MOMENT :</span> ${esc(s.timestamp)}</div>`:''}
-        ${s.hashtags?`<div style="font-size:13px;color:#8888a0">${esc(s.hashtags)}</div>`:''}
-        <button class="copy-mini" onclick='copyTxt(${JSON.stringify((s.title||"")+" "+( s.script||""))},this)' style="margin-top:10px">${t('gs_copy')}</button>
-      </div>
-    `).join('');
+    r.innerHTML=vsPremiumList({
+      icon:'🎬', label:'Shorts prêts', sub:`${shorts.length} Shorts générés`,
+      items:shorts.map((s,i)=>({
+        head:`🎬 Short ${i+1} — ${esc(s.title||'')}`,
+        body:`${s.hook?`<div style="padding:8px;background:rgba(247,148,29,.1);border-radius:6px;margin-bottom:6px;"><span style="color:#f7941d;font-weight:700">🪝 HOOK :</span> ${esc(s.hook)}</div>`:''}${s.script?`<div style="padding:8px;background:var(--s2);border-radius:6px;margin-bottom:6px;line-height:1.6"><span style="color:var(--muted);font-weight:700">📝 SCRIPT :</span><br>${esc(s.script)}</div>`:''}${s.timestamp?`<div style="padding:6px 10px;background:rgba(59,130,246,.1);border-radius:6px;margin-bottom:6px;color:#3b82f6"><span style="font-weight:700">⏱ MOMENT :</span> ${esc(s.timestamp)}</div>`:''}${s.hashtags?`<div style="color:var(--muted);">${esc(s.hashtags)}</div>`:''}`,
+        text:`Short ${i+1}: ${s.title||''}\n🪝 ${s.hook||''}\n📝 ${s.script||''}\n⏱ ${s.timestamp||''}\n${s.hashtags||''}`
+      })),
+      filenamePrefix:'shorts', rawData:d
+    });
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
 </script>

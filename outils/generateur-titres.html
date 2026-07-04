@@ -11,6 +11,16 @@
 /* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -77,15 +87,15 @@ async function go(){
     const d=await aiCall('/api/public/ai/titles',{topic,language:lang});
     const titles=d.titles||[];
     if(!titles.length)throw new Error(t('gt_none'));
-    r.innerHTML=titles.map(ti=>{
-      const c=(ti.score||70)>=70?'#22c55e':(ti.score||70)>=45?'#f5b301':'#ef4444';
-      return `<div class="title-item">
-        <div class="tx">${esc(ti.text)}</div>
-        ${ti.hook?`<span class="tag">${esc(ti.hook)}</span>`:''}
-        <span class="sc" style="color:${c}">${ti.score||'—'}/100</span>
-        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(ti.text||"")},this)'>⧉</button>
-      </div>`;
-    }).join('');
+    r.innerHTML=vsPremiumList({
+      icon:'✨', label:'Titres prêts à coller', sub:`${titles.length} variantes`,
+      items:titles.map(ti=>{const c=(ti.score||70)>=70?'#22c55e':(ti.score||70)>=45?'#f5b301':'#ef4444';return{
+        head:esc(ti.text||''), headBadge:{text:(ti.score||'—')+'/100',color:c},
+        body:ti.hook?`<span class="tag">${esc(ti.hook)}</span>`:'',
+        text:`${ti.text||''} (${ti.score||'—'}/100)${ti.hook?' - '+ti.hook:''}`
+      };}),
+      filenamePrefix:'titres', rawData:d
+    });
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
 </script>

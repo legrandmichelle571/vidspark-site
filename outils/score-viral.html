@@ -8,6 +8,16 @@
 <style id="orange-frames">
 .card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -78,25 +88,43 @@ async function go(){
     const score=d.current_score||0;
     const potential=d.potential_score||0;
     const c=score>=70?'#22c55e':score>=45?'#f5b301':'#ef4444';
+    const okCount=(d.factors||[]).filter(f=>f.ok).length;
+    const fullText=[
+      `${t('sv_cur')}: ${score}/100`,
+      `${t('sv_pot')}: ${potential}/100`,
+      (d.factors||[]).length&&(d.factors||[]).map(f=>`${f.ok?'✓':'✗'} ${f.label} — ${f.comment}`).join('\n'),
+      d.suggestion&&`Titre amélioré: ${d.suggestion}`
+    ].filter(Boolean).join('\n\n');
     r.innerHTML=`
-      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px">
-        <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('sv_cur')}</div>
-          <div style="font-size:40px;font-weight:800;color:${c}">${score}<span style="font-size:18px">/100</span></div>
+      <div class="vs-premium vs-glass vs-reveal">
+        <div class="vs-premium-score">
+          <div class="vs-premium-score-ring" style="background:conic-gradient(${c} 0deg,${c} ${score*3.6}deg,var(--b2) ${score*3.6}deg);">
+            <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:16px;">🔥</div>
+          </div>
+          <div>
+            <div class="vs-premium-score-label">${t('sv_cur')} : ${score}/100 → ${t('sv_pot')} : ${potential}/100</div>
+            <div class="vs-premium-score-sub">${okCount}/${(d.factors||[]).length||0} critères déjà remplis</div>
+          </div>
         </div>
-        <div style="flex:1;text-align:center;padding:16px;background:#1b2330;border-radius:10px;border:1.5px solid #22c55e">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('sv_pot')}</div>
-          <div style="font-size:40px;font-weight:800;color:#22c55e">${potential}<span style="font-size:18px">/100</span></div>
+
+        <div class="vs-premium-section">
+          <div class="vs-premium-section-head">✅ Facteurs analysés</div>
+          <div class="vs-premium-section-body">${(d.factors||[]).map(f=>`<div style="padding:8px 12px;margin-bottom:6px;background:var(--s2);border-radius:8px;border-left:3px solid ${f.ok?'#22c55e':'#ef4444'}"><span style="font-weight:600">${esc(f.label)}</span> — ${esc(f.comment)}</div>`).join('')}</div>
+        </div>
+
+        ${d.suggestion?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">💡 Titre amélioré</div>
+          <div class="vs-premium-section-body" style="background:rgba(247,148,29,.1);border-radius:8px;border:1.5px solid #f7941d;padding:12px;">${esc(d.suggestion)}</div>
+        </div>`:''}
+
+        <div class="vs-premium-actions">
+          <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(fullText)},this)'><span class="ic">⧉</span>Copier</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(fullText)},"score-viral.txt")'><span class="ic">⬇️</span>Télécharger</button>
+          <button class="vs-premium-action-btn" onclick='document.getElementById("title").closest(".tool-box").querySelector(".btn").click()'><span class="ic">🔄</span>Régénérer</button>
+          <button class="vs-premium-action-btn" onclick='vsShare(${JSON.stringify(fullText)})'><span class="ic">📤</span>Partager</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(JSON.stringify(d,null,2))},"score-viral.json")'><span class="ic">📦</span>Exporter</button>
         </div>
       </div>
-      ${(d.factors||[]).map(f=>`<div style="padding:8px 12px;margin-bottom:6px;background:#1b2330;border-radius:8px;border-left:3px solid ${f.ok?'#22c55e':'#ef4444'}">
-        <span style="font-weight:600">${esc(f.label)}</span> — ${esc(f.comment)}
-      </div>`).join('')}
-      ${d.suggestion?`<div style="margin-top:14px;padding:12px;background:rgba(247,148,29,.1);border-radius:8px;border:1.5px solid #f7941d">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:4px">💡 TITRE AMÉLIORÉ</div>
-        <div style="font-size:15px">${esc(d.suggestion)}</div>
-        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(d.suggestion||"")},this)' style="margin-top:8px">⧉ Copier</button>
-      </div>`:''}
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }

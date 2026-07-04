@@ -8,6 +8,16 @@
 <style id="orange-frames">
 .card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -100,37 +110,59 @@ async function go(){
     const d=await aiCall('/api/public/ai/thumbnail-analyzer',{image_base64:fileData,language:lang});
     const score=d.score||0;
     const c=score>=70?'#22c55e':score>=45?'#f5b301':'#ef4444';
+    const subScores=[
+      {label:t('am_contrast'),score:d.contrast_score},
+      {label:t('am_face'),score:d.face_score},
+      {label:t('am_text'),score:d.text_score},
+      {label:t('am_compo'),score:d.composition_score},
+    ].filter(x=>x.score!==undefined);
+    const fullText=[
+      `${t('am_score')}: ${score}/100 — ${t('am_ctr')} ${d.ctr_estimate||'—'}%`,
+      subScores.length&&subScores.map(x=>`${x.label}: ${x.score}/100`).join(' · '),
+      d.tips&&d.tips.length&&`${t('am_tips')}:\n`+d.tips.map(tp=>'▸ '+tp).join('\n'),
+      d.midjourney_prompt&&`${t('am_mj')}: ${d.midjourney_prompt}`
+    ].filter(Boolean).join('\n\n');
     r.innerHTML=`
-      <div style="text-align:center;padding:16px;background:#1b2330;border-radius:12px;border:2px solid ${c};margin-bottom:14px">
-        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('am_score')}</div>
-        <div style="font-size:48px;font-weight:900;color:${c}">${score}<span style="font-size:20px">/100</span></div>
-        <div style="font-size:13px;color:#8888a0;margin-top:4px">${t('am_ctr')} <strong style="color:${c}">${d.ctr_estimate||'—'}%</strong></div>
-      </div>
-      ${[
-        {label:t('am_contrast'),score:d.contrast_score},
-        {label:t('am_face'),score:d.face_score},
-        {label:t('am_text'),score:d.text_score},
-        {label:t('am_compo'),score:d.composition_score},
-      ].filter(x=>x.score!==undefined).map(x=>{
-        const sc=x.score||0;
-        const cc=sc>=70?'#22c55e':sc>=45?'#f5b301':'#ef4444';
-        return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1b2330">
-          <div style="flex:1;font-size:13px">${x.label}</div>
-          <div style="width:120px;height:6px;background:#2b3647;border-radius:3px;overflow:hidden">
-            <div style="height:100%;width:${sc}%;background:${cc};border-radius:3px"></div>
+      <div class="vs-premium vs-glass vs-reveal">
+        <div class="vs-premium-score">
+          <div class="vs-premium-score-ring" style="background:conic-gradient(${c} 0deg,${c} ${score*3.6}deg,var(--b2) ${score*3.6}deg);">
+            <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:${c};">${score}</div>
           </div>
-          <div style="font-size:13px;font-weight:700;color:${cc};min-width:36px;text-align:right">${sc}/100</div>
-        </div>`;
-      }).join('')}
-      ${d.tips&&d.tips.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:10px;border:1.5px solid #f7941d;margin-top:14px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">${t('am_tips')}</div>
-        ${d.tips.map(tp=>`<div style="padding:5px 0;font-size:13px;border-bottom:1px solid #1b2330">▸ ${esc(tp)}</div>`).join('')}
-      </div>`:''}
-      ${d.midjourney_prompt?`<div style="padding:12px;background:#1b2330;border-radius:8px;margin-top:12px">
-        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('am_mj')}</div>
-        <div style="font-size:12px;font-family:monospace">${esc(d.midjourney_prompt)}</div>
-        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(d.midjourney_prompt||"")},this)' style="margin-top:6px">${t('am_copy')}</button>
-      </div>`:''}
+          <div>
+            <div class="vs-premium-score-label">${t('am_score')}</div>
+            <div class="vs-premium-score-sub">${t('am_ctr')} ${d.ctr_estimate||'—'}%</div>
+          </div>
+        </div>
+
+        ${subScores.length?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">📊 Détail</div>
+          <div class="vs-premium-section-body">${subScores.map(x=>{const cc=x.score>=70?'#22c55e':x.score>=45?'#f5b301':'#ef4444';return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;">
+            <div style="flex:1;">${x.label}</div>
+            <div style="width:100px;height:6px;background:var(--b2);border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:${x.score}%;background:${cc};border-radius:3px"></div>
+            </div>
+            <div style="font-weight:700;color:${cc};min-width:36px;text-align:right">${x.score}/100</div>
+          </div>`;}).join('')}</div>
+        </div>`:''}
+
+        ${d.tips&&d.tips.length?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">${t('am_tips')}</div>
+          <div class="vs-premium-section-body">${d.tips.map(tp=>`<div style="padding:4px 0;">▸ ${esc(tp)}</div>`).join('')}</div>
+        </div>`:''}
+
+        ${d.midjourney_prompt?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">${t('am_mj')}</div>
+          <div class="vs-premium-section-body" style="font-family:monospace;font-size:12px;">${esc(d.midjourney_prompt)}</div>
+        </div>`:''}
+
+        <div class="vs-premium-actions">
+          <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(fullText)},this)'><span class="ic">⧉</span>${t('am_copy')||"Copier"}</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(fullText)},"analyse-miniature.txt")'><span class="ic">⬇️</span>Télécharger</button>
+          <button class="vs-premium-action-btn" onclick='document.querySelector(".tool-box .btn").click()'><span class="ic">🔄</span>Régénérer</button>
+          <button class="vs-premium-action-btn" onclick='vsShare(${JSON.stringify(fullText)})'><span class="ic">📤</span>Partager</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(JSON.stringify(d,null,2))},"analyse-miniature.json")'><span class="ic">📦</span>Exporter</button>
+        </div>
+      </div>
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }

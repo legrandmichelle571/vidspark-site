@@ -85,8 +85,65 @@ function vidId(u){
   return null;
 }
 function esc(s){const d=document.createElement('div');d.textContent=s==null?'':s;return d.innerHTML;}
-function spinner(msg){return `<div class="muted"><span class="spin"></span>${msg||'Génération en cours…'}</div>`;}
+function spinner(msg){
+  return `<div class="vs-ai-loader">
+    <div class="vs-ai-loader-ring"></div>
+    <div class="vs-ai-loader-title">${esc(msg||'Génération en cours…')}</div>
+  </div>`;
+}
 function copyTxt(txt,btn){navigator.clipboard.writeText(txt);const o=btn.textContent;btn.textContent='✅';setTimeout(()=>btn.textContent=o,1400);}
+
+/* Télécharge du texte/JSON en fichier local (bouton "Télécharger"/"Exporter" des cartes premium) */
+function vsDownload(text,filename){
+  const mime = filename.endsWith('.json') ? 'application/json' : 'text/plain';
+  const blob = new Blob([text], {type: mime+';charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+  a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+/* Partage natif (mobile) ou copie en fallback (bouton "Partager" des cartes premium) */
+async function vsShare(text){
+  if(navigator.share){ try{ await navigator.share({title:'VidSpark AI', text}); return; }catch(e){} }
+  navigator.clipboard.writeText(text);
+}
+
+/* Carte premium générique pour un résultat sous forme de liste (titres notés,
+   idées, variantes…) : en-tête + items + barre d'actions Copier/Télécharger/
+   Régénérer/Partager/Exporter. items: [{head, headBadge:{text,color}, body, text}] */
+function vsPremiumList({icon, label, sub, items, footerNote, filenamePrefix, rawData, regenSelector}){
+  const fullText = items.map(it=>it.text||'').join('\n\n');
+  const itemsHtml = items.map(it=>`
+    <div class="vs-premium-section">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;">
+        <div style="font-size:13.5px;color:var(--text);font-weight:600;flex:1;">${it.head||''}</div>
+        ${it.headBadge?`<span class="tag" style="background:${it.headBadge.color}22;color:${it.headBadge.color};flex-shrink:0;">${esc(String(it.headBadge.text))}</span>`:''}
+      </div>
+      <div class="vs-premium-section-body" style="margin-top:4px;">${it.body||''}</div>
+    </div>`).join('');
+  return `
+    <div class="vs-premium vs-glass vs-reveal">
+      <div class="vs-premium-score">
+        <div class="vs-premium-score-ring" style="background:conic-gradient(#f7941d 0deg,#f7941d 360deg,var(--b2) 360deg);">
+          <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:16px;">${icon||'✨'}</div>
+        </div>
+        <div>
+          <div class="vs-premium-score-label">✅ ${esc(label||'')}</div>
+          <div class="vs-premium-score-sub">${esc(sub||'')}</div>
+        </div>
+      </div>
+      ${itemsHtml}
+      ${footerNote?`<div style="font-size:12px;color:var(--muted);margin-top:8px;">${footerNote}</div>`:''}
+      <div class="vs-premium-actions">
+        <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(fullText)},this)'><span class="ic">⧉</span>Copier</button>
+        <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(fullText)},"${filenamePrefix}.txt")'><span class="ic">⬇️</span>Télécharger</button>
+        <button class="vs-premium-action-btn" onclick='document.querySelector(${JSON.stringify(regenSelector||'.tool-box .btn')}).click()'><span class="ic">🔄</span>Régénérer</button>
+        <button class="vs-premium-action-btn" onclick='vsShare(${JSON.stringify(fullText)})'><span class="ic">📤</span>Partager</button>
+        <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(JSON.stringify(rawData||{},null,2))},"${filenamePrefix}.json")'><span class="ic">📦</span>Exporter</button>
+      </div>
+    </div>`;
+}
 
 /* Lance une action async en désactivant le bouton + retour visuel "Veuillez patienter…" (anti double-clic) */
 async function run(btn, fn){

@@ -8,6 +8,16 @@
 <style id="orange-frames">
 .card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -81,27 +91,52 @@ async function go(){
     const d=await aiCall('/api/diamant/audit',{channel_url:channel,language:lang});
     const health=d.health_score||0;
     const c=health>=70?'#22c55e':health>=45?'#f5b301':'#ef4444';
+    const kpis=[
+      {label:t('ac_subs'),val:(d.subscribers||0).toLocaleString()},
+      {label:t('ac_avgv'),val:(d.avg_views||0).toLocaleString()},
+      {label:t('ac_eng'),val:(d.avg_engagement||0)+'%'},
+      {label:t('ac_freq'),val:d.upload_freq_days?d.upload_freq_days+t('ac_perv'):'—'},
+    ];
+    const fullText=[
+      `${d.channel_name||''} — ${t('ac_health')}: ${health}/100`,
+      kpis.map(k=>`${k.label}: ${k.val}`).join(' · '),
+      d.recommendations&&d.recommendations.length&&`${t('ac_plan')}:\n`+d.recommendations.map(rec=>'▸ '+rec).join('\n')
+    ].filter(Boolean).join('\n\n');
     r.innerHTML=`
-      <div style="text-align:center;padding:20px;background:#1b2330;border-radius:12px;border:2px solid ${c};margin-bottom:16px">
-        <div style="font-size:18px;font-weight:700;margin-bottom:4px">${esc(d.channel_name||'')}</div>
-        <div style="font-size:11px;color:#8888a0;margin-bottom:10px">${t('ac_health')}</div>
-        <div style="font-size:56px;font-weight:900;color:${c}">${health}<span style="font-size:22px">/100</span></div>
+      <div class="vs-premium vs-glass vs-reveal">
+        <div class="vs-premium-score">
+          <div class="vs-premium-score-ring" style="background:conic-gradient(${c} 0deg,${c} ${health*3.6}deg,var(--b2) ${health*3.6}deg);">
+            <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:${c};">${health}</div>
+          </div>
+          <div>
+            <div class="vs-premium-score-label">${esc(d.channel_name||'')} — ${t('ac_health')}</div>
+            <div class="vs-premium-score-sub">${health}/100</div>
+          </div>
+        </div>
+
+        <div class="vs-premium-section">
+          <div class="vs-premium-section-head">📊 Statistiques</div>
+          <div class="vs-premium-section-body" style="display:flex;gap:10px;flex-wrap:wrap;">
+            ${kpis.map(k=>`<div style="flex:1;min-width:100px;text-align:center;padding:12px;background:var(--s2);border-radius:8px;border:1.5px solid var(--b2)">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">${k.label}</div>
+              <div style="font-size:18px;font-weight:700;color:#f7941d">${k.val}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+
+        ${d.recommendations&&d.recommendations.length?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">${t('ac_plan')}</div>
+          <div class="vs-premium-section-body">${d.recommendations.map(rec=>`<div style="padding:6px 0;border-bottom:1px solid var(--b1)">▸ ${esc(rec)}</div>`).join('')}</div>
+        </div>`:''}
+
+        <div class="vs-premium-actions">
+          <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(fullText)},this)'><span class="ic">⧉</span>Copier</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(fullText)},"audit-chaine.txt")'><span class="ic">⬇️</span>Télécharger</button>
+          <button class="vs-premium-action-btn" onclick='document.querySelector(".tool-box .btn").click()'><span class="ic">🔄</span>Régénérer</button>
+          <button class="vs-premium-action-btn" onclick='vsShare(${JSON.stringify(fullText)})'><span class="ic">📤</span>Partager</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(JSON.stringify(d,null,2))},"audit-chaine.json")'><span class="ic">📦</span>Exporter</button>
+        </div>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
-        ${[
-          {label:t('ac_subs'),val:(d.subscribers||0).toLocaleString()},
-          {label:t('ac_avgv'),val:(d.avg_views||0).toLocaleString()},
-          {label:t('ac_eng'),val:(d.avg_engagement||0)+'%'},
-          {label:t('ac_freq'),val:d.upload_freq_days?d.upload_freq_days+t('ac_perv'):'—'},
-        ].map(k=>`<div style="flex:1;min-width:100px;text-align:center;padding:12px;background:#1b2330;border-radius:8px;border:1.5px solid #2b3647">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${k.label}</div>
-          <div style="font-size:18px;font-weight:700;color:#f7941d">${k.val}</div>
-        </div>`).join('')}
-      </div>
-      ${d.recommendations&&d.recommendations.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">${t('ac_plan')}</div>
-        ${d.recommendations.map(rec=>`<div style="padding:6px 0;font-size:13px;border-bottom:1px solid #1b2330">▸ ${esc(rec)}</div>`).join('')}
-      </div>`:''}
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }

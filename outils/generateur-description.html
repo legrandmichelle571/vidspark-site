@@ -11,6 +11,16 @@
 /* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -78,8 +88,29 @@ async function go(){
     const d=await aiCall('/api/public/ai/description',{topic,language:lang});
     const full=(d.description||'')+(d.hashtags&&d.hashtags.length?'\n\n'+d.hashtags.join(' '):'');
     if(!d.description)throw new Error(t('gd_none'));
-    r.innerHTML=`<textarea readonly style="width:100%;min-height:160px;resize:vertical;">${esc(full)}</textarea>
-      <button class="btn green" style="margin-top:12px" onclick='copyTxt(${JSON.stringify(full)},this)'>${t('gd_copy')}</button>`;
+    r.innerHTML=`
+      <div class="vs-premium vs-glass vs-reveal">
+        <div class="vs-premium-score">
+          <div class="vs-premium-score-ring" style="background:conic-gradient(#f7941d 0deg,#f7941d 360deg,var(--b2) 360deg);">
+            <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:16px;">📝</div>
+          </div>
+          <div>
+            <div class="vs-premium-score-label">✅ Description prête à coller</div>
+            <div class="vs-premium-score-sub">${full.length} caractères · ${(d.hashtags||[]).length} hashtags</div>
+          </div>
+        </div>
+        <div class="vs-premium-section">
+          <div class="vs-premium-section-head">📝 Description</div>
+          <div class="vs-premium-section-body"><textarea readonly style="width:100%;min-height:160px;resize:vertical;">${esc(full)}</textarea></div>
+        </div>
+        <div class="vs-premium-actions">
+          <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(full)},this)'><span class="ic">⧉</span>${t('gd_copy')||"Copier"}</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(full)},"description.txt")'><span class="ic">⬇️</span>Télécharger</button>
+          <button class="vs-premium-action-btn" onclick='document.querySelector(".tool-box .btn").click()'><span class="ic">🔄</span>Régénérer</button>
+          <button class="vs-premium-action-btn" onclick='vsShare(${JSON.stringify(full)})'><span class="ic">📤</span>Partager</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(JSON.stringify(d,null,2))},"description.json")'><span class="ic">📦</span>Exporter</button>
+        </div>
+      </div>`;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
 </script>

@@ -9,6 +9,16 @@
 .card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
 .tool-tile{border:none !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -66,11 +76,15 @@ function go(){
   const r=document.getElementById('res');
   if(!id){r.innerHTML='<div class="err">'+t('tm_invalid')+'</div>';return;}
   const sizes=[['maxresdefault','HD 1280×720'],['sddefault','SD 640×480'],['hqdefault','HQ 480×360'],['mqdefault','MQ 320×180']];
-  r.innerHTML='<div class="thumbs">'+sizes.map(([q,lbl])=>`
-    <div class="thumb-card">
-      <img src="https://i.ytimg.com/vi/${id}/${q}.jpg" onerror="this.parentNode.style.display='none'">
-      <div class="meta"><span>${lbl}</span><a href="https://i.ytimg.com/vi/${id}/${q}.jpg" target="_blank" download>${t('tm_dl')}</a></div>
-    </div>`).join('')+'</div>';
+  r.innerHTML=`
+    <div class="vs-premium vs-glass vs-reveal">
+      <div class="vs-premium-section-head" style="margin-bottom:10px;">🖼️ Miniatures disponibles</div>
+      <div class="thumbs">${sizes.map(([q,lbl])=>`
+        <div class="thumb-card">
+          <img src="https://i.ytimg.com/vi/${id}/${q}.jpg" onerror="this.parentNode.style.display='none'">
+          <div class="meta"><span>${lbl}</span><a href="https://i.ytimg.com/vi/${id}/${q}.jpg" target="_blank" download>${t('tm_dl')}</a></div>
+        </div>`).join('')}</div>
+    </div>`;
 }
 </script>
 </body>

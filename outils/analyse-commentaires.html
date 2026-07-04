@@ -8,6 +8,16 @@
 <style id="orange-frames">
 .card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -78,33 +88,47 @@ async function go(){
     const d=await aiCall('/api/public/ai/comment-analyzer',{video_url:video,language:lang});
     const sent=d.sentiment||'neutre';
     const sentColor=sent==='positif'?'#22c55e':sent==='négatif'?'#ef4444':'#f59e0b';
+    const fullText=[
+      `${t('cm_sent')}: ${sent} · ${t('cm_pos')}: ${d.positive_pct||0}% · ${t('cm_neg')}: ${d.negative_pct||0}%`,
+      d.audience_requests&&d.audience_requests.length&&`${t('cm_req')}:\n`+d.audience_requests.map(req=>'▸ '+req).join('\n'),
+      d.video_ideas&&d.video_ideas.length&&`${t('cm_ideas')}:\n`+d.video_ideas.map(v=>'💡 '+v).join('\n'),
+      d.top_comment&&`${t('cm_top')}: "${d.top_comment}"`
+    ].filter(Boolean).join('\n\n');
     r.innerHTML=`
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
-        <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid ${sentColor};min-width:100px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('cm_sent')}</div>
-          <div style="font-size:20px;font-weight:800;color:${sentColor};text-transform:uppercase">${esc(sent)}</div>
+      <div class="vs-premium vs-glass vs-reveal">
+        <div class="vs-premium-score">
+          <div class="vs-premium-score-ring" style="background:conic-gradient(${sentColor} 0deg,${sentColor} 360deg,var(--b2) 360deg);">
+            <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:16px;">💬</div>
+          </div>
+          <div>
+            <div class="vs-premium-score-label">${t('cm_sent')}: ${esc(sent).toUpperCase()}</div>
+            <div class="vs-premium-score-sub">${t('cm_pos')} ${d.positive_pct||0}% · ${t('cm_neg')} ${d.negative_pct||0}%</div>
+          </div>
         </div>
-        <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #22c55e;min-width:100px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('cm_pos')}</div>
-          <div style="font-size:20px;font-weight:800;color:#22c55e">${d.positive_pct||0}%</div>
-        </div>
-        <div style="flex:1;text-align:center;padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #ef4444;min-width:100px">
-          <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('cm_neg')}</div>
-          <div style="font-size:20px;font-weight:800;color:#ef4444">${d.negative_pct||0}%</div>
+
+        ${d.audience_requests&&d.audience_requests.length?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">${t('cm_req')}</div>
+          <div class="vs-premium-section-body">${d.audience_requests.map(req=>`<div style="margin:3px 0;">▸ ${esc(req)}</div>`).join('')}</div>
+        </div>`:''}
+
+        ${d.video_ideas&&d.video_ideas.length?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">${t('cm_ideas')}</div>
+          <div class="vs-premium-section-body">${d.video_ideas.map(v=>`<div style="margin:3px 0;">💡 ${esc(v)}</div>`).join('')}</div>
+        </div>`:''}
+
+        ${d.top_comment?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">${t('cm_top')}</div>
+          <div class="vs-premium-section-body" style="font-style:italic;border-left:3px solid #22c55e;padding-left:10px;">"${esc(d.top_comment)}"</div>
+        </div>`:''}
+
+        <div class="vs-premium-actions">
+          <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(fullText)},this)'><span class="ic">⧉</span>Copier</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(fullText)},"analyse-commentaires.txt")'><span class="ic">⬇️</span>Télécharger</button>
+          <button class="vs-premium-action-btn" onclick='document.querySelector(".tool-box .btn").click()'><span class="ic">🔄</span>Régénérer</button>
+          <button class="vs-premium-action-btn" onclick='vsShare(${JSON.stringify(fullText)})'><span class="ic">📤</span>Partager</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(JSON.stringify(d,null,2))},"analyse-commentaires.json")'><span class="ic">📦</span>Exporter</button>
         </div>
       </div>
-      ${d.audience_requests&&d.audience_requests.length?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">${t('cm_req')}</div>
-        ${d.audience_requests.map(req=>`<div style="padding:6px 10px;margin-bottom:6px;background:#12121a;border-radius:6px;font-size:13px">▸ ${esc(req)}</div>`).join('')}
-      </div>`:''}
-      ${d.video_ideas&&d.video_ideas.length?`<div style="padding:14px;background:rgba(247,148,29,.08);border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">${t('cm_ideas')}</div>
-        ${d.video_ideas.map(v=>`<div style="padding:6px 10px;margin-bottom:6px;background:#1b2330;border-radius:6px;font-size:13px">💡 ${esc(v)}</div>`).join('')}
-      </div>`:''}
-      ${d.top_comment?`<div style="padding:12px;background:#1b2330;border-radius:8px;border-left:3px solid #22c55e">
-        <div style="font-size:11px;color:#8888a0;margin-bottom:4px">${t('cm_top')}</div>
-        <div style="font-size:13px;font-style:italic">"${esc(d.top_comment)}"</div>
-      </div>`:''}
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }

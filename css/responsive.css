@@ -1,0 +1,231 @@
+/* ==========================================================================
+   VidSpark AI — Responsive & Mobile-First Layer
+   Loaded on EVERY page, after page-specific <style>, so it overrides sizing
+   issues without touching business logic. Mobile-first: base rules target
+   phones (320px+), then progressively enhanced with min-width queries.
+   Breakpoints tested: 320,360,375,390,414,430,480,768,1024,1440
+   ========================================================================== */
+
+/* ---- 1. Base resets & safe-area (notch) support ---- */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  overflow-x: hidden;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+pre, code, textarea {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* ---- 2. Fluid typography (clamp scales between mobile and desktop) ---- */
+h1, .h1 { font-size: clamp(1.6rem, 5vw + 0.4rem, 3.2rem); line-height: 1.15; }
+h2, .h2 { font-size: clamp(1.35rem, 3.4vw + 0.4rem, 2.2rem); line-height: 1.2; }
+h3, .h3 { font-size: clamp(1.1rem, 2.2vw + 0.4rem, 1.5rem); line-height: 1.3; }
+p, li, label, .body-text { font-size: clamp(0.95rem, 1vw + 0.75rem, 1.05rem); line-height: 1.55; }
+.btn, button, [class*="btn-"] { font-size: clamp(0.9rem, 0.6vw + 0.75rem, 1rem); }
+
+/* ---- 3. Touch targets: every interactive element >= 48px tall ---- */
+a.btn, button, .btn, input[type="button"], input[type="submit"],
+select, .nav-links a, .tab, .chip, .icon-btn {
+  min-height: 48px;
+}
+a, button, .btn, input, select, textarea, [role="button"], [onclick] {
+  touch-action: manipulation;
+}
+input, select, textarea {
+  min-height: 48px;
+  font-size: 16px; /* prevents iOS Safari auto-zoom on focus */
+}
+
+/* ---- 4. Container safety: nothing overflows the viewport ---- */
+.wrap, .container, .content, .page, main {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- 5. Horizontal-scroll tab bars (SEO / TikTok / Idées / Hooks / Calendrier) ---- */
+.tabs, .tab-bar, .segmented, .filters-row, .category-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+  padding-bottom: 6px;
+  flex-wrap: nowrap !important;
+}
+.tabs::-webkit-scrollbar, .tab-bar::-webkit-scrollbar, .category-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+.tabs > *, .tab-bar > *, .segmented > *, .filters-row > *, .category-tabs > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  white-space: nowrap;
+}
+
+/* On screens wide enough, tabs can wrap normally instead of scrolling */
+@media (min-width: 768px) {
+  .tabs, .tab-bar, .segmented, .filters-row, .category-tabs {
+    flex-wrap: wrap !important;
+    overflow-x: visible;
+  }
+}
+
+/* ---- 6. Cards: full width on mobile, grid on larger screens ---- */
+.card, .tool-card, .feature-card, .kpi-card, .pricing-card {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px;
+}
+.grid, .cards-grid, .tools-grid, .features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 560px) {
+  .grid.cols-2, .cards-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 768px) {
+  .grid, .cards-grid, .tools-grid, .features-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .grid, .cards-grid, .tools-grid, .features-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1440px) {
+  .grid.cols-4, .tools-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ---- 7. Forms: near full-width fields on mobile, comfortable on desktop ---- */
+form, .form, .form-group {
+  width: 100%;
+}
+input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea, .btn, button {
+    font-size: 16px;
+  }
+  form .form-row, .form-row {
+    flex-direction: column !important;
+  }
+  form .form-row > *, .form-row > * {
+    width: 100% !important;
+  }
+}
+
+/* ---- 8. Sticky primary action ("Générer") stays reachable on mobile ---- */
+@media (max-width: 767px) {
+  .sticky-cta, .generate-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 40;
+    padding: 10px calc(12px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-bottom));
+    background: rgba(10, 12, 20, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .sticky-cta .btn, .generate-bar .btn {
+    width: 100%;
+  }
+}
+
+/* ---- 8b. Dashboard icon buttons / avatar: bump to 44-48px touch target on mobile ---- */
+@media (max-width: 767px) {
+  .icon-btn, .avatar {
+    width: 44px !important;
+    height: 44px !important;
+  }
+  .drawer-toggle, .tb-menu-btn, .sidebar-toggle {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* ---- 8c. Floating language switcher (#vsLangFloat, injected by js/i18n.js):
+   on mobile it sits top-right at the exact spot as the hamburger toggle /
+   dashboard icon buttons, silently blocking clicks on both. Move it below
+   the header bar and behind the open mobile menu so nothing overlaps. ---- */
+@media (max-width: 860px) {
+  #vsLangFloat {
+    top: 64px !important;
+    right: 10px !important;
+    z-index: 40 !important;
+  }
+  #vsLangFloat select {
+    padding: 5px 6px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ---- 9. Hamburger navigation baseline (works with checkbox-driven pattern) ---- */
+@media (max-width: 860px) {
+  .nav-toggle {
+    min-width: 48px;
+    min-height: 48px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-links a {
+    padding: 14px 18px;
+  }
+}
+
+/* ---- 10. AI result blocks: never overflow, always wrap ---- */
+.result, .ai-result, .output, .result-box, .response-box {
+  max-width: 100%;
+  overflow-x: hidden;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
+}
+
+/* ---- 11. Reduced motion respect (accessibility) ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- 12. Focus visibility for keyboard & accessibility audits ---- */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .btn:focus-visible {
+  outline: 2px solid #f7941d;
+  outline-offset: 2px;
+}
+
+/* ---- 13. Small-phone safety net (320-374px) ---- */
+@media (max-width: 374px) {
+  .wrap, .container, .content { padding-left: 12px; padding-right: 12px; }
+  h1, .h1 { font-size: 1.5rem; }
+}
+
+/* ---- 14. PWA standalone display: compensate for missing browser chrome ---- */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+  }
+}

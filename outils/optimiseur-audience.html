@@ -8,6 +8,16 @@
 <style id="orange-frames">
 .card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -84,26 +94,55 @@ async function go(){
   r.innerHTML=spinner(t('oa_spin'));
   try{
     const d=await aiCall('/api/public/ai/audience-optimizer',{niche,region,language:lang});
+    const fullText=[
+      d.best_hours&&`⏰ Meilleures heures: ${d.best_hours}${d.best_days?' ('+d.best_days+')':''}`,
+      d.trends&&d.trends.length&&'🔥 Tendances:\n'+d.trends.map(tr=>'📈 '+tr).join('\n'),
+      d.topics&&d.topics.length&&'💡 Sujets qui marchent:\n'+d.topics.map(tp=>'💡 '+tp).join('\n'),
+      d.hashtags&&`🏷 Hashtags: ${d.hashtags}`,
+      d.tip&&`💡 ${d.tip}`
+    ].filter(Boolean).join('\n\n');
     r.innerHTML=`
-      ${d.best_hours?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #f7941d;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">⏰ MEILLEURES HEURES DE PUBLICATION</div>
-        <div style="font-size:18px;font-weight:700">${esc(d.best_hours)}</div>
-        ${d.best_days?`<div style="font-size:13px;color:#8888a0;margin-top:4px">📅 ${esc(d.best_days)}</div>`:''}
-      </div>`:''}
-      ${d.trends&&d.trends.length?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #2b3647;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🔥 TENDANCES DANS TA NICHE</div>
-        ${d.trends.map(t=>`<div style="padding:6px 10px;margin-bottom:6px;background:#12121a;border-radius:6px;font-size:13px">📈 ${esc(t)}</div>`).join('')}
-      </div>`:''}
-      ${d.topics&&d.topics.length?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #2b3647;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">💡 SUJETS QUI MARCHENT</div>
-        ${d.topics.map(t=>`<div style="padding:6px 10px;margin-bottom:6px;background:#12121a;border-radius:6px;font-size:13px">💡 ${esc(t)}</div>`).join('')}
-      </div>`:''}
-      ${d.hashtags?`<div style="padding:14px;background:#1b2330;border-radius:10px;border:1.5px solid #2b3647;margin-bottom:12px">
-        <div style="font-size:12px;color:#f7941d;font-weight:700;margin-bottom:8px">🏷 HASHTAGS RECOMMANDÉS</div>
-        <div style="font-size:14px;color:#8888a0">${esc(d.hashtags)}</div>
-        <button class="copy-mini" onclick='copyTxt(${JSON.stringify(d.hashtags||"")},this)' style="margin-top:8px">⧉ Copier</button>
-      </div>`:''}
-      ${d.tip?`<div style="padding:12px;background:rgba(247,148,29,.08);border-radius:8px;border:1.5px solid #f7941d;font-size:13px">💡 ${esc(d.tip)}</div>`:''}
+      <div class="vs-premium vs-glass vs-reveal">
+        <div class="vs-premium-score">
+          <div class="vs-premium-score-ring" style="background:conic-gradient(#f7941d 0deg,#f7941d 360deg,var(--b2) 360deg);">
+            <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:16px;">🌍</div>
+          </div>
+          <div>
+            <div class="vs-premium-score-label">✅ Optimisation d'audience prête</div>
+            <div class="vs-premium-score-sub">${d.best_hours?esc(d.best_hours):''}</div>
+          </div>
+        </div>
+
+        ${d.best_hours?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">⏰ Meilleures heures de publication</div>
+          <div class="vs-premium-section-body">${esc(d.best_hours)}${d.best_days?`<div style="color:var(--muted);margin-top:4px;">📅 ${esc(d.best_days)}</div>`:''}</div>
+        </div>`:''}
+
+        ${d.trends&&d.trends.length?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">🔥 Tendances dans ta niche</div>
+          <div class="vs-premium-section-body">${d.trends.map(tr=>`<div style="margin:3px 0;">📈 ${esc(tr)}</div>`).join('')}</div>
+        </div>`:''}
+
+        ${d.topics&&d.topics.length?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">💡 Sujets qui marchent</div>
+          <div class="vs-premium-section-body">${d.topics.map(tp=>`<div style="margin:3px 0;">💡 ${esc(tp)}</div>`).join('')}</div>
+        </div>`:''}
+
+        ${d.hashtags?`<div class="vs-premium-section">
+          <div class="vs-premium-section-head">🏷 Hashtags recommandés</div>
+          <div class="vs-premium-section-body">${esc(d.hashtags)}</div>
+        </div>`:''}
+
+        ${d.tip?`<div class="vs-premium-section"><div class="vs-premium-section-body" style="background:rgba(247,148,29,.08);border-radius:8px;border:1.5px solid #f7941d;padding:12px;">💡 ${esc(d.tip)}</div></div>`:''}
+
+        <div class="vs-premium-actions">
+          <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(fullText)},this)'><span class="ic">⧉</span>Copier</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(fullText)},"optimiseur-audience.txt")'><span class="ic">⬇️</span>Télécharger</button>
+          <button class="vs-premium-action-btn" onclick='document.querySelector(".tool-box .btn").click()'><span class="ic">🔄</span>Régénérer</button>
+          <button class="vs-premium-action-btn" onclick='vsShare(${JSON.stringify(fullText)})'><span class="ic">📤</span>Partager</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(JSON.stringify(d,null,2))},"optimiseur-audience.json")'><span class="ic">📦</span>Exporter</button>
+        </div>
+      </div>
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }

@@ -11,6 +11,16 @@
 /* Les tuiles d'outils restent pleines (sans bordure) */
 .tool-tile{border:none !important;}
 </style>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VidSpark AI">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script defer src="/js/pwa.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -79,9 +89,30 @@ async function go(){
     const d=await aiCall('/api/public/ai/tags',{topic,language:lang});
     const tags=d.tags||[];
     if(!tags.length)throw new Error(t('gtg_none'));
-    r.innerHTML=`<div>${tags.map(tg=>`<span class="tag">${esc(tg)}</span>`).join('')}</div>
-      <button class="btn green" style="margin-top:14px" onclick='copyTxt(${JSON.stringify(tags.join(", "))},this)'>${t('gtg_copy')}</button>
-      <div class="muted" style="margin-top:8px">${t('gtg_paste')}</div>`;
+    const tagsText=tags.join(", ");
+    r.innerHTML=`
+      <div class="vs-premium vs-glass vs-reveal">
+        <div class="vs-premium-score">
+          <div class="vs-premium-score-ring" style="background:conic-gradient(#f7941d 0deg,#f7941d 360deg,var(--b2) 360deg);">
+            <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;">${tags.length}</div>
+          </div>
+          <div>
+            <div class="vs-premium-score-label">✅ Tags prêts à coller</div>
+            <div class="vs-premium-score-sub">${t('gtg_paste')}</div>
+          </div>
+        </div>
+        <div class="vs-premium-section">
+          <div class="vs-premium-section-head">🏷️ Tags</div>
+          <div class="vs-premium-section-body">${tags.map(tg=>`<span class="tag">${esc(tg)}</span>`).join('')}</div>
+        </div>
+        <div class="vs-premium-actions">
+          <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(tagsText)},this)'><span class="ic">⧉</span>${t('gtg_copy')||"Copier"}</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(tagsText)},"tags.txt")'><span class="ic">⬇️</span>Télécharger</button>
+          <button class="vs-premium-action-btn" onclick='document.querySelector(".tool-box .btn").click()'><span class="ic">🔄</span>Régénérer</button>
+          <button class="vs-premium-action-btn" onclick='vsShare(${JSON.stringify(tagsText)})'><span class="ic">📤</span>Partager</button>
+          <button class="vs-premium-action-btn" onclick='vsDownload(${JSON.stringify(JSON.stringify(d,null,2))},"tags.json")'><span class="ic">📦</span>Exporter</button>
+        </div>
+      </div>`;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
 </script>

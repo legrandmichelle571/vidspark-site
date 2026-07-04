@@ -55,15 +55,26 @@
     // Pas de sélecteur dans une iframe (la page parente en fournit un)
     if(inIframe){ applyI18n(); return; }
 
-    // Sélecteur flottant (haut-droite) — ne touche pas le markup des pages
+    // Sélecteur de langue — ne touche pas le markup des pages.
+    // On l'insère DANS la barre de boutons existante de la page (dashboard,
+    // nav principale, pages outils) pour qu'il ne flotte jamais par-dessus
+    // les autres boutons (cloche, réglages, avatar…). Seules les pages sans
+    // barre de boutons connue reçoivent l'ancien widget flottant en secours.
     if(!document.getElementById('vsLangFloat')){
       const wrap = document.createElement('div');
       wrap.id = 'vsLangFloat';
-      wrap.style.cssText = 'position:fixed;top:10px;right:12px;z-index:9999;';
-      wrap.innerHTML = `<select aria-label="Language" style="background:#141418;color:#e8e8f0;border:1px solid #2b3647;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);">
+      wrap.innerHTML = `<select aria-label="Language" style="background:#141418;color:#e8e8f0;border:1px solid #2b3647;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);max-width:120px;">
         ${LANGS.map(l=>`<option value="${l.c}"${l.c===lang?' selected':''}>${l.n}</option>`).join('')}
       </select>`;
-      document.body.appendChild(wrap);
+
+      const host = document.querySelector('.tb-right, .nav-cta, .nav-right');
+      if(host){
+        wrap.style.cssText = 'display:inline-flex;align-items:center;';
+        host.insertBefore(wrap, host.firstChild);
+      } else {
+        wrap.style.cssText = 'position:fixed;top:10px;right:12px;z-index:9999;';
+        document.body.appendChild(wrap);
+      }
       wrap.querySelector('select').addEventListener('change', e => vsSetLang(e.target.value));
     }
     applyI18n();
