@@ -242,10 +242,25 @@
 
     /* ── MAIN ── */
     .main{ margin-left:var(--side-w); padding:26px 30px 60px; max-width:1640px; transition: margin-left .28s var(--ease); }
-    @media(max-width:760px){
-      .app-side{ transform:translateX(-100%); box-shadow:24px 0 60px -20px rgba(0,0,0,.7); }
+    /* Tablet + mobile: the sidebar is ALWAYS off-canvas (drawer), never a
+       permanent fixed column — opened via the topbar hamburger only. */
+    @media(max-width:1024px){
+      .app-side{ transform:translateX(-100%); width:300px; box-shadow:24px 0 60px -20px rgba(0,0,0,.7); }
       .app-side.drawer-open{ transform:translateX(0); }
-      .main{ margin-left:0; padding:18px 14px 50px; }
+      body.side-collapsed .app-side{ width:300px; padding:14px 12px 12px; }
+      body.side-collapsed .sb-brand .bt, body.side-collapsed .sb-ws .ws-tx, body.side-collapsed .sb-ws .ws-cv,
+      body.side-collapsed .sb-search, body.side-collapsed .sb-group-h .gh-title, body.side-collapsed .sb-group-h .gh-chev,
+      body.side-collapsed .app-side a.sb-link .lbl, body.side-collapsed .app-side a.sb-link .sb-badge, body.side-collapsed .app-side a.sb-link .sb-arrow,
+      body.side-collapsed .su-info, body.side-collapsed .su-cog, body.side-collapsed .su-meta, body.side-collapsed .su-credits, body.side-collapsed .su-actions{ display:revert; }
+      .main, body.side-collapsed .main{ margin-left:0; padding:18px 14px 50px; }
+      .sb-toggle{ display:none; }
+    }
+    @media(max-width:760px){
+      .app-side{ width:88vw; max-width:340px; }
+      .app-side a.sb-link{ padding:12px 11px; font-size:14px; }
+    }
+    @media(max-width:420px){
+      .app-side{ width:92vw; max-width:none; border-radius:0; }
     }
 
     /* ── TOP HEADER ── */
@@ -1789,7 +1804,7 @@
   <!-- ════ UI premium : sidebar collapse · compteurs animés · charts SVG · coach flottant ════ -->
   <script>
   /* ===== Sidebar premium ===== */
-  function isMobileSide(){ return window.innerWidth<=760; }
+  function isMobileSide(){ return window.innerWidth<=1024; }
   function toggleSidebar(){
     if(isMobileSide()){
       var s=document.getElementById('appSide'), o=document.getElementById('sideOverlay');
@@ -2083,7 +2098,7 @@
     window.toggleNotif=function(e){
       if(e){ e.preventDefault(); e.stopPropagation(); }
       var p=buildNotifPop(), open=p.classList.toggle('open');
-      if(open){ try{ localStorage.setItem('vs_notif_seen','1'); }catch(_){} paintNotifCount(); if(typeof closeDrawer==='function' && window.innerWidth<=760) closeDrawer(); }
+      if(open){ try{ localStorage.setItem('vs_notif_seen','1'); }catch(_){} paintNotifCount(); if(typeof closeDrawer==='function' && window.innerWidth<=1024) closeDrawer(); }
     };
     window.clearNotif=function(){ try{ localStorage.setItem('vs_notif_seen','1'); }catch(e){} paintNotifCount(); var p=document.getElementById('notifPop'); if(p) p.classList.remove('open'); };
     document.addEventListener('click', function(e){

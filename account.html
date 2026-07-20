@@ -300,19 +300,12 @@
         text-align: center;
       }
     }
-    /* ── Barre latérale commune (style TubeRank) ── */
-    .app-side{position:fixed;left:0;top:0;bottom:0;width:220px;background:#101017;border-right:1px solid #23232e;display:flex;flex-direction:column;padding:18px 14px;z-index:50;overflow-y:auto;}
-    .app-side .sb-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;color:#fff;padding:6px 8px 18px;}
-    .app-side .sb-brand .lg{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#f5801f,#f7941d);display:flex;align-items:center;justify-content:center;color:#06121a;}
-    .app-side a.sb-link{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;color:#8a8a9a;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:2px;cursor:pointer;}
-    .app-side a.sb-link:hover{background:#16161d;color:#fff;}
-    .app-side a.sb-link.active{background:linear-gradient(135deg,#f7941d,#f5801f);color:#fff;}
-    .app-side .sb-foot{margin-top:auto;}
-    .app-side .sb-logout{color:#ef4444;}
     .nav{display:none !important;}
-    body{padding-left:220px;}
-    @media(max-width:760px){.app-side{width:58px;padding:14px 8px;}.app-side .sb-brand span,.app-side a.sb-link span{display:none;}.app-side a.sb-link{justify-content:center;}body{padding-left:58px;}}
+    .app-main{ margin-left:270px; transition:margin-left .28s cubic-bezier(.4,0,.2,1); }
+    body.side-collapsed .app-main{ margin-left:72px; }
+    @media(max-width:1024px){ .app-main, body.side-collapsed .app-main{ margin-left:0; } }
   </style>
+  <link rel="stylesheet" href="/css/app-shell.css">
 <style id="orange-frames">
 /* Encadrement orange sur tous les panneaux/cartes */
 .card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
@@ -400,35 +393,8 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-  <aside class="app-side">
-    <div class="sb-brand"><span class="lg">✦</span> <span>VidSpark AI</span></div>
-    <a class="sb-link" href="dashboard.html"><span>🏠</span> <span data-i18n="sb_home">Tableau de bord</span></a>
-    <a class="sb-link" href="diamant.html"><span>✦</span> <span data-i18n="sb_studio">Studio</span></a>
-    <a class="sb-link" href="channels.html"><span>📺</span> <span data-i18n="sb_channels">Mes chaînes</span></a>
-    <a class="sb-link" href="billing.html"><span>💳</span> <span data-i18n="sb_sub">Abonnement</span></a>
-    <a class="sb-link active" href="account.html"><span>⚙️</span> <span data-i18n="sb_account">Compte</span></a>
-    <div class="sb-foot">
-      <a class="sb-link" href="https://vidsparkpro.com/pricing.html"><span>🏷️</span> <span data-i18n="sb_plans">Forfaits</span></a>
-      <a class="sb-link sb-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';"><span>🚪</span> <span data-i18n="sb_logout">Déconnexion</span></a>
-    </div>
-  </aside>
-
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="dashboard.html" class="nav-logo">
-        <div class="nav-logo-icon">✨</div>
-        <div>VidSpark AI</div>
-      </a>
-
-      <div class="nav-links">
-        <a href="dashboard.html" class="nav-link" data-i18n="ac_nav_dashboard">Dashboard</a>
-        <a href="account.html" class="nav-link active" data-i18n="ac_nav_account">Account</a>
-        <a href="billing.html" class="nav-link" data-i18n="ac_nav_billing">Billing</a>
-      </div>
-    </div>
-  </nav>
-
+  <!-- Navigation chrome injected by js/app-shell.js (VidSparkShell.mount) -->
+  <div class="app-main">
   <!-- Main -->
   <div class="container">
     <!-- Sidebar -->
@@ -546,6 +512,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
+  <script src="/js/app-shell.js"></script>
   <script>
     /**
      * Account settings page
@@ -741,6 +708,8 @@
 
     // Charger au démarrage
     window.addEventListener('load', () => { loadProfile(); loadPreferences(); });
+    if (window.VidSparkShell) VidSparkShell.mount({ active: 'account', title: t ? t('db_settings') : 'Compte', subtitle: '' });
   </script>
+  </div><!-- /.app-main -->
 </body>
 </html>
