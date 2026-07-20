@@ -6,11 +6,20 @@
   <title>VidSpark AI — Studio</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="preconnect" href="https://fnhyskbisfbtjgblbiap.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0a0a0f; --side:#101017; --card:#1b2330; --b1:#2b3647; --b2:#30303c;
-      --text:#e9e9f2; --muted:#8a8a9a; --cyan:#f5801f; --purple:#f7941d; --grad:linear-gradient(135deg,#f7941d,#f5801f);
-      --green:#22c55e; --red:#ef4444; --amber:#f5b301;
+      --bg:#0B0F19; --side:#0c1220; --card:#141c2e; --b1:rgba(255,255,255,.06); --b2:rgba(255,255,255,.10);
+      --text:#eaecf3; --muted:#8b92a7; --cyan:#FF9D1F; --purple:#FF9D1F; --grad:linear-gradient(135deg,#FF9D1F,#ff7a18);
+      --green:#34d399; --red:#f87171; --amber:#fbbf24;
+      --radius:16px; --radius-sm:12px; --radius-xs:10px;
+    }
+    body:not(.light):not(.violet){
+      background:
+        radial-gradient(1100px 520px at 78% -8%, rgba(255,157,31,.08), transparent 60%),
+        radial-gradient(900px 480px at 0% 0%, rgba(96,165,250,.06), transparent 55%),
+        var(--bg);
+      background-attachment:fixed;
     }
     body.light{
       --bg:#f4f5fa; --side:#ffffff; --card:#ffffff; --b1:#e4e6ef; --b2:#cfd2de;
@@ -20,8 +29,11 @@
       --bg:#140f24; --side:#1b1436; --card:#221a3f; --b1:#352657; --b2:#43346d;
       --text:#ece8f7; --muted:#a294c8;
     }
-    *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
-    body{background:var(--bg);color:var(--text);min-height:100vh;}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:"Inter",-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+    body{background:var(--bg);color:var(--text);min-height:100vh;letter-spacing:-.01em;}
+    .fade-in{ animation: vsFadeIn .5s ease both; }
+    @keyframes vsFadeIn{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:none; } }
+    @media (prefers-reduced-motion: reduce){ .fade-in{ animation:none; } }
     a{text-decoration:none;color:inherit;}
     .app{display:flex;min-height:100vh;}
 
@@ -49,12 +61,13 @@
     .view{display:none;}
     .view.active{display:block;}
 
-    .panel{background:var(--card);border:1px solid var(--b1);border-radius:14px;padding:22px;margin-bottom:18px;}
+    .panel{background:var(--card);border:1px solid var(--b1);border-radius:var(--radius);padding:22px;margin-bottom:18px;box-shadow:0 8px 24px -12px rgba(0,0,0,.6);}
     .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;}
     .field{flex:1;min-width:170px;}
     .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;}
-    input,select{width:100%;background:var(--bg);border:1px solid var(--b2);border-radius:9px;padding:11px 12px;color:var(--text);font-size:14px;}
-    .btn{background:var(--grad);color:#06121a;border:none;border-radius:10px;padding:12px 22px;font-weight:800;font-size:14px;cursor:pointer;white-space:nowrap;}
+    input,select{width:100%;background:var(--bg);border:1px solid var(--b2);border-radius:var(--radius-xs);padding:11px 12px;color:var(--text);font-size:14px;font-family:inherit;}
+    .btn{background:var(--grad);color:#0b0f19;border:1px solid transparent;border-radius:var(--radius-sm);padding:12px 22px;font-weight:700;font-size:13.5px;cursor:pointer;white-space:nowrap;transition:all .2s cubic-bezier(.4,0,.2,1);box-shadow:0 8px 22px -8px rgba(255,157,31,.3);}
+    .btn:hover:not(:disabled){filter:brightness(1.06);transform:translateY(-1px);}
     .btn:disabled{opacity:.5;cursor:not-allowed;}
     .err{color:var(--red);font-size:13px;margin-top:10px;display:none;}
     .spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;}
@@ -71,11 +84,11 @@
     .bar{height:7px;background:var(--b2);border-radius:6px;overflow:hidden;}
     .bar i{display:block;height:100%;background:var(--grad);}
     .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin:8px 0 16px;}
-    .stat{background:var(--bg);border:1px solid var(--b1);border-radius:10px;padding:13px;text-align:center;}
+    .stat{background:var(--bg);border:1px solid var(--b1);border-radius:var(--radius-xs);padding:13px;text-align:center;}
     .stat .v{font-size:20px;font-weight:800;}
     .stat .k{font-size:11px;color:var(--muted);margin-top:3px;}
-    .rec{display:flex;gap:10px;background:var(--bg);border-left:3px solid var(--cyan);border-radius:8px;padding:11px 13px;margin-bottom:8px;font-size:13px;}
-    .rankbox{text-align:center;padding:22px;background:var(--bg);border-radius:12px;margin-top:14px;}
+    .rec{display:flex;gap:10px;background:var(--bg);border-left:3px solid var(--cyan);border-radius:var(--radius-xs);padding:11px 13px;margin-bottom:8px;font-size:13px;}
+    .rankbox{text-align:center;padding:22px;background:var(--bg);border-radius:var(--radius);margin-top:14px;}
     .rankbox .n{font-size:44px;font-weight:800;color:var(--cyan);}
     .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:16px;}
     .vcard{background:var(--bg);border:1px solid var(--b1);border-radius:11px;overflow:hidden;display:block;}
@@ -186,7 +199,7 @@
   </aside>
   <div class="scrim" onclick="toggleSide()"></div>
 
-  <main class="main">
+  <main class="main fade-in">
 
     <div id="toolMsg" style="display:none;background:var(--grad);color:#06121a;font-weight:700;font-size:14px;padding:13px 18px;border-radius:12px;margin-bottom:18px;display:none;align-items:center;gap:14px;flex-wrap:wrap;"></div>
 

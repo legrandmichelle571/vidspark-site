@@ -128,21 +128,21 @@
     .sb-group.collapsed .gh-chev{ transform:rotate(-90deg); }
     .sb-group-items{ max-height:1200px; overflow:hidden; transition:max-height .25s var(--ease); }
     .sb-group.collapsed .sb-group-items{ max-height:0; }
-    .app-side a.sb-link{
+    .app-side a.sb-link, .tb-dd-panel a.sb-link{
       display:flex; align-items:center; gap:11px; padding:9px 11px; border-radius:10px;
       color:var(--muted); font-size:13px; font-weight:600; text-decoration:none; margin-bottom:1px; cursor:pointer;
       white-space:nowrap; position:relative; transition: background .18s var(--ease), color .18s, transform .18s;
     }
-    .app-side a.sb-link .ic{ width:22px; text-align:center; font-size:15.5px; flex-shrink:0; transition:transform .18s var(--ease); }
-    .app-side a.sb-link .lbl{ flex:1; overflow:hidden; text-overflow:ellipsis; }
-    .app-side a.sb-link .sb-arrow{ font-size:15px; color:var(--faint); opacity:0; transform:translateX(-5px); transition:all .18s var(--ease); }
-    .app-side a.sb-link:hover{ background:rgba(255,255,255,.05); color:#fff; transform:translateX(2px); }
-    .app-side a.sb-link:hover .ic{ transform:scale(1.14); }
-    .app-side a.sb-link:hover .sb-arrow{ opacity:1; transform:translateX(0); }
-    .app-side a.sb-link.soon{ opacity:.5; cursor:default; }
-    .app-side a.sb-link.soon:hover{ transform:none; background:rgba(255,255,255,.025); color:var(--muted); }
-    .app-side a.sb-link.active{ background:linear-gradient(135deg, rgba(255,157,31,.22), rgba(255,122,24,.10)); color:#fff; box-shadow:0 6px 18px -10px var(--accent-glow); }
-    .app-side a.sb-link.active .ic{ filter:drop-shadow(0 0 6px var(--accent-glow)); }
+    .app-side a.sb-link .ic, .tb-dd-panel a.sb-link .ic{ width:22px; text-align:center; font-size:15.5px; flex-shrink:0; transition:transform .18s var(--ease); }
+    .app-side a.sb-link .lbl, .tb-dd-panel a.sb-link .lbl{ flex:1; overflow:hidden; text-overflow:ellipsis; }
+    .app-side a.sb-link .sb-arrow, .tb-dd-panel a.sb-link .sb-arrow{ font-size:15px; color:var(--faint); opacity:0; transform:translateX(-5px); transition:all .18s var(--ease); }
+    .app-side a.sb-link:hover, .tb-dd-panel a.sb-link:hover{ background:rgba(255,255,255,.05); color:#fff; transform:translateX(2px); }
+    .app-side a.sb-link:hover .ic, .tb-dd-panel a.sb-link:hover .ic{ transform:scale(1.14); }
+    .app-side a.sb-link:hover .sb-arrow, .tb-dd-panel a.sb-link:hover .sb-arrow{ opacity:1; transform:translateX(0); }
+    .app-side a.sb-link.soon, .tb-dd-panel a.sb-link.soon{ opacity:.5; cursor:default; }
+    .app-side a.sb-link.soon:hover, .tb-dd-panel a.sb-link.soon:hover{ transform:none; background:rgba(255,255,255,.025); color:var(--muted); }
+    .app-side a.sb-link.active, .tb-dd-panel a.sb-link.active{ background:linear-gradient(135deg, rgba(255,157,31,.22), rgba(255,122,24,.10)); color:#fff; box-shadow:0 6px 18px -10px var(--accent-glow); }
+    .app-side a.sb-link.active .ic, .tb-dd-panel a.sb-link.active .ic{ filter:drop-shadow(0 0 6px var(--accent-glow)); }
     .app-side a.sb-link.active::before{
       content:""; position:absolute; left:-12px; top:50%; transform:translateY(-50%);
       width:4px; height:60%; border-radius:0 4px 4px 0; background:linear-gradient(180deg,var(--accent),var(--accent-2)); box-shadow:0 0 8px var(--accent-glow);
@@ -241,20 +241,13 @@
     .notif-tm{ font-size:10.5px; color:var(--faint); margin-top:2px; }
 
     /* ── MAIN ── */
-    .main{ margin-left:var(--side-w); padding:26px 30px 60px; max-width:1640px; transition: margin-left .28s var(--ease); }
-    /* Tablet + mobile: the sidebar is ALWAYS off-canvas (drawer), never a
-       permanent fixed column — opened via the topbar hamburger only. */
-    @media(max-width:1024px){
-      .app-side{ transform:translateX(-100%); width:300px; box-shadow:24px 0 60px -20px rgba(0,0,0,.7); }
-      .app-side.drawer-open{ transform:translateX(0); }
-      body.side-collapsed .app-side{ width:300px; padding:14px 12px 12px; }
-      body.side-collapsed .sb-brand .bt, body.side-collapsed .sb-ws .ws-tx, body.side-collapsed .sb-ws .ws-cv,
-      body.side-collapsed .sb-search, body.side-collapsed .sb-group-h .gh-title, body.side-collapsed .sb-group-h .gh-chev,
-      body.side-collapsed .app-side a.sb-link .lbl, body.side-collapsed .app-side a.sb-link .sb-badge, body.side-collapsed .app-side a.sb-link .sb-arrow,
-      body.side-collapsed .su-info, body.side-collapsed .su-cog, body.side-collapsed .su-meta, body.side-collapsed .su-credits, body.side-collapsed .su-actions{ display:revert; }
-      .main, body.side-collapsed .main{ margin-left:0; padding:18px 14px 50px; }
-      .sb-toggle{ display:none; }
-    }
+    /* The sidebar is ALWAYS off-canvas (drawer) on every breakpoint, including
+       desktop — no permanent left column. It only opens via the topbar
+       hamburger, or the topbar dropdown menus for quick tool access. */
+    .main{ margin-left:0; padding:26px 30px 60px; max-width:1640px; }
+    .app-side{ transform:translateX(-100%); width:300px; box-shadow:24px 0 60px -20px rgba(0,0,0,.7); }
+    .app-side.drawer-open{ transform:translateX(0); }
+    .sb-toggle{ display:none; }
     @media(max-width:760px){
       .app-side{ width:88vw; max-width:340px; }
       .app-side a.sb-link{ padding:12px 11px; font-size:14px; }
@@ -273,7 +266,37 @@
     .tb-title .wave{ display:inline-block; animation: wave 2.4s ease-in-out 1; transform-origin:70% 70%; }
     @keyframes wave{ 0%,60%,100%{transform:rotate(0)} 15%{transform:rotate(16deg)} 30%{transform:rotate(-8deg)} 45%{transform:rotate(12deg)} }
     .tb-sub{ font-size:12.5px; color:var(--muted); }
+    .page-greeting{ margin-bottom:22px; }
     .tb-right{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    /* ── Topbar logo + primary nav + search ── */
+    .tb-logo{ display:flex; align-items:center; gap:9px; font-weight:800; font-size:14.5px; color:#fff; white-space:nowrap; cursor:pointer; flex-shrink:0; }
+    .tb-logo .lg{ width:30px; height:30px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; color:#0b0f19; font-size:15px; flex-shrink:0; }
+    .tb-nav{ display:flex; align-items:center; gap:4px; }
+    .tb-nav-link{ padding:8px 12px; border-radius:10px; font-size:13px; font-weight:600; color:var(--muted); white-space:nowrap; transition:all .18s var(--ease); cursor:pointer; }
+    .tb-nav-link:hover{ color:#fff; background:rgba(255,255,255,.05); }
+    .tb-nav-link.active{ color:#fff; background:var(--accent-soft); }
+    /* ── Menus déroulants (outils) ── */
+    .tb-dd{ position:relative; }
+    .tb-dd-trigger{ display:flex; align-items:center; gap:4px; font-size:13px; }
+    .tb-dd-chev{ font-size:9px; transition:transform .18s var(--ease); }
+    .tb-dd.open .tb-dd-trigger{ color:#fff; background:rgba(255,255,255,.05); }
+    .tb-dd.open .tb-dd-chev{ transform:rotate(180deg); }
+    .tb-dd-panel{
+      position:absolute; top:calc(100% + 10px); left:0; min-width:250px; max-height:64vh; overflow-y:auto;
+      background:var(--s2); border:1px solid var(--b2); border-radius:14px; box-shadow:var(--shadow);
+      padding:8px; opacity:0; pointer-events:none; transform:translateY(-6px);
+      transition:opacity .18s var(--ease), transform .18s var(--ease); z-index:210;
+    }
+    .tb-dd.open .tb-dd-panel{ opacity:1; pointer-events:auto; transform:translateY(0); }
+    .tb-dd-panel a.sb-link{ padding:9px 11px; }
+    .tb-search{ position:relative; width:190px; flex-shrink:1; }
+    .tb-search .si{ position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--faint); font-size:12px; pointer-events:none; }
+    .tb-search input{ width:100%; padding:9px 42px 9px 31px; border-radius:11px; background:rgba(255,255,255,.03); border:1px solid var(--b1); color:var(--text); font-size:12.5px; font-family:inherit; outline:none; transition:all .2s var(--ease); }
+    .tb-search input::placeholder{ color:var(--faint); }
+    .tb-search input:focus{ border-color:var(--accent-line); background:var(--accent-soft); box-shadow:0 0 0 3px rgba(255,157,31,.13); }
+    .tb-search .kbd{ position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:9px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:2px 5px; background:rgba(255,255,255,.02); pointer-events:none; }
+    @media(max-width:1300px){ .tb-search{ display:none; } }
+    @media(max-width:1024px){ .tb-nav{ display:none; } }
     .icon-btn{
       position:relative; width:42px; height:42px; border-radius:12px;
       display:flex; align-items:center; justify-content:center; font-size:17px;
@@ -697,13 +720,6 @@
       </button>
     </div>
 
-    <!-- global search -->
-    <div class="sb-search">
-      <span class="si">🔍</span>
-      <input id="sideSearchInput" type="text" autocomplete="off" placeholder="Rechercher…" data-i18n-ph="db_search_ph" oninput="sideSearch(this.value)">
-      <span class="kbd">Ctrl K</span>
-    </div>
-
     <!-- nav -->
     <nav class="sb-nav">
       <!-- Favoris (dynamique) -->
@@ -716,18 +732,6 @@
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_recents">🕘 Récents</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items" id="recentItems"></div>
       </div>
-      <!-- GROUP 1 : DASHBOARD -->
-      <div class="sb-group" data-g="dash">
-        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_dashboard">Dashboard</span><span class="gh-chev">▾</span></button>
-        <div class="sb-group-items">
-          <a class="sb-link active" id="lnkHome" data-name="Dashboard Coach" onclick="backToHome()"><span class="ic">🏠</span> <span class="lbl" data-i18n="db_home">Tableau de bord</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="AI Coach" onclick="toggleAiPop()"><span class="ic">🧠</span> <span class="lbl" data-i18n="db_s_coach">Coach</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Notifications" onclick="toggleNotif(event)"><span class="ic">🔔</span> <span class="lbl" data-i18n="db_notifications">Notifications</span><span class="sb-badge count" id="navNotifCount">3</span></a>
-          <!-- Activité récente : masqué (couvert par la section « Récents » de la sidebar) -->
-
-        </div>
-      </div>
-
       <!-- GROUP 2 : ANALYZE -->
       <div class="sb-group" data-g="analyze">
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_analyze">Analyser</span><span class="gh-chev">▾</span></button>
@@ -806,8 +810,8 @@
         </div>
       </div>
 
-      <!-- GROUP 7 : ACCOUNT -->
-      <div class="sb-group" data-g="account">
+      <!-- GROUP 7 : ACCOUNT (repli mobile/tablette — couvert par la nav de la topbar sur desktop) -->
+      <div class="sb-group sb-mobile-only" data-g="account">
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_account">Compte</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items">
           <a class="sb-link" data-name="Subscription" href="billing.html"><span class="ic">💎</span> <span class="lbl" data-i18n="db_billing">Abonnement</span><span class="sb-arrow">›</span></a>
@@ -821,8 +825,8 @@
         </div>
       </div>
 
-      <!-- GROUP 8 : HELP -->
-      <div class="sb-group" data-g="help">
+      <!-- GROUP 8 : HELP (repli mobile/tablette — couvert par la nav de la topbar sur desktop) -->
+      <div class="sb-group sb-mobile-only" data-g="help">
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_help">Aide</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items">
           <a class="sb-link" data-name="Documentation" onclick="openTool('docs')"><span class="ic">📚</span> <span class="lbl" data-i18n="db_docs">Documentation</span><span class="sb-arrow">›</span></a>
@@ -836,30 +840,6 @@
       </div>
     </nav>
 
-    <!-- bottom user card -->
-    <div class="sb-user">
-      <div class="su-main">
-        <div class="su-av" id="ucAvatar">🙂<span class="on"></span></div>
-        <div class="su-info">
-          <div class="su-name" id="ucName">—</div>
-          <div class="su-mail" id="ucEmail">—</div>
-        </div>
-        <button class="su-cog" onclick="window.location.href='account.html'" title="Réglages">⚙</button>
-      </div>
-      <div class="su-meta">
-        <span class="su-plan" id="ucPlan">—</span>
-        <span id="ucChannels">📺 —</span>
-        <span id="ucDays">⏳ —</span>
-      </div>
-      <div class="su-credits">
-        <div class="cl"><span data-i18n="db_credits">Crédits mensuels</span><span id="ucCredLbl">—</span></div>
-        <div class="cb"><div class="cf" id="ucCredFill"></div></div>
-      </div>
-      <div class="su-actions">
-        <button onclick="window.location.href='account.html'">⚙ <span data-i18n="db_settings">Paramètres</span></button>
-        <button class="su-logout" onclick="if(window.Auth)Auth.logout();else location.href='login.html';">🚪 <span data-i18n="db_logout">Déconnexion</span></button>
-      </div>
-    </div>
   </aside>
 
   <!-- overlay tiroir mobile -->
@@ -892,9 +872,36 @@
       <header class="topbar fade-in" style="--d:0">
         <div class="tb-left">
           <button class="icon-btn" onclick="toggleSidebar()" title="Menu" aria-label="Menu" style="font-size:18px;">☰</button>
-          <div>
-            <h1 class="tb-title"><span class="wave">👋</span> <span id="userName">Bienvenue</span></h1>
-            <p class="tb-sub" id="userEmail">Chargement…</p>
+          <a class="tb-logo" onclick="backToHome()">
+            <span class="lg">✦</span> VidSpark AI
+          </a>
+          <nav class="tb-nav">
+            <a class="tb-nav-link active" id="lnkHome" onclick="backToHome()" data-i18n="db_home">Tableau de bord</a>
+            <div class="tb-dd" data-g="analyze">
+              <button class="tb-nav-link tb-dd-trigger" onclick="toggleTbDropdown(this)"><span data-i18n="db_g_analyze">Analyser</span> <span class="tb-dd-chev">▾</span></button>
+              <div class="tb-dd-panel"></div>
+            </div>
+            <div class="tb-dd" data-g="create">
+              <button class="tb-nav-link tb-dd-trigger" onclick="toggleTbDropdown(this)"><span data-i18n="db_g_create">Créer (IA)</span> <span class="tb-dd-chev">▾</span></button>
+              <div class="tb-dd-panel"></div>
+            </div>
+            <div class="tb-dd" data-g="seo">
+              <button class="tb-nav-link tb-dd-trigger" onclick="toggleTbDropdown(this)"><span data-i18n="db_g_seo">Outils SEO</span> <span class="tb-dd-chev">▾</span></button>
+              <div class="tb-dd-panel"></div>
+            </div>
+            <div class="tb-dd" data-g="growth">
+              <button class="tb-nav-link tb-dd-trigger" onclick="toggleTbDropdown(this)"><span data-i18n="db_g_growth">Croissance</span> <span class="tb-dd-chev">▾</span></button>
+              <div class="tb-dd-panel"></div>
+            </div>
+            <div class="tb-dd" data-g="studio">
+              <button class="tb-nav-link tb-dd-trigger" onclick="toggleTbDropdown(this)"><span data-i18n="db_g_studio">Studio</span> <span class="tb-dd-chev">▾</span></button>
+              <div class="tb-dd-panel"></div>
+            </div>
+          </nav>
+          <div class="tb-search">
+            <span class="si">🔍</span>
+            <input id="sideSearchInput" type="text" autocomplete="off" placeholder="Rechercher…" data-i18n-ph="db_search_ph" oninput="sideSearch(this.value)">
+            <span class="kbd">Ctrl K</span>
           </div>
         </div>
         <div class="tb-right">
@@ -907,12 +914,20 @@
             <div id="userMenu" class="menu">
               <a href="account.html" class="menu-item" data-i18n="db_account">Compte</a>
               <a href="billing.html" class="menu-item" data-i18n="db_billing">Abonnement</a>
+              <a href="channels.html" class="menu-item" data-i18n="db_channels">Mes chaînes</a>
+              <a href="contact.html" class="menu-item" data-i18n="db_contact">Aide</a>
               <button id="switchAccountButton" class="menu-item" data-i18n="db_switch">🔄 Switch Account</button>
               <button id="logoutButton" class="menu-item danger" data-i18n="db_logout">Déconnexion</button>
             </div>
           </div>
         </div>
       </header>
+
+      <!-- ════ GREETING ════ -->
+      <div class="page-greeting fade-in" style="--d:1">
+        <h1 class="tb-title"><span class="wave">👋</span> <span id="userName">Bienvenue</span></h1>
+        <p class="tb-sub" id="userEmail">Chargement…</p>
+      </div>
 
       <!-- ════ KPI OVERVIEW ════ -->
       <section class="kpis fade-in" style="--d:1">
@@ -1631,6 +1646,8 @@
       var oc = a.getAttribute('onclick') || '';
       a.classList.toggle('active', view==='home' ? a.id==='lnkHome' : oc.indexOf("'"+view+"'")>-1);
     });
+    var homeNav=document.getElementById('lnkHome');
+    if(homeNav && homeNav.classList.contains('tb-nav-link')) homeNav.classList.toggle('active', view==='home');
   }
   function openTool(view){
     document.getElementById('content').style.display='none';
@@ -1801,27 +1818,41 @@
   }
   </script>
 
-  <!-- ════ UI premium : sidebar collapse · compteurs animés · charts SVG · coach flottant ════ -->
+  <!-- ════ UI premium : sidebar drawer · compteurs animés · charts SVG · coach flottant ════ -->
   <script>
-  /* ===== Sidebar premium ===== */
+  /* ===== Sidebar premium : toujours en tiroir (drawer), jamais ancrée ===== */
   function isMobileSide(){ return window.innerWidth<=1024; }
   function toggleSidebar(){
-    if(isMobileSide()){
-      var s=document.getElementById('appSide'), o=document.getElementById('sideOverlay');
-      var open=s.classList.toggle('drawer-open'); if(o) o.classList.toggle('show', open);
-    } else {
-      document.body.classList.toggle('side-collapsed');
-      try{ localStorage.setItem('vs_side_collapsed', document.body.classList.contains('side-collapsed')?'1':'0'); }catch(e){}
-    }
+    var s=document.getElementById('appSide'), o=document.getElementById('sideOverlay');
+    var open=s.classList.toggle('drawer-open'); if(o) o.classList.toggle('show', open);
   }
   function closeDrawer(){
     var s=document.getElementById('appSide'), o=document.getElementById('sideOverlay');
     if(s) s.classList.remove('drawer-open'); if(o) o.classList.remove('show');
   }
-  (function(){ try{ if(!isMobileSide() && localStorage.getItem('vs_side_collapsed')==='1') document.body.classList.add('side-collapsed'); }catch(e){} })();
-  window.addEventListener('resize', function(){
-    if(isMobileSide()){ document.body.classList.remove('side-collapsed'); }
-    else { closeDrawer(); try{ if(localStorage.getItem('vs_side_collapsed')==='1') document.body.classList.add('side-collapsed'); }catch(e){} }
+
+  /* ===== Menus déroulants de la topbar (Analyser/Créer/SEO/Croissance/Studio) =====
+     Le contenu est cloné depuis le groupe correspondant de la sidebar (jamais
+     dupliqué en dur) pour garder une seule source de vérité pour les liens. */
+  function toggleTbDropdown(btn){
+    var dd = btn.closest('.tb-dd'); if(!dd) return;
+    var wasOpen = dd.classList.contains('open');
+    document.querySelectorAll('.tb-dd.open').forEach(function(d){ d.classList.remove('open'); });
+    if(wasOpen) return;
+    var panel = dd.querySelector('.tb-dd-panel');
+    if(panel && !panel.dataset.filled){
+      var src = document.querySelector('.sb-group[data-g="'+dd.getAttribute('data-g')+'"] .sb-group-items');
+      if(src) panel.innerHTML = src.innerHTML;
+      panel.dataset.filled = '1';
+    }
+    dd.classList.add('open');
+  }
+  document.addEventListener('click', function(e){
+    if(!e.target.closest || !e.target.closest('.tb-dd')){
+      document.querySelectorAll('.tb-dd.open').forEach(function(d){ d.classList.remove('open'); });
+    } else if(e.target.closest('.tb-dd-panel a.sb-link')){
+      document.querySelectorAll('.tb-dd.open').forEach(function(d){ d.classList.remove('open'); });
+    }
   });
 
   /* Groupes repliables (persistés) */
@@ -1845,6 +1876,9 @@
       g.style.display=vis?'':'none';
       if(any) g.classList.remove('collapsed');
     });
+    // La sidebar n'étant jamais ancrée, on l'ouvre en tiroir dès qu'une recherche est en cours
+    var s=document.getElementById('appSide'), o=document.getElementById('sideOverlay');
+    if(any){ if(s && !s.classList.contains('drawer-open')){ s.classList.add('drawer-open'); if(o) o.classList.add('show'); } }
   }
 
   /* Raccourci Ctrl/⌘+K + Échap */
@@ -1852,7 +1886,6 @@
     if((e.ctrlKey||e.metaKey) && (e.key==='k'||e.key==='K')){
       e.preventDefault();
       var i=document.getElementById('sideSearchInput'); if(!i) return;
-      if(isMobileSide()){ var s=document.getElementById('appSide'),o=document.getElementById('sideOverlay'); if(s)s.classList.add('drawer-open'); if(o)o.classList.add('show'); }
       i.focus(); i.select();
     } else if(e.key==='Escape'){
       var i2=document.getElementById('sideSearchInput'); if(i2 && document.activeElement===i2){ i2.value=''; sideSearch(''); i2.blur(); }
@@ -1861,7 +1894,7 @@
 
   /* Fermer le tiroir au clic d'un lien (mobile) */
   document.addEventListener('click', function(e){
-    if(e.target.closest && e.target.closest('.sb-nav a.sb-link') && isMobileSide()) closeDrawer();
+    if(e.target.closest && e.target.closest('.sb-nav a.sb-link')) closeDrawer();
   });
 
   /* Vue Analytique (retour home + scroll) */
