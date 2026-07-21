@@ -49,9 +49,15 @@ input, select, textarea {
   font-size: 16px; /* prevents iOS Safari auto-zoom on focus */
 }
 
-/* ---- 4. Container safety: nothing overflows the viewport ---- */
-.wrap, .container, .content, .page, main {
+/* ---- 4. Container safety: nothing overflows the viewport ----
+   .wrap is intentionally excluded: it manages its own centered
+   max-width (var(--container)) across the site, and forcing
+   max-width:100% here overrode that centering on wide screens. ---- */
+.container, .content, .page, main {
   max-width: 100%;
+  box-sizing: border-box;
+}
+.wrap {
   box-sizing: border-box;
 }
 table {
