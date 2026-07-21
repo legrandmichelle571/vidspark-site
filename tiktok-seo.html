@@ -22,54 +22,159 @@
 const API_BASE = 'https://vidspark-ai-production-9ac7.up.railway.app';
 
 /* Définition des 5 outils : champs + endpoint + rendu
-   (tip/outcomes = métadonnées d'affichage pour la sidebar/l'empty state, ignorées par run()/RENDER) */
+   (tipKey/outcomes = clés i18n pour la sidebar/l'empty state, ignorées par run()/RENDER) */
 const TOOLS = {
-  seo:      { label:'📝 SEO complet', ep:'/api/ai/tiktok-seo',
+  seo:      { ep:'/api/ai/tiktok-seo',
               fields:[['topic','Sujet de ta vidéo *','input'],['niche','Niche (optionnel)','input'],['description','Contexte (optionnel)','textarea']],
-              tip:'Un bon hook dans les 3 premières secondes fait toute la différence sur TikTok : sois précis sur le sujet pour que l’IA cible juste.',
-              outcomes:['Légende','Hooks','Hashtags','Mots-clés','Script','Conseils'] },
-  repurpose:{ label:'♻️ YouTube → TikTok', ep:'/api/ai/tiktok-repurpose',
+              tipKey:'tip_seo',
+              outcomes:['tks_oc_caption','tks_oc_hooks','tks_oc_hashtags','tks_oc_keywords','tks_oc_script','tks_oc_tips'] },
+  repurpose:{ ep:'/api/ai/tiktok-repurpose',
               fields:[['url','Lien de la vidéo YouTube *','input']],
-              tip:'Colle le lien d’une vidéo YouTube existante : l’IA repère les meilleurs extraits à recycler en clips courts.',
-              outcomes:['Clips + timecodes','Hooks','Légendes','Hashtags'] },
-  ideas:    { label:'🔥 Idées virales', ep:'/api/ai/tiktok-tool', tool:'ideas',
+              tipKey:'tip_repurpose',
+              outcomes:['tks_oc_clips','tks_oc_hooks','tks_oc_captions','tks_oc_hashtags'] },
+  ideas:    { ep:'/api/ai/tiktok-tool', tool:'ideas',
               fields:[['niche','Niche','input'],['topic','Sujet/angle (optionnel)','input']],
-              tip:'Plus la niche est précise (ex : "cuisine végane rapide" plutôt que "cuisine"), plus les idées générées seront exploitables.',
-              outcomes:['Idées virales notées'] },
-  hooks:    { label:'🪝 Hooks', ep:'/api/ai/tiktok-tool', tool:'hooks',
+              tipKey:'tip_ideas',
+              outcomes:['tks_oc_ideas'] },
+  hooks:    { ep:'/api/ai/tiktok-tool', tool:'hooks',
               fields:[['topic','Sujet de ta vidéo *','input'],['niche','Niche (optionnel)','input']],
-              tip:'Teste plusieurs hooks générés en A/B sur tes prochaines vidéos pour voir lequel retient le mieux l’audience.',
-              outcomes:['Hooks notés'] },
-  calendar: { label:'📅 Calendrier', ep:'/api/ai/tiktok-tool', tool:'calendar',
+              tipKey:'tip_hooks',
+              outcomes:['tks_oc_hooks_scored'] },
+  calendar: { ep:'/api/ai/tiktok-tool', tool:'calendar',
               fields:[['niche','Niche','input'],['frequency','Rythme (ex : 1 vidéo/jour)','input']],
-              tip:'La régularité compte plus que le volume : un rythme réaliste que tu peux tenir sur plusieurs semaines bat un pic ponctuel.',
-              outcomes:['Calendrier 7 jours'] }
+              tipKey:'tip_calendar',
+              outcomes:['tks_oc_calendar'] }
 };
 let current = 'seo';
 
+/* Icône + clé i18n par outil (remplace l'ancien TOOLS[k].label, jamais lu par run()/RENDER) */
+const TAB_META = {
+  seo:{icon:'📝',key:'tks_tab_seo'}, repurpose:{icon:'♻️',key:'tks_tab_repurpose'},
+  ideas:{icon:'🔥',key:'tks_tab_ideas'}, hooks:{icon:'🪝',key:'tks_tab_hooks'}, calendar:{icon:'📅',key:'tks_tab_calendar'}
+};
+/* Les libellés de champs (avec leur ' *' éventuel) restent les clés EXACTES lues par
+   run() pour détecter le champ obligatoire — cette table ne fait QUE l'affichage. */
+const FIELD_LABEL_I18N = {
+  'Sujet de ta vidéo *': 'fl_topic_req',
+  'Niche (optionnel)': 'fl_niche_opt',
+  'Contexte (optionnel)': 'fl_desc_opt',
+  'Lien de la vidéo YouTube *': 'fl_url_req',
+  'Sujet/angle (optionnel)': 'fl_topic_opt',
+  'Niche': 'fl_niche',
+  'Rythme (ex : 1 vidéo/jour)': 'fl_freq'
+};
+
+registerI18n({
+  /* ── Chrome UI courte (14 langues) ── */
+  tks_ai:{fr:'Propulsé par IA',en:'AI Powered',es:'Impulsado por IA',ar:'مدعوم بالذكاء الاصطناعي',pt:'Desenvolvido com IA',de:'KI-gestützt',it:'Basato su IA',ru:'На основе ИИ',ja:'AI搭載',ko:'AI 기반',hi:'AI द्वारा संचालित',zh:'AI 驱动',tr:'YZ Destekli',nl:'Aangedreven door AI'},
+  tks_tools_word:{fr:'outils',en:'tools',es:'herramientas',ar:'أدوات',pt:'ferramentas',de:'Tools',it:'strumenti',ru:'инструментов',ja:'ツール',ko:'도구',hi:'टूल',zh:'工具',tr:'araç',nl:'tools'},
+  tks_langs_word:{fr:'langues',en:'languages',es:'idiomas',ar:'لغة',pt:'idiomas',de:'Sprachen',it:'lingue',ru:'языков',ja:'言語',ko:'언어',hi:'भाषाएँ',zh:'语言',tr:'dil',nl:'talen'},
+  tks_tab_seo:{fr:'SEO complet',en:'Full SEO',es:'SEO completo',ar:'SEO كامل',pt:'SEO completo',de:'Komplettes SEO',it:'SEO completo',ru:'Полное SEO',ja:'SEO一式',ko:'전체 SEO',hi:'पूर्ण SEO',zh:'完整 SEO',tr:'Tam SEO',nl:'Volledige SEO'},
+  tks_tab_repurpose:{fr:'YouTube → TikTok',en:'YouTube → TikTok',es:'YouTube → TikTok',ar:'يوتيوب ← تيك توك',pt:'YouTube → TikTok',de:'YouTube → TikTok',it:'YouTube → TikTok',ru:'YouTube → TikTok',ja:'YouTube→TikTok',ko:'YouTube → TikTok',hi:'YouTube → TikTok',zh:'YouTube → TikTok',tr:'YouTube → TikTok',nl:'YouTube → TikTok'},
+  tks_tab_ideas:{fr:'Idées virales',en:'Viral ideas',es:'Ideas virales',ar:'أفكار فيروسية',pt:'Ideias virais',de:'Virale Ideen',it:'Idee virali',ru:'Вирусные идеи',ja:'バズるアイデア',ko:'바이럴 아이디어',hi:'वायरल आइडिया',zh:'爆款创意',tr:'Viral fikirler',nl:'Virale ideeën'},
+  tks_tab_hooks:{fr:'Hooks',en:'Hooks',es:'Ganchos',ar:'خطّافات',pt:'Ganchos',de:'Hooks',it:'Hook',ru:'Хуки',ja:'フック',ko:'후크',hi:'हुक्स',zh:'钩子',tr:'Kancalar',nl:'Hooks'},
+  tks_tab_calendar:{fr:'Calendrier',en:'Calendar',es:'Calendario',ar:'التقويم',pt:'Calendário',de:'Kalender',it:'Calendario',ru:'Календарь',ja:'カレンダー',ko:'캘린더',hi:'कैलेंडर',zh:'日历',tr:'Takvim',nl:'Kalender'},
+  tks_params:{fr:'Paramètres',en:'Settings',es:'Parámetros',ar:'الإعدادات',pt:'Parâmetros',de:'Einstellungen',it:'Parametri',ru:'Параметры',ja:'設定',ko:'설정',hi:'सेटिंग्स',zh:'参数',tr:'Ayarlar',nl:'Instellingen'},
+  tks_lang_label:{fr:'Langue',en:'Language',es:'Idioma',ar:'اللغة',pt:'Idioma',de:'Sprache',it:'Lingua',ru:'Язык',ja:'言語',ko:'언어',hi:'भाषा',zh:'语言',tr:'Dil',nl:'Taal'},
+  tks_generate:{fr:'Générer',en:'Generate',es:'Generar',ar:'توليد',pt:'Gerar',de:'Generieren',it:'Genera',ru:'Создать',ja:'生成',ko:'생성',hi:'जनरेट करें',zh:'生成',tr:'Oluştur',nl:'Genereren'},
+  tks_generating:{fr:'Génération…',en:'Generating…',es:'Generando…',ar:'جارٍ التوليد…',pt:'Gerando…',de:'Wird generiert…',it:'Generazione…',ru:'Создание…',ja:'生成中…',ko:'생성 중…',hi:'जनरेट हो रहा है…',zh:'生成中…',tr:'Oluşturuluyor…',nl:'Genereren…'},
+  tks_copied:{fr:'Copié',en:'Copied',es:'Copiado',ar:'تم النسخ',pt:'Copiado',de:'Kopiert',it:'Copiato',ru:'Скопировано',ja:'コピー済み',ko:'복사됨',hi:'कॉपी हो गया',zh:'已复制',tr:'Kopyalandı',nl:'Gekopieerd'},
+  tks_copy:{fr:'Copier',en:'Copy',es:'Copiar',ar:'نسخ',pt:'Copiar',de:'Kopieren',it:'Copia',ru:'Копировать',ja:'コピー',ko:'복사',hi:'कॉपी करें',zh:'复制',tr:'Kopyala',nl:'Kopiëren'},
+  tks_copy_all:{fr:'Tout',en:'All',es:'Todo',ar:'الكل',pt:'Tudo',de:'Alle',it:'Tutto',ru:'Все',ja:'すべて',ko:'전체',hi:'सभी',zh:'全部',tr:'Tümü',nl:'Alles'},
+  tks_caption:{fr:'Légende',en:'Caption',es:'Descripción',ar:'الوصف',pt:'Legenda',de:'Beschreibung',it:'Didascalia',ru:'Подпись',ja:'キャプション',ko:'캡션',hi:'कैप्शन',zh:'文案',tr:'Açıklama',nl:'Bijschrift'},
+  tks_hooks:{fr:'Hooks',en:'Hooks',es:'Ganchos',ar:'خطّافات',pt:'Ganchos',de:'Hooks',it:'Hook',ru:'Хуки',ja:'フック',ko:'후크',hi:'हुक्स',zh:'钩子',tr:'Kancalar',nl:'Hooks'},
+  tks_hashtags:{fr:'Hashtags',en:'Hashtags',es:'Hashtags',ar:'وسوم',pt:'Hashtags',de:'Hashtags',it:'Hashtag',ru:'Хэштеги',ja:'ハッシュタグ',ko:'해시태그',hi:'हैशटैग',zh:'标签',tr:'Hashtagler',nl:'Hashtags'},
+  tks_broad:{fr:'Larges',en:'Broad',es:'Amplios',ar:'عامة',pt:'Amplas',de:'Breit',it:'Ampi',ru:'Широкие',ja:'広範',ko:'광범위',hi:'व्यापक',zh:'广泛',tr:'Geniş',nl:'Breed'},
+  tks_niche_lbl:{fr:'Niche',en:'Niche',es:'Nicho',ar:'مجال',pt:'Nicho',de:'Nische',it:'Nicchia',ru:'Ниша',ja:'ニッチ',ko:'니치',hi:'निच',zh:'细分',tr:'Niş',nl:'Niche'},
+  tks_trending:{fr:'Tendance',en:'Trending',es:'Tendencia',ar:'رائج',pt:'Tendência',de:'Trend',it:'Tendenza',ru:'В тренде',ja:'トレンド',ko:'트렌드',hi:'ट्रेंडिंग',zh:'热门',tr:'Trend',nl:'Trending'},
+  tks_keywords:{fr:'Mots-clés',en:'Keywords',es:'Palabras clave',ar:'الكلمات المفتاحية',pt:'Palavras-chave',de:'Schlagwörter',it:'Parole chiave',ru:'Ключевые слова',ja:'キーワード',ko:'키워드',hi:'कीवर्ड',zh:'关键词',tr:'Anahtar kelimeler',nl:'Zoekwoorden'},
+  tks_script:{fr:'Script',en:'Script',es:'Guion',ar:'السيناريو',pt:'Roteiro',de:'Skript',it:'Sceneggiatura',ru:'Сценарий',ja:'台本',ko:'스크립트',hi:'स्क्रिप्ट',zh:'脚本',tr:'Senaryo',nl:'Script'},
+  tks_sound:{fr:'Son',en:'Sound',es:'Sonido',ar:'الصوت',pt:'Som',de:'Sound',it:'Audio',ru:'Звук',ja:'サウンド',ko:'사운드',hi:'साउंड',zh:'音效',tr:'Ses',nl:'Geluid'},
+  tks_tips_section:{fr:'Conseils',en:'Tips',es:'Consejos',ar:'نصائح',pt:'Dicas',de:'Tipps',it:'Consigli',ru:'Советы',ja:'アドバイス',ko:'팁',hi:'सुझाव',zh:'建议',tr:'İpuçları',nl:'Tips'},
+  tks_clip:{fr:'Clip',en:'Clip',es:'Clip',ar:'مقطع',pt:'Clipe',de:'Clip',it:'Clip',ru:'Клип',ja:'クリップ',ko:'클립',hi:'क्लिप',zh:'片段',tr:'Klip',nl:'Clip'},
+  tks_hooks_section_title:{fr:'Hooks (les 3 premières secondes)',en:'Hooks (first 3 seconds)',es:'Ganchos (los primeros 3 segundos)',ar:'خطّافات (أول 3 ثوانٍ)',pt:'Ganchos (os primeiros 3 segundos)',de:'Hooks (die ersten 3 Sekunden)',it:'Hook (i primi 3 secondi)',ru:'Хуки (первые 3 секунды)',ja:'フック（最初の3秒）',ko:'후크 (처음 3초)',hi:'हुक्स (पहले 3 सेकंड)',zh:'钩子（前3秒）',tr:'Kancalar (ilk 3 saniye)',nl:'Hooks (eerste 3 seconden)'},
+  tks_sc_tips:{fr:'Conseil',en:'Tip',es:'Consejo',ar:'نصيحة',pt:'Dica',de:'Tipp',it:'Consiglio',ru:'Совет',ja:'アドバイス',ko:'팁',hi:'सुझाव',zh:'提示',tr:'İpucu',nl:'Tip'},
+  tks_sc_outcome:{fr:'Ce que tu vas obtenir',en:'What you’ll get',es:'Lo que vas a obtener',ar:'ما الذي ستحصل عليه',pt:'O que você vai obter',de:'Was du bekommst',it:'Cosa otterrai',ru:'Что вы получите',ja:'得られるもの',ko:'얻게 되는 것',hi:'आपको क्या मिलेगा',zh:'你将获得',tr:'Ne elde edeceksin',nl:'Wat je krijgt'},
+  tks_sc_preview:{fr:'Dernier résultat',en:'Last result',es:'Último resultado',ar:'آخر نتيجة',pt:'Último resultado',de:'Letztes Ergebnis',it:'Ultimo risultato',ru:'Последний результат',ja:'最新の結果',ko:'최근 결과',hi:'अंतिम परिणाम',zh:'最新结果',tr:'Son sonuç',nl:'Laatste resultaat'},
+  tks_sc_practices:{fr:'Bonnes pratiques TikTok',en:'TikTok best practices',es:'Buenas prácticas en TikTok',ar:'أفضل ممارسات تيك توك',pt:'Boas práticas no TikTok',de:'TikTok Best Practices',it:'Best practice TikTok',ru:'Лучшие практики TikTok',ja:'TikTokのベストプラクティス',ko:'TikTok 모범 사례',hi:'TikTok सर्वोत्तम अभ्यास',zh:'TikTok 最佳实践',tr:'TikTok en iyi uygulamalar',nl:'TikTok best practices'},
+  tks_sc_session:{fr:'Cette session',en:'This session',es:'Esta sesión',ar:'هذه الجلسة',pt:'Esta sessão',de:'Diese Sitzung',it:'Questa sessione',ru:'Эта сессия',ja:'このセッション',ko:'이번 세션',hi:'यह सत्र',zh:'本次会话',tr:'Bu oturum',nl:'Deze sessie'},
+  tks_sc_shortcuts:{fr:'Raccourcis',en:'Shortcuts',es:'Accesos directos',ar:'اختصارات',pt:'Atalhos',de:'Verknüpfungen',it:'Scorciatoie',ru:'Быстрые ссылки',ja:'ショートカット',ko:'바로가기',hi:'शॉर्टकट',zh:'快捷方式',tr:'Kısayollar',nl:'Snelkoppelingen'},
+  tks_shortcut_dashboard:{fr:'Tableau de bord',en:'Dashboard',es:'Panel',ar:'لوحة التحكم',pt:'Painel',de:'Dashboard',it:'Dashboard',ru:'Панель',ja:'ダッシュボード',ko:'대시보드',hi:'डैशबोर्ड',zh:'仪表盘',tr:'Panel',nl:'Dashboard'},
+  tks_shortcut_studio:{fr:'Studio',en:'Studio',es:'Estudio',ar:'الاستوديو',pt:'Estúdio',de:'Studio',it:'Studio',ru:'Студия',ja:'スタジオ',ko:'스튜디오',hi:'स्टूडियो',zh:'工作室',tr:'Stüdyo',nl:'Studio'},
+  tks_shortcut_tools:{fr:'Outils gratuits',en:'Free tools',es:'Herramientas gratis',ar:'أدوات مجانية',pt:'Ferramentas grátis',de:'Kostenlose Tools',it:'Strumenti gratis',ru:'Бесплатные инструменты',ja:'無料ツール',ko:'무료 도구',hi:'मुफ़्त टूल',zh:'免费工具',tr:'Ücretsiz araçlar',nl:'Gratis tools'},
+  tks_see_result:{fr:'Voir le résultat',en:'See the result',es:'Ver el resultado',ar:'عرض النتيجة',pt:'Ver o resultado',de:'Ergebnis ansehen',it:'Vedi il risultato',ru:'Смотреть результат',ja:'結果を見る',ko:'결과 보기',hi:'परिणाम देखें',zh:'查看结果',tr:'Sonucu gör',nl:'Bekijk resultaat'},
+  tks_session_count:{fr:'Générations cette session',en:'Generations this session',es:'Generaciones en esta sesión',ar:'مرات التوليد في هذه الجلسة',pt:'Gerações nesta sessão',de:'Generierungen in dieser Sitzung',it:'Generazioni in questa sessione',ru:'Генераций за сессию',ja:'このセッションの生成数',ko:'이번 세션 생성 수',hi:'इस सत्र में जनरेशन',zh:'本次会话生成次数',tr:'Bu oturumdaki üretimler',nl:'Generaties deze sessie'},
+  tks_login_link:{fr:'Se connecter',en:'Sign in',es:'Iniciar sesión',ar:'تسجيل الدخول',pt:'Entrar',de:'Anmelden',it:'Accedi',ru:'Войти',ja:'ログイン',ko:'로그인',hi:'साइन इन करें',zh:'登录',tr:'Giriş yap',nl:'Inloggen'},
+  tks_reconnect:{fr:'reconnecte-toi',en:'sign in again',es:'vuelve a iniciar sesión',ar:'أعد تسجيل الدخول'},
+  tks_error_generic:{fr:'Erreur',en:'Error',es:'Error',ar:'خطأ',pt:'Erro',de:'Fehler',it:'Errore',ru:'Ошибка',ja:'エラー',ko:'오류',hi:'त्रुटि',zh:'错误',tr:'Hata',nl:'Fout'},
+  tks_oc_caption:{fr:'Légende',en:'Caption',es:'Descripción',ar:'الوصف',pt:'Legenda',de:'Beschreibung',it:'Didascalia',ru:'Подпись',ja:'キャプション',ko:'캡션',hi:'कैप्शन',zh:'文案',tr:'Açıklama',nl:'Bijschrift'},
+  tks_oc_hooks:{fr:'Hooks',en:'Hooks',es:'Ganchos',ar:'خطّافات',pt:'Ganchos',de:'Hooks',it:'Hook',ru:'Хуки',ja:'フック',ko:'후크',hi:'हुक्स',zh:'钩子',tr:'Kancalar',nl:'Hooks'},
+  tks_oc_hashtags:{fr:'Hashtags',en:'Hashtags',es:'Hashtags',ar:'وسوم',pt:'Hashtags',de:'Hashtags',it:'Hashtag',ru:'Хэштеги',ja:'ハッシュタグ',ko:'해시태그',hi:'हैशटैग',zh:'标签',tr:'Hashtagler',nl:'Hashtags'},
+  tks_oc_keywords:{fr:'Mots-clés',en:'Keywords',es:'Palabras clave',ar:'الكلمات المفتاحية',pt:'Palavras-chave',de:'Schlagwörter',it:'Parole chiave',ru:'Ключевые слова',ja:'キーワード',ko:'키워드',hi:'कीवर्ड',zh:'关键词',tr:'Anahtar kelimeler',nl:'Zoekwoorden'},
+  tks_oc_script:{fr:'Script',en:'Script',es:'Guion',ar:'السيناريو',pt:'Roteiro',de:'Skript',it:'Sceneggiatura',ru:'Сценарий',ja:'台本',ko:'스크립트',hi:'स्क्रिप्ट',zh:'脚本',tr:'Senaryo',nl:'Script'},
+  tks_oc_tips:{fr:'Conseils',en:'Tips',es:'Consejos',ar:'نصائح',pt:'Dicas',de:'Tipps',it:'Consigli',ru:'Советы',ja:'アドバイス',ko:'팁',hi:'सुझाव',zh:'建议',tr:'İpuçları',nl:'Tips'},
+  tks_oc_clips:{fr:'Clips + timecodes',en:'Clips + timecodes',es:'Clips + marcas de tiempo',ar:'مقاطع + توقيتات',pt:'Clipes + marcações',de:'Clips + Zeitstempel',it:'Clip + timecode',ru:'Клипы + тайм-коды',ja:'クリップ＋タイムコード',ko:'클립 + 타임코드',hi:'क्लिप्स + टाइमकोड',zh:'片段 + 时间码',tr:'Klipler + zaman kodları',nl:'Clips + tijdcodes'},
+  tks_oc_captions:{fr:'Légendes',en:'Captions',es:'Descripciones',ar:'أوصاف',pt:'Legendas',de:'Beschreibungen',it:'Didascalie',ru:'Подписи',ja:'キャプション',ko:'캡션들',hi:'कैप्शन',zh:'文案',tr:'Açıklamalar',nl:'Bijschriften'},
+  tks_oc_ideas:{fr:'Idées virales notées',en:'Scored viral ideas',es:'Ideas virales puntuadas',ar:'أفكار فيروسية مُقيَّمة',pt:'Ideias virais pontuadas',de:'Bewertete virale Ideen',it:'Idee virali valutate',ru:'Оценённые вирусные идеи',ja:'採点されたバズるアイデア',ko:'점수 매긴 바이럴 아이디어',hi:'स्कोर किए गए वायरल आइडिया',zh:'评分爆款创意',tr:'Puanlanmış viral fikirler',nl:'Gescoorde virale ideeën'},
+  tks_oc_hooks_scored:{fr:'Hooks notés',en:'Scored hooks',es:'Ganchos puntuados',ar:'خطّافات مُقيَّمة',pt:'Ganchos pontuados',de:'Bewertete Hooks',it:'Hook valutati',ru:'Оценённые хуки',ja:'採点されたフック',ko:'점수 매긴 후크',hi:'स्कोर किए गए हुक्स',zh:'评分钩子',tr:'Puanlanmış kancalar',nl:'Gescoorde hooks'},
+  tks_oc_calendar:{fr:'Calendrier 7 jours',en:'7-day calendar',es:'Calendario de 7 días',ar:'تقويم 7 أيام',pt:'Calendário de 7 dias',de:'7-Tage-Kalender',it:'Calendario di 7 giorni',ru:'Календарь на 7 дней',ja:'7日間カレンダー',ko:'7일 캘린더',hi:'7-दिन कैलेंडर',zh:'7天日历',tr:'7 günlük takvim',nl:'7-daagse kalender'},
+
+  /* ── Champs du formulaire (FR/EN/ES/AR, repli EN) ── */
+  fl_topic_req:{fr:'Sujet de ta vidéo *',en:'Video topic *',es:'Tema de tu vídeo *',ar:'موضوع الفيديو *'},
+  fl_niche_opt:{fr:'Niche (optionnel)',en:'Niche (optional)',es:'Nicho (opcional)',ar:'المجال (اختياري)'},
+  fl_desc_opt:{fr:'Contexte (optionnel)',en:'Context (optional)',es:'Contexto (opcional)',ar:'السياق (اختياري)'},
+  fl_url_req:{fr:'Lien de la vidéo YouTube *',en:'YouTube video link *',es:'Enlace del vídeo de YouTube *',ar:'رابط فيديو يوتيوب *'},
+  fl_topic_opt:{fr:'Sujet/angle (optionnel)',en:'Topic/angle (optional)',es:'Tema/ángulo (opcional)',ar:'الموضوع/الزاوية (اختياري)'},
+  fl_niche:{fr:'Niche',en:'Niche',es:'Nicho',ar:'المجال'},
+  fl_freq:{fr:'Rythme (ex : 1 vidéo/jour)',en:'Frequency (e.g. 1 video/day)',es:'Ritmo (ej: 1 vídeo/día)',ar:'الوتيرة (مثال: فيديو واحد يوميًا)'},
+
+  /* ── Phrases longues (FR/EN/ES/AR, repli EN) ── */
+  tks_subtitle:{fr:'Suite complète pour percer sur TikTok — propulsée par IA.',en:'Complete suite to break through on TikTok — powered by AI.',es:'Suite completa para triunfar en TikTok — impulsada por IA.',ar:'مجموعة أدوات كاملة للانتشار على تيك توك — مدعومة بالذكاء الاصطناعي.'},
+  tks_form_sub:{fr:'Renseigne les champs ci-dessous, puis clique sur « Générer ».',en:'Fill in the fields below, then click “Generate”.',es:'Completa los campos de abajo y haz clic en «Generar».',ar:'املأ الحقول أدناه، ثم انقر على «توليد».'},
+  tks_empty_title:{fr:'Ton résultat apparaîtra ici',en:'Your result will appear here',es:'Tu resultado aparecerá aquí',ar:'ستظهر نتيجتك هنا'},
+  tks_empty_sub:{fr:'Remplis le formulaire ci-dessus puis clique sur « Générer » pour obtenir :',en:'Fill in the form above then click “Generate” to get:',es:'Completa el formulario de arriba y haz clic en «Generar» para obtener:',ar:'املأ النموذج أعلاه ثم انقر على «توليد» للحصول على:'},
+  tks_preview_empty:{fr:'Rien pour l’instant — génère un premier résultat.',en:'Nothing yet — generate a first result.',es:'Nada por ahora — genera un primer resultado.',ar:'لا شيء بعد — ولّد أول نتيجة.'},
+  tks_auth_required:{fr:'Connecte-toi pour utiliser les outils TikTok.',en:'Sign in to use the TikTok tools.',es:'Inicia sesión para usar las herramientas de TikTok.',ar:'سجّل الدخول لاستخدام أدوات تيك توك.'},
+  tks_err_required:{fr:'Remplis le champ obligatoire (*).',en:'Fill in the required field (*).',es:'Completa el campo obligatorio (*).',ar:'املأ الحقل المطلوب (*).'},
+  tks_session_expired:{fr:'Session expirée —',en:'Session expired —',es:'Sesión caducada —',ar:'انتهت الجلسة —'},
+  tks_ai_working:{fr:'L’IA travaille…',en:'The AI is working…',es:'La IA está trabajando…',ar:'الذكاء الاصطناعي يعمل…'},
+
+  practice1:{fr:'Vise 15–34 s pour un meilleur taux de complétion',en:'Aim for 15–34s for a better completion rate',es:'Apunta a 15–34 s para una mejor tasa de finalización',ar:'استهدف 15–34 ثانية لمعدّل إتمام أفضل'},
+  practice2:{fr:'Accroche dès la 1ʳᵉ seconde, avant tout logo',en:'Hook viewers from second 1, before any logo',es:'Engancha desde el segundo 1, antes de cualquier logo',ar:'شدّ الانتباه من الثانية الأولى، قبل أي شعار'},
+  practice3:{fr:'Régularité plutôt que publication en rafale',en:'Consistency over posting in bursts',es:'Regularidad en vez de publicaciones en ráfaga',ar:'الانتظام أفضل من النشر الدفعي'},
+  practice4:{fr:'3–5 hashtags ciblés valent mieux que 15 génériques',en:'3–5 targeted hashtags beat 15 generic ones',es:'3–5 hashtags específicos valen más que 15 genéricos',ar:'3–5 وسوم مستهدفة أفضل من 15 وسمًا عامًا'},
+
+  tip_seo:{fr:'Un bon hook dans les 3 premières secondes fait toute la différence sur TikTok : sois précis sur le sujet pour que l’IA cible juste.',en:'A strong hook in the first 3 seconds makes all the difference on TikTok — be specific about the topic so the AI can target it accurately.',es:'Un buen gancho en los primeros 3 segundos marca la diferencia en TikTok: sé preciso con el tema para que la IA acierte.',ar:'خطّاف قوي في أول 3 ثوانٍ يصنع كل الفرق على تيك توك: كن دقيقًا في الموضوع ليتمكّن الذكاء الاصطناعي من الاستهداف الصحيح.'},
+  tip_repurpose:{fr:'Colle le lien d’une vidéo YouTube existante : l’IA repère les meilleurs extraits à recycler en clips courts.',en:'Paste the link of an existing YouTube video: the AI finds the best moments to repurpose into short clips.',es:'Pega el enlace de un vídeo de YouTube existente: la IA detecta los mejores momentos para convertir en clips cortos.',ar:'الصق رابط فيديو يوتيوب موجود: يكتشف الذكاء الاصطناعي أفضل اللحظات لتحويلها إلى مقاطع قصيرة.'},
+  tip_ideas:{fr:'Plus la niche est précise (ex : "cuisine végane rapide" plutôt que "cuisine"), plus les idées générées seront exploitables.',en:'The more specific the niche (e.g. "quick vegan cooking" rather than "cooking"), the more usable the generated ideas will be.',es:'Cuanto más específico sea el nicho (ej: "cocina vegana rápida" en vez de "cocina"), más útiles serán las ideas generadas.',ar:'كلما كان المجال أكثر تحديدًا (مثال: "طبخ نباتي سريع" بدل "طبخ")، كانت الأفكار المولّدة أكثر قابلية للاستخدام.'},
+  tip_hooks:{fr:'Teste plusieurs hooks générés en A/B sur tes prochaines vidéos pour voir lequel retient le mieux l’audience.',en:'A/B test several generated hooks on your next videos to see which one retains the audience best.',es:'Prueba varios ganchos generados en A/B en tus próximos vídeos para ver cuál retiene mejor a la audiencia.',ar:'اختبر عدّة خطّافات مولَّدة بأسلوب A/B في فيديوهاتك القادمة لمعرفة أيّها يحافظ على الجمهور بشكل أفضل.'},
+  tip_calendar:{fr:'La régularité compte plus que le volume : un rythme réaliste que tu peux tenir sur plusieurs semaines bat un pic ponctuel.',en:'Consistency matters more than volume: a realistic pace you can sustain for weeks beats a one-time spike.',es:'La regularidad importa más que el volumen: un ritmo realista que puedas mantener durante semanas gana a un pico puntual.',ar:'الانتظام أهم من الكمّية: وتيرة واقعية يمكنك الحفاظ عليها لأسابيع أفضل من اندفاعة مؤقتة.'}
+});
+
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-function copy(txt,btn){navigator.clipboard.writeText(txt).then(()=>{const t=btn.textContent;btn.textContent='✓ Copié';setTimeout(()=>btn.textContent=t,1400);});}
+function copy(txt,btn){navigator.clipboard.writeText(txt).then(()=>{const orig=btn.textContent;btn.textContent='✓ '+t('tks_copied');setTimeout(()=>btn.textContent=orig,1400);});}
 
 function renderTools(){
-  document.getElementById('tools').innerHTML = Object.entries(TOOLS)
-    .map(([k,v])=>`<button class="tool ${k===current?'active':''}" onclick="selectTool('${k}')">${v.label}</button>`).join('');
+  document.getElementById('tools').innerHTML = Object.keys(TOOLS)
+    .map(k=>`<button class="tool ${k===current?'active':''}" onclick="selectTool('${k}')">${TAB_META[k].icon} ${t(TAB_META[k].key)}</button>`).join('');
 }
 function renderForm(){
-  const t = TOOLS[current];
-  const inputs = t.fields.map(([id,lbl,type])=>{
-    const style='';
-    if(type==='textarea') return `<label>${lbl}</label><textarea id="f_${id}" placeholder="${lbl.replace(' *','')}…"></textarea>`;
-    return `<label>${lbl}</label><input id="f_${id}" placeholder="${lbl.replace(' *','')}…" maxlength="200">`;
+  const toolDef = TOOLS[current];
+  const inputs = toolDef.fields.map(([id,lbl,type])=>{
+    const dispLbl = t(FIELD_LABEL_I18N[lbl]||lbl);
+    const ph = dispLbl.replace(/\s*\*$/,'')+'…';
+    if(type==='textarea') return `<label>${dispLbl}</label><textarea id="f_${id}" placeholder="${ph}"></textarea>`;
+    return `<label>${dispLbl}</label><input id="f_${id}" placeholder="${ph}" maxlength="200">`;
   }).join('');
   document.getElementById('form').innerHTML = `
     <div class="tp-form-head">
-      <div class="tp-form-title">⚙️ Paramètres</div>
-      <div class="tp-form-sub">Renseigne les champs ci-dessous, puis clique sur « Générer ».</div>
+      <div class="tp-form-title">⚙️ ${t('tks_params')}</div>
+      <div class="tp-form-sub">${t('tks_form_sub')}</div>
     </div>
     <div class="tp-form-fields">${inputs}</div>
     <div class="tp-divider"></div>
     <div class="tp-form-fields">
-      <label>Langue</label>
+      <label>${t('tks_lang_label')}</label>
       <select id="f_lang">
         <option value="fr">Français</option><option value="en">English</option>
         <option value="es">Español</option><option value="ar">العربية</option>
@@ -82,57 +187,56 @@ function selectTool(k){ current=k; document.getElementById('out').innerHTML=empt
 /* ── Sidebar + zone de résultats (layout-only helpers — aucune logique métier) ── */
 function syncSidebar(){
   if(!window.shell) return;
-  const t = TOOLS[current];
-  shell.updateCard('tips', `<p>💡 ${esc(t.tip||'')}</p>`);
-  shell.updateCard('outcome', `<div class="tag-wrap">${(t.outcomes||[]).map(o=>`<span class="tag">${esc(o)}</span>`).join('')}</div>`);
+  const toolDef = TOOLS[current];
+  shell.updateCard('tips', `<p>💡 ${t(toolDef.tipKey)}</p>`);
+  shell.updateCard('outcome', `<div class="tag-wrap">${(toolDef.outcomes||[]).map(ok=>`<span class="tag">${t(ok)}</span>`).join('')}</div>`);
 }
 function emptyStateHTML(k){
-  const t = TOOLS[k];
-  const ic = (t.label.match(/^\S+/)||['✨'])[0];
+  const meta = TAB_META[k];
   return `<div class="tp-out-empty">
-    <div class="ic">${ic}</div>
-    <div class="tt">Ton résultat apparaîtra ici</div>
-    <div class="sb">Remplis le formulaire ci-dessus puis clique sur « Générer » pour obtenir :</div>
-    <div class="list">${(t.outcomes||[]).map(o=>`<span class="badge">${esc(o)}</span>`).join('')}</div>
+    <div class="ic">${meta.icon}</div>
+    <div class="tt">${t('tks_empty_title')}</div>
+    <div class="sb">${t('tks_empty_sub')}</div>
+    <div class="list">${(TOOLS[k].outcomes||[]).map(ok=>`<span class="badge">${t(ok)}</span>`).join('')}</div>
   </div>`;
 }
 function bumpSessionStats(){
   const n = (parseInt(sessionStorage.getItem('vs_tiktok_gens')||'0',10) || 0) + 1;
   sessionStorage.setItem('vs_tiktok_gens', String(n));
-  if(window.shell) shell.updateCard('stats', `<div class="tp-stat-row"><span class="lb">Générations cette session</span><span class="vl">${n}</span></div>`);
+  if(window.shell) shell.updateCard('stats', `<div class="tp-stat-row"><span class="lb">${t('tks_session_count')}</span><span class="vl">${n}</span></div>`);
 }
 function updatePreviewCard(){
   if(!window.shell) return;
-  const label = TOOLS[current].label.replace(/^[^\s]+\s/,'');
+  const meta = TAB_META[current];
   shell.updateCard('preview', `
-    <p>✅ Dernier résultat : <b>${esc(label)}</b></p>
-    <p><a href="#out">Voir le résultat ↓</a></p>`);
+    <p>✅ ${t('tks_sc_preview')} : <b>${meta.icon} ${t(meta.key)}</b></p>
+    <p><a href="#out">${t('tks_see_result')} ↓</a></p>`);
 }
 
 /* Monte le layout partagé (topbar + grille 2 colonnes + sidebar) */
 window.shell = ToolPage.mount({
   icon:'🎵', title:'SEO TikTok',
-  subtitle:'Suite complète pour percer sur TikTok — propulsée par IA.',
+  subtitle:t('tks_subtitle'),
   meta:[
-    { icon:'🤖', text:'Propulsé par IA' },
-    { icon:'⚡', text:Object.keys(TOOLS).length+' outils' },
-    { icon:'🌍', text:'6 langues' }
+    { icon:'🤖', text:t('tks_ai') },
+    { icon:'⚡', text:Object.keys(TOOLS).length+' '+t('tks_tools_word') },
+    { icon:'🌍', text:'6 '+t('tks_langs_word') }
   ],
   sidebar:[
-    { id:'tips', icon:'💡', title:'Conseil', html:`<p>💡 ${esc(TOOLS[current].tip)}</p>` },
-    { id:'outcome', icon:'📦', title:'Ce que tu vas obtenir', html:`<div class="tag-wrap">${(TOOLS[current].outcomes||[]).map(o=>`<span class="tag">${esc(o)}</span>`).join('')}</div>` },
-    { id:'preview', icon:'📄', title:'Dernier résultat', html:'<div class="tp-empty-hint">Rien pour l’instant — génère un premier résultat.</div>' },
-    { id:'practices', icon:'✅', title:'Bonnes pratiques TikTok', html:`<ul>
-        <li>⏱️ Vise 15–34 s pour un meilleur taux de complétion</li>
-        <li>🪝 Accroche dès la 1ʳᵉ seconde, avant tout logo</li>
-        <li>🔁 Régularité plutôt que publication en rafale</li>
-        <li>🎯 3–5 hashtags ciblés valent mieux que 15 génériques</li>
+    { id:'tips', icon:'💡', title:t('tks_sc_tips'), html:`<p>💡 ${t(TOOLS[current].tipKey)}</p>` },
+    { id:'outcome', icon:'📦', title:t('tks_sc_outcome'), html:`<div class="tag-wrap">${(TOOLS[current].outcomes||[]).map(ok=>`<span class="tag">${t(ok)}</span>`).join('')}</div>` },
+    { id:'preview', icon:'📄', title:t('tks_sc_preview'), html:`<div class="tp-empty-hint">${t('tks_preview_empty')}</div>` },
+    { id:'practices', icon:'✅', title:t('tks_sc_practices'), html:`<ul>
+        <li>⏱️ ${t('practice1')}</li>
+        <li>🪝 ${t('practice2')}</li>
+        <li>🔁 ${t('practice3')}</li>
+        <li>🎯 ${t('practice4')}</li>
       </ul>` },
-    { id:'stats', icon:'📊', title:'Cette session', html:`<div class="tp-stat-row"><span class="lb">Générations cette session</span><span class="vl">${parseInt(sessionStorage.getItem('vs_tiktok_gens')||'0',10)}</span></div>` },
-    { id:'shortcuts', icon:'🔗', title:'Raccourcis', html:`<ul>
-        <li><a href="/dashboard.html">🏠 Tableau de bord <span>›</span></a></li>
-        <li><a href="/diamant.html">✦ Studio <span>›</span></a></li>
-        <li><a href="/outils.html">🛠️ Outils gratuits <span>›</span></a></li>
+    { id:'stats', icon:'📊', title:t('tks_sc_session'), html:`<div class="tp-stat-row"><span class="lb">${t('tks_session_count')}</span><span class="vl">${parseInt(sessionStorage.getItem('vs_tiktok_gens')||'0',10)}</span></div>` },
+    { id:'shortcuts', icon:'🔗', title:t('tks_sc_shortcuts'), html:`<ul>
+        <li><a href="/dashboard.html">🏠 ${t('tks_shortcut_dashboard')} <span>›</span></a></li>
+        <li><a href="/diamant.html">✦ ${t('tks_shortcut_studio')} <span>›</span></a></li>
+        <li><a href="/outils.html">🛠️ ${t('tks_shortcut_tools')} <span>›</span></a></li>
       </ul>` }
   ]
 });
@@ -141,7 +245,7 @@ shell.main.innerHTML = `
     <nav class="tools" id="tools"></nav>
     <div class="tp-panel-body" id="form"></div>
   </div>
-  <button class="btn" id="go" onclick="run()">✨ Générer</button>
+  <button class="btn" id="go" onclick="run()">✨ ${t('tks_generate')}</button>
   <div id="out"></div>`;
 document.getElementById('out').innerHTML = emptyStateHTML(current);
 
@@ -151,41 +255,41 @@ document.getElementById('out').innerHTML = emptyStateHTML(current);
   try{
     const s = await (window.Auth?.getSession?.() || Promise.resolve(null));
     if(!s?.access_token){
-      document.getElementById('out').innerHTML='<div class="empty">🔒 Connecte-toi pour utiliser les outils TikTok.<br><br><a href="/login.html">Se connecter →</a></div>';
+      document.getElementById('out').innerHTML=`<div class="empty">🔒 ${t('tks_auth_required')}<br><br><a href="/login.html">${t('tks_login_link')} →</a></div>`;
       document.getElementById('go').disabled=true;
     }
   }catch(e){}
 })();
 
 async function run(){
-  const t = TOOLS[current];
+  const toolDef = TOOLS[current];
   const out = document.getElementById('out'), btn = document.getElementById('go');
   const body = { language: document.getElementById('f_lang').value };
-  t.fields.forEach(([id])=>{ body[id] = (document.getElementById('f_'+id)?.value||'').trim(); });
-  if(t.tool) body.tool = t.tool;
+  toolDef.fields.forEach(([id])=>{ body[id] = (document.getElementById('f_'+id)?.value||'').trim(); });
+  if(toolDef.tool) body.tool = toolDef.tool;
 
-  const reqField = t.fields.find(f=>f[1].includes('*'));
-  if(reqField && (body[reqField[0]]||'').length<2){ out.innerHTML='<div class="err">Remplis le champ obligatoire (*).</div>'; return; }
+  const reqField = toolDef.fields.find(f=>f[1].includes('*'));
+  if(reqField && (body[reqField[0]]||'').length<2){ out.innerHTML=`<div class="err">${t('tks_err_required')}</div>`; return; }
 
-  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Génération…';
-  out.innerHTML='<div class="empty">🎬 L’IA travaille…</div>';
+  btn.disabled=true; btn.innerHTML=`<span class="spin"></span> ${t('tks_generating')}`;
+  out.innerHTML=`<div class="empty">🎬 ${t('tks_ai_working')}</div>`;
   try{
     const s = await Auth.getSession();
     const token = s?.access_token;
-    if(!token){ out.innerHTML='<div class="err">Session expirée — <a href="/login.html">reconnecte-toi</a>.</div>'; return; }
-    const res = await fetch(API_BASE + t.ep, {
+    if(!token){ out.innerHTML=`<div class="err">${t('tks_session_expired')} <a href="/login.html">${t('tks_reconnect')}</a>.</div>`; return; }
+    const res = await fetch(API_BASE + toolDef.ep, {
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
       body:JSON.stringify(body)
     });
-    if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error||('Erreur '+res.status)); }
+    if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error||(t('tks_error_generic')+' '+res.status)); }
     const data = await res.json();
     RENDER[current](data, out);
     if(typeof fbq==='function') fbq('trackCustom','TikTokToolUsed',{tool:current});
     updatePreviewCard();
     bumpSessionStats();
   }catch(err){ out.innerHTML='<div class="err">❌ '+esc(err.message)+'</div>'; }
-  finally{ btn.disabled=false; btn.innerHTML='✨ Générer'; }
+  finally{ btn.disabled=false; btn.innerHTML=`✨ ${t('tks_generate')}`; }
 }
 
 function chips(arr,cls){ return '<div class="chips">'+(arr||[]).map(h=>`<span class="chip ${cls||''}">${esc(h)}</span>`).join('')+'</div>'; }
@@ -194,16 +298,16 @@ const RENDER = {
   seo(d,out){
     const ht=d.hashtags||{}; const all=[].concat(ht.broad||[],ht.niche||[],ht.trending||[]).join(' ');
     out.innerHTML=`<div class="card">
-      <div class="sec"><div class="hd"><h3>📝 Légende</h3><button class="btn-mini" onclick='copy(${JSON.stringify(d.caption||"")},this)'>📋 Copier</button></div><div class="cap">${esc(d.caption)}</div></div>
-      <div class="sec"><h3>🪝 Hooks</h3>${(d.hooks||[]).map(h=>`<div class="item">${esc(h)}</div>`).join('')}</div>
-      <div class="sec"><div class="hd"><h3># Hashtags</h3><button class="btn-mini" onclick='copy(${JSON.stringify(all)},this)'>📋 Tout</button></div>
-        <div class="htcat"><div class="lbl">Larges</div>${chips(ht.broad)}</div>
-        <div class="htcat"><div class="lbl">Niche</div>${chips(ht.niche)}</div>
-        <div class="htcat"><div class="lbl">Tendance</div>${chips(ht.trending)}</div></div>
-      <div class="sec"><h3>🔎 Mots-clés</h3>${chips(d.keywords,'k')}</div>
-      <div class="sec"><h3>🎬 Script</h3>${(d.script||[]).map(s=>`<div class="step"><div class="p">${esc(s.part)}</div><div>${esc(s.content)}</div></div>`).join('')}</div>
-      ${d.sound_advice?`<div class="sec"><h3>🎧 Son</h3><div class="cap">${esc(d.sound_advice)}</div></div>`:''}
-      <div class="sec"><h3>🚀 Conseils</h3>${[].concat(d.posting_tips||[],d.discoverability_tips||[]).map(t=>`<div class="item">${esc(t)}</div>`).join('')}</div>
+      <div class="sec"><div class="hd"><h3>📝 ${t('tks_caption')}</h3><button class="btn-mini" onclick='copy(${JSON.stringify(d.caption||"")},this)'>📋 ${t('tks_copy')}</button></div><div class="cap">${esc(d.caption)}</div></div>
+      <div class="sec"><h3>🪝 ${t('tks_hooks')}</h3>${(d.hooks||[]).map(h=>`<div class="item">${esc(h)}</div>`).join('')}</div>
+      <div class="sec"><div class="hd"><h3># ${t('tks_hashtags')}</h3><button class="btn-mini" onclick='copy(${JSON.stringify(all)},this)'>📋 ${t('tks_copy_all')}</button></div>
+        <div class="htcat"><div class="lbl">${t('tks_broad')}</div>${chips(ht.broad)}</div>
+        <div class="htcat"><div class="lbl">${t('tks_niche_lbl')}</div>${chips(ht.niche)}</div>
+        <div class="htcat"><div class="lbl">${t('tks_trending')}</div>${chips(ht.trending)}</div></div>
+      <div class="sec"><h3>🔎 ${t('tks_keywords')}</h3>${chips(d.keywords,'k')}</div>
+      <div class="sec"><h3>🎬 ${t('tks_script')}</h3>${(d.script||[]).map(s=>`<div class="step"><div class="p">${esc(s.part)}</div><div>${esc(s.content)}</div></div>`).join('')}</div>
+      ${d.sound_advice?`<div class="sec"><h3>🎧 ${t('tks_sound')}</h3><div class="cap">${esc(d.sound_advice)}</div></div>`:''}
+      <div class="sec"><h3>🚀 ${t('tks_tips_section')}</h3>${[].concat(d.posting_tips||[],d.discoverability_tips||[]).map(pt=>`<div class="item">${esc(pt)}</div>`).join('')}</div>
     </div>`;
   },
   repurpose(d,out){
@@ -211,17 +315,17 @@ const RENDER = {
     const head = d.video?.title ? `<div class="muted" style="margin-bottom:12px;">🎬 ${esc(d.video.title)}${d.video.duration?` · ${esc(d.video.duration)}`:''}</div>` : '';
     out.innerHTML=`<div class="card">${head}${clips.map((c,i)=>`
       <div class="sec">
-        <h3>▶️ Clip ${i+1} <span class="chip p" style="font-size:13px;">✂️ ${esc(c.start||'?')} → ${esc(c.end||'?')}</span></h3>
+        <h3>▶️ ${t('tks_clip')} ${i+1} <span class="chip p" style="font-size:13px;">✂️ ${esc(c.start||'?')} → ${esc(c.end||'?')}</span></h3>
         <div class="item">
           <div class="muted" style="font-size:12px;">${esc(c.angle||'')}</div>
           <b style="display:block;margin-top:4px;">🪝 ${esc(c.hook||'')}</b>
           <div class="cap" style="margin-top:8px;">${esc(c.caption||'')}</div>${chips(c.hashtags,'p')}
-          <button class="btn-mini" style="margin-top:8px;" onclick='copy(${JSON.stringify((c.caption||"")+" "+((c.hashtags||[]).join(" ")))},this)'>📋 Copier</button>
+          <button class="btn-mini" style="margin-top:8px;" onclick='copy(${JSON.stringify((c.caption||"")+" "+((c.hashtags||[]).join(" ")))},this)'>📋 ${t('tks_copy')}</button>
         </div>
       </div>`).join('')}</div>`;
   },
   ideas(d,out){
-    out.innerHTML=`<div class="card"><div class="sec"><h3>🔥 Idées virales</h3>${(d.ideas||[]).map((it,i)=>`
+    out.innerHTML=`<div class="card"><div class="sec"><h3>🔥 ${t('tks_tab_ideas')}</h3>${(d.ideas||[]).map((it,i)=>`
       <div class="item"><span class="score">${it.viral_score||'—'}</span><b>${i+1}. ${esc(it.title||'')}</b>
         ${it.format?`<span class="badge">${esc(it.format)}</span>`:''}
         ${it.hook?`<div style="margin-top:4px;">🪝 ${esc(it.hook)}</div>`:''}
@@ -229,13 +333,13 @@ const RENDER = {
   },
   hooks(d,out){
     const best=d.best_index;
-    out.innerHTML=`<div class="card"><div class="sec"><h3>🪝 Hooks (les 3 premières secondes)</h3>${(d.hooks||[]).map((h,i)=>`
+    out.innerHTML=`<div class="card"><div class="sec"><h3>🪝 ${t('tks_hooks_section_title')}</h3>${(d.hooks||[]).map((h,i)=>`
       <div class="item ${i===best?'best':''}"><span class="score">${h.score||'—'}</span>${i===best?'⭐ ':''}${esc(h.text||'')}
         ${h.type?`<div><span class="badge">${esc(h.type)}</span></div>`:''}</div>`).join('')}
       ${d.tip?`<div class="muted" style="margin-top:10px;">💡 ${esc(d.tip)}</div>`:''}</div></div>`;
   },
   calendar(d,out){
-    out.innerHTML=`<div class="card"><div class="sec"><h3>📅 Calendrier 7 jours</h3>${(d.schedule||[]).map(s=>`
+    out.innerHTML=`<div class="card"><div class="sec"><h3>📅 ${t('tks_oc_calendar')}</h3>${(d.schedule||[]).map(s=>`
       <div class="item"><b style="color:var(--purple)">${esc(s.day||'')}</b> ${s.best_time?`<span class="muted">· ${esc(s.best_time)}</span>`:''}
         <div style="margin-top:3px;">${esc(s.idea||'')}</div>
         ${s.format?`<span class="badge">${esc(s.format)}</span>`:''}
