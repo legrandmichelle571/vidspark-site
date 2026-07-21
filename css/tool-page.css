@@ -58,7 +58,8 @@
   border-radius:20px; padding:6px 12px; font-size:12px; font-weight:600; color:var(--shell-muted,#8b92a7);
 }
 
-.tp-grid{ display:grid; grid-template-columns:1fr; gap:24px; align-items:start; }
+.tp-grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:24px; align-items:start; }
+.tp-main{ min-width:0; }
 
 /* ── Sidebar cards (generic — content is supplied per page) ── */
 .tp-side{ display:flex; flex-direction:column; gap:16px; }
@@ -107,9 +108,17 @@
 /* <768px: everything full width, comfortable stacking */
 @media (max-width:767.98px){
   .tp-page{ padding:20px 14px 70px; }
-  .tp-topbar{ padding:12px 14px; }
+  .tp-topbar{ padding:12px 14px; gap:8px; }
   .tp-brand .pg{ display:none; }
   .tp-head h1{ font-size:21px; }
+}
+
+/* <480px: topbar is tight (logo + lang selector + back button) — icon-only brand/back */
+@media (max-width:479.98px){
+  .tp-brand .tx{ display:none; }
+  .tp-back span{ display:none; }
+  .tp-back{ padding:8px 10px; }
+  #vsLangFloat select{ max-width:88px !important; }
 }
 
 /* ==========================================================================

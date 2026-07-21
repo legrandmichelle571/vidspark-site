@@ -16,6 +16,11 @@
        ]
      });
      // → returns { main: <#tpMain element>, updateCard(id, html) }
+
+   The topbar's right side carries the `.tb-right` class — js/i18n.js (the
+   shared 14-language switcher used across the site) auto-detects that
+   class and inserts its selector there. Include <script src="/js/i18n.js">
+   on any page using this shell to get the language button for free.
    ========================================================================== */
 (function(){
   function cardHTML(c){
@@ -40,7 +45,9 @@
       +   '<span class="lg">✦</span>'
       +   '<span class="tx"><span class="nm">VidSpark AI</span><span class="pg">'+(opts.title||'')+'</span></span>'
       + '</a>'
-      + '<a class="tp-back" href="/dashboard.html">🏠 <span>Tableau de bord</span></a>';
+      + '<div class="tb-right">'
+      +   '<a class="tp-back" href="/dashboard.html" aria-label="Tableau de bord">🏠 <span>Tableau de bord</span></a>'
+      + '</div>';
 
     var page = document.createElement('div');
     page.className = 'tp-page';
