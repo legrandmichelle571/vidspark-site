@@ -48,9 +48,15 @@
   font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   color:var(--shell-text,#eaecf3);
 }
-.tp-head{ margin-bottom:22px; }
+.tp-head{ margin-bottom:24px; }
 .tp-head h1{ font-size:25px; font-weight:800; margin-bottom:5px; display:flex; align-items:center; gap:10px; }
 .tp-head .sub{ color:var(--shell-muted,#8b92a7); font-size:14px; }
+.tp-meta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.tp-meta-item{
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--shell-s2,#141c2e); border:1px solid var(--shell-b1,rgba(255,255,255,.06));
+  border-radius:20px; padding:6px 12px; font-size:12px; font-weight:600; color:var(--shell-muted,#8b92a7);
+}
 
 .tp-grid{ display:grid; grid-template-columns:1fr; gap:24px; align-items:start; }
 
@@ -80,10 +86,16 @@
 .tp-stat-row{ display:flex; align-items:baseline; justify-content:space-between; padding:6px 0; }
 .tp-stat-row .lb{ font-size:12.5px; color:var(--shell-muted,#8b92a7); }
 .tp-stat-row .vl{ font-size:16px; font-weight:800; color:#fff; }
+.tp-card-b .tag-wrap{ display:flex; flex-wrap:wrap; }
+.tp-card-b .tag{
+  display:inline-block; background:rgba(255,255,255,.05); border:1px solid var(--shell-b2,rgba(255,255,255,.10));
+  color:var(--shell-text,#eaecf3); border-radius:14px; padding:4px 10px; font-size:11.5px; font-weight:600; margin:0 6px 6px 0;
+}
 
-/* ≥1280px: real 2-column layout, sidebar sticky */
+/* ≥1280px: real 2-column layout, sidebar sticky, main column takes most of the width */
 @media (min-width:1280px){
-  .tp-grid{ grid-template-columns:minmax(0,1fr) 360px; gap:28px; }
+  .tp-page{ max-width:1680px; }
+  .tp-grid{ grid-template-columns:minmax(0,1fr) 400px; gap:32px; }
   .tp-side{ position:sticky; top:84px; max-height:calc(100vh - 100px); overflow-y:auto; }
 }
 
@@ -118,18 +130,58 @@
 }
 .tp-main a{ color:var(--orange); text-decoration:none; }
 .tp-main button{ cursor:pointer; font-family:inherit; }
-.tp-main .tools{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
-.tp-main .tool{ background:var(--s1); border:1px solid var(--b1); color:var(--muted); border-radius:20px; padding:8px 14px; font-size:13px; font-weight:700; }
-.tp-main .tool.active{ background:var(--orange); color:#1a1200; border-color:var(--orange); }
+
+/* Tab nav — underline style (modern app nav, not pill buttons) */
+.tp-main .tools{
+  display:flex; flex-wrap:nowrap; overflow-x:auto; gap:2px; margin:0;
+  padding:14px 16px 0; border-bottom:1px solid var(--b1); -webkit-overflow-scrolling:touch; scrollbar-width:none;
+}
+.tp-main .tools::-webkit-scrollbar{ display:none; }
+.tp-main .tool{
+  background:none; border:none; border-radius:0; color:var(--muted);
+  padding:10px 14px 12px; font-size:13.5px; font-weight:700; white-space:nowrap; flex-shrink:0;
+  border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .15s ease, border-color .15s ease;
+}
+.tp-main .tool:hover{ color:var(--text); }
+.tp-main .tool.active{ background:none; color:var(--orange); border-color:var(--orange); }
+
+/* Work card ("panel"): tabs header + body, single elevated surface */
+.tp-main .tp-panel{
+  background:var(--s1); border:1px solid var(--b1); border-radius:16px;
+  margin-bottom:20px; position:relative; overflow:hidden;
+}
+.tp-main .tp-panel::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--orange),var(--orange-d));
+}
+.tp-main .tp-panel-body{ padding:20px 22px 22px; }
+.tp-main .tp-form-head{ margin-bottom:14px; }
+.tp-main .tp-form-title{ font-size:14.5px; font-weight:800; color:var(--text); }
+.tp-main .tp-form-sub{ font-size:12px; color:var(--muted); margin-top:3px; }
+.tp-main .tp-divider{ height:1px; background:var(--b1); margin:16px 0 12px; }
+
 .tp-main .card{ background:var(--s1); border:1px solid var(--b1); border-radius:14px; padding:18px; margin-bottom:16px; }
 .tp-main label{ display:block; font-size:12px; color:var(--muted); margin:10px 0 5px; text-transform:uppercase; letter-spacing:.4px; }
+.tp-main .tp-form-fields label:first-child{ margin-top:0; }
 .tp-main input, .tp-main select, .tp-main textarea{ width:100%; background:var(--s2); border:1px solid var(--b2); border-radius:9px; padding:11px; color:var(--text); font-size:14px; font-family:inherit; }
 .tp-main textarea{ resize:vertical; min-height:60px; }
 .tp-main .row{ display:flex; gap:12px; flex-wrap:wrap; }
 .tp-main .row>div{ flex:1; min-width:160px; }
-.tp-main .btn{ background:var(--orange); color:#1a1200; border:none; border-radius:10px; padding:13px 20px; font-weight:800; font-size:15px; width:100%; margin-top:16px; }
+.tp-main .btn{ background:var(--orange); color:#1a1200; border:none; border-radius:10px; padding:13px 20px; font-weight:800; font-size:15px; width:100%; margin-top:0; transition:transform .12s ease, background .15s ease; }
 .tp-main .btn:hover{ background:var(--orange-d); color:#fff; }
+.tp-main .btn:active{ transform:scale(.99); }
 .tp-main .btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+/* Permanent results zone — dashed empty state before the first generation */
+.tp-main #out{ margin-top:18px; }
+.tp-main .tp-out-empty{
+  text-align:center; padding:44px 20px; background:var(--s1); border:1.5px dashed var(--b2);
+  border-radius:16px; color:var(--muted);
+}
+.tp-main .tp-out-empty .ic{ font-size:32px; margin-bottom:12px; }
+.tp-main .tp-out-empty .tt{ font-size:15px; font-weight:800; color:var(--text); margin-bottom:5px; }
+.tp-main .tp-out-empty .sb{ font-size:12.5px; margin-bottom:16px; }
+.tp-main .tp-out-empty .list{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; max-width:440px; margin:0 auto; }
 .tp-main .btn-mini{ background:var(--s2); border:1px solid var(--b2); color:var(--muted); border-radius:7px; padding:4px 10px; font-size:12px; font-weight:700; }
 .tp-main .btn-mini:hover{ color:var(--text); border-color:var(--orange); }
 .tp-main .sec{ margin-bottom:20px; }
@@ -154,9 +206,3 @@
 .tp-main .spin{ display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,.3); border-top-color:#1a1200; border-radius:50%; animation:tpSpin .7s linear infinite; vertical-align:-3px; }
 @keyframes tpSpin{ to{ transform:rotate(360deg); } }
 .tp-main .hd{ display:flex; justify-content:space-between; align-items:center; }
-
-/* Tabs become horizontally scrollable on narrow screens instead of wrapping awkwardly */
-@media (max-width:767.98px){
-  .tp-main .tools{ flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch; }
-  .tp-main .tool{ flex-shrink:0; }
-}

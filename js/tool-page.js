@@ -8,6 +8,7 @@
    Usage (see tiktok-seo.html for a full example):
      ToolPage.mount({
        icon: '🎵', title: 'SEO TikTok', subtitle: 'Suite complète…',
+       meta: [ { icon:'🤖', text:'Propulsé par IA' }, { icon:'⚡', text:'5 outils' } ],
        sidebar: [
          { id:'tips', icon:'💡', title:'Conseils', html:'<p>…</p>' },
          { id:'preview', icon:'📄', title:'Dernier résultat', html:'<div class="tp-empty-hint">Rien pour l’instant.</div>' },
@@ -22,6 +23,12 @@
       + '<div class="tp-card-h"><span class="ic">'+(c.icon||'✦')+'</span><span class="tt">'+(c.title||'')+'</span></div>'
       + '<div class="tp-card-b" id="tpCardBody_'+c.id+'">'+(c.html||'')+'</div>'
       + '</div>';
+  }
+  function metaHTML(items){
+    if(!items || !items.length) return '';
+    return '<div class="tp-meta">' + items.map(function(m){
+      return '<span class="tp-meta-item">'+(m.icon?m.icon+' ':'')+(m.text||'')+'</span>';
+    }).join('') + '</div>';
   }
 
   function mount(opts){
@@ -41,6 +48,7 @@
         '<div class="tp-head">'
       +   '<h1>'+(opts.icon?opts.icon+' ':'')+(opts.title||'')+'</h1>'
       +   (opts.subtitle ? '<div class="sub">'+opts.subtitle+'</div>' : '')
+      +   metaHTML(opts.meta)
       + '</div>'
       + '<div class="tp-grid">'
       +   '<div class="tp-main" id="tpMain"></div>'

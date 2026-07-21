@@ -20,23 +20,29 @@
 <script>
 const API_BASE = 'https://vidspark-ai-production-9ac7.up.railway.app';
 
-/* Définition des 5 outils : champs + endpoint + rendu */
+/* Définition des 5 outils : champs + endpoint + rendu
+   (tip/outcomes = métadonnées d'affichage pour la sidebar/l'empty state, ignorées par run()/RENDER) */
 const TOOLS = {
   seo:      { label:'📝 SEO complet', ep:'/api/ai/tiktok-seo',
               fields:[['topic','Sujet de ta vidéo *','input'],['niche','Niche (optionnel)','input'],['description','Contexte (optionnel)','textarea']],
-              tip:'Un bon hook dans les 3 premières secondes fait toute la différence sur TikTok : sois précis sur le sujet pour que l’IA cible juste.' },
+              tip:'Un bon hook dans les 3 premières secondes fait toute la différence sur TikTok : sois précis sur le sujet pour que l’IA cible juste.',
+              outcomes:['Légende','Hooks','Hashtags','Mots-clés','Script','Conseils'] },
   repurpose:{ label:'♻️ YouTube → TikTok', ep:'/api/ai/tiktok-repurpose',
               fields:[['url','Lien de la vidéo YouTube *','input']],
-              tip:'Colle le lien d’une vidéo YouTube existante : l’IA repère les meilleurs extraits à recycler en clips courts.' },
+              tip:'Colle le lien d’une vidéo YouTube existante : l’IA repère les meilleurs extraits à recycler en clips courts.',
+              outcomes:['Clips + timecodes','Hooks','Légendes','Hashtags'] },
   ideas:    { label:'🔥 Idées virales', ep:'/api/ai/tiktok-tool', tool:'ideas',
               fields:[['niche','Niche','input'],['topic','Sujet/angle (optionnel)','input']],
-              tip:'Plus la niche est précise (ex : "cuisine végane rapide" plutôt que "cuisine"), plus les idées générées seront exploitables.' },
+              tip:'Plus la niche est précise (ex : "cuisine végane rapide" plutôt que "cuisine"), plus les idées générées seront exploitables.',
+              outcomes:['Idées virales notées'] },
   hooks:    { label:'🪝 Hooks', ep:'/api/ai/tiktok-tool', tool:'hooks',
               fields:[['topic','Sujet de ta vidéo *','input'],['niche','Niche (optionnel)','input']],
-              tip:'Teste plusieurs hooks générés en A/B sur tes prochaines vidéos pour voir lequel retient le mieux l’audience.' },
+              tip:'Teste plusieurs hooks générés en A/B sur tes prochaines vidéos pour voir lequel retient le mieux l’audience.',
+              outcomes:['Hooks notés'] },
   calendar: { label:'📅 Calendrier', ep:'/api/ai/tiktok-tool', tool:'calendar',
               fields:[['niche','Niche','input'],['frequency','Rythme (ex : 1 vidéo/jour)','input']],
-              tip:'La régularité compte plus que le volume : un rythme réaliste que tu peux tenir sur plusieurs semaines bat un pic ponctuel.' }
+              tip:'La régularité compte plus que le volume : un rythme réaliste que tu peux tenir sur plusieurs semaines bat un pic ponctuel.',
+              outcomes:['Calendrier 7 jours'] }
 };
 let current = 'seo';
 
@@ -54,20 +60,40 @@ function renderForm(){
     if(type==='textarea') return `<label>${lbl}</label><textarea id="f_${id}" placeholder="${lbl.replace(' *','')}…"></textarea>`;
     return `<label>${lbl}</label><input id="f_${id}" placeholder="${lbl.replace(' *','')}…" maxlength="200">`;
   }).join('');
-  document.getElementById('form').innerHTML = inputs + `
-    <label>Langue</label>
-    <select id="f_lang">
-      <option value="fr">Français</option><option value="en">English</option>
-      <option value="es">Español</option><option value="ar">العربية</option>
-      <option value="pt">Português</option><option value="de">Deutsch</option>
-    </select>`;
+  document.getElementById('form').innerHTML = `
+    <div class="tp-form-head">
+      <div class="tp-form-title">⚙️ Paramètres</div>
+      <div class="tp-form-sub">Renseigne les champs ci-dessous, puis clique sur « Générer ».</div>
+    </div>
+    <div class="tp-form-fields">${inputs}</div>
+    <div class="tp-divider"></div>
+    <div class="tp-form-fields">
+      <label>Langue</label>
+      <select id="f_lang">
+        <option value="fr">Français</option><option value="en">English</option>
+        <option value="es">Español</option><option value="ar">العربية</option>
+        <option value="pt">Português</option><option value="de">Deutsch</option>
+      </select>
+    </div>`;
 }
-function selectTool(k){ current=k; document.getElementById('out').innerHTML=''; renderTools(); renderForm(); syncSidebar(); }
+function selectTool(k){ current=k; document.getElementById('out').innerHTML=emptyStateHTML(k); renderTools(); renderForm(); syncSidebar(); }
 
-/* ── Sidebar (layout-only helpers — aucune logique métier) ── */
+/* ── Sidebar + zone de résultats (layout-only helpers — aucune logique métier) ── */
 function syncSidebar(){
   if(!window.shell) return;
-  shell.updateCard('tips', `<p>💡 ${esc(TOOLS[current].tip||'')}</p>`);
+  const t = TOOLS[current];
+  shell.updateCard('tips', `<p>💡 ${esc(t.tip||'')}</p>`);
+  shell.updateCard('outcome', `<div class="tag-wrap">${(t.outcomes||[]).map(o=>`<span class="tag">${esc(o)}</span>`).join('')}</div>`);
+}
+function emptyStateHTML(k){
+  const t = TOOLS[k];
+  const ic = (t.label.match(/^\S+/)||['✨'])[0];
+  return `<div class="tp-out-empty">
+    <div class="ic">${ic}</div>
+    <div class="tt">Ton résultat apparaîtra ici</div>
+    <div class="sb">Remplis le formulaire ci-dessus puis clique sur « Générer » pour obtenir :</div>
+    <div class="list">${(t.outcomes||[]).map(o=>`<span class="badge">${esc(o)}</span>`).join('')}</div>
+  </div>`;
 }
 function bumpSessionStats(){
   const n = (parseInt(sessionStorage.getItem('vs_tiktok_gens')||'0',10) || 0) + 1;
@@ -86,9 +112,21 @@ function updatePreviewCard(){
 window.shell = ToolPage.mount({
   icon:'🎵', title:'SEO TikTok',
   subtitle:'Suite complète pour percer sur TikTok — propulsée par IA.',
+  meta:[
+    { icon:'🤖', text:'Propulsé par IA' },
+    { icon:'⚡', text:Object.keys(TOOLS).length+' outils' },
+    { icon:'🌍', text:'6 langues' }
+  ],
   sidebar:[
     { id:'tips', icon:'💡', title:'Conseil', html:`<p>💡 ${esc(TOOLS[current].tip)}</p>` },
+    { id:'outcome', icon:'📦', title:'Ce que tu vas obtenir', html:`<div class="tag-wrap">${(TOOLS[current].outcomes||[]).map(o=>`<span class="tag">${esc(o)}</span>`).join('')}</div>` },
     { id:'preview', icon:'📄', title:'Dernier résultat', html:'<div class="tp-empty-hint">Rien pour l’instant — génère un premier résultat.</div>' },
+    { id:'practices', icon:'✅', title:'Bonnes pratiques TikTok', html:`<ul>
+        <li>⏱️ Vise 15–34 s pour un meilleur taux de complétion</li>
+        <li>🪝 Accroche dès la 1ʳᵉ seconde, avant tout logo</li>
+        <li>🔁 Régularité plutôt que publication en rafale</li>
+        <li>🎯 3–5 hashtags ciblés valent mieux que 15 génériques</li>
+      </ul>` },
     { id:'stats', icon:'📊', title:'Cette session', html:`<div class="tp-stat-row"><span class="lb">Générations cette session</span><span class="vl">${parseInt(sessionStorage.getItem('vs_tiktok_gens')||'0',10)}</span></div>` },
     { id:'shortcuts', icon:'🔗', title:'Raccourcis', html:`<ul>
         <li><a href="/dashboard.html">🏠 Tableau de bord <span>›</span></a></li>
@@ -98,10 +136,13 @@ window.shell = ToolPage.mount({
   ]
 });
 shell.main.innerHTML = `
-  <div class="tools" id="tools"></div>
-  <div class="card" id="form"></div>
+  <div class="tp-panel">
+    <nav class="tools" id="tools"></nav>
+    <div class="tp-panel-body" id="form"></div>
+  </div>
   <button class="btn" id="go" onclick="run()">✨ Générer</button>
   <div id="out"></div>`;
+document.getElementById('out').innerHTML = emptyStateHTML(current);
 
 /* Exige une connexion */
 (async function(){
