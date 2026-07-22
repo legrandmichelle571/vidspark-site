@@ -1074,13 +1074,23 @@
             <div class="card primary">
               <div class="section-title"><span class="st-ic">🔑</span> <span data-i18n="db_act_title">Activation de l'extension</span></div>
               <div id="codesHint" style="font-size:12px;color:var(--muted);margin:-6px 0 14px;" data-i18n="db_act_hint">Utilise ces codes pour activer ton extension Chrome.</div>
-              <div id="codesContainer"></div>
-              <input type="hidden" id="activationId"><input type="hidden" id="activationSecret">
-              <div style="margin-top:8px;padding:11px 14px;background:rgba(52,211,153,.08);border-left:3px solid var(--green);border-radius:8px;">
-                <span style="font-size:12px;color:var(--green);" data-i18n="db_act_valid">✅ Code valide — extension prête à l'emploi.</span>
+              <!-- Verrouillé tant qu'aucune chaîne YouTube n'est connectée — voir loadActivationData().
+                   L'ID/Secret (activation_id/activation_secret) ne sont jamais rendus dans le DOM avant
+                   ce moment : le backend lui-même ne les renvoie pas (voir /api/user/me côté serveur). -->
+              <div id="codesLocked" style="display:none;text-align:center;padding:18px 8px;">
+                <div style="font-size:28px;margin-bottom:8px;">🔒</div>
+                <div style="font-size:13px;color:var(--muted);margin-bottom:14px;" data-i18n="db_act_locked">Connecte ta chaîne YouTube pour débloquer l'activation de l'extension.</div>
+                <a href="/channels.html" class="btn btn-primary" data-i18n="db_act_connect_yt">Connecter ma chaîne YouTube</a>
               </div>
-              <button onclick="releaseDevices()" class="btn btn-ghost" style="width:100%;margin-top:12px;" data-i18n="db_act_release">🔓 PC perdu ? Libérer mes codes</button>
-              <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
+              <div id="codesUnlocked">
+                <div id="codesContainer"></div>
+                <input type="hidden" id="activationId"><input type="hidden" id="activationSecret">
+                <div style="margin-top:8px;padding:11px 14px;background:rgba(52,211,153,.08);border-left:3px solid var(--green);border-radius:8px;">
+                  <span style="font-size:12px;color:var(--green);" data-i18n="db_act_valid">✅ Code valide — extension prête à l'emploi.</span>
+                </div>
+                <button onclick="releaseDevices()" class="btn btn-ghost" style="width:100%;margin-top:12px;" data-i18n="db_act_release">🔓 PC perdu ? Libérer mes codes</button>
+                <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
+              </div>
             </div>
 
             <div class="card">
@@ -1317,26 +1327,10 @@
           }
         }
 
-        // 🔒 Vérifier si chaîne YouTube sélectionnée
-        // (même table que la page "Mes chaînes" : activation_channels via /user/channels)
-        try {
-          const channelRes = await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/user/channels', {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-
-          if (channelRes.ok) {
-            const channelData = await channelRes.json();
-            if (!channelData.channels || channelData.channels.length === 0) {
-              // Pas de chaîne sélectionnée → rediriger vers channels.html
-              console.log('[Dashboard] No channel selected, redirecting to channels...');
-              window.location.href = '/channels.html';
-              return;
-            }
-          }
-        } catch (err) {
-          console.warn('[Dashboard] Could not check channels:', err);
-          // Continue même si vérification échoue
-        }
+        // ℹ️ Une chaîne YouTube n'est PLUS obligatoire pour accéder au dashboard — les
+        // fonctionnalités qui en dépendent (ex: activation de l'extension) se verrouillent
+        // individuellement (voir loadActivationData/renderCodes), le reste reste utilisable.
+        // L'ancienne redirection forcée vers channels.html a été retirée intentionnellement.
 
         // Afficher les données (depuis Supabase Auth)
         const userName = user.user_metadata?.full_name || user.email || 'Creator';
@@ -1481,7 +1475,24 @@
           document.getElementById('usageText').textContent = `${used}/${lim}`;
           document.getElementById('progressFill').style.width = Math.min(used / lim * 100, 100) + '%';
         }
-        if (user.activation_id && user.activation_secret) {
+        // Jours restants d'abonnement — indépendant de YouTube, toujours affiché.
+        if (user.subscription_expiry) {
+          const expiry = new Date(user.subscription_expiry);
+          const now = new Date();
+          const days = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
+          document.getElementById('daysRemaining').textContent = Math.max(0, days);
+        }
+
+        // 🔒 Activation de l'extension — verrouillée tant qu'aucune chaîne YouTube n'est
+        // connectée. Le backend ne renvoie même pas activation_id/activation_secret dans ce
+        // cas (voir /api/user/me côté serveur) : ce n'est pas qu'un masquage visuel, la donnée
+        // sensible n'atteint jamais le navigateur.
+        const lockedEl   = document.getElementById('codesLocked');
+        const unlockedEl = document.getElementById('codesUnlocked');
+        if (user.youtube_connected && user.activation_id && user.activation_secret) {
+          if (lockedEl)   lockedEl.style.display   = 'none';
+          if (unlockedEl) unlockedEl.style.display = '';
+
           document.getElementById('activationId').value = user.activation_id;
           document.getElementById('activationSecret').value = user.activation_secret;
 
@@ -1498,14 +1509,11 @@
           if (hint) hint.textContent = maxPC > 1
             ? `Ce code fonctionne sur ${maxPC} PC en même temps (plan ${planLabel}).`
             : `Ce code fonctionne sur 1 seul PC à la fois (plan ${planLabel}).`;
-
-          // Afficher les jours restants
-          if (user.subscription_expiry) {
-            const expiry = new Date(user.subscription_expiry);
-            const now = new Date();
-            const days = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24));
-            document.getElementById('daysRemaining').textContent = Math.max(0, days);
-          }
+        } else {
+          if (unlockedEl) unlockedEl.style.display = 'none';
+          if (lockedEl)   lockedEl.style.display   = '';
+          const hint = document.getElementById('codesHint');
+          if (hint) hint.textContent = '';
         }
       } catch (err) {
         console.warn('[Dashboard] Could not load activation:', err);
