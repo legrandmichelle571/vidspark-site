@@ -74,7 +74,14 @@ const API = {
       }
 
       if (!response.ok) {
-        throw new Error(data.error || `HTTP ${response.status}`);
+        // Deux formats d'erreur coexistent : { error: "message" } (routes historiques) et
+        // { success:false, error:{code,message,retryable} } (routes /connections/*, Phase 4).
+        // Le second passait auparavant par String(data.error) → "[object Object]".
+        const errMessage = (data.error && data.error.message) || data.error || `HTTP ${response.status}`;
+        const err = new Error(errMessage);
+        if (data.error && data.error.code) err.code = data.error.code;
+        if (data.error && typeof data.error.retryable === 'boolean') err.retryable = data.error.retryable;
+        throw err;
       }
 
       return data;
@@ -282,6 +289,52 @@ const ChannelsAPI = {
    */
   async setPrimary(channelId) {
     return API.post('/channels/set-primary', { channel_id: channelId });
+  }
+};
+
+/**
+ * ════════════════════════════════════════════════════════════════
+ * ENDPOINTS CONNEXIONS MULTI-PLATEFORMES (TikTok, etc. — Phase 4/5)
+ * ════════════════════════════════════════════════════════════════
+ * Toutes les réponses ont la forme { success:true, data:{...} } — API.request()
+ * renvoie déjà `data` (le corps JSON complet), donc chaque méthode ici extrait
+ * `.data` elle-même plutôt que de faire porter ça au code appelant.
+ */
+const ConnectionsAPI = {
+  /**
+   * GET /api/connections/platforms
+   * Catalogue statique des plateformes disponibles.
+   */
+  async platforms() {
+    const res = await API.get('/connections/platforms');
+    return res.data.platforms;
+  },
+
+  /**
+   * GET /api/connections
+   * Connexions actuelles de l'utilisateur, toutes plateformes confondues.
+   */
+  async list() {
+    const res = await API.get('/connections');
+    return res.data.connections;
+  },
+
+  /**
+   * POST /api/connections/:platform/connect
+   * @param {string} platform ex: 'tiktok'
+   * @returns {Promise<{authorizationUrl:string}>}
+   */
+  async connect(platform) {
+    const res = await API.post(`/connections/${platform}/connect`);
+    return res.data;
+  },
+
+  /**
+   * DELETE /api/connections/:platform
+   */
+  async disconnect(platform) {
+    const res = await API.delete(`/connections/${platform}`);
+    return res.data;
   }
 };
 

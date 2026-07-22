@@ -362,6 +362,19 @@
     }
     .card.hoverable:hover{ transform:translateY(-3px); border-color:var(--accent-line); box-shadow:0 22px 50px -22px rgba(255,157,31,.35); }
     .card.primary{ border-color:var(--accent-line); background:linear-gradient(165deg, rgba(255,157,31,.07), rgba(255,255,255,.02)); }
+
+    /* ── Carte Connexions (TikTok, Phase 5) — isolée, ne touche à aucune autre classe ── */
+    .conn-card{ padding:16px 20px; margin-bottom:18px; }
+    .conn-row{ display:flex; align-items:center; gap:14px; }
+    .conn-icon{ font-size:26px; line-height:1; }
+    .conn-avatar{ width:36px; height:36px; border-radius:50%; object-fit:cover; }
+    .conn-spin{ font-size:20px; animation:spin 1.6s linear infinite; }
+    @keyframes spin{ from{transform:rotate(0)} to{transform:rotate(360deg)} }
+    .conn-text{ flex:1; min-width:0; }
+    .conn-title{ font-weight:700; font-size:14px; }
+    .conn-sub{ font-size:12.5px; color:var(--muted); margin-top:2px; }
+    .conn-ok{ color:var(--green); }
+    .conn-err{ color:#ff6b6b; }
     .section-title{
       font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--muted);
       margin:0 0 16px; display:flex; align-items:center; gap:9px;
@@ -932,6 +945,11 @@
         <p class="tb-sub" id="userEmail">Chargement…</p>
       </div>
 
+      <!-- ════ CONNEXIONS (TikTok, Phase 5) ════
+           Carte autonome : n'importe que js/connections-ui.js, aucune dépendance sur le
+           reste du dashboard (KPIs/coach/graphiques inchangés). -->
+      <div class="card conn-card fade-in" id="tiktokConnectionCard" style="--d:1"></div>
+
       <!-- ════ KPI OVERVIEW ════ -->
       <section class="kpis fade-in" style="--d:1">
         <div class="kpi">
@@ -1159,6 +1177,7 @@
 
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/connections-ui.js"></script>
   <script>
     /**
      * Dashboard — Affichage profil et stats utilisateur
