@@ -403,71 +403,73 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: radial-gradient(ellipse at center, rgba(242,144,15,.2) 0%, transparent 70%);
   pointer-events: none;
 }
-.dashboard-mockup {
-  width: 480px;
+/* ---- Hero score card (Diagnostic + Coach) ---- */
+.score-card {
+  width: 460px;
   background: var(--s1);
   border: 1px solid var(--b2);
   border-radius: var(--r3);
   box-shadow: var(--shadow), 0 0 0 1px rgba(242,144,15,.12);
-  overflow: hidden;
+  padding: 28px;
 }
-.dashboard-header {
-  padding: 16px 20px;
-  background: var(--s2);
-  border-bottom: 1px solid var(--b1);
+.score-card-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--faint);
+  margin-bottom: 14px;
 }
-.dashboard-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; }
-.dashboard-logo-icon {
+.live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  flex: none;
+  animation: pulse-green 1.6s ease-in-out infinite;
+}
+.score-card-num {
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--text);
+}
+.score-card-meta {
+  font-size: 13px;
+  color: var(--green);
+  margin: 8px 0 4px;
+  font-weight: 600;
+}
+.score-card-sub {
+  font-size: 13px;
+  color: var(--faint);
+  margin-bottom: 20px;
+}
+.score-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+.score-bar-row { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+.score-bar-row span { width: 84px; flex: none; }
+.bar-track { flex: 1; height: 6px; border-radius: 100px; background: var(--s3); overflow: hidden; }
+.bar-fill { height: 100%; background: var(--purple); border-radius: 100px; }
+.bar-fill-low { background: var(--red); }
+.coach-line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding-top: 18px;
+  border-top: 1px solid var(--b1);
+}
+.spark-badge {
+  flex: none;
   width: 26px; height: 26px;
-  background: rgba(242,144,15,.2);
-  border: 1px solid rgba(242,144,15,.35);
-  border-radius: 6px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--purple) 0%, #FF6E56 100%);
+  color: #1b1a17;
   display: flex; align-items: center; justify-content: center;
   font-size: 13px;
 }
-.dashboard-badge {
-  font-size: 10px;
-  background: rgba(242,144,15,.15);
-  color: var(--purple-l);
-  border: 1px solid rgba(242,144,15,.3);
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: 700;
-}
-.dashboard-content {
-  padding: 20px;
-}
-.dashboard-stat {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  background: var(--s2);
-  border-radius: var(--r);
-  margin-bottom: 10px;
-  font-size: 13px;
-}
-.dashboard-stat-label { color: var(--muted); }
-.dashboard-stat-value { font-weight: 700; color: var(--text); }
-.dashboard-section {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--b1);
-}
-.dashboard-title { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
-.dashboard-item {
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  border-bottom: 1px solid var(--b1);
-}
-.dashboard-item:last-child { border-bottom: none; }
-.dashboard-item-name { color: var(--text); }
-.dashboard-item-stat { color: var(--muted); }
+.coach-line p { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
 
 @media (max-width: 860px) {
   .hero-inner { grid-template-columns: 1fr; }
@@ -476,7 +478,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .hero-actions { justify-content: center; }
   .hero-trust   { justify-content: center; }
   .hero-mockup  { order: -1; }
-  .dashboard-mockup { width: 100%; max-width: 400px; }
+  .score-card { width: 100%; max-width: 420px; }
+  .score-bar-row span { width: 72px; }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -907,14 +910,14 @@ footer {
 
       <!-- Left: Text -->
       <div class="hero-left">
-        <div class="hero-eyebrow" data-i18n="ix_eyebrow">🎯 Assistant IA YouTube & TikTok tout-en-un</div>
+        <div class="hero-eyebrow" data-i18n="ix_eyebrow">Copilote IA pour créateurs YouTube</div>
         <h1 data-i18n="ix_h1">
-          🚀 Obtenez plus de vues<br>
-          <span class="gradient-text">sur YouTube & TikTok grâce à l'IA</span>
+          Votre chaîne a un score.<br>
+          <span class="gradient-text">On vient de le calculer.</span>
         </h1>
         <p class="hero-desc" data-i18n="ix_desc">
-          Découvrez pourquoi vos vidéos ne performent pas et recevez des recommandations IA
-          pour obtenir plus de vues, de clics et d'abonnés.
+          VidSpark analyse vos vidéos, vos concurrents et vos tendances — et ne vous montre
+          que ce qui mérite une décision aujourd'hui.
         </p>
         <div class="hero-actions">
           <a href="login.html" class="btn btn-primary btn-lg" data-i18n="ix_cta1">
@@ -931,54 +934,29 @@ footer {
         </div>
       </div>
 
-      <!-- Right: Dashboard Mockup -->
+      <!-- Right: Score en direct (Diagnostic + Coach) -->
       <div class="hero-mockup">
         <div class="mockup-wrap">
           <div class="mockup-glow"></div>
 
-          <div class="dashboard-mockup">
-            <div class="dashboard-header">
-              <div class="dashboard-logo">
-                <div class="dashboard-logo-icon">⚡</div>
-                <span data-i18n="ix_dashboard_title">Dashboard</span>
-              </div>
-              <div class="dashboard-badge" data-i18n="ix_dashboard_badge">Pro</div>
+          <div class="score-card" role="img" aria-label="Exemple de score VidSpark : 82 sur 100">
+            <div class="score-card-top">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span data-i18n="ix_score_live">Score en direct</span>
+            </div>
+            <div class="score-card-num">82</div>
+            <div class="score-card-meta" data-i18n="ix_score_meta">+6 pts vs vidéo précédente</div>
+            <div class="score-card-sub" data-i18n="ix_score_sub">Exemple illustratif — connectez votre chaîne pour votre vrai score</div>
+
+            <div class="score-bars">
+              <div class="score-bar-row"><span data-i18n="ix_score_title">Titre</span><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div></div>
+              <div class="score-bar-row"><span data-i18n="ix_score_thumb">Miniature</span><div class="bar-track"><div class="bar-fill bar-fill-low" style="width:41%"></div></div></div>
+              <div class="score-bar-row"><span data-i18n="ix_score_desc">Description</span><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div></div>
             </div>
 
-            <div class="dashboard-content">
-              <div style="font-size: 11px; color: var(--amber); margin-bottom: 12px; font-weight: 600; text-transform: uppercase;" data-i18n="ix_dashboard_demo">📌 Exemple de démonstration</div>
-              <div class="dashboard-stat">
-                <span class="dashboard-stat-label" data-i18n="ix_dashboard_analyses">Analyses ce mois</span>
-                <span class="dashboard-stat-value">127/500</span>
-              </div>
-              <div class="dashboard-stat">
-                <span class="dashboard-stat-label" data-i18n="ix_dashboard_reports">Rapports IA</span>
-                <span class="dashboard-stat-value">32/100</span>
-              </div>
-
-              <div class="dashboard-section">
-                <div class="dashboard-title" data-i18n="ix_dashboard_chains">Chaînes</div>
-                <div class="dashboard-item">
-                  <span class="dashboard-item-name" data-i18n="ix_channel_1_name">Tech Reviews</span>
-                  <span class="dashboard-item-stat" data-i18n="ix_channel_1_videos">45 vidéos</span>
-                </div>
-                <div class="dashboard-item">
-                  <span class="dashboard-item-name" data-i18n="ix_channel_2_name">Digital tips</span>
-                  <span class="dashboard-item-stat" data-i18n="ix_channel_2_videos">28 vidéos</span>
-                </div>
-              </div>
-
-              <div class="dashboard-section">
-                <div class="dashboard-title" data-i18n="ix_dashboard_last_analyses">Dernières analyses</div>
-                <div class="dashboard-item">
-                  <span class="dashboard-item-name" data-i18n="ix_analysis_1_name">SEO Score 87</span>
-                  <span class="dashboard-item-stat" data-i18n="ix_analysis_1_viral">Viral +62%</span>
-                </div>
-                <div class="dashboard-item">
-                  <span class="dashboard-item-name" data-i18n="ix_analysis_2_name">SEO Score 72</span>
-                  <span class="dashboard-item-stat" data-i18n="ix_analysis_2_viral">Viral +41%</span>
-                </div>
-              </div>
+            <div class="coach-line">
+              <span class="spark-badge" aria-hidden="true">✦</span>
+              <p data-i18n="ix_coach_line">Top 20% des chaînes « setup ». Mais votre miniature vous coûte des vues.</p>
             </div>
           </div>
         </div>
@@ -1493,12 +1471,14 @@ registerI18n({
   ift16:{fr:'14 langues + arabe RTL',en:'14 languages + Arabic RTL',es:'14 idiomas + árabe RTL',ar:'14 لغة + العربية RTL'},
   ifd16:{fr:"Interface et générations en 14 langues, dont l'arabe (RTL) — unique.",en:'Interface and generations in 14 languages, including Arabic (RTL) — unique.',es:'Interfaz y generaciones en 14 idiomas, incluido el árabe (RTL) — único.',ar:'الواجهة والتوليدات بـ14 لغة، منها العربية (RTL) — فريد.'},
 
-  // Dashboard Mockup Labels
-  ix_dashboard_title:{fr:'Dashboard',en:'Dashboard',es:'Panel',ar:'لوحة التحكم'},
-  ix_dashboard_badge:{fr:'Pro',en:'Pro',es:'Pro',ar:'برو'},
-  ix_dashboard_demo:{fr:'📌 Exemple de démonstration',en:'📌 Demo example',es:'📌 Ejemplo de demostración',ar:'📌 مثال توضيحي'},
-  ix_dashboard_analyses:{fr:'Analyses ce mois',en:'Analyses this month',es:'Análisis este mes',ar:'التحليلات هذا الشهر'},
-  ix_dashboard_reports:{fr:'Rapports IA',en:'AI Reports',es:'Informes IA',ar:'تقارير الذكاء الاصطناعي'},
+  // Hero score card (Diagnostic + Coach)
+  ix_score_live:{fr:'Score en direct',en:'Live score'},
+  ix_score_meta:{fr:'+6 pts vs vidéo précédente',en:'+6 pts vs previous video'},
+  ix_score_sub:{fr:'Exemple illustratif — connectez votre chaîne pour votre vrai score',en:'Illustrative example — connect your channel for your real score'},
+  ix_score_title:{fr:'Titre',en:'Title'},
+  ix_score_thumb:{fr:'Miniature',en:'Thumbnail'},
+  ix_score_desc:{fr:'Description',en:'Description'},
+  ix_coach_line:{fr:'Top 20% des chaînes « setup ». Mais votre miniature vous coûte des vues.',en:'Top 20% of "setup" channels. But your thumbnail is costing you views.'},
 
   // Features BENEFITS labels (3 cards: Analytics, Retention, Revenue)
   ixx_benefits_1:{fr:'Analyse automatique',en:'Automatic analysis',es:'Análisis automático',ar:'تحليل تلقائي'},
@@ -1513,17 +1493,6 @@ registerI18n({
   ix_benit_3_val:{fr:'⚡',en:'⚡',es:'⚡',ar:'⚡',pt:'⚡',de:'⚡',it:'⚡',ru:'⚡',ja:'⚡',ko:'⚡',hi:'⚡',zh:'⚡',tr:'⚡',nl:'⚡'},
   ix_benit_3_label:{fr:"Accessible depuis n'importe où",en:'Accessible from anywhere',es:'Accesible desde cualquier lugar',ar:'يمكن الوصول إليه من أي مكان',pt:'Acessível de qualquer lugar',de:'Von überall zugänglich',it:'Accessibile da qualsiasi luogo',ru:'Доступно из любой точки мира',ja:'どこからでもアクセス可能',ko:'어디서나 접근 가능',hi:'कहीं से भी सुलभ',zh:'随时随地可访问',tr:'Her yerden erişilebilir',nl:'Overal toegankelijk'},
 
-  ix_dashboard_chains:{fr:'Chaînes',en:'Channels',es:'Canales',ar:'القنوات'},
-  ix_channel_1_name:{fr:'Tech Reviews',en:'Tech Reviews',es:'Reseñas Tecnológicas',ar:'مراجعات تقنية'},
-  ix_channel_1_videos:{fr:'45 vidéos',en:'45 videos',es:'45 vídeos',ar:'45 فيديو'},
-  ix_channel_2_name:{fr:'Digital tips',en:'Digital tips',es:'Consejos digitales',ar:'نصائح رقمية'},
-  ix_channel_2_videos:{fr:'28 vidéos',en:'28 videos',es:'28 vídeos',ar:'28 فيديو'},
-  ix_dashboard_last_analyses:{fr:'Dernières analyses',en:'Last analyses',es:'Últimos análisis',ar:'آخر التحليلات'},
-  ix_analysis_1_name:{fr:'SEO Score 87',en:'SEO Score 87',es:'Puntuación SEO 87',ar:'نتيجة SEO 87'},
-  ix_analysis_1_viral:{fr:'Viral +62%',en:'Viral +62%',es:'Viral +62%',ar:'انتشار +62%'},
-  ix_analysis_2_name:{fr:'SEO Score 72',en:'SEO Score 72',es:'Puntuación SEO 72',ar:'نتيجة SEO 72'},
-  ix_analysis_2_viral:{fr:'Viral +41%',en:'Viral +41%',es:'Viral +41%',ar:'انتشار +41%'},
-  
   // ═══════════════════════════════════════════
   // NEW TRANSLATIONS ADDED (lines 5-20 of script block)
   // Section & SaaS Labels
