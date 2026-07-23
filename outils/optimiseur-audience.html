@@ -5,11 +5,9 @@
 <title>Optimiseur d'Audience YouTube — VidSpark AI</title>
 <meta name="description" content="Cible ta région et ta niche : meilleures heures de publication, tendances locales, hashtags et sujets pour ton audience.">
 <link rel="stylesheet" href="tools.css">
-<style id="orange-frames">
-.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
-</style>
+<link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +20,7 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="oa_h1">🌍 Optimiseur d'Audience</h1>
     <p data-i18n="oa_sub">Sélectionne ta région et ta niche : l'IA te donne les meilleures heures de publication, les tendances locales, hashtags et sujets pour exploser dans ton marché.</p>
   </div>
@@ -105,7 +103,7 @@ async function go(){
     r.innerHTML=`
       <div class="vs-premium vs-glass vs-reveal">
         <div class="vs-premium-score">
-          <div class="vs-premium-score-ring" style="background:conic-gradient(#f7941d 0deg,#f7941d 360deg,var(--b2) 360deg);">
+          <div class="vs-premium-score-ring" style="background:conic-gradient(#F2900F 0deg,#F2900F 360deg,var(--b2) 360deg);">
             <div style="position:absolute;inset:5px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;font-size:16px;">🌍</div>
           </div>
           <div>
@@ -134,7 +132,7 @@ async function go(){
           <div class="vs-premium-section-body">${esc(d.hashtags)}</div>
         </div>`:''}
 
-        ${d.tip?`<div class="vs-premium-section"><div class="vs-premium-section-body" style="background:rgba(247,148,29,.08);border-radius:8px;border:1.5px solid #f7941d;padding:12px;">💡 ${esc(d.tip)}</div></div>`:''}
+        ${d.tip?`<div class="vs-premium-section"><div class="vs-premium-section-body" style="background:rgba(242,144,15,.08);border-radius:8px;border:1.5px solid #F2900F;padding:12px;">💡 ${esc(d.tip)}</div></div>`:''}
 
         <div class="vs-premium-actions">
           <button class="vs-premium-action-btn" onclick='copyTxt(${JSON.stringify(fullText)},this)'><span class="ic">⧉</span>Copier</button>

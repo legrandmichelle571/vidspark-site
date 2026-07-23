@@ -11,11 +11,12 @@
   <link rel="dns-prefetch" href="https://vidspark-ai-production-9ac7.up.railway.app">
   <!-- Charge la librairie Supabase en parallèle, sans bloquer l'affichage -->
   <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  <link rel="stylesheet" href="/css/tokens.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #07070a;
-      color: #e8e8f0;
+      background: var(--vs-bg);
+      color: var(--vs-text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       min-height: 100vh;
       display: flex;
@@ -30,31 +31,28 @@
     }
     .logo { font-size: 48px; margin-bottom: 20px; }
     h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
-    p { color: #8888a0; margin-bottom: 40px; font-size: 14px; }
+    p { color: var(--vs-muted); margin-bottom: 40px; font-size: 14px; }
     .btn {
       width: 100%;
       padding: 14px;
-      background: #f7941d;
-      color: white;
+      background: var(--vs-accent);
+      color: #0b0f19;
       border: none;
       border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
       font-size: 15px;
-      transition: background 0.2s;
+      transition: background 0.2s, transform .15s;
+      box-shadow: 0 8px 22px -8px var(--vs-accent-glow);
     }
-    .btn:hover { background: #f9a94a; }
+    .btn:hover { background: var(--vs-accent-2); }
+    .btn:focus-visible { outline: 2px solid var(--vs-accent); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce){ .btn{ transition:none; } }
   </style>
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <script src="/js/i18n.js"></script>
   <script src="/js/meta-pixel.js"></script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">

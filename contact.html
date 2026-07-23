@@ -6,36 +6,37 @@
 <meta name="robots" content="index, follow">
 <meta name="description" content="Contactez l'équipe VidSpark AI — Support, facturation, données personnelles, signalement d'abus.">
 <title>Contact — VidSpark AI</title>
+<link rel="stylesheet" href="/css/tokens.css">
 <style>
 /* ════════════════════════════════════════════════════════════
    TOKENS
 ════════════════════════════════════════════════════════════ */
 :root {
-  --bg:       #07070a;
-  --s1:       #0e0e12;
-  --s2:       #141418;
-  --s3:       #1a1a20;
-  --b1:       #1b2330;
-  --b2:       #2b3647;
-  --b3:       #3a3a48;
-  --text:     #e8e8f0;
-  --muted:    #8888a0;
-  --faint:    #505060;
-  --purple:   #f7941d;
-  --purple-l: #f9a94a;
-  --purple-d: #3a2406;
-  --green:    #22c55e;
-  --green-d:  #0d2d1a;
-  --red:      #ef4444;
-  --red-d:    #2d0a0a;
-  --amber:    #f59e0b;
-  --amber-d:  #2d1e00;
-  --blue:     #3b82f6;
-  --blue-d:   #0d1e3a;
+  --bg:       var(--vs-bg);
+  --s1:       var(--vs-surface-3);
+  --s2:       var(--vs-surface);
+  --s3:       var(--vs-surface-2);
+  --b1:       var(--vs-border-1);
+  --b2:       var(--vs-border-2);
+  --b3:       var(--vs-border-3);
+  --text:     var(--vs-text);
+  --muted:    var(--vs-muted);
+  --faint:    var(--vs-faint);
+  --purple:   var(--vs-accent);
+  --purple-l: var(--vs-accent-2);
+  --purple-d: var(--vs-accent-soft);
+  --green:    var(--vs-green);
+  --green-d:  #E4F3EA;
+  --red:      var(--vs-red);
+  --red-d:    #FBE2DC;
+  --amber:    var(--vs-amber);
+  --amber-d:  #FBEED9;
+  --blue:     #2563EB;
+  --blue-d:   #DCE8FC;
   --r:        8px;
   --r2:       12px;
   --r3:       16px;
-  --shadow:   0 4px 24px rgba(0,0,0,.5);
+  --shadow:   var(--vs-shadow);
   --container:1180px;
 }
 
@@ -71,14 +72,14 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--purple-l);
-  background: rgba(247,148,29,.1);
-  border: 1px solid rgba(247,148,29,.25);
+  background: rgba(242,144,15,.1);
+  border: 1px solid rgba(242,144,15,.25);
   padding: 4px 12px;
   border-radius: 20px;
   margin-bottom: 20px;
 }
 .gradient-text {
-  background: linear-gradient(135deg, #f9a94a 0%, #f7941d 40%, #60a5fa 100%);
+  background: linear-gradient(135deg, #E8830A 0%, #F2900F 40%, #2563EB 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -91,7 +92,7 @@ a { color: inherit; text-decoration: none; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(7,7,10,.85);
+  background: rgba(255,255,255,.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--b1);
@@ -110,8 +111,8 @@ a { color: inherit; text-decoration: none; }
 }
 .nav-logo-icon {
   width: 34px; height: 34px;
-  background: rgba(247,148,29,.15);
-  border: 1px solid rgba(247,148,29,.35);
+  background: rgba(242,144,15,.15);
+  border: 1px solid rgba(242,144,15,.35);
   border-radius: var(--r);
   display: flex; align-items: center; justify-content: center;
   font-size: 17px;
@@ -121,7 +122,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 10px;
   background: var(--purple-d);
   color: var(--purple-l);
-  border: 1px solid rgba(247,148,29,.3);
+  border: 1px solid rgba(242,144,15,.3);
   padding: 1px 7px;
   border-radius: 20px;
   font-weight: 700;
@@ -149,19 +150,19 @@ a { color: inherit; text-decoration: none; }
   border: none; font-family: inherit; white-space: nowrap;
 }
 .btn-primary {
-  background: var(--purple); color: #fff;
-  box-shadow: 0 4px 20px rgba(247,148,29,.35);
+  background: var(--purple); color: #0b0f19;
+  box-shadow: 0 4px 20px rgba(242,144,15,.35);
 }
 .btn-primary:hover {
   background: var(--purple-l);
-  box-shadow: 0 6px 28px rgba(247,148,29,.5);
+  box-shadow: 0 6px 28px rgba(242,144,15,.5);
   transform: translateY(-1px);
 }
 .btn-ghost {
   color: var(--muted); border: 1px solid var(--b2);
-  background: rgba(255,255,255,.03);
+  background: rgba(0,0,0,.03);
 }
-.btn-ghost:hover { color: var(--text); border-color: var(--b3); background: rgba(255,255,255,.06); }
+.btn-ghost:hover { color: var(--text); border-color: var(--b3); background: rgba(0,0,0,.06); }
 .nav-toggle {
   display: none; flex-direction: column;
   gap: 5px; padding: 8px; cursor: pointer;
@@ -194,15 +195,15 @@ a { color: inherit; text-decoration: none; }
   padding: 64px 24px 56px;
   text-align: center;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(247,148,29,.12) 0%, transparent 70%);
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(242,144,15,.12) 0%, transparent 70%);
   position: relative;
   overflow: hidden;
 }
 .hero-grid-bg {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(247,148,29,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(247,148,29,.04) 1px, transparent 1px);
+    linear-gradient(rgba(242,144,15,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,144,15,.04) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 0%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 0%, transparent 70%);
@@ -249,13 +250,13 @@ a { color: inherit; text-decoration: none; }
 .contact-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
 
 /* Card color variants */
-.card-purple::before { background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(247,148,29,.07) 0%, transparent 60%); }
-.card-purple:hover    { border-color: rgba(247,148,29,.4); }
+.card-purple::before { background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(242,144,15,.07) 0%, transparent 60%); }
+.card-purple:hover    { border-color: rgba(242,144,15,.4); }
 .card-purple:hover::before { opacity: 1; }
-.card-purple .card-icon-wrap { background: rgba(247,148,29,.1); border-color: rgba(247,148,29,.2); }
+.card-purple .card-icon-wrap { background: rgba(242,144,15,.1); border-color: rgba(242,144,15,.2); }
 .card-purple .card-icon { color: var(--purple-l); }
-.card-purple .card-btn { background: rgba(247,148,29,.12); color: var(--purple-l); border-color: rgba(247,148,29,.25); }
-.card-purple .card-btn:hover { background: rgba(247,148,29,.22); }
+.card-purple .card-btn { background: rgba(242,144,15,.12); color: var(--purple-l); border-color: rgba(242,144,15,.25); }
+.card-purple .card-btn:hover { background: rgba(242,144,15,.22); }
 
 .card-green::before { background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(34,197,94,.06) 0%, transparent 60%); }
 .card-green:hover    { border-color: rgba(34,197,94,.35); }
@@ -400,8 +401,8 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 select:focus,
 textarea:focus {
-  border-color: rgba(247,148,29,.55);
-  box-shadow: 0 0 0 3px rgba(247,148,29,.12);
+  border-color: rgba(242,144,15,.55);
+  box-shadow: 0 0 0 3px rgba(242,144,15,.12);
 }
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238888a0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -424,16 +425,16 @@ textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
 .btn-submit {
   display: inline-flex; align-items: center;
   gap: 8px; padding: 13px 28px;
-  background: var(--purple); color: #fff;
+  background: var(--purple); color: #0b0f19;
   border: none; border-radius: var(--r2);
   font-size: 15px; font-weight: 600;
   cursor: pointer; font-family: inherit;
   transition: all .2s;
-  box-shadow: 0 4px 20px rgba(247,148,29,.3);
+  box-shadow: 0 4px 20px rgba(242,144,15,.3);
 }
 .btn-submit:hover {
   background: var(--purple-l);
-  box-shadow: 0 6px 28px rgba(247,148,29,.5);
+  box-shadow: 0 6px 28px rgba(242,144,15,.5);
   transform: translateY(-1px);
 }
 .btn-submit:active { transform: translateY(0); }
@@ -518,16 +519,10 @@ footer {
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
 </style>
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <script src="/js/i18n.js"></script>
   <script src="/js/meta-pixel.js"></script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">

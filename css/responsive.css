@@ -219,7 +219,7 @@ input:not([type="checkbox"]):not([type="radio"]), select, textarea {
 
 /* ---- 12. Focus visibility for keyboard & accessibility audits ---- */
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .btn:focus-visible {
-  outline: 2px solid #f7941d;
+  outline: 2px solid #F2900F;
   outline-offset: 2px;
 }
 

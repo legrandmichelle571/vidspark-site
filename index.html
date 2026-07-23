@@ -7,8 +7,9 @@
 <meta name="description" content="VidSpark AI — Plateforme SaaS pour analyser et optimiser vos vidéos YouTube avec l'IA. Scores SEO, Viral, Miniature. Titres IA. Gratuit pour commencer.">
 <meta name="keywords" content="SEO YouTube, optimisation YouTube, titres IA, miniature YouTube, score viral, analyse YouTube, tags YouTube, VidSpark">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="theme-color" content="#07070a">
+<meta name="theme-color" content="#FBF8F3">
 <link rel="canonical" href="https://vidsparkpro.com/">
+<link rel="stylesheet" href="/css/tokens.css">
 <meta property="og:title" content="VidSpark AI — Plateforme SaaS YouTube avec IA">
 <meta property="og:description" content="Analysez et optimisez vos vidéos YouTube avec l'IA. Dashboard pro, rapports IA, gestion multi-chaînes. Gratuit, Pro ou Business.">
 <meta property="og:type" content="website">
@@ -42,42 +43,32 @@
    TOKENS
 ════════════════════════════════════════════════════════════ */
 :root {
-  --bg:       #07070a;
-  --s1:       #0e0e12;
-  --s2:       #141418;
-  --s3:       #1a1a20;
-  --b1:       #1b2330;
-  --b2:       #2b3647;
-  --b3:       #3a3a48;
-  --text:     #e8e8f0;
-  --muted:    #8888a0;
-  --faint:    #505060;
-  --purple:   #f7941d;
-  --purple-l: #f9a94a;
-  --purple-d: #3a2406;
-  --green:    #22c55e;
-  --green-d:  #0d2d1a;
-  --red:      #ef4444;
-  --amber:    #f59e0b;
-  --blue:     #3b82f6;
+  --bg:       var(--vs-bg);
+  --s1:       var(--vs-surface-3);
+  --s2:       var(--vs-surface);
+  --s3:       var(--vs-surface-2);
+  --b1:       var(--vs-border-1);
+  --b2:       var(--vs-border-2);
+  --b3:       var(--vs-border-3);
+  --text:     var(--vs-text);
+  --muted:    var(--vs-muted);
+  --faint:    var(--vs-faint);
+  --purple:   var(--vs-accent);
+  --purple-l: var(--vs-accent-2);
+  --purple-d: var(--vs-accent-soft);
+  --green:    var(--vs-green);
+  --green-d:  #E4F3EA;
+  --red:      var(--vs-red);
+  --amber:    var(--vs-amber);
+  --blue:     #2563EB;
   --r:        8px;
   --r2:       12px;
   --r3:       16px;
   --r4:       24px;
-  --shadow:   0 4px 24px rgba(0,0,0,.5);
-  --glow:     0 0 60px rgba(247,148,29,.18);
+  --shadow:   var(--vs-shadow);
+  --glow:     0 0 60px rgba(242,144,15,.18);
   --container:1180px;
 }
-body.light{
-  --bg:#f4f5fa; --s1:#ffffff; --s2:#f0f1f6; --s3:#e8e9f0;
-  --b1:#e4e6ef; --b2:#d2d5e0; --b3:#c0c3d0;
-  --text:#16161f; --muted:#5f6072; --faint:#9a9ab0;
-}
-body.violet{
-  --bg:#140f24; --s1:#1b1436; --s2:#221a3f; --s3:#2a2150;
-  --b1:#352657; --b2:#43346d; --text:#ece8f7; --muted:#a294c8;
-}
-.theme-fab{position:fixed;bottom:18px;right:18px;z-index:200;background:var(--s2);border:1px solid var(--b2);color:var(--text);padding:10px 14px;border-radius:24px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);}
 .ad-side{position:fixed;top:90px;width:160px;z-index:40;}
 .ad-side-left{left:10px;} .ad-side-right{right:10px;}
 .ad-side .ad-box{border:1px dashed var(--b2);border-radius:10px;padding:8px;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
@@ -120,8 +111,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--purple-l);
-  background: rgba(247,148,29,.1);
-  border: 1px solid rgba(247,148,29,.25);
+  background: rgba(242,144,15,.1);
+  border: 1px solid rgba(242,144,15,.25);
   padding: 4px 12px;
   border-radius: 20px;
   margin-bottom: 20px;
@@ -142,7 +133,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .centered { text-align: center; }
 .centered .section-sub { margin: 0 auto; }
 .gradient-text {
-  background: linear-gradient(135deg, #f9a94a 0%, #f7941d 40%, #60a5fa 100%);
+  background: linear-gradient(135deg, #E8830A 0%, #F2900F 40%, #2563EB 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -165,23 +156,23 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .btn-primary {
   background: var(--purple);
-  color: #fff;
-  box-shadow: 0 4px 20px rgba(247,148,29,.35);
+  color: #0b0f19;
+  box-shadow: 0 4px 20px rgba(242,144,15,.35);
 }
 .btn-primary:hover {
   background: var(--purple-l);
-  box-shadow: 0 6px 28px rgba(247,148,29,.5);
+  box-shadow: 0 6px 28px rgba(242,144,15,.5);
   transform: translateY(-1px);
 }
 .btn-ghost {
   color: var(--muted);
   border: 1px solid var(--b2);
-  background: rgba(255,255,255,.03);
+  background: rgba(0,0,0,.035);
 }
 .btn-ghost:hover {
   color: var(--text);
   border-color: var(--b3);
-  background: rgba(255,255,255,.06);
+  background: rgba(0,0,0,.06);
 }
 .btn-lg {
   padding: 16px 32px;
@@ -220,8 +211,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .nav-logo-icon {
   width: 34px; height: 34px;
-  background: rgba(247,148,29,.15);
-  border: 1px solid rgba(247,148,29,.35);
+  background: rgba(242,144,15,.15);
+  border: 1px solid rgba(242,144,15,.35);
   border-radius: var(--r);
   display: flex; align-items: center; justify-content: center;
   font-size: 17px;
@@ -231,7 +222,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-size: 10px;
   background: var(--purple-d);
   color: var(--purple-l);
-  border: 1px solid rgba(247,148,29,.3);
+  border: 1px solid rgba(242,144,15,.3);
   padding: 1px 7px;
   border-radius: 20px;
   font-weight: 700;
@@ -319,7 +310,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(247,148,29,.15) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(242,144,15,.15) 0%, transparent 70%),
     radial-gradient(ellipse 40% 40% at 80% 60%, rgba(59,130,246,.07) 0%, transparent 60%);
   pointer-events: none;
 }
@@ -327,8 +318,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(247,148,29,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(247,148,29,.04) 1px, transparent 1px);
+    linear-gradient(rgba(242,144,15,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,144,15,.04) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 0%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 0%, transparent 70%);
@@ -409,7 +400,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .mockup-glow {
   position: absolute;
   inset: -30px;
-  background: radial-gradient(ellipse at center, rgba(247,148,29,.2) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(242,144,15,.2) 0%, transparent 70%);
   pointer-events: none;
 }
 .dashboard-mockup {
@@ -417,7 +408,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: var(--s1);
   border: 1px solid var(--b2);
   border-radius: var(--r3);
-  box-shadow: var(--shadow), 0 0 0 1px rgba(247,148,29,.12);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(242,144,15,.12);
   overflow: hidden;
 }
 .dashboard-header {
@@ -431,17 +422,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .dashboard-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; }
 .dashboard-logo-icon {
   width: 26px; height: 26px;
-  background: rgba(247,148,29,.2);
-  border: 1px solid rgba(247,148,29,.35);
+  background: rgba(242,144,15,.2);
+  border: 1px solid rgba(242,144,15,.35);
   border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
   font-size: 13px;
 }
 .dashboard-badge {
   font-size: 10px;
-  background: rgba(247,148,29,.15);
+  background: rgba(242,144,15,.15);
   color: var(--purple-l);
-  border: 1px solid rgba(247,148,29,.3);
+  border: 1px solid rgba(242,144,15,.3);
   padding: 2px 8px;
   border-radius: 10px;
   font-weight: 700;
@@ -536,11 +527,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(247,148,29,.06) 0%, transparent 60%);
+  background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(242,144,15,.06) 0%, transparent 60%);
   opacity: 0;
   transition: opacity .3s;
 }
-.feature-card:hover { border-color: rgba(247,148,29,.35); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
+.feature-card:hover { border-color: rgba(242,144,15,.35); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
 .feature-card:hover::before { opacity: 1; }
 .feature-icon {
   width: 44px; height: 44px;
@@ -551,7 +542,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-size: 20px;
   margin-bottom: 18px;
 }
-.fi-purple { background: rgba(247,148,29,.12); border: 1px solid rgba(247,148,29,.2); }
+.fi-purple { background: rgba(242,144,15,.12); border: 1px solid rgba(242,144,15,.2); }
 .fi-green  { background: rgba(34,197,94,.1);   border: 1px solid rgba(34,197,94,.2); }
 .fi-blue   { background: rgba(59,130,246,.1);  border: 1px solid rgba(59,130,246,.2); }
 .fi-amber  { background: rgba(245,158,11,.1);  border: 1px solid rgba(245,158,11,.2); }
@@ -599,11 +590,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding: 28px;
   transition: border-color .2s, transform .2s;
 }
-.saas-card:hover { border-color: rgba(247,148,29,.35); transform: translateY(-3px); }
+.saas-card:hover { border-color: rgba(242,144,15,.35); transform: translateY(-3px); }
 .saas-icon {
   width: 48px; height: 48px;
-  background: rgba(247,148,29,.12);
-  border: 1px solid rgba(247,148,29,.2);
+  background: rgba(242,144,15,.12);
+  border: 1px solid rgba(242,144,15,.2);
   border-radius: var(--r2);
   display: flex;
   align-items: center;
@@ -641,9 +632,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .pricing-card:hover { border-color: var(--b3); }
 .pricing-card.featured {
-  border-color: rgba(247,148,29,.5);
-  background: linear-gradient(160deg, rgba(247,148,29,.07) 0%, var(--s1) 60%);
-  box-shadow: 0 0 0 1px rgba(247,148,29,.15), var(--glow);
+  border-color: rgba(242,144,15,.5);
+  background: linear-gradient(160deg, rgba(242,144,15,.07) 0%, var(--s1) 60%);
+  box-shadow: 0 0 0 1px rgba(242,144,15,.15), var(--glow);
 }
 .pricing-popular {
   position: absolute;
@@ -651,7 +642,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   left: 50%;
   transform: translateX(-50%);
   background: var(--purple);
-  color: #fff;
+  color: #0b0f19;
   font-size: 11px;
   font-weight: 700;
   padding: 4px 14px;
@@ -714,7 +705,7 @@ details {
   transition: border-color .2s;
   overflow: hidden;
 }
-details[open] { border-color: rgba(247,148,29,.3); }
+details[open] { border-color: rgba(242,144,15,.3); }
 details:hover  { border-color: var(--b3); }
 summary {
   list-style: none;
@@ -753,7 +744,7 @@ details[open] summary::after { content: "−"; }
    FINAL CTA
 ════════════════════════════════════════════════════════════ */
 .cta-section {
-  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(247,148,29,.1) 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(242,144,15,.1) 0%, transparent 70%);
   border-top: 1px solid var(--b1);
   border-bottom: 1px solid var(--b1);
 }
@@ -832,12 +823,6 @@ footer {
 ════════════════════════════════════════════════════════════ */
 .divider { width: 1px; height: 16px; background: var(--b2); }
 </style>
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
 <meta name="google-adsense-account" content="ca-pub-9955674503566269">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9955674503566269"
      crossorigin="anonymous"></script>
@@ -865,7 +850,6 @@ footer {
   </script>
   <script src="/js/meta-pixel.js"></script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -941,7 +925,7 @@ footer {
           </a>
         </div>
         <div class="hero-trust">
-          <div style="font-size: 18px; letter-spacing: 2px; color: #f5b301;">⭐⭐⭐⭐⭐</div>
+          <div style="font-size: 18px; letter-spacing: 2px; color: var(--amber);">⭐⭐⭐⭐⭐</div>
           <div style="font-size: 14px; color: var(--text); font-weight: 600; margin: 2px 0 8px;" data-i18n="ix_rating">Plus de 20 outils IA pour développer votre chaîne YouTube</div>
           <span style="font-size: 13px; color: var(--muted);" data-i18n="ix_trust">🔥 SEO • Viral Score • Miniatures • Titres IA • Mots-clés • Audit de chaîne</span>
         </div>
@@ -1037,7 +1021,7 @@ footer {
       <p class="section-sub" data-i18n="ix_video_sub">En 2 minutes, voyez comment optimiser vos vidéos YouTube.</p>
     </div>
     <div style="max-width:900px;margin:48px auto 0">
-      <div id="promo-video-embed" style="position:relative;width:100%;padding-top:56.25%;border-radius:var(--r3);overflow:hidden;border:1.5px solid #f7941d;background:#000;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+      <div id="promo-video-embed" style="position:relative;width:100%;padding-top:56.25%;border-radius:var(--r3);overflow:hidden;border:1.5px solid #F2900F;background:#000;box-shadow:0 20px 60px rgba(0,0,0,.5)">
         <!-- iframe / video injecté en JS -->
       </div>
     </div>
@@ -1331,7 +1315,7 @@ footer {
 
       <!-- Diamant -->
       <div class="pricing-card">
-        <div class="pricing-plan" style="color:#22d3ee" data-i18n="ixp_diamant">💎 Diamant</div>
+        <div class="pricing-plan" style="color:#0891B2" data-i18n="ixp_diamant">💎 Diamant</div>
         <div class="pricing-price"><sup>$</sup>49<span data-i18n="ixp_per_month">.99/mois</span></div>
         <p class="pricing-desc" data-i18n="ixp_dmt_desc">Pour les experts SEO YouTube.</p>
         <ul class="pricing-features">
@@ -1364,7 +1348,7 @@ footer {
     </div>
     <div class="features-grid">
       <div class="feature-card">
-        <div style="color:var(--gold,#f5b301);font-size:14px;margin-bottom:8px">★★★★★</div>
+        <div style="color:var(--amber);font-size:14px;margin-bottom:8px">★★★★★</div>
         <p class="feature-desc" style="font-style:italic" data-i18n="ixt_q1">« Le Hook Analyzer a changé mes intros. +30% de rétention en 2 semaines. L'A/B test des miniatures est bluffant. »</p>
         <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
           <div style="width:36px;height:36px;border-radius:50%;background:var(--purple-d);color:var(--purple-l);display:flex;align-items:center;justify-content:center;font-weight:700">YM</div>
@@ -1372,7 +1356,7 @@ footer {
         </div>
       </div>
       <div class="feature-card">
-        <div style="color:var(--gold,#f5b301);font-size:14px;margin-bottom:8px">★★★★★</div>
+        <div style="color:var(--amber);font-size:14px;margin-bottom:8px">★★★★★</div>
         <p class="feature-desc" style="font-style:italic" data-i18n="ixt_q2">« Enfin un outil en arabe ! L'optimiseur d'audience pour le Maghreb me donne les bonnes heures et les bons sujets. »</p>
         <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
           <div style="width:36px;height:36px;border-radius:50%;background:var(--purple-d);color:var(--purple-l);display:flex;align-items:center;justify-content:center;font-weight:700">SA</div>
@@ -1380,7 +1364,7 @@ footer {
         </div>
       </div>
       <div class="feature-card">
-        <div style="color:var(--gold,#f5b301);font-size:14px;margin-bottom:8px">★★★★★</div>
+        <div style="color:var(--amber);font-size:14px;margin-bottom:8px">★★★★★</div>
         <p class="feature-desc" style="font-style:italic" data-i18n="ixt_q3">« Les idées de vidéos + la description complète me font gagner des heures. Le tout pour moitié prix de TubeBuddy. »</p>
         <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
           <div style="width:36px;height:36px;border-radius:50%;background:var(--purple-d);color:var(--purple-l);display:flex;align-items:center;justify-content:center;font-weight:700">KB</div>
@@ -1749,9 +1733,9 @@ registerI18n({
        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 ═══════════════════════════════════════════════════════════ -->
-<div style="max-width:728px;margin:30px auto;padding:10px;border:1px dashed #2b3647;border-radius:10px;text-align:center;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-  <div style="font-size:10px;color:#8888a0;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Publicité</div>
-  <div class="ad-inner" style="width:100%;color:#8888a0;font-size:12px;"><!-- Code pub ici --></div>
+<div style="max-width:728px;margin:30px auto;padding:10px;border:1px dashed var(--b2);border-radius:10px;text-align:center;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Publicité</div>
+  <div class="ad-inner" style="width:100%;color:var(--muted);font-size:12px;"><!-- Code pub ici --></div>
 </div>
 
 <!-- ════════════════════════════════════════════════════

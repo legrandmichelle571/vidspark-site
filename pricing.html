@@ -5,22 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="VidSpark AI Pricing — Choose the perfect plan">
   <title>Pricing — VidSpark AI</title>
+  <link rel="stylesheet" href="/css/tokens.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
     :root {
-      --bg:       #07070a;
-      --s1:       #0e0e12;
-      --s2:       #141418;
-      --s3:       #1a1a20;
-      --b1:       #1b2330;
-      --b2:       #2b3647;
-      --b3:       #3a3a48;
-      --text:     #e8e8f0;
-      --muted:    #8888a0;
-      --faint:    #505060;
-      --purple:   #f7941d;
-      --blue:     #3b82f6;
-      --green:    #22c55e;
+      --bg:       var(--vs-bg);
+      --s1:       var(--vs-surface-3);
+      --s2:       var(--vs-surface);
+      --s3:       var(--vs-surface-2);
+      --b1:       var(--vs-border-1);
+      --b2:       var(--vs-border-2);
+      --b3:       var(--vs-border-3);
+      --text:     var(--vs-text);
+      --muted:    var(--vs-muted);
+      --faint:    var(--vs-faint);
+      --purple:   var(--vs-accent);
+      --blue:     #2563EB;
+      --green:    var(--vs-green);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,7 +45,7 @@
       font-size: 40px;
       font-weight: 800;
       margin-bottom: 12px;
-      background: linear-gradient(135deg, #f7941d 0%, #3b82f6 100%);
+      background: linear-gradient(135deg, #F2900F 0%, #2563EB 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -82,7 +83,7 @@
 
     .plan-card.recommended {
       border-color: var(--purple);
-      background: linear-gradient(135deg, #3a2406 0%, var(--s3) 100%);
+      background: linear-gradient(135deg, var(--vs-accent-soft, #FDECD1) 0%, var(--s3) 100%);
       transform: scale(1.05);
     }
 
@@ -91,7 +92,7 @@
       top: -12px;
       left: 24px;
       background: var(--purple);
-      color: white;
+      color: #0b0f19;
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 12px;
@@ -154,7 +155,7 @@
 
     .plan-cta {
       background: var(--purple);
-      color: white;
+      color: #0b0f19;
       border: none;
       padding: 14px 24px;
       border-radius: 8px;
@@ -217,7 +218,7 @@
     }
 
     .comparison-table tr:hover td {
-      background: rgba(124, 109, 250, 0.05);
+      background: rgba(242, 144, 15, 0.05);
     }
 
     .check { color: var(--green); font-weight: bold; }
@@ -255,7 +256,7 @@
 
     .billing-toggle-btn.active {
       background: var(--purple);
-      color: white;
+      color: #0b0f19;
     }
 
     .billing-toggle-btn:hover:not(.active) {
@@ -264,7 +265,7 @@
 
     .savings-badge {
       background: var(--green);
-      color: white;
+      color: #fff;
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 12px;
@@ -313,12 +314,12 @@
     }
 
     .faq-question:hover {
-      background: rgba(124, 109, 250, 0.1);
+      background: rgba(242, 144, 15, 0.08);
     }
 
     .faq-question.active {
       background: var(--purple);
-      color: white;
+      color: #0b0f19;
     }
 
     .faq-toggle { font-size: 20px; }
@@ -327,7 +328,7 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.3s ease;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.03);
       color: var(--muted);
     }
 
@@ -357,16 +358,10 @@
       }
     }
   </style>
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <script src="/js/i18n.js"></script>
   <script src="/js/meta-pixel.js"></script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">

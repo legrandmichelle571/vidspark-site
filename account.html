@@ -4,35 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Account Settings - VidSpark AI</title>
+  <link rel="stylesheet" href="/css/tokens.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:       #0B0F19;
-      --s1:       #0c1220;
-      --s2:       #141c2e;
-      --s3:       #18203353;
-      --b1:       rgba(255,255,255,.06);
-      --b2:       rgba(255,255,255,.10);
-      --b3:       rgba(255,255,255,.16);
-      --text:     #eaecf3;
-      --muted:    #8b92a7;
-      --faint:    #5b6276;
-      --purple:   #FF9D1F;
-      --purple-l: #ffb85c;
-      --purple-d: #3a2406;
-      --green:    #34d399;
-      --red:      #f87171;
-      --radius:    16px;
-      --radius-sm: 12px;
-      --shadow-sm: 0 8px 24px -12px rgba(0,0,0,.6);
+      --bg:       var(--vs-bg);
+      --s1:       var(--vs-surface-3);
+      --s2:       var(--vs-surface);
+      --s3:       var(--vs-surface-2);
+      --b1:       var(--vs-border-1);
+      --b2:       var(--vs-border-2);
+      --b3:       var(--vs-border-3);
+      --text:     var(--vs-text);
+      --muted:    var(--vs-muted);
+      --faint:    var(--vs-faint);
+      --purple:   var(--vs-accent);
+      --purple-l: var(--vs-accent-2);
+      --purple-d: var(--vs-accent-soft);
+      --green:    var(--vs-green);
+      --red:      var(--vs-red);
+      --radius:    var(--vs-radius);
+      --radius-sm: var(--vs-radius-sm);
+      --shadow-sm: var(--vs-shadow-sm);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
     body {
       background:
-        radial-gradient(1100px 520px at 78% -8%, rgba(255,157,31,.08), transparent 60%),
-        radial-gradient(900px 480px at 0% 0%, rgba(96,165,250,.06), transparent 55%),
+        radial-gradient(1100px 520px at 78% -8%, rgba(242,144,15,.06), transparent 60%),
+        radial-gradient(900px 480px at 0% 0%, rgba(96,165,250,.05), transparent 55%),
         var(--bg);
       background-attachment: fixed;
       color: var(--text);
@@ -50,7 +51,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(7,7,10,.85);
+      background: rgba(255,255,255,.85);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--b1);
     }
@@ -76,8 +77,8 @@
     .nav-logo-icon {
       width: 34px;
       height: 34px;
-      background: rgba(247,148,29,.15);
-      border: 1px solid rgba(247,148,29,.35);
+      background: rgba(242,144,15,.15);
+      border: 1px solid rgba(242,144,15,.35);
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -150,7 +151,7 @@
     }
 
     .section {
-      background: linear-gradient(165deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+      background: linear-gradient(165deg, rgba(255,255,255,.9), rgba(253,251,247,.75));
       border: 1px solid var(--b2);
       border-radius: var(--radius);
       padding: 32px;
@@ -185,7 +186,7 @@
     .form-textarea {
       width: 100%;
       padding: 12px 16px;
-      background: rgba(255,255,255,.03);
+      background: rgba(0,0,0,.035);
       border: 1px solid var(--b1);
       border-radius: var(--radius-sm);
       color: var(--text);
@@ -198,7 +199,7 @@
     .form-textarea:focus {
       outline: none;
       border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(247,148,29,.1);
+      box-shadow: 0 0 0 3px rgba(242,144,15,.15);
     }
 
     .form-textarea {
@@ -220,15 +221,15 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--purple), #ff7a18);
+      background: linear-gradient(135deg, var(--purple), var(--purple-l));
       color: #0b0f19;
-      box-shadow: 0 8px 22px -8px rgba(255,157,31,.3);
+      box-shadow: 0 8px 22px -8px rgba(242,144,15,.3);
     }
 
     .btn-primary:hover {
       filter: brightness(1.06);
       transform: translateY(-1px);
-      box-shadow: 0 12px 28px -8px rgba(255,157,31,.3);
+      box-shadow: 0 12px 28px -8px rgba(242,144,15,.3);
     }
 
     .btn-danger {
@@ -325,12 +326,6 @@
     @media(max-width:1024px){ .app-main, body.side-collapsed .app-main{ margin-left:0; } }
   </style>
   <link rel="stylesheet" href="/css/app-shell.css">
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <script src="/js/i18n.js"></script>
   <script>
     registerI18n({
@@ -401,7 +396,7 @@
   </script>
   <script src="/js/meta-pixel.js"></script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">

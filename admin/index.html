@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — VidSpark Admin</title>
+<link rel="stylesheet" href="/css/tokens.css">
 <link rel="stylesheet" href="admin.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -31,14 +32,8 @@
     color: var(--text);
   }
 </style>
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -249,12 +244,12 @@ async function loadDashboard() {
    ──────────────────────────────────────── */
 function createCharts(stats) {
   const colors = {
-    free: '#22c55e',
-    pro: '#f7941d',
-    business: '#3b82f6',
-    text: '#e8e8f0',
-    muted: '#8888a0',
-    grid: '#3a3a48'
+    free: '#167A45',
+    pro: '#F2900F',
+    business: '#2563EB',
+    text: '#211D16',
+    muted: '#756D5E',
+    grid: '#E7E0D3'
   };
 
   // 1. Distribution des Plans (Doughnut)
@@ -268,7 +263,7 @@ function createCharts(stats) {
         datasets: [{
           data: [stats.users.free || 0, stats.users.pro || 0, stats.users.business || 0],
           backgroundColor: [colors.free, colors.pro, colors.business],
-          borderColor: '#1b2330',
+          borderColor: '#FFFFFF',
           borderWidth: 2
         }]
       },
@@ -353,7 +348,7 @@ function createCharts(stats) {
         datasets: [{
           data: [active, Math.max(0, total - active)],
           backgroundColor: [colors.pro, colors.grid],
-          borderColor: '#1b2330',
+          borderColor: '#FFFFFF',
           borderWidth: 2
         }]
       },
@@ -405,7 +400,7 @@ function createCharts(stats) {
         datasets: [{
           data: [convRate, 100 - convRate],
           backgroundColor: [colors.business, colors.grid],
-          borderColor: '#1b2330',
+          borderColor: '#FFFFFF',
           borderWidth: 2
         }]
       },

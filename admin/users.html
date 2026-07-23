@@ -4,15 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Utilisateurs — VidSpark Admin</title>
+<link rel="stylesheet" href="/css/tokens.css">
 <link rel="stylesheet" href="admin.css">
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -167,7 +162,7 @@ async function loadUsers(page = 1) {
           <td>
             <div class="action-btns">
               ${u.plan !== 'free' ? `<button class="vs-btn vs-btn-ghost vs-btn-sm" onclick="changePlan('${u.id}','free')">Free</button>` : ''}
-              ${u.plan !== 'pro' ? `<button class="vs-btn vs-btn-sm" style="background:rgba(247,148,29,.12);color:var(--purple-l);border:1px solid rgba(247,148,29,.2)" onclick="changePlan('${u.id}','pro')">Pro</button>` : ''}
+              ${u.plan !== 'pro' ? `<button class="vs-btn vs-btn-sm" style="background:rgba(242,144,15,.12);color:var(--purple-l);border:1px solid rgba(242,144,15,.2)" onclick="changePlan('${u.id}','pro')">Pro</button>` : ''}
               ${u.plan !== 'business' ? `<button class="vs-btn vs-btn-sm vs-btn-success" onclick="changePlan('${u.id}','business')">Biz</button>` : ''}
               ${u.status === 'active' ? `<button class="vs-btn vs-btn-danger vs-btn-sm" onclick="changeStatus('${u.id}','suspended')">⏸ Suspendre</button>` : `<button class="vs-btn vs-btn-success vs-btn-sm" onclick="changeStatus('${u.id}','active')">▶ Réactiver</button>`}
             </div>

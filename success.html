@@ -6,24 +6,20 @@
   <title>VidSpark AI — Paiement</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="preconnect" href="https://fnhyskbisfbtjgblbiap.supabase.co" crossorigin>
+  <link rel="stylesheet" href="/css/tokens.css">
   <style>
     *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
-    body{background:#07070a;color:#e8e8f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-    .card{background:#0e0e12;border:1px solid #1b2330;border-radius:16px;padding:40px 32px;max-width:440px;width:100%;text-align:center;}
+    body{background:var(--vs-bg);color:var(--vs-text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+    .card{background:var(--vs-surface);border:1px solid var(--vs-border-1);border-radius:16px;padding:40px 32px;max-width:440px;width:100%;text-align:center;box-shadow:var(--vs-shadow);}
     .icon{font-size:56px;margin-bottom:16px;}
     h1{font-size:22px;font-weight:800;margin-bottom:10px;}
-    p{color:#8888a0;font-size:14px;line-height:1.6;margin-bottom:24px;}
-    .btn{display:inline-block;background:linear-gradient(135deg,#f7941d,#f9a94a);color:#fff;border:none;border-radius:10px;padding:13px 24px;font-weight:700;font-size:14px;text-decoration:none;cursor:pointer;}
-    .spin{display:inline-block;width:38px;height:38px;border:4px solid rgba(247,148,29,.25);border-top-color:#f7941d;border-radius:50%;animation:s .7s linear infinite;}
+    p{color:var(--vs-muted);font-size:14px;line-height:1.6;margin-bottom:24px;}
+    .btn{display:inline-block;background:linear-gradient(135deg,var(--vs-accent),var(--vs-accent-2));color:#0b0f19;border:none;border-radius:10px;padding:13px 24px;font-weight:700;font-size:14px;text-decoration:none;cursor:pointer;}
+    .spin{display:inline-block;width:38px;height:38px;border:4px solid rgba(242,144,15,.25);border-top-color:var(--vs-accent);border-radius:50%;animation:s .7s linear infinite;}
     @keyframes s{to{transform:rotate(360deg)}}
-    .plan{display:inline-block;background:rgba(247,148,29,.15);border:1px solid rgba(247,148,29,.4);color:#f5801f;font-weight:800;padding:4px 12px;border-radius:20px;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+    @media (prefers-reduced-motion: reduce){ .spin{animation:none;} }
+    .plan{display:inline-block;background:rgba(242,144,15,.15);border:1px solid rgba(242,144,15,.4);color:var(--vs-accent-2);font-weight:800;padding:4px 12px;border-radius:20px;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
   </style>
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <script src="/js/i18n.js"></script>
   <script src="/js/meta-pixel.js"></script>
   <script>
@@ -44,7 +40,7 @@
   });
   </script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">

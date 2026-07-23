@@ -5,11 +5,9 @@
 <title>Score Viral YouTube — VidSpark AI</title>
 <meta name="description" content="Calcule la probabilité de viralité de ta vidéo YouTube : hook, émotion, chiffres. Score actuel vs potentiel.">
 <link rel="stylesheet" href="tools.css">
-<style id="orange-frames">
-.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
-</style>
+<link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +20,7 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="sv_h1">🔥 Score Viral</h1>
     <p data-i18n="sv_sub">Colle le titre et la description de ta vidéo : l'IA calcule la probabilité de viralité (hook, émotion, chiffres) — score actuel vs potentiel.</p>
   </div>
@@ -30,7 +28,7 @@
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
       <input type="text" id="title" data-i18n-ph="sv_ph_title" placeholder="Titre de ta vidéo" style="width:100%">
-      <textarea id="desc" data-i18n-ph="sv_ph_desc" placeholder="Description de ta vidéo (optionnel)" rows="3" style="width:100%;background:#12121a;border:1.5px solid #2b3647;color:#e8e8f0;border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
+      <textarea id="desc" data-i18n-ph="sv_ph_desc" placeholder="Description de ta vidéo (optionnel)" rows="3" style="width:100%;background:var(--s2);border:1.5px solid var(--b2);color:var(--text);border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
@@ -115,7 +113,7 @@ async function go(){
 
         ${d.suggestion?`<div class="vs-premium-section">
           <div class="vs-premium-section-head">💡 Titre amélioré</div>
-          <div class="vs-premium-section-body" style="background:rgba(247,148,29,.1);border-radius:8px;border:1.5px solid #f7941d;padding:12px;">${esc(d.suggestion)}</div>
+          <div class="vs-premium-section-body" style="background:rgba(242,144,15,.1);border-radius:8px;border:1.5px solid #F2900F;padding:12px;">${esc(d.suggestion)}</div>
         </div>`:''}
 
         <div class="vs-premium-actions">

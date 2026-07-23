@@ -3,10 +3,11 @@
    cache-first for static assets (css/js/icons/fonts) for instant repeat loads.
    Never touches API calls (anything not same-origin static file). */
 
-const CACHE_VERSION = "vidspark-v2";
+const CACHE_VERSION = "vidspark-v3";
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 
 const PRECACHE_URLS = [
+  "/css/tokens.css",
   "/css/responsive.css",
   "/outils/tools.css",
   "/js/i18n.js",

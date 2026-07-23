@@ -5,11 +5,9 @@
 <title>Difficulté de Mot-clé YouTube Gratuit (Facile ou Dur à Ranker ?) — VidSpark AI</title>
 <meta name="description" content="Vérifie gratuitement si un mot-clé YouTube est facile ou difficile à ranker : score de difficulté sur 100, concurrence, vues moyennes du top et suggestions. Sans inscription.">
 <link rel="stylesheet" href="tools.css">
-<style id="orange-frames">
-.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
-</style>
+<link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -97,7 +95,7 @@ registerI18n({
 function tierFromScore(s){
   if(s<35) return {k:'kd_t_easy',a:'kd_a_easy',c:'#22c55e'};
   if(s<55) return {k:'kd_t_med', a:'kd_a_med', c:'#f5b301'};
-  if(s<75) return {k:'kd_t_hard',a:'kd_a_hard',c:'#f7941d'};
+  if(s<75) return {k:'kd_t_hard',a:'kd_a_hard',c:'#F2900F'};
   return       {k:'kd_t_vhard',a:'kd_a_vhard',c:'#ef4444'};
 }
 function compLabel(comp){ return comp==='forte'?t('kd_c_high'):comp==='moyenne'?t('kd_c_med'):t('kd_c_low'); }

@@ -5,11 +5,9 @@
 <title>Analyse Miniature YouTube (IA Vision) — VidSpark AI</title>
 <meta name="description" content="L'IA Vision note ta miniature YouTube : contraste, visage, émotion, texte, CTR estimé et conseils d'amélioration.">
 <link rel="stylesheet" href="tools.css">
-<style id="orange-frames">
-.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
-</style>
+<link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,19 +20,19 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="am_h1">🖼 Analyse Miniature IA</h1>
     <p data-i18n="am_sub">Upload ta miniature : l'IA Vision la note sur 100 (contraste, visage, émotion, texte lisible) et te donne un CTR estimé + des conseils précis pour l'améliorer.</p>
   </div>
 
   <div class="tool-box">
     <div style="display:flex;flex-direction:column;gap:12px">
-      <div id="drop-zone" onclick="document.getElementById('thumb-file').click()" style="border:2px dashed #2b3647;border-radius:10px;padding:30px;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='#f7941d'" onmouseout="this.style.borderColor='#2b3647'">
+      <div id="drop-zone" onclick="document.getElementById('thumb-file').click()" style="border:2px dashed var(--b2);border-radius:10px;padding:30px;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--purple)'" onmouseout="this.style.borderColor='var(--b2)'">
         <div style="font-size:32px;margin-bottom:8px">🖼</div>
         <div style="font-size:14px;color:#8888a0" data-i18n="am_drop">Clique pour choisir ta miniature (JPG/PNG, max 5 Mo)</div>
         <input type="file" id="thumb-file" accept="image/*" style="display:none" onchange="previewFile(this)">
       </div>
-      <img id="preview" style="display:none;max-width:100%;border-radius:8px;border:1.5px solid #2b3647">
+      <img id="preview" style="display:none;max-width:100%;border-radius:8px;border:1.5px solid var(--b2)">
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option>

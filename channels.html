@@ -4,18 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VidSpark AI — Sélectionner une chaîne</title>
+  <link rel="stylesheet" href="/css/tokens.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0B0F19; --s1:#0c1220; --s2:#141c2e; --b1:rgba(255,255,255,.06); --b2:rgba(255,255,255,.10);
-      --text:#eaecf3; --muted:#8b92a7; --accent:#FF9D1F; --accent-2:#ff7a18; --accent-l:#ffb85c;
-      --radius:16px; --radius-sm:12px; --radius-xs:10px; --shadow-sm:0 8px 24px -12px rgba(0,0,0,.6);
+      --bg:var(--vs-bg); --s1:var(--vs-surface-3); --s2:var(--vs-surface); --b1:var(--vs-border-1); --b2:var(--vs-border-2);
+      --text:var(--vs-text); --muted:var(--vs-muted); --accent:var(--vs-accent); --accent-2:var(--vs-accent-2); --accent-l:var(--vs-accent-2);
+      --radius:var(--vs-radius); --radius-sm:var(--vs-radius-sm); --radius-xs:10px; --shadow-sm:var(--vs-shadow-sm);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background:
-        radial-gradient(1100px 520px at 78% -8%, rgba(255,157,31,.08), transparent 60%),
-        radial-gradient(900px 480px at 0% 0%, rgba(96,165,250,.06), transparent 55%),
+        radial-gradient(1100px 520px at 78% -8%, rgba(242,144,15,.06), transparent 60%),
+        radial-gradient(900px 480px at 0% 0%, rgba(96,165,250,.05), transparent 55%),
         var(--bg);
       background-attachment: fixed;
       color: var(--text);
@@ -33,7 +34,7 @@
     .container {
       max-width: 500px;
       width: 100%;
-      background: linear-gradient(165deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+      background: linear-gradient(165deg, rgba(255,255,255,.9), rgba(253,251,247,.75));
       border: 1px solid var(--b2);
       border-radius: var(--radius);
       padding: 40px;
@@ -61,7 +62,7 @@
     select, input {
       width: 100%;
       padding: 12px 14px;
-      background: rgba(255,255,255,.03);
+      background: rgba(0,0,0,.035);
       color: var(--text);
       border: 1px solid var(--b1);
       border-radius: var(--radius-xs);
@@ -72,8 +73,8 @@
 
     select:focus, input:focus {
       outline: none;
-      border-color: rgba(255,157,31,.32);
-      box-shadow: 0 0 0 3px rgba(255,157,31,.13);
+      border-color: rgba(242,144,15,.35);
+      box-shadow: 0 0 0 3px rgba(242,144,15,.15);
     }
 
     .channels-grid {
@@ -84,7 +85,7 @@
       overflow-y: auto;
       margin-bottom: 20px;
       padding: 10px;
-      background: rgba(255,255,255,.03);
+      background: rgba(0,0,0,.035);
       border-radius: var(--radius-xs);
       border: 1px solid var(--b1);
     }
@@ -102,8 +103,8 @@
     }
 
     .channel-item:hover {
-      border-color: rgba(255,157,31,.32);
-      background: rgba(255,255,255,.05);
+      border-color: rgba(242,144,15,.35);
+      background: rgba(0,0,0,.045);
     }
 
     .channel-item input[type="checkbox"] {
@@ -137,17 +138,17 @@
       cursor: pointer;
       font-size: 13.5px;
       transition: all .2s cubic-bezier(.4,0,.2,1);
-      box-shadow: 0 8px 22px -8px rgba(255,157,31,.3);
+      box-shadow: 0 8px 22px -8px rgba(242,144,15,.3);
     }
 
     .btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
-    .btn:disabled { background: rgba(255,255,255,.08); color: var(--muted); box-shadow: none; cursor: not-allowed; transform:none; }
+    .btn:disabled { background: rgba(0,0,0,.07); color: var(--muted); box-shadow: none; cursor: not-allowed; transform:none; }
 
     .loading { display: none; text-align: center; padding: 20px; }
     .spinner {
       width: 32px;
       height: 32px;
-      border: 3px solid rgba(255,157,31,.2);
+      border: 3px solid rgba(242,144,15,.2);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
@@ -161,7 +162,7 @@
     .error {
       background: rgba(239, 68, 68, 0.1);
       border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #f87171;
+      color: #C23B22;
       padding: 12px;
       border-radius: var(--radius-xs);
       margin-bottom: 20px;
@@ -169,7 +170,7 @@
     }
 
     .info-text {
-      background: rgba(255,157,31,.1);
+      background: rgba(242,144,15,.1);
       border-left: 3px solid var(--accent);
       padding: 12px;
       margin-bottom: 20px;
@@ -181,12 +182,6 @@
     @media(max-width:1024px){ .app-main, body.side-collapsed .app-main{ margin-left:0; } }
   </style>
   <link rel="stylesheet" href="/css/app-shell.css">
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <script src="/js/i18n.js"></script>
   <script>
     registerI18n({
@@ -230,7 +225,7 @@
   </script>
   <script src="/js/meta-pixel.js"></script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -271,11 +266,11 @@
             <input id="multiChannelInput" type="text" placeholder="ex: https://youtube.com/@maChaine">
             <button type="button" id="addChannelBtn" class="btn" style="width:auto; padding:12px 18px; white-space:nowrap;" data-i18n="ch_add">+ Ajouter</button>
           </div>
-          <p style="font-size: 12px; color: #8888a0; margin-top: 8px;" data-i18n="ch_hint">
+          <p style="font-size: 12px; color: var(--muted); margin-top: 8px;" data-i18n="ch_hint">
             👉 Colle le <strong>lien de ta chaîne</strong> (<em>youtube.com/@maChaine</em>) — ou même le <strong>lien d'une de tes vidéos</strong>, on remonte à la chaîne.
           </p>
           <div id="channelsGrid" class="channels-grid" style="margin-top:12px; display:none;"></div>
-          <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">
+          <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">
             <span id="selectedCount">0</span>/<span id="maxCount">5</span> <span data-i18n="ch_selected">sélectionnées</span>
           </p>
         </div>
@@ -360,7 +355,7 @@
             container.innerHTML = `
               <label for="manualChannelId">${t('ch_manual_label')}</label>
               <input id="manualChannelId" type="text" placeholder="ex: https://youtube.com/@maChaine">
-              <p style="font-size: 12px; color: #8888a0; margin-top: 8px;">${t('ch_hint')}</p>
+              <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">${t('ch_hint')}</p>
             `;
           }
           setupSimpleMode();
@@ -449,7 +444,7 @@
             <div class="channel-name">${ch.name}</div>
             <div class="channel-id">${ch.id}</div>
           </div>
-          <button type="button" onclick="removeChannel('${ch.id}')" style="background:transparent;border:1px solid var(--b2);color:#f87171;border-radius:10px;padding:4px 10px;cursor:pointer;font-size:12px;font-family:inherit;">${t('ch_remove')}</button>
+          <button type="button" onclick="removeChannel('${ch.id}')" style="background:transparent;border:1px solid var(--b2);color:#C23B22;border-radius:10px;padding:4px 10px;cursor:pointer;font-size:12px;font-family:inherit;">${t('ch_remove')}</button>
         </div>
       `).join('');
       document.getElementById('selectedCount').textContent = selectedChannels.length;

@@ -5,11 +5,9 @@
 <title>A/B Test Miniatures YouTube — VidSpark AI</title>
 <meta name="description" content="Compare 2 miniatures YouTube : l'IA Vision dit laquelle génère le plus de clics et pourquoi.">
 <link rel="stylesheet" href="tools.css">
-<style id="orange-frames">
-.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
-</style>
+<link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +20,7 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="abm_h1">📸 A/B Test Miniatures</h1>
     <p data-i18n="abm_sub">Upload 2 miniatures : l'IA Vision compare le contraste, les visages, les émotions et prédit laquelle va générer le plus de clics — avec explication et prompt Midjourney.</p>
   </div>
@@ -65,7 +63,7 @@
   <div class="upsell">
     <h3 data-i18n="abm_up_h">🖼 Analyse détaillée d'une seule miniature</h3>
     <p data-i18n="abm_up_p">Pour une analyse approfondie avec score par critère et conseils précis, utilise l'outil d'analyse de miniature.</p>
-    <a href="/outils/analyse-miniature.html" class="btn" style="background:#2b3647;color:#e8e8f0" data-i18n="abm_up_btn">Analyser une miniature</a>
+    <a href="/outils/analyse-miniature.html" class="btn" style="background:var(--b2);color:var(--text)" data-i18n="abm_up_btn">Analyser une miniature</a>
   </div>
 </div>
 
@@ -138,7 +136,7 @@ async function go(){
 
         ${d.improvement?`<div class="vs-premium-section">
           <div class="vs-premium-section-head">${t('abm_better')}</div>
-          <div class="vs-premium-section-body" style="background:rgba(247,148,29,.08);border-radius:8px;border:1.5px solid #f7941d;padding:12px;">${esc(d.improvement)}</div>
+          <div class="vs-premium-section-body" style="background:rgba(242,144,15,.08);border-radius:8px;border:1.5px solid #F2900F;padding:12px;">${esc(d.improvement)}</div>
         </div>`:''}
 
         <div class="vs-premium-actions">

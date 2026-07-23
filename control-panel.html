@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VidSpark AI — Centre de commande</title>
+<link rel="stylesheet" href="/css/tokens.css">
 <style>
   :root{
-    --bg:#07070a; --s1:#0e0e12; --s2:#141418; --b1:#1b2330; --b2:#2b3647;
-    --text:#e8e8f0; --muted:#8888a0; --purple:#f7941d; --purple-l:#f9a94a;
-    --green:#22c55e; --red:#ef4444; --amber:#f5b301; --blue:#3b82f6;
+    --bg:var(--vs-bg); --s1:var(--vs-surface-3); --s2:var(--vs-surface); --b1:var(--vs-border-1); --b2:var(--vs-border-2);
+    --text:var(--vs-text); --muted:var(--vs-muted); --purple:var(--vs-accent); --purple-l:var(--vs-accent-2);
+    --green:var(--vs-green); --red:var(--vs-red); --amber:var(--vs-amber); --blue:#2563EB;
   }
   *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
   body{background:var(--bg);color:var(--text);min-height:100vh;}
@@ -24,17 +25,17 @@
   .field{margin-bottom:14px;}
   .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;}
   .field input{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:10px;color:var(--text);font-size:13px;}
-  .btn{background:var(--purple);color:#fff;border:none;border-radius:8px;padding:11px 18px;font-weight:700;font-size:14px;width:100%;}
+  .btn{background:var(--purple);color:#0b0f19;border:none;border-radius:8px;padding:11px 18px;font-weight:700;font-size:14px;width:100%;}
   .btn:hover{opacity:.9;}
   .btn-sm{width:auto;padding:6px 12px;font-size:12px;border-radius:6px;}
   .btn-ghost{background:transparent;border:1px solid var(--b2);color:var(--muted);}
-  .btn-red{background:var(--red);} .btn-green{background:var(--green);} .btn-amber{background:var(--amber);color:#1a1a1a;}
+  .btn-red{background:var(--red);color:#fff;} .btn-green{background:var(--green);color:#fff;} .btn-amber{background:var(--amber);color:#fff;}
 
   /* App */
   #app{display:none;}
   .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--b1);background:var(--s1);position:sticky;top:0;z-index:10;}
   .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;}
-  .logo .badge{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#f7941d,#f9a94a);display:flex;align-items:center;justify-content:center;}
+  .logo .badge{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--purple),var(--purple-l));display:flex;align-items:center;justify-content:center;}
   .layout{display:flex;}
   .nav{width:200px;flex-shrink:0;border-right:1px solid var(--b1);min-height:calc(100vh - 60px);padding:14px 10px;}
   .nav button{display:flex;align-items:center;gap:9px;width:100%;background:transparent;border:none;color:var(--muted);padding:10px 12px;border-radius:8px;font-size:14px;text-align:left;margin-bottom:2px;}
@@ -59,23 +60,17 @@
 
   .pill{display:inline-block;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:700;}
   .pill.free{background:rgba(136,136,160,.18);color:var(--muted);}
-  .pill.pro{background:rgba(247,148,29,.2);color:var(--purple-l);}
-  .pill.business{background:rgba(245,179,1,.18);color:var(--amber);}
-  .pill.diamant{background:rgba(247,148,29,.18);color:#f5801f;}
+  .pill.pro{background:rgba(242,144,15,.16);color:var(--purple-l);}
+  .pill.business{background:rgba(178,94,9,.16);color:var(--amber);}
+  .pill.diamant{background:rgba(242,144,15,.18);color:var(--purple-l);}
   .pill.active{background:rgba(34,197,94,.15);color:var(--green);}
   .pill.suspended{background:rgba(239,68,68,.15);color:var(--red);}
   .muted{color:var(--muted);font-size:12px;}
   #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--b2);padding:12px 20px;border-radius:10px;font-size:13px;display:none;z-index:100;}
   .empty{color:var(--muted);text-align:center;padding:40px;font-size:14px;}
 </style>
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -225,7 +220,7 @@ async function loadDashboard(){
         <div class="card"><div class="lbl">Free</div><div class="val" style="color:var(--muted)">${s.users.free}</div></div>
         <div class="card"><div class="lbl">Pro</div><div class="val" style="color:var(--purple-l)">${s.users.pro}</div></div>
         <div class="card"><div class="lbl">Business</div><div class="val" style="color:var(--amber)">${s.users.business}</div></div>
-        <div class="card"><div class="lbl">💎 Diamant</div><div class="val" style="color:#f5801f">${s.users.diamant||0}</div></div>
+        <div class="card"><div class="lbl">💎 Diamant</div><div class="val" style="color:var(--purple-l)">${s.users.diamant||0}</div></div>
       </div>
       <div class="cards">
         <div class="card"><div class="lbl">MRR (30j)</div><div class="val" style="color:var(--green)">$${s.revenue.mrr}</div></div>
@@ -311,8 +306,8 @@ async function loadUsers(){
 function planLimit(plan){ return plan==='business'?5 : plan==='diamant'?10 : 1; }
 /* Badge source de connexion : site web vs extension */
 function srcBadge(src){
-  if(src==='ext')  return ' <span title="Connecté via l\'extension Chrome" style="font-size:10px;background:rgba(124,109,250,.15);color:#a99bff;padding:1px 6px;border-radius:6px;white-space:nowrap">🧩 Extension</span>';
-  if(src==='site') return ' <span title="Connecté via le site web" style="font-size:10px;background:rgba(34,197,94,.15);color:#4ade80;padding:1px 6px;border-radius:6px;white-space:nowrap">🌐 Site</span>';
+  if(src==='ext')  return ' <span title="Connecté via l\'extension Chrome" style="font-size:10px;background:rgba(124,109,250,.15);color:#6d28d9;padding:1px 6px;border-radius:6px;white-space:nowrap">🧩 Extension</span>';
+  if(src==='site') return ' <span title="Connecté via le site web" style="font-size:10px;background:rgba(34,197,94,.15);color:#15803d;padding:1px 6px;border-radius:6px;white-space:nowrap">🌐 Site</span>';
   return '';
 }
 /* Cellule "en ligne" : vert si actif < 10 min, sinon hors ligne / inconnu (+ source site/extension) */
@@ -320,12 +315,12 @@ function onlineCell(la, src){
   if(!la) return '<span class="muted" title="aucune activité enregistrée">—</span>';
   var mins=(Date.now()-new Date(la).getTime())/60000;
   var b=srcBadge(src);
-  if(mins<10) return '<span style="color:#22c55e;font-weight:700" title="actif il y a '+Math.round(mins)+' min">● en ligne</span>'+b;
+  if(mins<10) return '<span style="color:#15803d;font-weight:700" title="actif il y a '+Math.round(mins)+' min">● en ligne</span>'+b;
   if(mins<1440) return '<span class="muted" title="'+new Date(la).toLocaleString('fr-FR')+'">○ '+Math.round(mins/60)+'h</span>'+b;
   return '<span class="muted" title="'+new Date(la).toLocaleString('fr-FR')+'">○ '+Math.round(mins/1440)+'j</span>'+b;
 }
 /* Cellule compteur x/limit : rouge si plein (= limite atteinte) */
-function countCell(n,lim){ n=n||0; var full=n>=lim; return '<span style="'+(full?'color:#fa6d6d;font-weight:700':'')+'" title="'+n+' sur '+lim+'">'+n+'/'+lim+'</span>'; }
+function countCell(n,lim){ n=n||0; var full=n>=lim; return '<span style="'+(full?'color:#C23B22;font-weight:700':'')+'" title="'+n+' sur '+lim+'">'+n+'/'+lim+'</span>'; }
 async function renderUsers(){
   const el=document.getElementById('usersTable');
   el.innerHTML='<div class="muted">Chargement…</div>';
@@ -455,7 +450,7 @@ async function userDetail(id){
           <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">🆔 ID d'activation</span>
           <button class="btn btn-sm btn-ghost" style="padding:3px 8px;font-size:10px;" onclick="copyText('${(c.activation_id||'').replace(/'/g,'')}')">📋 Copier</button>
         </div>
-        <div style="font-family:monospace;font-size:12px;color:#9fe6b0;word-break:break-all;">${c.activation_id||'—'}</div>
+        <div style="font-family:monospace;font-size:12px;color:#15803d;word-break:break-all;">${c.activation_id||'—'}</div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 4px;">
           <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">🔐 Code secret</span>
           <button class="btn btn-sm btn-ghost" style="padding:3px 8px;font-size:10px;" onclick="copyText('${(c.activation_secret||'').replace(/'/g,'')}')">📋 Copier</button>
@@ -481,7 +476,7 @@ async function userDetail(id){
       <div style="font-size:12px;color:var(--muted);margin:10px 0 4px;">🔑 CODES D'ACTIVATION</div>${codes}
       <div style="font-size:12px;color:var(--muted);margin:12px 0 4px;">📱 APPAREILS LIÉS</div>${devs}
       <button class="btn btn-sm btn-amber" style="margin-top:8px" onclick="releaseDevices('${id}')">🔓 Libérer tous les appareils</button>
-      <div style="font-size:12px;color:var(--muted);margin:14px 0 4px;">📺 CHAÎNES LIÉES <span style="color:${(d.channels||[]).length>=lim?'#fa6d6d':'var(--muted)'}">(${(d.channels||[]).length}/${lim})</span></div>${chans}
+      <div style="font-size:12px;color:var(--muted);margin:14px 0 4px;">📺 CHAÎNES LIÉES <span style="color:${(d.channels||[]).length>=lim?'#C23B22':'var(--muted)'}">(${(d.channels||[]).length}/${lim})</span></div>${chans}
       <div style="font-size:12px;color:var(--muted);margin:14px 0 4px;">💳 ABONNEMENTS</div>${subs}
       <div style="font-size:12px;color:var(--muted);margin:14px 0 4px;">📅 MODIFIER LA DATE DE FIN</div>
       <div style="display:flex;gap:8px;">
@@ -517,7 +512,7 @@ async function loadAds(){
     ['ad_dashboard_right',"➡️ Dashboard — pub à droite (grand écran)"]
   ];
   m.innerHTML=`<div class="page-title">📢 Publicités & Vidéo</div>
-    <div class="card" style="margin-bottom:20px;border-color:#f7941d;">
+    <div class="card" style="margin-bottom:20px;border-color:#F2900F;">
       <div style="font-weight:700;margin-bottom:6px;">🎬 Vidéo promo — page d'accueil</div>
       <div class="muted" style="margin-bottom:8px;font-size:13px;">Colle le lien YouTube, Vimeo, l'ID YouTube, ou une URL .mp4. Laisse vide pour masquer la section vidéo sur l'accueil.</div>
       <input id="ta_promo_video" type="text" style="width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:11px;color:var(--text);font-size:13px;" placeholder="https://www.youtube.com/watch?v=…  ou  dQw4w9WgXcQ  ou  https://…/promo.mp4">

@@ -5,11 +5,9 @@
 <title>Générateur de Shorts YouTube — VidSpark AI</title>
 <meta name="description" content="Génère 3 idées de Shorts YouTube avec hook, script complet, hashtags et les timestamps à couper depuis ta vidéo.">
 <link rel="stylesheet" href="tools.css">
-<style id="orange-frames">
-.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
-</style>
+<link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +20,7 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
+    <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="gs_h1">🎬 Générateur de Shorts</h1>
     <p data-i18n="gs_sub">Décris ta vidéo longue : l'IA génère 3 idées de Shorts avec hook percutant, script complet, hashtags et les passages exacts à extraire.</p>
   </div>
@@ -30,7 +28,7 @@
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
       <input type="text" id="topic" data-i18n-ph="gs_ph_topic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€" style="width:100%">
-      <textarea id="desc" data-i18n-ph="gs_ph_desc" placeholder="Résumé de ta vidéo (optionnel) — pour des Shorts plus précis" rows="3" style="width:100%;background:#12121a;border:1.5px solid #2b3647;color:#e8e8f0;border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
+      <textarea id="desc" data-i18n-ph="gs_ph_desc" placeholder="Résumé de ta vidéo (optionnel) — pour des Shorts plus précis" rows="3" style="width:100%;background:var(--s2);border:1.5px solid var(--b2);color:var(--text);border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
@@ -92,7 +90,7 @@ async function go(){
       icon:'🎬', label:'Shorts prêts', sub:`${shorts.length} Shorts générés`,
       items:shorts.map((s,i)=>({
         head:`🎬 Short ${i+1} — ${esc(s.title||'')}`,
-        body:`${s.hook?`<div style="padding:8px;background:rgba(247,148,29,.1);border-radius:6px;margin-bottom:6px;"><span style="color:#f7941d;font-weight:700">🪝 HOOK :</span> ${esc(s.hook)}</div>`:''}${s.script?`<div style="padding:8px;background:var(--s2);border-radius:6px;margin-bottom:6px;line-height:1.6"><span style="color:var(--muted);font-weight:700">📝 SCRIPT :</span><br>${esc(s.script)}</div>`:''}${s.timestamp?`<div style="padding:6px 10px;background:rgba(59,130,246,.1);border-radius:6px;margin-bottom:6px;color:#3b82f6"><span style="font-weight:700">⏱ MOMENT :</span> ${esc(s.timestamp)}</div>`:''}${s.hashtags?`<div style="color:var(--muted);">${esc(s.hashtags)}</div>`:''}`,
+        body:`${s.hook?`<div style="padding:8px;background:rgba(242,144,15,.1);border-radius:6px;margin-bottom:6px;"><span style="color:#F2900F;font-weight:700">🪝 HOOK :</span> ${esc(s.hook)}</div>`:''}${s.script?`<div style="padding:8px;background:var(--s2);border-radius:6px;margin-bottom:6px;line-height:1.6"><span style="color:var(--muted);font-weight:700">📝 SCRIPT :</span><br>${esc(s.script)}</div>`:''}${s.timestamp?`<div style="padding:6px 10px;background:rgba(59,130,246,.1);border-radius:6px;margin-bottom:6px;color:#3b82f6"><span style="font-weight:700">⏱ MOMENT :</span> ${esc(s.timestamp)}</div>`:''}${s.hashtags?`<div style="color:var(--muted);">${esc(s.hashtags)}</div>`:''}`,
         text:`Short ${i+1}: ${s.title||''}\n🪝 ${s.hook||''}\n📝 ${s.script||''}\n⏱ ${s.timestamp||''}\n${s.hashtags||''}`
       })),
       filenamePrefix:'shorts', rawData:d

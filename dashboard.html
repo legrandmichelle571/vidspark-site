@@ -8,56 +8,62 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
   <style>
     /* ════════════════════════════════════════════════════════════
        VidSpark AI — Dashboard premium (refonte SaaS)
-       Dark #0B0F19 · accent orange #FF9D1F · glassmorphism · 16px
+       Phase 4 : thème clair · accent orange · source de vérité = css/tokens.css
+       Les tokens partagés (bg/surface/text/accent/radius/shadow/…) sont des
+       alias directs de --vs-* (voir css/tokens.css) — plus aucune valeur
+       hex dupliquée ici pour ces tokens. Seuls les tokens propres à cette
+       page (s1/s3, purple-d, blue/violet/pink, radius-xs) restent locaux :
+       ce ne sont pas des tokens partagés par le design system.
        ════════════════════════════════════════════════════════════ */
     :root{
-      --bg:        #0B0F19;
-      --bg-2:      #0d1424;
-      --s1:        #0c1220;   /* champs profonds */
-      --s2:        #141c2e;   /* surfaces élevées */
-      --s3:        #18203353;
-      --b1:        rgba(255,255,255,.06);
-      --b2:        rgba(255,255,255,.10);
-      --b3:        rgba(255,255,255,.16);
-      --text:      #eaecf3;
-      --muted:     #8b92a7;
-      --faint:     #5b6276;
-      --accent:    #FF9D1F;
-      --accent-2:  #ff7a18;
-      --accent-l:  #ffb85c;
-      --accent-soft: rgba(255,157,31,.12);
-      --accent-line: rgba(255,157,31,.32);
-      --accent-glow: rgba(255,157,31,.30);
-      /* alias rétro-compat (scripts existants) */
-      --purple:    #FF9D1F;
-      --purple-l:  #ffb85c;
-      --purple-d:  #3a2406;
-      --green:     #34d399;
-      --green-d:   #0d2d1a;
-      --red:       #f87171;
-      --amber:     #fbbf24;
-      --blue:      #60a5fa;
-      --violet:    #a78bfa;
-      --pink:      #f472b6;
-      --radius:    16px;
-      --radius-sm: 12px;
+      --bg:        var(--vs-bg);
+      --bg-2:      var(--vs-surface-3);
+      --s1:        var(--vs-surface-3);   /* champs profonds → surface la plus subtile en clair */
+      --s2:        var(--vs-surface);     /* surfaces élevées → blanc */
+      --s3:        var(--vs-surface-2);
+      --b1:        var(--vs-border-1);
+      --b2:        var(--vs-border-2);
+      --b3:        var(--vs-border-3);
+      --text:      var(--vs-text);
+      --muted:     var(--vs-muted);
+      --faint:     var(--vs-faint);
+      --accent:    var(--vs-accent);
+      --accent-2:  var(--vs-accent-2);
+      --accent-l:  var(--vs-accent-2);   /* "light accent" texte-sur-fond-clair → utiliser la teinte foncée pour le contraste */
+      --accent-soft: var(--vs-accent-soft);
+      --accent-line: var(--vs-accent-line);
+      --accent-glow: var(--vs-accent-glow);
+      /* alias rétro-compat (scripts existants) — l'orange reste l'unique accent */
+      --purple:    var(--vs-accent);
+      --purple-l:  var(--vs-accent-2);
+      --purple-d:  var(--vs-accent-soft);
+      --green:     var(--vs-green);
+      --green-d:   #E4F3EA;
+      --red:       var(--vs-red);
+      --amber:     var(--vs-amber);
+      --blue:      #2563EB;
+      --violet:    #7C5CFC;
+      --pink:      #D6449A;
+      --radius:    var(--vs-radius);
+      --radius-sm: var(--vs-radius-sm);
       --radius-xs: 10px;
-      --shadow:    0 18px 50px -18px rgba(0,0,0,.65);
-      --shadow-sm: 0 8px 24px -12px rgba(0,0,0,.6);
-      --side-w:    270px;
-      --side-w-collapsed: 72px;
-      --ease:      cubic-bezier(.4,0,.2,1);
+      --shadow:    var(--vs-shadow);
+      --shadow-sm: var(--vs-shadow-sm);
+      --side-w:    var(--vs-side-w);
+      --side-w-collapsed: var(--vs-side-w-collapsed);
+      --ease:      var(--vs-ease);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
     body {
       background:
-        radial-gradient(1100px 520px at 78% -8%, rgba(255,157,31,.08), transparent 60%),
-        radial-gradient(900px 480px at 0% 0%, rgba(96,165,250,.06), transparent 55%),
+        radial-gradient(1100px 520px at 78% -8%, rgba(242,144,15,.06), transparent 60%),
+        radial-gradient(900px 480px at 0% 0%, rgba(96,165,250,.05), transparent 55%),
         var(--bg);
       background-attachment: fixed;
       color: var(--text);
@@ -71,15 +77,15 @@
     img { display: block; max-width: 100%; }
     button { cursor: pointer; border: none; background: none; font-family: inherit; color: inherit; }
     ::-webkit-scrollbar{ width:10px; height:10px; }
-    ::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.08); border-radius:10px; border:2px solid transparent; background-clip:content-box; }
-    ::-webkit-scrollbar-thumb:hover{ background:rgba(255,255,255,.16); background-clip:content-box; }
+    ::-webkit-scrollbar-thumb{ background:rgba(0,0,0,.08); border-radius:10px; border:2px solid transparent; background-clip:content-box; }
+    ::-webkit-scrollbar-thumb:hover{ background:rgba(0,0,0,.13); background-clip:content-box; }
 
     /* ════ SIDEBAR (premium) ════ */
     .app-side{
       position:fixed; left:0; top:0; bottom:0; width:var(--side-w);
       background:
-        radial-gradient(440px 220px at 50% -8%, rgba(255,157,31,.07), transparent 70%),
-        linear-gradient(180deg, rgba(23,31,51,.94), rgba(12,17,28,.97));
+        radial-gradient(440px 220px at 50% -8%, rgba(242,144,15,.05), transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(251,248,243,.97));
       backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
       border-right:1px solid var(--b1);
       border-radius:0 20px 20px 0;
@@ -93,17 +99,17 @@
     .sb-brand{ display:flex; align-items:center; gap:11px; min-width:0; flex:1; }
     .sb-brand .lg{ width:38px; height:38px; border-radius:11px; flex-shrink:0; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; color:#0b0f19; font-size:19px; box-shadow:0 8px 20px -6px var(--accent-glow); }
     .sb-brand .bt{ min-width:0; }
-    .sb-brand .bt .nm{ font-weight:800; font-size:14.5px; color:#fff; line-height:1.15; white-space:nowrap; display:flex; align-items:center; gap:6px; }
+    .sb-brand .bt .nm{ font-weight:800; font-size:14.5px; color:var(--text); line-height:1.15; white-space:nowrap; display:flex; align-items:center; gap:6px; }
     .sb-brand .bt .sub{ font-size:10px; color:var(--accent-l); font-weight:600; letter-spacing:.3px; white-space:nowrap; }
     .sb-aibadge{ font-size:8px; font-weight:800; letter-spacing:.4px; padding:2px 5px; border-radius:5px; background:var(--accent-soft); color:var(--accent-l); border:1px solid var(--accent-line); }
     .sb-ver{ font-size:8.5px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:1px 5px; }
-    .sb-toggle{ width:30px; height:30px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--muted); border:1px solid var(--b1); background:rgba(255,255,255,.02); transition: all .2s var(--ease); }
-    .sb-toggle:hover{ color:#fff; border-color:var(--b3); background:rgba(255,255,255,.06); }
+    .sb-toggle{ width:30px; height:30px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--muted); border:1px solid var(--b1); background:rgba(0,0,0,.025); transition: all .2s var(--ease); }
+    .sb-toggle:hover{ color:var(--text); border-color:var(--b3); background:rgba(0,0,0,.06); }
     .sb-toggle .chev{ display:inline-block; transition: transform .25s var(--ease); }
     body.side-collapsed .sb-toggle .chev{ transform: rotate(180deg); }
     /* workspace selector */
-    .sb-ws{ display:flex; align-items:center; gap:9px; width:100%; margin-top:11px; padding:8px 10px; border-radius:11px; background:rgba(255,255,255,.03); border:1px solid var(--b1); color:var(--text); transition:all .18s var(--ease); }
-    .sb-ws:hover{ border-color:var(--b3); background:rgba(255,255,255,.06); }
+    .sb-ws{ display:flex; align-items:center; gap:9px; width:100%; margin-top:11px; padding:8px 10px; border-radius:11px; background:rgba(0,0,0,.035); border:1px solid var(--b1); color:var(--text); transition:all .18s var(--ease); }
+    .sb-ws:hover{ border-color:var(--b3); background:rgba(0,0,0,.06); }
     .sb-ws .ws-ic{ width:24px; height:24px; border-radius:7px; background:linear-gradient(135deg,#a78bfa,#60a5fa); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
     .sb-ws .ws-tx{ flex:1; text-align:left; min-width:0; }
     .sb-ws .ws-tx .t{ font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -112,22 +118,36 @@
     /* search */
     .sb-search{ position:relative; margin:11px 4px 8px; }
     .sb-search .si{ position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--faint); font-size:12px; pointer-events:none; }
-    .sb-search input{ width:100%; padding:9px 42px 9px 31px; border-radius:11px; background:rgba(255,255,255,.03); border:1px solid var(--b1); color:var(--text); font-size:12.5px; font-family:inherit; outline:none; transition:all .2s var(--ease); }
+    .sb-search input{ width:100%; padding:9px 42px 9px 31px; border-radius:11px; background:rgba(0,0,0,.035); border:1px solid var(--b1); color:var(--text); font-size:12.5px; font-family:inherit; outline:none; transition:all .2s var(--ease); }
     .sb-search input::placeholder{ color:var(--faint); }
-    .sb-search input:focus{ border-color:var(--accent-line); background:var(--accent-soft); box-shadow:0 0 0 3px rgba(255,157,31,.13); }
-    .sb-search .kbd{ position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:9px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:2px 5px; background:rgba(255,255,255,.02); pointer-events:none; }
+    .sb-search input:focus{ border-color:var(--accent-line); background:var(--accent-soft); box-shadow:0 0 0 3px rgba(242,144,15,.15); }
+    .sb-search .kbd{ position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:9px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:2px 5px; background:rgba(0,0,0,.025); pointer-events:none; }
     /* nav scroll area */
     .sb-nav{ flex:1; overflow-y:auto; overflow-x:hidden; position:relative; margin:0 -2px; padding:0 2px; }
     .sb-nav::-webkit-scrollbar{ width:6px; }
-    .sb-nav::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.07); border-radius:6px; }
+    .sb-nav::-webkit-scrollbar-thumb{ background:rgba(0,0,0,.07); border-radius:6px; }
     .sb-group{ margin-bottom:3px; }
-    .sb-group-h{ position:sticky; top:0; z-index:3; display:flex; align-items:center; gap:6px; width:100%; padding:9px 12px 5px; font-size:9.5px; font-weight:800; letter-spacing:1.1px; color:var(--faint); text-transform:uppercase; background:linear-gradient(180deg, rgba(13,18,29,.97) 62%, transparent); }
+    .sb-group-h{ position:sticky; top:0; z-index:3; display:flex; align-items:center; gap:6px; width:100%; padding:9px 12px 5px; font-size:9.5px; font-weight:800; letter-spacing:1.1px; color:var(--faint); text-transform:uppercase; background:linear-gradient(180deg, rgba(253,251,247,.97) 62%, transparent); }
     .sb-group-h:hover{ color:var(--muted); }
     .sb-group-h .gh-title{ flex:1; text-align:left; white-space:nowrap; }
     .sb-group-h .gh-chev{ font-size:8px; transition:transform .2s var(--ease); }
     .sb-group.collapsed .gh-chev{ transform:rotate(-90deg); }
     .sb-group-items{ max-height:1200px; overflow:hidden; transition:max-height .25s var(--ease); }
     .sb-group.collapsed .sb-group-items{ max-height:0; }
+    /* Phase 3 — bannière visuelle "Plus / Outils avancés" : regroupe perceptuellement
+       Outils SEO + Studio + Aide sans toucher à leur data-g/repli/miroir topbar. */
+    .sb-plus-banner{
+      display:flex; align-items:center; gap:7px; padding:14px 12px 6px; margin-top:4px;
+      font-size:9.5px; font-weight:800; letter-spacing:1.1px; text-transform:uppercase;
+      color:var(--faint); border-top:1px solid var(--b1);
+    }
+    .sb-plus-banner .sb-plus-ic{ font-size:11px; color:var(--accent-l); }
+    body.side-collapsed .sb-plus-banner{ display:none; }
+    /* Phase 3 — focus clavier visible sur tous les éléments de navigation (absent avant) */
+    .app-side a.sb-link:focus-visible, .tb-dd-panel a.sb-link:focus-visible,
+    .sb-group-h:focus-visible, .tb-nav-link:focus-visible, .tb-dd-trigger:focus-visible{
+      outline: 2px solid var(--accent); outline-offset: 2px;
+    }
     .app-side a.sb-link, .tb-dd-panel a.sb-link{
       display:flex; align-items:center; gap:11px; padding:9px 11px; border-radius:10px;
       color:var(--muted); font-size:13px; font-weight:600; text-decoration:none; margin-bottom:1px; cursor:pointer;
@@ -136,12 +156,12 @@
     .app-side a.sb-link .ic, .tb-dd-panel a.sb-link .ic{ width:22px; text-align:center; font-size:15.5px; flex-shrink:0; transition:transform .18s var(--ease); }
     .app-side a.sb-link .lbl, .tb-dd-panel a.sb-link .lbl{ flex:1; overflow:hidden; text-overflow:ellipsis; }
     .app-side a.sb-link .sb-arrow, .tb-dd-panel a.sb-link .sb-arrow{ font-size:15px; color:var(--faint); opacity:0; transform:translateX(-5px); transition:all .18s var(--ease); }
-    .app-side a.sb-link:hover, .tb-dd-panel a.sb-link:hover{ background:rgba(255,255,255,.05); color:#fff; transform:translateX(2px); }
+    .app-side a.sb-link:hover, .tb-dd-panel a.sb-link:hover{ background:rgba(0,0,0,.055); color:var(--text); transform:translateX(2px); }
     .app-side a.sb-link:hover .ic, .tb-dd-panel a.sb-link:hover .ic{ transform:scale(1.14); }
     .app-side a.sb-link:hover .sb-arrow, .tb-dd-panel a.sb-link:hover .sb-arrow{ opacity:1; transform:translateX(0); }
     .app-side a.sb-link.soon, .tb-dd-panel a.sb-link.soon{ opacity:.5; cursor:default; }
-    .app-side a.sb-link.soon:hover, .tb-dd-panel a.sb-link.soon:hover{ transform:none; background:rgba(255,255,255,.025); color:var(--muted); }
-    .app-side a.sb-link.active, .tb-dd-panel a.sb-link.active{ background:linear-gradient(135deg, rgba(255,157,31,.22), rgba(255,122,24,.10)); color:#fff; box-shadow:0 6px 18px -10px var(--accent-glow); }
+    .app-side a.sb-link.soon:hover, .tb-dd-panel a.sb-link.soon:hover{ transform:none; background:rgba(0,0,0,.03); color:var(--muted); }
+    .app-side a.sb-link.active, .tb-dd-panel a.sb-link.active{ background:linear-gradient(135deg, rgba(242,144,15,.16), rgba(242,144,15,.08)); color:var(--accent-2); font-weight:700; box-shadow:0 6px 18px -10px var(--accent-glow); }
     .app-side a.sb-link.active .ic, .tb-dd-panel a.sb-link.active .ic{ filter:drop-shadow(0 0 6px var(--accent-glow)); }
     .app-side a.sb-link.active::before{
       content:""; position:absolute; left:-12px; top:50%; transform:translateY(-50%);
@@ -149,33 +169,33 @@
     }
     /* badges */
     .sb-badge{ font-size:8px; font-weight:800; letter-spacing:.3px; padding:2px 6px; border-radius:6px; flex-shrink:0; text-transform:uppercase; line-height:1.4; }
-    .sb-badge.ai{ background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(96,165,250,.18)); color:#c9bafc; border:1px solid rgba(167,139,250,.3); }
-    .sb-badge.pro{ background:rgba(255,157,31,.16); color:var(--accent-l); border:1px solid var(--accent-line); }
-    .sb-badge.new{ background:rgba(34,197,94,.16); color:#4ade80; border:1px solid rgba(34,197,94,.3); }
-    .sb-badge.beta{ background:rgba(59,130,246,.16); color:#7dd3fc; border:1px solid rgba(59,130,246,.3); }
-    .sb-badge.hot{ background:rgba(239,68,68,.16); color:#fca5a5; border:1px solid rgba(239,68,68,.3); }
-    .sb-badge.soon{ background:rgba(255,255,255,.05); color:var(--faint); border:1px solid var(--b1); }
+    .sb-badge.ai{ background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(96,165,250,.18)); color:#6d28d9; border:1px solid rgba(124,58,237,.35); }
+    .sb-badge.pro{ background:rgba(242,144,15,.16); color:var(--accent-2); border:1px solid var(--accent-line); }
+    .sb-badge.new{ background:rgba(34,197,94,.16); color:#15803d; border:1px solid rgba(21,128,61,.3); }
+    .sb-badge.beta{ background:rgba(59,130,246,.16); color:#1d4ed8; border:1px solid rgba(29,78,216,.3); }
+    .sb-badge.hot{ background:rgba(239,68,68,.16); color:#b91c1c; border:1px solid rgba(185,28,28,.3); }
+    .sb-badge.soon{ background:rgba(0,0,0,.055); color:var(--faint); border:1px solid var(--b1); }
     /* bottom user card */
-    .sb-user{ margin-top:8px; padding:11px; border-radius:14px; background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.018)); border:1px solid var(--b1); }
+    .sb-user{ margin-top:8px; padding:11px; border-radius:14px; background:linear-gradient(160deg,rgba(0,0,0,.06),rgba(0,0,0,.02)); border:1px solid var(--b1); }
     .su-main{ display:flex; align-items:center; gap:10px; }
     .su-av{ width:38px; height:38px; border-radius:11px; flex-shrink:0; overflow:hidden; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-size:16px; color:#0b0f19; position:relative; }
     .su-av img{ width:100%; height:100%; object-fit:cover; }
-    .su-av .on{ position:absolute; right:-1px; bottom:-1px; width:11px; height:11px; border-radius:50%; background:var(--green); border:2px solid #0c111c; }
+    .su-av .on{ position:absolute; right:-1px; bottom:-1px; width:11px; height:11px; border-radius:50%; background:var(--green); border:2px solid var(--s2); }
     .su-info{ flex:1; min-width:0; }
     .su-name{ font-size:12.5px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .su-mail{ font-size:10px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .su-cog{ width:28px; height:28px; border-radius:8px; color:var(--muted); border:1px solid var(--b1); flex-shrink:0; transition:all .18s; }
-    .su-cog:hover{ color:#fff; border-color:var(--b3); background:rgba(255,255,255,.05); }
+    .su-cog:hover{ color:var(--text); border-color:var(--b3); background:rgba(0,0,0,.055); }
     .su-meta{ display:flex; align-items:center; gap:6px; margin-top:9px; flex-wrap:wrap; }
-    .su-meta span{ font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; background:rgba(255,255,255,.04); color:var(--muted); }
-    .su-meta .su-plan{ background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(96,165,250,.16)); color:#c9bafc; }
+    .su-meta span{ font-size:10px; font-weight:700; padding:3px 7px; border-radius:6px; background:rgba(0,0,0,.045); color:var(--muted); }
+    .su-meta .su-plan{ background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(96,165,250,.16)); color:#6d28d9; }
     .su-credits{ margin-top:10px; }
     .su-credits .cl{ display:flex; justify-content:space-between; font-size:9.5px; color:var(--muted); margin-bottom:4px; }
-    .su-credits .cb{ height:5px; border-radius:5px; background:rgba(255,255,255,.07); overflow:hidden; }
+    .su-credits .cb{ height:5px; border-radius:5px; background:rgba(0,0,0,.07); overflow:hidden; }
     .su-credits .cf{ height:100%; border-radius:5px; background:linear-gradient(90deg,var(--accent),var(--accent-l)); width:0; transition:width 1s var(--ease); }
     .su-actions{ display:flex; gap:7px; margin-top:11px; }
-    .su-actions button{ flex:1; padding:7px; border-radius:9px; font-size:11px; font-weight:700; border:1px solid var(--b1); background:rgba(255,255,255,.03); color:var(--text); transition:all .18s; }
-    .su-actions button:hover{ border-color:var(--b3); background:rgba(255,255,255,.06); }
+    .su-actions button{ flex:1; padding:7px; border-radius:9px; font-size:11px; font-weight:700; border:1px solid var(--b1); background:rgba(0,0,0,.035); color:var(--text); transition:all .18s; }
+    .su-actions button:hover{ border-color:var(--b3); background:rgba(0,0,0,.06); }
     .su-actions .su-logout{ color:var(--red); border-color:rgba(239,68,68,.2); }
     .su-actions .su-logout:hover{ background:rgba(239,68,68,.1); }
     /* ── COLLAPSED MODE ── */
@@ -201,7 +221,7 @@
     /* tooltips (collapsed) */
     body.side-collapsed .app-side a.sb-link::after{
       content:attr(data-name); position:absolute; left:calc(100% + 12px); top:50%; transform:translateY(-50%) scale(.92);
-      background:var(--s2); color:#fff; font-size:11.5px; font-weight:600; padding:6px 10px; border-radius:8px; border:1px solid var(--b2);
+      background:#2A2620; color:#fff; font-size:11.5px; font-weight:600; padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,.1);
       white-space:nowrap; opacity:0; pointer-events:none; box-shadow:var(--shadow); z-index:90; transition:opacity .15s, transform .15s;
     }
     body.side-collapsed .app-side a.sb-link:hover::after{ opacity:1; transform:translateY(-50%) scale(1); }
@@ -223,7 +243,7 @@
     body.side-collapsed .sb-fav{ display:none; }
     .sb-special .sb-group-h .gh-title{ color:var(--accent-l); }
     /* ── Navigation clavier ── */
-    .app-side .sb-link.kbd-active{ background:var(--accent-soft); color:#fff; box-shadow:inset 0 0 0 1px var(--accent-line); }
+    .app-side .sb-link.kbd-active{ background:var(--accent-soft); color:var(--accent-2); box-shadow:inset 0 0 0 1px var(--accent-line); }
     /* ── Compteur de notifications ── */
     .sb-badge.count{ background:var(--accent); color:#0b0f19; border-radius:20px; min-width:16px; height:16px; padding:0 5px; display:inline-flex; align-items:center; justify-content:center; font-size:8.5px; font-weight:800; }
     #topNotifCount{ position:absolute; top:5px; right:5px; box-shadow:0 0 0 2px var(--bg); }
@@ -233,7 +253,7 @@
     .notif-h{ display:flex; align-items:center; justify-content:space-between; padding:6px 8px 10px; font-weight:800; font-size:13px; }
     .notif-h .nh-clear{ font-size:11px; font-weight:700; color:var(--accent); }
     .notif-item{ display:flex; gap:10px; padding:10px; border-radius:11px; transition:background .15s; cursor:default; }
-    .notif-item:hover{ background:rgba(255,255,255,.04); }
+    .notif-item:hover{ background:rgba(0,0,0,.045); }
     .notif-ic{ width:32px; height:32px; border-radius:9px; background:var(--accent-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--accent-l); }
     .notif-ic svg{ width:16px; height:16px; }
     .notif-tx{ flex:1; min-width:0; }
@@ -270,22 +290,22 @@
     .page-greeting{ margin-bottom:22px; }
     .tb-right{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     /* ── Topbar logo + primary nav + search ── */
-    .tb-logo{ display:flex; align-items:center; gap:9px; font-weight:800; font-size:14.5px; color:#fff; white-space:nowrap; cursor:pointer; flex-shrink:0; }
+    .tb-logo{ display:flex; align-items:center; gap:9px; font-weight:800; font-size:14.5px; color:var(--text); white-space:nowrap; cursor:pointer; flex-shrink:0; }
     .tb-logo .lg{ width:30px; height:30px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; color:#0b0f19; font-size:15px; flex-shrink:0; }
     .tb-nav{ display:flex; align-items:center; gap:4px; }
     .tb-nav-link{ padding:8px 12px; border-radius:10px; font-size:13px; font-weight:600; color:var(--muted); white-space:nowrap; transition:all .18s var(--ease); cursor:pointer; }
-    .tb-nav-link:hover{ color:#fff; background:rgba(255,255,255,.05); }
-    .tb-nav-link.active{ color:#fff; background:var(--accent-soft); }
+    .tb-nav-link:hover{ color:var(--text); background:rgba(0,0,0,.055); }
+    .tb-nav-link.active{ color:var(--accent-2); font-weight:700; background:var(--accent-soft); }
     /* ── Menus déroulants (outils) ── */
     .tb-dd{ position:relative; }
     .tb-dd.open{ z-index:9999; }
     .tb-dd-trigger{ display:flex; align-items:center; gap:4px; font-size:13px; }
     .tb-dd-chev{ font-size:9px; transition:transform .18s var(--ease); }
-    .tb-dd.open .tb-dd-trigger{ color:#fff; background:rgba(255,255,255,.05); }
+    .tb-dd.open .tb-dd-trigger{ color:var(--text); background:rgba(0,0,0,.055); }
     .tb-dd.open .tb-dd-chev{ transform:rotate(180deg); }
     .tb-dd-panel{
       position:absolute; top:calc(100% + 10px); left:0; min-width:250px; max-height:64vh; overflow-y:auto;
-      background-color:#141c2e; background-image:linear-gradient(#141c2e,#141c2e); opacity:1;
+      background-color:var(--s2); background-image:linear-gradient(var(--s2),var(--s2)); opacity:1;
       border:1px solid var(--b2); border-radius:14px; box-shadow:0 18px 50px -18px rgba(0,0,0,.85);
       padding:8px; visibility:hidden; pointer-events:none; transform:translateY(-6px);
       transition:visibility 0s linear .18s, transform .18s var(--ease); z-index:9999;
@@ -294,26 +314,26 @@
     .tb-dd-panel a.sb-link{ padding:9px 11px; }
     .tb-search{ position:relative; width:190px; flex-shrink:1; }
     .tb-search .si{ position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--faint); font-size:12px; pointer-events:none; }
-    .tb-search input{ width:100%; padding:9px 42px 9px 31px; border-radius:11px; background:rgba(255,255,255,.03); border:1px solid var(--b1); color:var(--text); font-size:12.5px; font-family:inherit; outline:none; transition:all .2s var(--ease); }
+    .tb-search input{ width:100%; padding:9px 42px 9px 31px; border-radius:11px; background:rgba(0,0,0,.035); border:1px solid var(--b1); color:var(--text); font-size:12.5px; font-family:inherit; outline:none; transition:all .2s var(--ease); }
     .tb-search input::placeholder{ color:var(--faint); }
-    .tb-search input:focus{ border-color:var(--accent-line); background:var(--accent-soft); box-shadow:0 0 0 3px rgba(255,157,31,.13); }
-    .tb-search .kbd{ position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:9px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:2px 5px; background:rgba(255,255,255,.02); pointer-events:none; }
+    .tb-search input:focus{ border-color:var(--accent-line); background:var(--accent-soft); box-shadow:0 0 0 3px rgba(242,144,15,.15); }
+    .tb-search .kbd{ position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:9px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:2px 5px; background:rgba(0,0,0,.025); pointer-events:none; }
     @media(max-width:1300px){ .tb-search{ display:none; } }
     @media(max-width:1024px){ .tb-nav{ display:none; } }
     .icon-btn{
       position:relative; width:42px; height:42px; border-radius:12px;
       display:flex; align-items:center; justify-content:center; font-size:17px;
-      background:rgba(255,255,255,.03); border:1px solid var(--b1); color:var(--text);
+      background:rgba(0,0,0,.035); border:1px solid var(--b1); color:var(--text);
       transition: all .2s var(--ease);
     }
-    .icon-btn:hover{ background:rgba(255,255,255,.07); border-color:var(--b3); transform:translateY(-1px); }
+    .icon-btn:hover{ background:rgba(0,0,0,.07); border-color:var(--b3); transform:translateY(-1px); }
     .badge-dot{ position:absolute; top:9px; right:10px; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 2px var(--bg); animation: pulse 2s infinite; }
     @keyframes pulse{ 0%,100%{box-shadow:0 0 0 2px var(--bg),0 0 0 0 var(--accent-glow)} 50%{box-shadow:0 0 0 2px var(--bg),0 0 0 6px transparent} }
     .plan-chip{
       display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:12px;
       font-size:12.5px; font-weight:700;
-      background:linear-gradient(135deg, rgba(255,157,31,.16), rgba(167,139,250,.10));
-      border:1px solid var(--accent-line); color:#fff; white-space:nowrap;
+      background:linear-gradient(135deg, rgba(242,144,15,.14), rgba(124,92,252,.08));
+      border:1px solid var(--accent-line); color:var(--text); white-space:nowrap;
     }
     .plan-chip .gem{ font-size:14px; filter:drop-shadow(0 0 6px var(--accent-glow)); }
     .plan-chip .plan-badge{ background:transparent; padding:0; color:var(--accent-l); font-weight:700; }
@@ -336,7 +356,7 @@
     }
     .menu.active{ display:block; opacity:1; transform:translateY(0); }
     .menu-item{ display:block; width:100%; padding:12px 16px; text-align:left; color:var(--text); background:none; font-size:13.5px; transition: background .15s; }
-    .menu-item:hover{ background:rgba(255,255,255,.05); }
+    .menu-item:hover{ background:rgba(0,0,0,.055); }
     .menu-item.danger{ color:var(--red); }
 
     /* ── BUTTONS ── */
@@ -347,21 +367,21 @@
     }
     .btn-primary{ background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:#0b0f19; box-shadow:0 8px 22px -8px var(--accent-glow); }
     .btn-primary:hover{ filter:brightness(1.06); transform:translateY(-1px); box-shadow:0 12px 28px -8px var(--accent-glow); }
-    .btn-secondary{ background:rgba(255,255,255,.04); color:var(--text); border:1px solid var(--b2); }
-    .btn-secondary:hover{ background:rgba(255,255,255,.08); border-color:var(--b3); }
+    .btn-secondary{ background:rgba(0,0,0,.045); color:var(--text); border:1px solid var(--b2); }
+    .btn-secondary:hover{ background:rgba(0,0,0,.08); border-color:var(--b3); }
     .btn-ghost{ background:transparent; color:var(--muted); border:1px solid var(--b1); }
-    .btn-ghost:hover{ color:#fff; border-color:var(--b3); }
+    .btn-ghost:hover{ color:var(--text); border-color:var(--b3); }
     .btn-sm{ padding:8px 13px; font-size:12.5px; border-radius:10px; }
 
     /* ── CARDS / GLASS ── */
     .card{
-      background:linear-gradient(165deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+      background:linear-gradient(165deg, rgba(0,0,0,.06), rgba(0,0,0,.02));
       border:1px solid var(--b2); border-radius:var(--radius); padding:22px;
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       box-shadow:var(--shadow-sm); transition: transform .25s var(--ease), border-color .25s, box-shadow .25s;
     }
-    .card.hoverable:hover{ transform:translateY(-3px); border-color:var(--accent-line); box-shadow:0 22px 50px -22px rgba(255,157,31,.35); }
-    .card.primary{ border-color:var(--accent-line); background:linear-gradient(165deg, rgba(255,157,31,.07), rgba(255,255,255,.02)); }
+    .card.hoverable:hover{ transform:translateY(-3px); border-color:var(--accent-line); box-shadow:0 22px 50px -22px rgba(242,144,15,.25); }
+    .card.primary{ border-color:var(--accent-line); background:linear-gradient(165deg, rgba(242,144,15,.06), rgba(0,0,0,.025)); }
     .section-title{
       font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--muted);
       margin:0 0 16px; display:flex; align-items:center; gap:9px;
@@ -377,13 +397,13 @@
     @media(max-width:560px){ .kpis{ grid-template-columns:1fr; } }
     .kpi{
       position:relative; overflow:hidden;
-      background:linear-gradient(165deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      background:linear-gradient(165deg, rgba(0,0,0,.06), rgba(0,0,0,.025));
       border:1px solid var(--b2); border-radius:var(--radius); padding:20px;
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       transition: transform .25s var(--ease), border-color .25s, box-shadow .25s;
     }
     .kpi::after{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-      background:radial-gradient(120px 80px at 85% 0%, var(--kpi-glow, rgba(255,157,31,.10)), transparent 70%); }
+      background:radial-gradient(120px 80px at 85% 0%, var(--kpi-glow, rgba(242,144,15,.08)), transparent 70%); }
     .kpi:hover{ transform:translateY(-4px); border-color:var(--accent-line); box-shadow:0 22px 48px -22px rgba(0,0,0,.7); }
     .kpi-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
     .kpi-ic{
@@ -396,11 +416,11 @@
     .trend{ display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:800; padding:4px 9px; border-radius:20px; }
     .trend.up{ color:var(--green); background:rgba(52,211,153,.10); }
     .trend.down{ color:var(--red); background:rgba(248,113,113,.10); }
-    .trend.flat{ color:var(--muted); background:rgba(255,255,255,.05); }
+    .trend.flat{ color:var(--muted); background:rgba(0,0,0,.055); }
     .kpi-num{ font-size:32px; font-weight:900; letter-spacing:-1px; line-height:1; }
     .kpi-num .unit{ font-size:15px; font-weight:700; color:var(--muted); margin-left:4px; }
     .kpi-lbl{ font-size:12.5px; color:var(--muted); font-weight:600; margin-top:7px; }
-    .kpi .progress-bar{ width:100%; height:6px; background:rgba(255,255,255,.07); border-radius:6px; overflow:hidden; margin:11px 0 0; }
+    .kpi .progress-bar{ width:100%; height:6px; background:rgba(0,0,0,.07); border-radius:6px; overflow:hidden; margin:11px 0 0; }
     .kpi .progress-fill{ height:100%; border-radius:6px; background:linear-gradient(90deg, var(--accent), var(--accent-l)); transition: width 1s var(--ease); }
 
     /* ── DASH GRID (main + rail) ── */
@@ -413,15 +433,15 @@
     /* ── COACH ── */
     .coach-card{ position:relative; overflow:hidden; }
     .coach-card::before{ content:""; position:absolute; top:-40%; right:-10%; width:340px; height:340px; border-radius:50%;
-      background:radial-gradient(circle, rgba(255,157,31,.10), transparent 70%); pointer-events:none; }
+      background:radial-gradient(circle, rgba(242,144,15,.08), transparent 70%); pointer-events:none; }
     .coach-action{
       display:flex; align-items:center; gap:14px; padding:14px 16px; margin-bottom:11px;
-      background:linear-gradient(120deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+      background:linear-gradient(120deg, rgba(0,0,0,.05), rgba(0,0,0,.02));
       border:1px solid var(--b1); border-radius:14px; border-left:3px solid var(--ca, var(--accent));
       transition: transform .2s var(--ease), border-color .2s, background .2s;
     }
     .coach-action:last-child{ margin-bottom:0; }
-    .coach-action:hover{ transform:translateX(3px); border-color:var(--b3); background:linear-gradient(120deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); }
+    .coach-action:hover{ transform:translateX(3px); border-color:var(--b3); background:linear-gradient(120deg, rgba(0,0,0,.07), rgba(0,0,0,.025)); }
     .coach-action .ca-body{ flex:1; min-width:160px; }
     .coach-action .ca-title{ font-weight:700; font-size:14px; }
     .coach-action .ca-gain{ color:var(--green); font-weight:800; margin-left:4px; }
@@ -430,12 +450,12 @@
     /* ── ACTION CENTER ── */
     .ac-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
     @media(max-width:680px){ .ac-grid{ grid-template-columns:1fr; } }
-    .mini-panel{ background:linear-gradient(165deg, rgba(255,255,255,.035), rgba(255,255,255,.012)); border:1px solid var(--b1); border-radius:14px; padding:16px; }
+    .mini-panel{ background:linear-gradient(165deg, rgba(0,0,0,.04), rgba(0,0,0,.015)); border:1px solid var(--b1); border-radius:14px; padding:16px; }
     .mini-h{ font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:12px; display:flex; align-items:center; gap:7px; }
     .mini-h .mh-ic{ font-size:13px; }
     .list-row{ display:flex; align-items:center; gap:11px; padding:9px 0; border-bottom:1px solid var(--b1); }
     .list-row:last-child{ border-bottom:none; }
-    .lr-ic{ width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:15px; background:rgba(255,255,255,.05); flex-shrink:0; }
+    .lr-ic{ width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:15px; background:rgba(0,0,0,.055); flex-shrink:0; }
     .lr-body{ flex:1; min-width:0; }
     .lr-title{ font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .lr-sub{ font-size:11px; color:var(--muted); }
@@ -443,7 +463,7 @@
     .qa-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     .qa-btn{
       display:flex; flex-direction:column; align-items:flex-start; gap:7px; padding:13px;
-      border-radius:12px; background:rgba(255,255,255,.035); border:1px solid var(--b1); text-align:left;
+      border-radius:12px; background:rgba(0,0,0,.04); border:1px solid var(--b1); text-align:left;
       transition: all .2s var(--ease); color:var(--text);
     }
     .qa-btn:hover{ border-color:var(--accent-line); background:var(--accent-soft); transform:translateY(-2px); }
@@ -452,12 +472,12 @@
     .opp-row{ display:flex; align-items:center; gap:11px; padding:9px 0; border-bottom:1px solid var(--b1); }
     .opp-row:last-child{ border-bottom:none; }
     .opp-tag{ font-size:10px; font-weight:800; padding:3px 8px; border-radius:6px; background:rgba(248,113,113,.12); color:var(--red); flex-shrink:0; }
-    .opp-tag.hot{ background:rgba(255,157,31,.14); color:var(--accent-l); }
+    .opp-tag.hot{ background:rgba(242,144,15,.14); color:var(--accent-2); }
 
     /* ── ANALYTICS ── */
     .charts-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
     @media(max-width:680px){ .charts-grid{ grid-template-columns:1fr; } }
-    .chart-box{ background:linear-gradient(165deg, rgba(255,255,255,.035), rgba(255,255,255,.012)); border:1px solid var(--b1); border-radius:14px; padding:16px; }
+    .chart-box{ background:linear-gradient(165deg, rgba(0,0,0,.04), rgba(0,0,0,.015)); border:1px solid var(--b1); border-radius:14px; padding:16px; }
     .chart-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
     .chart-title{ font-size:12.5px; font-weight:700; color:var(--text); }
     .chart-val{ font-size:13px; font-weight:800; }
@@ -465,32 +485,28 @@
     .bars{ display:flex; flex-direction:column; gap:9px; margin-top:6px; }
     .bar-row{ display:grid; grid-template-columns:78px 1fr 34px; align-items:center; gap:9px; font-size:11.5px; }
     .bar-kw{ color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .bar-track{ height:8px; background:rgba(255,255,255,.06); border-radius:6px; overflow:hidden; }
+    .bar-track{ height:8px; background:rgba(0,0,0,.06); border-radius:6px; overflow:hidden; }
     .bar-fill{ height:100%; border-radius:6px; background:linear-gradient(90deg, var(--accent-2), var(--accent-l)); width:0; transition: width 1.1s var(--ease); }
     .bar-val{ text-align:right; font-weight:700; color:var(--text); }
     .donut-wrap{ display:flex; align-items:center; gap:16px; }
     .donut-legend{ font-size:11.5px; color:var(--muted); display:flex; flex-direction:column; gap:6px; }
     .donut-legend b{ color:var(--text); }
 
-    /* ── ACTIVATION / QUICKSTART ── */
-    .grid-2{ display:grid; grid-template-columns:1.25fr 1fr; gap:18px; }
-    @media(max-width:860px){ .grid-2{ grid-template-columns:1fr; } }
-    .checklist{ list-style:none; padding:0; margin:0; }
-    .checklist li{ padding:11px 0; border-bottom:1px solid var(--b1); display:flex; align-items:center; gap:11px; font-size:13.5px; }
-    .checklist li:last-child{ border-bottom:none; }
-    .checklist input{ width:17px; height:17px; accent-color:var(--accent); cursor:pointer; }
+    /* ── ACTIVATION ── */
+    /* .grid-2 / .checklist supprimées en Phase 2 : plus aucun élément ne les utilise
+       depuis le retrait de la carte "Démarrage rapide" (redondante avec l'onboarding). */
     .card-action{ display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-size:12.5px; font-weight:700; cursor:pointer; }
     .card-action:hover{ color:var(--accent-l); }
     .plan-badge{ display:inline-block; background:var(--accent-soft); color:var(--accent-l); padding:3px 11px; border-radius:20px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
     .plan-badge.pro{ background:rgba(52,211,153,.12); color:var(--green); }
     .plan-badge.business{ background:rgba(96,165,250,.12); color:var(--blue); }
-    .plan-badge.diamant{ background:linear-gradient(135deg, rgba(167,139,250,.18), rgba(96,165,250,.14)); color:#c4b5fd; }
+    .plan-badge.diamant{ background:linear-gradient(135deg, rgba(167,139,250,.18), rgba(96,165,250,.14)); color:#6d28d9; }
 
     /* ── RIGHT RAIL ── */
     .rail-card{ padding:18px; }
     .kw-chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
     .kw-chip{ display:inline-flex; align-items:center; gap:6px; padding:7px 11px; border-radius:10px; font-size:12px; font-weight:600;
-      background:rgba(255,255,255,.04); border:1px solid var(--b1); transition: all .18s var(--ease); cursor:default; }
+      background:rgba(0,0,0,.045); border:1px solid var(--b1); transition: all .18s var(--ease); cursor:default; }
     .kw-chip:hover{ border-color:var(--accent-line); background:var(--accent-soft); }
     .kw-chip .kw-up{ color:var(--green); font-weight:800; font-size:10.5px; }
     .kw-chip .kw-dn{ color:var(--red); font-weight:800; font-size:10.5px; }
@@ -501,9 +517,9 @@
     .news-body{ flex:1; }
     .news-title{ font-size:12.5px; font-weight:600; line-height:1.4; }
     .news-time{ font-size:10.5px; color:var(--faint); margin-top:2px; }
-    .ann-card{ background:linear-gradient(150deg, rgba(255,157,31,.10), rgba(167,139,250,.08)); border-color:var(--accent-line); }
+    .ann-card{ background:linear-gradient(150deg, rgba(242,144,15,.08), rgba(167,139,250,.08)); border-color:var(--accent-line); }
     .ann-badge{ display:inline-block; font-size:9.5px; font-weight:800; letter-spacing:.6px; text-transform:uppercase; padding:3px 8px; border-radius:6px; background:var(--accent); color:#0b0f19; margin-bottom:9px; }
-    .tip-card{ background:linear-gradient(150deg, rgba(96,165,250,.08), rgba(255,255,255,.02)); }
+    .tip-card{ background:linear-gradient(150deg, rgba(96,165,250,.08), rgba(0,0,0,.025)); }
     .tip-text{ font-size:13px; line-height:1.55; color:var(--text); }
 
     /* ── FLOATING AI COACH ── */
@@ -530,13 +546,13 @@
     .ai-pop-h .ai-status{ font-size:11px; color:var(--green); display:flex; align-items:center; gap:5px; }
     .ai-pop-h .ai-status::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); }
     .ai-sugg{ display:flex; align-items:center; gap:10px; width:100%; padding:11px 12px; margin-bottom:8px; border-radius:11px;
-      background:rgba(255,255,255,.04); border:1px solid var(--b1); text-align:left; color:var(--text); font-size:12.5px; font-weight:600; transition: all .18s var(--ease); }
+      background:rgba(0,0,0,.045); border:1px solid var(--b1); text-align:left; color:var(--text); font-size:12.5px; font-weight:600; transition: all .18s var(--ease); }
     .ai-sugg:last-child{ margin-bottom:0; }
     .ai-sugg:hover{ border-color:var(--accent-line); background:var(--accent-soft); transform:translateX(2px); }
     .ai-sugg .as-ic{ font-size:16px; }
 
     /* ── LOADING SKELETON ── */
-    .sk{ background:linear-gradient(100deg, rgba(255,255,255,.04) 30%, rgba(255,255,255,.09) 50%, rgba(255,255,255,.04) 70%); background-size:200% 100%; animation: shimmer 1.4s infinite; border-radius:10px; }
+    .sk{ background:linear-gradient(100deg, rgba(0,0,0,.045) 30%, rgba(0,0,0,.09) 50%, rgba(0,0,0,.045) 70%); background-size:200% 100%; animation: shimmer 1.4s infinite; border-radius:10px; }
     @keyframes shimmer{ to{ background-position:-200% 0; } }
     .sk-kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin:26px 0 24px; }
     @media(max-width:1100px){ .sk-kpis{ grid-template-columns:repeat(2,1fr); } }
@@ -551,9 +567,152 @@
     @keyframes fadeUp{ to{ opacity:1; transform:translateY(0); } }
     @media (prefers-reduced-motion: reduce){ *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; } .fade-in{ opacity:1; transform:none; } }
 
-    .error{ background:rgba(248,113,113,.10); border:1px solid rgba(248,113,113,.30); color:#ff8a8a; padding:16px; border-radius:12px; }
+    .error{ background:rgba(248,113,113,.10); border:1px solid rgba(248,113,113,.30); color:#C23B22; padding:16px; border-radius:12px; }
     .nav{ display:none !important; }
   </style>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ONBOARDING — Phase 1 de la refonte UX/UI (voir proposition validée).
+       Bloc de styles isolé et namespacé (--ob-*) : thème clair + orange,
+       volontairement indépendant de la palette sombre (--bg/--text/...)
+       du reste de la page pour ne rien modifier ailleurs avant la Phase 4
+       (reskin clair global). Rien ici ne redéfinit une variable existante.
+       ════════════════════════════════════════════════════════════ -->
+  <style id="vsOnboardStyle">
+    .vs-onboard{
+      --ob-bg:#FBF8F3; --ob-surface:#FFFFFF; --ob-surface-2:#F4EFE6; --ob-border:#E7E0D3;
+      --ob-text:#211D16; --ob-muted:#756D5E; --ob-faint:#A69C89;
+      --ob-accent:#F2900F; --ob-accent-ink:#7A4A05; --ob-accent-soft:#FDECD1; --ob-accent-line:#F3C888;
+      --ob-green:#167A45; --ob-green-soft:#E4F3EA; --ob-radius:16px; --ob-shadow:0 24px 60px -20px rgba(33,29,22,.28);
+      position:fixed; inset:0; z-index:500; background:var(--ob-bg);
+      display:flex; align-items:center; justify-content:center; padding:24px;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+      overflow-y:auto; box-sizing:border-box;
+    }
+    .vs-onboard[hidden]{ display:none; }
+    .vs-onboard *{ box-sizing:border-box; }
+    body.vs-onboarding-active #appSide,
+    body.vs-onboarding-active .main,
+    body.vs-onboarding-active #aiFab,
+    body.vs-onboarding-active #aiPop{ display:none !important; }
+
+    .vs-ob-card{
+      width:100%; max-width:520px; background:var(--ob-surface); border:1px solid var(--ob-border);
+      border-radius:var(--ob-radius); box-shadow:var(--ob-shadow); padding:40px 36px; margin:auto;
+      color:var(--ob-text); animation:vsObCardIn .5s cubic-bezier(.2,.8,.2,1) both;
+    }
+    @keyframes vsObCardIn{ from{ opacity:0; transform:translateY(16px) scale(.98); } to{ opacity:1; transform:translateY(0) scale(1); } }
+
+    .vs-ob-brand{ display:flex; align-items:center; gap:8px; font-weight:800; font-size:13px; letter-spacing:.02em; color:var(--ob-accent-ink); margin-bottom:18px; text-transform:uppercase; }
+    .vs-ob-logo{ width:26px; height:26px; border-radius:8px; background:linear-gradient(135deg,var(--ob-accent),#E8830A); color:var(--ob-accent-ink); display:flex; align-items:center; justify-content:center; font-size:13px; flex:none; }
+
+    /* ── Hero ── */
+    .vs-ob-hero{ position:relative; margin-bottom:22px; }
+    .vs-ob-glow{
+      position:absolute; top:-30px; right:-20px; width:150px; height:150px; z-index:-1; pointer-events:none;
+      background:radial-gradient(circle, var(--ob-accent-soft) 0%, transparent 72%);
+    }
+    .vs-ob-h1{ font-size:26px; font-weight:800; letter-spacing:-.01em; margin:0 0 8px; line-height:1.25; }
+    .vs-ob-sub{ font-size:14.5px; color:var(--ob-muted); margin:0 0 16px; line-height:1.55; }
+    .vs-ob-value-row{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; }
+    .vs-ob-value{ font-size:12px; font-weight:650; background:var(--ob-surface-2); border:1px solid var(--ob-border); color:var(--ob-text); border-radius:99px; padding:5px 11px; white-space:nowrap; }
+    .vs-ob-time{ font-size:12.5px; color:var(--ob-accent-ink); font-weight:650; background:var(--ob-accent-soft); border:1px solid var(--ob-accent-line); display:inline-flex; border-radius:8px; padding:6px 12px; }
+    .vs-ob-time b{ font-weight:800; margin-left:3px; }
+
+    .vs-ob-progress-wrap{ display:flex; align-items:center; gap:12px; margin:22px 0 6px; }
+    .vs-ob-progress{ flex:1; height:8px; border-radius:99px; background:var(--ob-surface-2); overflow:hidden; }
+    .vs-ob-bar{ display:block; height:100%; background:linear-gradient(90deg,var(--ob-accent),#E8830A); border-radius:99px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%; }
+    .vs-ob-pct{ font-size:12.5px; font-weight:700; color:var(--ob-accent-ink); font-variant-numeric:tabular-nums; min-width:44px; text-align:right; }
+    .vs-ob-stage{ font-size:13px; color:var(--ob-muted); margin:0 0 18px; font-weight:600; }
+
+    /* ── Checklist "mission" ── */
+    .vs-ob-list{ list-style:none; margin:0 0 18px; padding:0; display:flex; flex-direction:column; gap:3px; }
+    .vs-ob-step{
+      display:flex; align-items:flex-start; flex-wrap:wrap; gap:11px; padding:13px 12px; border-radius:12px;
+      transition:background .15s, opacity .25s;
+      animation:vsObStepIn .4s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .vs-ob-step:nth-child(1){ animation-delay:.05s; }
+    .vs-ob-step:nth-child(2){ animation-delay:.11s; }
+    .vs-ob-step:nth-child(3){ animation-delay:.17s; }
+    .vs-ob-step:nth-child(4){ animation-delay:.23s; }
+    .vs-ob-step:nth-child(5){ animation-delay:.29s; }
+    @keyframes vsObStepIn{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:translateY(0); } }
+    .vs-ob-step.done{ opacity:.5; }
+    .vs-ob-icon{ flex:none; font-size:17px; line-height:1; margin-top:1px; }
+    .vs-ob-chk{
+      flex:none; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-size:11.5px; font-weight:700; border:1.5px solid var(--ob-border); color:var(--ob-muted); background:var(--ob-surface);
+      transition:background .25s, border-color .25s, transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .vs-ob-step[data-step]:not(.done):not([data-step="account"]) .vs-ob-chk{ border-color:var(--ob-accent-line); color:var(--ob-accent-ink); background:var(--ob-accent-soft); }
+    .vs-ob-step.done .vs-ob-chk{ background:var(--ob-green); border-color:var(--ob-green); color:#fff; }
+    .vs-ob-chk.pop{ transform:scale(1.35); }
+    .vs-ob-txt{ flex:1 1 220px; min-width:0; }
+    .vs-ob-txt b{ display:block; font-size:14px; font-weight:650; }
+    .vs-ob-txt .why{ display:block; font-size:12.5px; color:var(--ob-muted); margin-top:3px; line-height:1.45; }
+    .vs-ob-txt .meta{ display:block; font-size:11.5px; color:var(--ob-faint); margin-top:5px; font-weight:600; }
+    .vs-ob-step.done .vs-ob-txt .why, .vs-ob-step.done .vs-ob-txt .meta{ display:none; }
+    .vs-ob-action{
+      flex:none; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; cursor:pointer;
+      background:var(--ob-surface-2); border:1px solid var(--ob-border); color:var(--ob-text);
+      border-radius:8px; padding:7px 13px; font-size:12.5px; font-weight:650; white-space:nowrap; font-family:inherit;
+      margin-left:35px;
+    }
+    .vs-ob-action:hover{ border-color:var(--ob-accent-line); color:var(--ob-accent-ink); }
+    .vs-ob-action:focus-visible{ outline:2px solid var(--ob-accent); outline-offset:2px; }
+    .vs-ob-confirm{ flex:none; font-size:11.5px; color:var(--ob-faint); background:none; border:none; text-decoration:underline; cursor:pointer; padding:4px; font-family:inherit; margin-left:35px; }
+    .vs-ob-confirm:hover{ color:var(--ob-accent-ink); }
+
+    /* ── Trust card ── */
+    .vs-ob-trust{ background:var(--ob-surface-2); border:1px solid var(--ob-border); border-radius:12px; padding:12px 14px; margin-bottom:20px; }
+    .vs-ob-trust summary{ font-size:12.5px; font-weight:650; cursor:pointer; color:var(--ob-text); list-style:none; }
+    .vs-ob-trust summary::-webkit-details-marker{ display:none; }
+    .vs-ob-trust summary::after{ content:'→'; float:right; color:var(--ob-faint); transition:transform .2s; }
+    .vs-ob-trust[open] summary::after{ transform:rotate(90deg); }
+    .vs-ob-trust ul{ list-style:none; margin:12px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
+    .vs-ob-trust li{ font-size:12px; color:var(--ob-muted); line-height:1.5; }
+    .vs-ob-trust li b{ color:var(--ob-text); }
+
+    .vs-ob-cta{
+      width:100%; padding:14px; font-size:15px; border-radius:12px; background:var(--ob-accent); color:#2b1500;
+      border:none; font-weight:700; cursor:pointer; transition:transform .12s, background .15s; font-family:inherit;
+    }
+    .vs-ob-cta:hover{ background:#e8830a; }
+    .vs-ob-cta:active{ transform:scale(.99); }
+    .vs-ob-cta:focus-visible{ outline:2px solid var(--ob-accent-ink); outline-offset:2px; }
+    .vs-ob-secondary{
+      display:block; text-align:center; margin-top:14px; font-size:12.5px; font-weight:650; color:var(--ob-muted);
+      text-decoration:none; padding:6px;
+    }
+    .vs-ob-secondary:hover{ color:var(--ob-accent-ink); }
+
+    /* ── Success view ── */
+    .vs-ob-success{ text-align:center; padding:20px 0; }
+    .vs-ob-success[hidden]{ display:none; }
+    .vs-ob-success-icon{
+      width:64px; height:64px; border-radius:50%; background:var(--ob-green-soft); color:var(--ob-green);
+      font-size:30px; display:flex; align-items:center; justify-content:center; margin:0 auto 18px;
+      animation:vsObSuccessPop .5s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes vsObSuccessPop{ from{ opacity:0; transform:scale(.4); } to{ opacity:1; transform:scale(1); } }
+    .vs-ob-success h2{ font-size:20px; font-weight:800; margin:0 0 8px; }
+    .vs-ob-success p{ font-size:14px; color:var(--ob-muted); margin:0; }
+
+    /* fade-out transition when the whole overlay is dismissed */
+    .vs-onboard.vs-ob-leaving{ animation:vsObFadeOut .28s ease both; }
+    @keyframes vsObFadeOut{ to{ opacity:0; transform:scale(.98); } }
+
+    @media(max-width:520px){
+      .vs-ob-card{ padding:28px 22px; }
+      .vs-ob-action, .vs-ob-confirm{ margin-left:0; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .vs-ob-bar, .vs-ob-chk{ transition:none; }
+      .vs-ob-card, .vs-ob-step, .vs-ob-success-icon, .vs-onboard.vs-ob-leaving{ animation:none; }
+    }
+  </style>
+
   <script src="/js/i18n.js"></script>
   <script src="/js/i18n-labels.js"></script>
   <script>
@@ -691,7 +850,7 @@
   </script>
   <script src="/js/meta-pixel.js"></script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -702,6 +861,116 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
+  <!-- ════════════════════════════════════════════════════════════
+       ONBOARDING — Phase 1 + itération "Wow" (Phase 1.1). Masqué par
+       défaut (attribut hidden) ; affiché uniquement quand vsObRender()
+       détecte que l'utilisateur n'a pas encore de première analyse
+       réelle (has_data=false). Ne touche à aucun élément existant :
+       sibling du reste du body, masque #appSide/.main/#aiFab/#aiPop
+       via body.vs-onboarding-active plutôt que de les envelopper.
+       Cette itération ne change QUE la présentation (hero, textes,
+       animations, vue de succès) — la mécanique (ids, classes .done,
+       gate sur has_data, clés localStorage) reste identique à la Phase 1
+       validée : voir le contrôleur JS, non modifié dans sa logique.
+       ════════════════════════════════════════════════════════════ -->
+  <div id="vsOnboard" class="vs-onboard" hidden role="dialog" aria-modal="true" aria-labelledby="vsObTitle">
+    <div class="vs-ob-card" id="vsObCard">
+
+      <!-- ── Vue principale (hero + mission + trust) ── -->
+      <div class="vs-ob-main" id="vsObMain">
+        <div class="vs-ob-brand"><span class="vs-ob-logo">✦</span> VidSpark AI</div>
+
+        <div class="vs-ob-hero">
+          <div class="vs-ob-glow" aria-hidden="true"></div>
+          <h1 class="vs-ob-h1" id="vsObTitle">Prêt à faire décoller tes vidéos ?</h1>
+          <p class="vs-ob-sub">Connecte ta chaîne et découvre, en quelques minutes, ce qui freine tes vues aujourd'hui — et comment y remédier.</p>
+          <div class="vs-ob-value-row" aria-hidden="true">
+            <span class="vs-ob-value">🔍 Analyse SEO</span>
+            <span class="vs-ob-value">💡 Suggestions IA</span>
+            <span class="vs-ob-value">📊 Score</span>
+            <span class="vs-ob-value">⚡ Optimisations</span>
+            <span class="vs-ob-value">🔑 Mots-clés</span>
+          </div>
+          <div class="vs-ob-time">⏱️ Configuration estimée : <b>≈ 2 minutes</b></div>
+        </div>
+
+        <div class="vs-ob-progress-wrap">
+          <div class="vs-ob-progress"><span class="vs-ob-bar" id="vsObBar" style="width:0%"></span></div>
+          <span class="vs-ob-pct" id="vsObPct">0 %</span>
+        </div>
+        <p class="vs-ob-stage" id="vsObStageMsg">Plus qu'une chaîne à connecter pour démarrer 🚀</p>
+
+        <ul class="vs-ob-list" id="vsObList">
+          <li class="vs-ob-step done" data-step="account">
+            <span class="vs-ob-chk">✓</span>
+            <div class="vs-ob-txt"><b>Ton compte est prêt</b><span class="why">Tu es connecté — la suite ne prend que 2 minutes.</span></div>
+          </li>
+          <li class="vs-ob-step" data-step="channel">
+            <span class="vs-ob-icon" aria-hidden="true">📺</span>
+            <span class="vs-ob-chk">2</span>
+            <div class="vs-ob-txt">
+              <b>Connecte ta chaîne YouTube</b>
+              <span class="why">On regarde tes vidéos pour te donner des conseils qui te correspondent — pas des conseils génériques.</span>
+              <span class="meta">⏱ ~30 sec · 🎯 Débloque ton Coach IA personnalisé</span>
+            </div>
+            <a class="vs-ob-action" href="channels.html">Connecter →</a>
+          </li>
+          <li class="vs-ob-step" data-step="extension">
+            <span class="vs-ob-icon" aria-hidden="true">🧩</span>
+            <span class="vs-ob-chk">3</span>
+            <div class="vs-ob-txt">
+              <b>Installe l'extension Chrome</b>
+              <span class="why">Analyse tes vidéos en un clic, directement depuis YouTube.</span>
+              <span class="meta">⏱ ~1 min · 🎯 Analyse instantanée sur YouTube</span>
+            </div>
+            <a class="vs-ob-action" href="https://chromewebstore.google.com/search/VidSpark%20AI" target="_blank" rel="noopener">Installer →</a>
+            <button type="button" class="vs-ob-confirm" id="vsObExtConfirm" onclick="vsObConfirmExtension()">Déjà installée ? Marquer comme fait</button>
+          </li>
+          <li class="vs-ob-step" data-step="analysis">
+            <span class="vs-ob-icon" aria-hidden="true">🚀</span>
+            <span class="vs-ob-chk">4</span>
+            <div class="vs-ob-txt">
+              <b>Analyse ta première vidéo</b>
+              <span class="why">Le moment où VidSpark se met vraiment au travail pour toi.</span>
+              <span class="meta">⏱ ~20 sec · 🎯 Ton premier score + des suggestions concrètes</span>
+            </div>
+            <a class="vs-ob-action" href="javascript:void(0)" onclick="vsObGoAnalyze()">Analyser →</a>
+          </li>
+          <li class="vs-ob-step" data-step="score">
+            <span class="vs-ob-icon" aria-hidden="true">🏆</span>
+            <span class="vs-ob-chk">5</span>
+            <div class="vs-ob-txt">
+              <b>Découvre ton score SEO</b>
+              <span class="why">Ton tableau de bord complet s'ouvre, avec toutes tes analyses.</span>
+              <span class="meta">🎯 Accès complet à VidSpark</span>
+            </div>
+          </li>
+        </ul>
+
+        <details class="vs-ob-trust">
+          <summary>🔒 Pourquoi connecter ma chaîne YouTube ?</summary>
+          <ul>
+            <li><b>Pourquoi :</b> on lit les infos publiques de tes vidéos (titres, miniatures, statistiques) pour calculer tes scores.</li>
+            <li><b>Données utilisées :</b> titres, descriptions, tags, statistiques publiques — rien d'autre.</li>
+            <li><b>Jamais modifié :</b> VidSpark ne publie, ne modifie et ne supprime jamais rien sur ta chaîne.</li>
+            <li><b>Sécurité :</b> connexion via l'OAuth officiel de Google — on ne voit jamais ton mot de passe.</li>
+          </ul>
+        </details>
+
+        <button type="button" class="vs-ob-cta" id="vsObCta">Connecter ma chaîne YouTube</button>
+        <a href="#vsObList" class="vs-ob-secondary">Voir les étapes ↓</a>
+      </div>
+
+      <!-- ── Vue de succès (affichée brièvement à la fin, avant la transition vers le dashboard) ── -->
+      <div class="vs-ob-success" id="vsObSuccess" hidden>
+        <div class="vs-ob-success-icon" aria-hidden="true">🎉</div>
+        <h2>Ton premier score SEO est prêt !</h2>
+        <p>Ton tableau de bord complet s'ouvre à l'instant...</p>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ════ SIDEBAR premium ════ -->
   <aside class="app-side" id="appSide">
     <!-- top header -->
@@ -735,18 +1004,18 @@
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_recents">🕘 Récents</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items" id="recentItems"></div>
       </div>
-      <!-- GROUP 2 : ANALYZE -->
+      <!-- GROUP 2 : ANALYZE — Phase 3 : recentré sur l'analyse d'UNE vidéo/publication.
+           Les outils "niveau chaîne" (audit, concurrents, comparaison) ont été déplacés
+           vers le groupe Croissance (data-g="growth"), qui devient le pôle "Ma chaîne" —
+           voir la bannière "Plus / Outils avancés" plus bas pour le détail du réagencement. -->
       <div class="sb-group" data-g="analyze">
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_analyze">Analyser</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items">
           <a class="sb-link" data-name="Discover" onclick="openTool('discover')"><span class="ic">🔍</span> <span class="lbl" data-i18n="db_discover">Discover</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Analyze Video" onclick="openTool('analyze')"><span class="ic">🎥</span> <span class="lbl" data-i18n="db_analyze">Analyser une vidéo</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Channel Audit" onclick="openTool('audit')"><span class="ic">📊</span> <span class="lbl" data-i18n="db_audit">Audit de chaîne</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Viral Score" onclick="openTool('viral')"><span class="ic">🔥</span> <span class="lbl" data-i18n="db_viral">Score Viral</span><span class="sb-badge hot">Hot</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="SEO Score" onclick="openTool('seo')"><span class="ic">📈</span> <span class="lbl" data-i18n="db_seoscore">Score SEO</span><span class="sb-badge new">New</span></a>
           <a class="sb-link" data-name="Comments" onclick="openTool('comments')"><span class="ic">💬</span> <span class="lbl" data-i18n="db_comments">Commentaires</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Competitor Analysis" onclick="openTool('competitor')"><span class="ic">🏆</span> <span class="lbl" data-i18n="db_competitor">Analyse concurrents</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Channel Comparison" onclick="openTool('compare')"><span class="ic">📺</span> <span class="lbl" data-i18n="db_comparison">Comparer des chaînes</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Analytics" onclick="goAnalyticsView()"><span class="ic">📉</span> <span class="lbl" data-i18n="db_analytics">Analytique</span><span class="sb-arrow">›</span></a>
         </div>
       </div>
@@ -767,8 +1036,38 @@
         </div>
       </div>
 
+      <!-- GROUP 5 : GROWTH — Phase 3 : repositionné juste après Créer et recentré comme le
+           pôle "Ma chaîne" (comprendre et faire grandir SA chaîne, par opposition à
+           "Analyser" qui reste centré sur UNE vidéo). Reçoit Channel Audit, Competitor
+           Analysis, Channel Comparison (déplacés depuis Analyser) et Channel Extractor
+           (déplacé depuis Outils SEO). Même data-g="growth" qu'avant : la persistance du
+           repli (localStorage vs_side_groups) et le miroir topbar (.tb-dd[data-g="growth"])
+           continuent de fonctionner sans aucune modification ailleurs. -->
+      <div class="sb-group collapsed" data-g="growth">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_growth">Croissance</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link" data-name="Channel Audit" onclick="openTool('audit')"><span class="ic">📊</span> <span class="lbl" data-i18n="db_audit">Audit de chaîne</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Competitor Analysis" onclick="openTool('competitor')"><span class="ic">🏆</span> <span class="lbl" data-i18n="db_competitor">Analyse concurrents</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Channel Comparison" onclick="openTool('compare')"><span class="ic">📺</span> <span class="lbl" data-i18n="db_comparison">Comparer des chaînes</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Trend Explorer" onclick="openTool('trending')"><span class="ic">📈</span> <span class="lbl" data-i18n="db_trending">Trending</span><span class="sb-badge hot">Hot</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Best Publish Time" onclick="openTool('besttime')"><span class="ic">🚀</span> <span class="lbl" data-i18n="db_publishtime">Meilleur moment</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Audience Insights" onclick="openTool('audience')"><span class="ic">🎯</span> <span class="lbl" data-i18n="db_audience">Audience</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Rank Tracking" onclick="openTool('rank')"><span class="ic">📌</span> <span class="lbl" data-i18n="db_rank">Suivi de position</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Estimated Revenue" onclick="openTool('revenue')"><span class="ic">💰</span> <span class="lbl" data-i18n="db_revenue">Revenus estimés</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Content Planner" onclick="openTool('planner')"><span class="ic">📅</span> <span class="lbl" data-i18n="db_planner">Planificateur</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Channel Extractor" onclick="openTool('extract')"><span class="ic">📥</span> <span class="lbl" data-i18n="db_chextract">Extracteur de chaîne</span><span class="sb-arrow">›</span></a>
+        </div>
+      </div>
+
+      <!-- ════ PLUS / OUTILS AVANCÉS — bannière visuelle uniquement (Phase 3).
+           Regroupe perceptuellement Outils SEO + Studio + Aide sans fusionner leurs
+           data-g respectifs : chaque groupe garde son propre repli, son propre miroir
+           topbar (.tb-dd) et sa propre entrée localStorage — zéro risque de régression,
+           uniquement un habillage visuel qui dit "ceci est secondaire/avancé". ════ -->
+      <div class="sb-plus-banner"><span class="sb-plus-ic">⋯</span> <span data-i18n="db_g_seo">Outils SEO</span> · <span data-i18n="db_g_studio">Studio</span> · <span data-i18n="db_g_help">Aide</span></div>
+
       <!-- GROUP 4 : SEO TOOLS -->
-      <div class="sb-group" data-g="seo">
+      <div class="sb-group collapsed" data-g="seo">
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_seo">Outils SEO</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items">
           <a class="sb-link" data-name="Keyword Research" onclick="openTool('keywords')"><span class="ic">🔑</span> <span class="lbl" data-i18n="db_keywords">Mots-clés</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
@@ -779,29 +1078,13 @@
           <a class="sb-link" data-name="Thumbnail Downloader" onclick="openTool('thumbdl')"><span class="ic">🖼</span> <span class="lbl" data-i18n="db_thumbdl">Téléchargeur de miniatures</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Thumbnail Analyzer" onclick="openTool('thumbnail')"><span class="ic">🎨</span> <span class="lbl" data-i18n="db_thumbnail">Analyse miniature</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="TikTok SEO" onclick="location.href='/tiktok-seo.html'"><span class="ic">🎵</span> <span class="lbl">SEO TikTok</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Channel Extractor" onclick="openTool('extract')"><span class="ic">📥</span> <span class="lbl" data-i18n="db_chextract">Extracteur de chaîne</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Hashtag Generator" onclick="openTool('hashtags')"><span class="ic">🔗</span> <span class="lbl" data-i18n="db_hashtag">Générateur de hashtags</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Translate" onclick="openTool('translate')"><span class="ic">🌍</span> <span class="lbl" data-i18n="db_translate">Traduire</span><span class="sb-arrow">›</span></a>
         </div>
       </div>
 
-      <!-- GROUP 5 : GROWTH -->
-      <div class="sb-group" data-g="growth">
-        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_growth">Croissance</span><span class="gh-chev">▾</span></button>
-        <div class="sb-group-items">
-          <a class="sb-link" data-name="Trend Explorer" onclick="openTool('trending')"><span class="ic">📈</span> <span class="lbl" data-i18n="db_trending">Trending</span><span class="sb-badge hot">Hot</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Best Publish Time" onclick="openTool('besttime')"><span class="ic">🚀</span> <span class="lbl" data-i18n="db_publishtime">Meilleur moment</span><span class="sb-arrow">›</span></a>
-          <!-- Croissance chaîne : masqué (nécessite un historique non stocké ; couvert par Audit + Analytique) -->
-
-          <a class="sb-link" data-name="Audience Insights" onclick="openTool('audience')"><span class="ic">🎯</span> <span class="lbl" data-i18n="db_audience">Audience</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Rank Tracking" onclick="openTool('rank')"><span class="ic">📌</span> <span class="lbl" data-i18n="db_rank">Suivi de position</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Estimated Revenue" onclick="openTool('revenue')"><span class="ic">💰</span> <span class="lbl" data-i18n="db_revenue">Revenus estimés</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="Content Planner" onclick="openTool('planner')"><span class="ic">📅</span> <span class="lbl" data-i18n="db_planner">Planificateur</span><span class="sb-arrow">›</span></a>
-        </div>
-      </div>
-
       <!-- GROUP 6 : STUDIO -->
-      <div class="sb-group" data-g="studio">
+      <div class="sb-group collapsed" data-g="studio">
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_studio">Studio</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items">
           <a class="sb-link" data-name="Thumbnail Studio" onclick="openTool('thumbnail')"><span class="ic">🎬</span> <span class="lbl" data-i18n="db_thumbstudio">Thumbnail Studio</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
@@ -813,7 +1096,25 @@
         </div>
       </div>
 
-      <!-- GROUP 7 : ACCOUNT (repli mobile/tablette — couvert par la nav de la topbar sur desktop) -->
+      <!-- GROUP 8 : HELP — Phase 3 : déplacé avant Compte pour rester sous la bannière
+           "Plus / Outils avancés" (Outils SEO + Studio + Aide forment un seul bloc
+           perçu comme secondaire). data-g="help" inchangé. -->
+      <div class="sb-group sb-mobile-only" data-g="help">
+        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_help">Aide</span><span class="gh-chev">▾</span></button>
+        <div class="sb-group-items">
+          <a class="sb-link" data-name="Documentation" onclick="openTool('docs')"><span class="ic">📚</span> <span class="lbl" data-i18n="db_docs">Documentation</span><span class="sb-arrow">›</span></a>
+          <!-- Tutoriels : masqué (pas de contenu/lien vidéo pour l'instant) -->
+
+          <!-- Communauté : masqué (pas de lien Discord/forum pour l'instant) -->
+
+          <a class="sb-link" data-name="Contact" href="contact.html"><span class="ic">📧</span> <span class="lbl" data-i18n="db_contact">Contact</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="What's New" href="https://vidsparkpro.com/pricing.html"><span class="ic">🚀</span> <span class="lbl" data-i18n="db_whatsnew">Nouveautés</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
+        </div>
+      </div>
+
+      <!-- GROUP 7 : ACCOUNT — Phase 3 : reste séparé de la bannière "Plus", positionné en
+           dernier, pour incarner le "Paramètres" de la navigation cible (Dashboard /
+           Analyser / Créer / Ma chaîne / Paramètres). data-g="account" inchangé. -->
       <div class="sb-group sb-mobile-only" data-g="account">
         <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_account">Compte</span><span class="gh-chev">▾</span></button>
         <div class="sb-group-items">
@@ -825,20 +1126,6 @@
           <!-- Clés API : masqué (API publique non développée) -->
 
           <a class="sb-link" data-name="Settings" href="account.html"><span class="ic">⚙️</span> <span class="lbl" data-i18n="db_settings">Paramètres</span><span class="sb-arrow">›</span></a>
-        </div>
-      </div>
-
-      <!-- GROUP 8 : HELP (repli mobile/tablette — couvert par la nav de la topbar sur desktop) -->
-      <div class="sb-group sb-mobile-only" data-g="help">
-        <button class="sb-group-h" onclick="toggleGroup(this)"><span class="gh-title" data-i18n="db_g_help">Aide</span><span class="gh-chev">▾</span></button>
-        <div class="sb-group-items">
-          <a class="sb-link" data-name="Documentation" onclick="openTool('docs')"><span class="ic">📚</span> <span class="lbl" data-i18n="db_docs">Documentation</span><span class="sb-arrow">›</span></a>
-          <!-- Tutoriels : masqué (pas de contenu/lien vidéo pour l'instant) -->
-
-          <!-- Communauté : masqué (pas de lien Discord/forum pour l'instant) -->
-
-          <a class="sb-link" data-name="Contact" href="contact.html"><span class="ic">📧</span> <span class="lbl" data-i18n="db_contact">Contact</span><span class="sb-arrow">›</span></a>
-          <a class="sb-link" data-name="What's New" href="https://vidsparkpro.com/pricing.html"><span class="ic">🚀</span> <span class="lbl" data-i18n="db_whatsnew">Nouveautés</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
         </div>
       </div>
     </nav>
@@ -939,18 +1226,18 @@
           <div class="kpi-num"><span id="seoScoreVal">—</span></div>
           <div class="kpi-lbl" data-i18n="kpi_seo">Score SEO</div>
         </div>
-        <div class="kpi k-blue">
+        <div class="kpi k-blue" data-vs-lvl="2">
           <div class="kpi-top"><span class="kpi-ic">📊</span><span class="trend flat" data-i18n="kpi_today">aujourd'hui</span></div>
           <div class="kpi-num"><span id="usageText">0/10</span></div>
           <div class="kpi-lbl" data-i18n="kpi_videos">Vidéos aujourd'hui</div>
           <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
         </div>
-        <div class="kpi k-green">
+        <div class="kpi k-green" data-vs-lvl="2">
           <div class="kpi-top"><span class="kpi-ic">📺</span><span class="trend up" id="chTrend" data-i18n="kpi_connected">connectées</span></div>
           <div class="kpi-num"><span id="channelsCount">0</span></div>
           <div class="kpi-lbl"><a class="card-action" href="channels.html" data-i18n="db_k_managch">Gérer mes chaînes →</a></div>
         </div>
-        <div class="kpi k-violet">
+        <div class="kpi k-violet" data-vs-lvl="2">
           <div class="kpi-top"><span class="kpi-ic">⏳</span><span class="trend flat" data-i18n="db_k_sub">Abonnement</span></div>
           <div class="kpi-num"><span id="daysRemaining">—</span><span class="unit" data-i18n="db_k_d">j</span></div>
           <div class="kpi-lbl" id="planDesc" data-i18n="db_k_daysleft">jours restants</div>
@@ -1002,7 +1289,7 @@
           <div class="card fade-in" style="--d:3">
             <div class="section-title"><span class="st-ic">⚡</span> <span data-i18n="ac_title">Centre d'action</span></div>
             <div class="ac-grid">
-              <div class="mini-panel">
+              <div class="mini-panel" data-vs-lvl="2">
                 <div class="mini-h"><span class="mh-ic">🕑</span> <span data-i18n="ac_recent">Analyses récentes</span></div>
                 <div id="acRecentList">
                 <div class="list-row"><div class="lr-ic">🎬</div><div class="lr-body"><div class="lr-title" data-i18n="ac_rec1_t">Top 5 erreurs SEO</div><div class="lr-sub" data-i18n="ac_rec1_s">SEO · il y a 2h</div></div><div class="lr-score" style="color:var(--green)">87</div></div>
@@ -1020,15 +1307,15 @@
                   <button class="qa-btn" onclick="goToYouTube()"><span class="qa-ic">🎥</span><span class="qa-name" data-i18n="db_openyt">Ouvrir YouTube</span></button>
                 </div>
               </div>
-              <div class="mini-panel">
+              <div class="mini-panel" data-vs-lvl="2">
                 <div class="mini-h"><span class="mh-ic">🧠</span> <span data-i18n="ac_recs">Recommandations IA</span></div>
                 <div id="acRecoList">
-                <div class="list-row"><div class="lr-ic" style="background:rgba(255,157,31,.12)">📝</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco1_t">Ajoute 3 mots-clés au titre</div><div class="lr-sub" data-i18n="ac_reco1_s">+18% de portée estimée</div></div></div>
+                <div class="list-row"><div class="lr-ic" style="background:rgba(242,144,15,.12)">📝</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco1_t">Ajoute 3 mots-clés au titre</div><div class="lr-sub" data-i18n="ac_reco1_s">+18% de portée estimée</div></div></div>
                 <div class="list-row"><div class="lr-ic" style="background:rgba(52,211,153,.12)">⏱</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco2_t">Publie entre 18h–20h</div><div class="lr-sub" data-i18n="ac_reco2_s">Pic d'audience détecté</div></div></div>
                 <div class="list-row"><div class="lr-ic" style="background:rgba(96,165,250,.12)">🔁</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco3_t">Recycle ta vidéo en Short</div><div class="lr-sub" data-i18n="ac_reco3_s">3 moments forts repérés</div></div></div>
                 </div>
               </div>
-              <div class="mini-panel">
+              <div class="mini-panel" data-vs-lvl="3">
                 <div class="mini-h"><span class="mh-ic">🚀</span> <span data-i18n="ac_opps">Opportunités tendance</span></div>
                 <div id="oppList">
                 <div class="opp-row"><span class="opp-tag hot">HOT</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp1">"AI tools 2026"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +240%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('trending')">→</button></div>
@@ -1039,8 +1326,8 @@
             </div>
           </div>
 
-          <!-- ANALYTICS -->
-          <div class="card fade-in" style="--d:4">
+          <!-- ANALYTICS — avancé, visible à partir du niveau 3 (voir vsApplyDashboardLevel) -->
+          <div class="card fade-in" style="--d:4" data-vs-lvl="3">
             <div class="section-title"><span class="st-ic">📈</span> <span data-i18n="an_title">Analytique</span><span class="st-spacer"></span><span class="link-more" onclick="openTool('audit')" data-i18n="db_audit">Audit de chaîne</span></div>
             <div class="charts-grid">
               <div class="chart-box">
@@ -1069,38 +1356,30 @@
             </div>
           </div>
 
-          <!-- ACTIVATION + DÉMARRAGE -->
-          <div class="grid-2 fade-in" style="--d:5">
-            <div class="card primary">
-              <div class="section-title"><span class="st-ic">🔑</span> <span data-i18n="db_act_title">Activation de l'extension</span></div>
-              <div id="codesHint" style="font-size:12px;color:var(--muted);margin:-6px 0 14px;" data-i18n="db_act_hint">Utilise ces codes pour activer ton extension Chrome.</div>
-              <!-- Verrouillé tant qu'aucune chaîne YouTube n'est connectée — voir loadActivationData().
-                   L'ID/Secret (activation_id/activation_secret) ne sont jamais rendus dans le DOM avant
-                   ce moment : le backend lui-même ne les renvoie pas (voir /api/user/me côté serveur). -->
-              <div id="codesLocked" style="display:none;text-align:center;padding:18px 8px;">
-                <div style="font-size:28px;margin-bottom:8px;">🔒</div>
-                <div style="font-size:13px;color:var(--muted);margin-bottom:14px;" data-i18n="db_act_locked">Connecte ta chaîne YouTube pour débloquer l'activation de l'extension.</div>
-                <a href="/channels.html" class="btn btn-primary" data-i18n="db_act_connect_yt">Connecter ma chaîne YouTube</a>
-              </div>
-              <div id="codesUnlocked">
-                <div id="codesContainer"></div>
-                <input type="hidden" id="activationId"><input type="hidden" id="activationSecret">
-                <div style="margin-top:8px;padding:11px 14px;background:rgba(52,211,153,.08);border-left:3px solid var(--green);border-radius:8px;">
-                  <span style="font-size:12px;color:var(--green);" data-i18n="db_act_valid">✅ Code valide — extension prête à l'emploi.</span>
-                </div>
-                <button onclick="releaseDevices()" class="btn btn-ghost" style="width:100%;margin-top:12px;" data-i18n="db_act_release">🔓 PC perdu ? Libérer mes codes</button>
-                <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
-              </div>
+          <!-- ACTIVATION —
+               Phase 2 : la carte "Démarrage rapide" (checklist statique task1/2/3,
+               jamais câblée à aucun état réel) a été retirée. Elle faisait
+               doublon avec l'écran d'onboarding réel (Phase 1, has_data-driven)
+               et n'apportait plus rien une fois celui-ci en place. -->
+          <div class="card primary fade-in" style="--d:5">
+            <div class="section-title"><span class="st-ic">🔑</span> <span data-i18n="db_act_title">Activation de l'extension</span></div>
+            <div id="codesHint" style="font-size:12px;color:var(--muted);margin:-6px 0 14px;" data-i18n="db_act_hint">Utilise ces codes pour activer ton extension Chrome.</div>
+            <!-- Verrouillé tant qu'aucune chaîne YouTube n'est connectée — voir loadActivationData().
+                 L'ID/Secret (activation_id/activation_secret) ne sont jamais rendus dans le DOM avant
+                 ce moment : le backend lui-même ne les renvoie pas (voir /api/user/me côté serveur). -->
+            <div id="codesLocked" style="display:none;text-align:center;padding:18px 8px;">
+              <div style="font-size:28px;margin-bottom:8px;">🔒</div>
+              <div style="font-size:13px;color:var(--muted);margin-bottom:14px;" data-i18n="db_act_locked">Connecte ta chaîne YouTube pour débloquer l'activation de l'extension.</div>
+              <a href="/channels.html" class="btn btn-primary" data-i18n="db_act_connect_yt">Connecter ma chaîne YouTube</a>
             </div>
-
-            <div class="card">
-              <div class="section-title"><span class="st-ic">🚀</span> <span data-i18n="db_qs_title">Démarrage rapide</span></div>
-              <ul class="checklist">
-                <li><input type="checkbox" id="task1"><label for="task1" style="cursor:pointer;flex:1;" data-i18n="db_qs_1">Installer l'extension Chrome</label><a class="btn btn-ghost btn-sm" href="https://chromewebstore.google.com/search/VidSpark%20AI" target="_blank" rel="noopener" data-i18n="db_qs_go">Ouvrir →</a></li>
-                <li><input type="checkbox" id="task2"><label for="task2" style="cursor:pointer;flex:1;" data-i18n="db_qs_2">Connecter ma chaîne YouTube</label><a class="btn btn-ghost btn-sm" href="channels.html" data-i18n="db_qs_go">Ouvrir →</a></li>
-                <li><input type="checkbox" id="task3"><label for="task3" style="cursor:pointer;flex:1;" data-i18n="db_qs_3">Lancer ma première analyse</label><a class="btn btn-ghost btn-sm" href="javascript:void(0)" onclick="openTool('analyze')" data-i18n="db_qs_go">Ouvrir →</a></li>
-              </ul>
-              <a id="qsCta" class="btn btn-secondary" href="https://vidsparkpro.com/pricing.html" style="width:100%;margin-top:16px;" data-i18n="db_qs_plans">🏷️ Voir les forfaits</a>
+            <div id="codesUnlocked">
+              <div id="codesContainer"></div>
+              <input type="hidden" id="activationId"><input type="hidden" id="activationSecret">
+              <div style="margin-top:8px;padding:11px 14px;background:rgba(52,211,153,.08);border-left:3px solid var(--green);border-radius:8px;">
+                <span style="font-size:12px;color:var(--green);" data-i18n="db_act_valid">✅ Code valide — extension prête à l'emploi.</span>
+              </div>
+              <button onclick="releaseDevices()" class="btn btn-ghost" style="width:100%;margin-top:12px;" data-i18n="db_act_release">🔓 PC perdu ? Libérer mes codes</button>
+              <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
             </div>
           </div>
 
@@ -1108,7 +1387,7 @@
 
         <!-- ════ RIGHT RAIL ════ -->
         <aside class="dash-rail">
-          <div class="card rail-card fade-in" style="--d:3">
+          <div class="card rail-card fade-in" style="--d:3" data-vs-lvl="3">
             <div class="section-title"><span class="st-ic">🔑</span> <span data-i18n="rail_kw">Mots-clés tendance</span></div>
             <div class="kw-chip-row" id="kwChipRow">
               <span class="kw-chip">ai tools <span class="kw-up">▲ 240%</span></span>
@@ -1120,21 +1399,21 @@
             </div>
           </div>
 
-          <div class="card rail-card fade-in" style="--d:4">
+          <div class="card rail-card fade-in" style="--d:4" data-vs-lvl="3">
             <div class="section-title"><span class="st-ic">📰</span> <span data-i18n="rail_news">Actus YouTube</span></div>
             <div class="news-row"><span class="news-dot"></span><div class="news-body"><div class="news-title" data-i18n="news1_t">YouTube booste la portée des Shorts longs (3 min)</div><div class="news-time" data-i18n="news1_time">il y a 3h</div></div></div>
             <div class="news-row b"><span class="news-dot"></span><div class="news-body"><div class="news-title" data-i18n="news2_t">Nouveaux insights de rétention dans Studio</div><div class="news-time" data-i18n="news2_time">hier</div></div></div>
             <div class="news-row g"><span class="news-dot"></span><div class="news-body"><div class="news-title" data-i18n="news3_t">Les chapitres améliorent désormais le SEO</div><div class="news-time" data-i18n="news3_time">2j</div></div></div>
           </div>
 
-          <div class="card rail-card ann-card fade-in" style="--d:5">
+          <div class="card rail-card ann-card fade-in" style="--d:5" data-vs-lvl="2">
             <span class="ann-badge" data-i18n="rail_ann">Nouveautés</span>
             <div style="font-weight:800;font-size:14px;margin-bottom:6px;" data-i18n="ann_thumb_title">🎨 Thumbnail Studio</div>
             <div style="font-size:12.5px;color:var(--muted);line-height:1.5;" data-i18n="ann_thumb_desc">Génère des concepts de miniatures par IA + texte dans ta langue. Essaie-le maintenant.</div>
             <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%;" onclick="openTool('thumbnail')" data-i18n="ann_thumb_cta">Découvrir →</button>
           </div>
 
-          <div class="card rail-card tip-card fade-in" style="--d:6">
+          <div class="card rail-card tip-card fade-in" style="--d:6" data-vs-lvl="2">
             <div class="section-title"><span class="st-ic">💡</span> <span data-i18n="rail_tips">Astuce pro</span></div>
             <div class="tip-text" id="tipText" data-i18n="tip_default">Les 3 premières secondes décident de 80 % de ta rétention. Ouvre sur une promesse claire, pas sur un logo.</div>
           </div>
@@ -1546,7 +1825,7 @@
               <div style="font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.channel_name || c.channel_id}</div>
               <div style="font-size:10px;color:var(--muted);font-family:monospace;">${c.channel_id}</div>
             </div>
-            <button data-id="${c.channel_id}" style="background:var(--b2);color:#fa6d6d;border:none;border-radius:4px;padding:4px 10px;font-size:11px;cursor:pointer;">Retirer</button>
+            <button data-id="${c.channel_id}" style="background:var(--b2);color:#C23B22;border:none;border-radius:4px;padding:4px 10px;font-size:11px;cursor:pointer;">Retirer</button>
           `;
           row.querySelector('button').addEventListener('click', () => removeChannel(c.channel_id));
           list.appendChild(row);
@@ -1612,7 +1891,170 @@
         const n = (data.channels || []).length;
         const el = document.getElementById('channelsCount');
         if (el) el.textContent = n;
+        vsOnboardSetChannels(n);
       } catch (e) { console.warn('[Dashboard] loadChannelsCount:', e); }
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       ONBOARDING CONTROLLER — Phase 1.
+       Observe uniquement des signaux déjà chargés par le dashboard
+       (nombre de chaînes via loadChannelsCount, has_data/score via
+       renderCoach) : aucun nouvel appel réseau, aucune donnée inventée.
+       Le masquage définitif de l'écran ne dépend que de `has_data`
+       (1ère analyse réelle) — pas de la chaîne ni de l'extension —
+       pour ne jamais re-bloquer un utilisateur déjà actif qui aurait
+       analysé une vidéo sans passer par l'extension.
+       ════════════════════════════════════════════════════════════ */
+    var VS_OB_DONE_KEY = 'vs_onboarding_complete';
+    var VS_OB_EXT_KEY  = 'vs_ext_confirmed';
+    var vsObState = { channel:false, extension:false, analysis:false, score:false };
+    var vsObPrevDone = { channel:false, extension:false, analysis:false, score:false }; // pour l'animation "pop" au moment précis où une étape se termine
+    // Ne jamais décider d'afficher/masquer l'écran avant d'avoir reçu à la
+    // fois le nombre de chaînes ET le payload coach : sinon un utilisateur
+    // déjà actif verrait un flash de l'onboarding pendant la fraction de
+    // seconde où loadChannelsCount() a répondu mais loadCoach() pas encore.
+    var vsObReady = { channels:false, coach:false };
+
+    function vsObPersistedDone(){
+      try{ return localStorage.getItem(VS_OB_DONE_KEY) === '1'; }catch(e){ return false; }
+    }
+    function vsObMarkDone(){
+      try{ localStorage.setItem(VS_OB_DONE_KEY,'1'); }catch(e){}
+    }
+    function vsObExtConfirmed(){
+      try{ return localStorage.getItem(VS_OB_EXT_KEY) === '1'; }catch(e){ return false; }
+    }
+    function vsObConfirmExtension(){
+      try{ localStorage.setItem(VS_OB_EXT_KEY,'1'); }catch(e){}
+      vsObState.extension = true;
+      vsObRender();
+    }
+    function vsObGoAnalyze(){
+      vsObHide();
+      if(typeof openTool === 'function') openTool('analyze');
+    }
+    window.vsObConfirmExtension = vsObConfirmExtension;
+    window.vsObGoAnalyze = vsObGoAnalyze;
+
+    function vsOnboardSetChannels(n){
+      vsObState.channel = (n || 0) > 0;
+      vsObReady.channels = true;
+      vsObRender();
+    }
+    function vsOnboardSetCoach(d){
+      vsObState.analysis = !!(d && d.has_data && d.videos && d.videos.length);
+      vsObState.score = !!(d && d.has_data && d.score);
+      vsObReady.coach = true;
+      vsObRender();
+    }
+    window.vsOnboardSetChannels = vsOnboardSetChannels;
+    window.vsOnboardSetCoach = vsOnboardSetCoach;
+
+    // Signal passif : si une future version de l'extension diffuse
+    // VIDSPARK_EXT_PRESENT (aucune version actuelle ne le fait — voir
+    // rapport de phase), on le capte automatiquement. Sans effet tant
+    // que l'extension n'est pas mise à jour ; la confirmation manuelle
+    // ci-dessus reste le chemin réel aujourd'hui.
+    window.addEventListener('message', function(ev){
+      if(ev.source !== window) return;
+      if(ev.data && ev.data.type === 'VIDSPARK_EXT_PRESENT'){
+        try{ localStorage.setItem(VS_OB_EXT_KEY,'1'); }catch(e){}
+        vsObState.extension = true;
+        vsObRender();
+      }
+    });
+
+    function vsObShow(){
+      var ob = document.getElementById('vsOnboard');
+      if(ob) ob.hidden = false;
+      document.body.classList.add('vs-onboarding-active');
+    }
+    // Transition douce à la fermeture (fade + léger scale) au lieu d'une
+    // disparition brutale — pur habillage visuel, le moment où vsObHide()
+    // est appelé (déterminé par vsObRender) ne change pas.
+    function vsObHide(){
+      var ob = document.getElementById('vsOnboard');
+      if(!ob || ob.hidden) { document.body.classList.remove('vs-onboarding-active'); return; }
+      ob.classList.add('vs-ob-leaving');
+      setTimeout(function(){
+        ob.hidden = true;
+        ob.classList.remove('vs-ob-leaving');
+        document.body.classList.remove('vs-onboarding-active');
+      }, 260);
+    }
+
+    // Message de progression motivant, dérivé de l'état existant (lecture
+    // seule — ne modifie aucune condition de complétion).
+    function vsObStageMessage(){
+      if(!vsObState.channel) return 'Plus qu\'une chaîne à connecter pour démarrer 🚀';
+      if(!vsObState.extension) return 'Encore 2 petites étapes avant ton premier score SEO.';
+      if(!vsObState.analysis) return 'Plus qu\'une étape avant ton premier score SEO !';
+      return 'Ton premier score SEO est prêt 🎉';
+    }
+
+    function vsObRender(){
+      if(vsObPersistedDone()){ vsObHide(); return; }
+      // Tant que les deux sources de vérité n'ont pas répondu au moins une
+      // fois, on ne montre ni ne cache rien (l'écran reste dans son état
+      // `hidden` initial) pour ne jamais afficher l'onboarding sur la seule
+      // foi d'un signal partiel.
+      if(!vsObReady.channels || !vsObReady.coach) return;
+      vsObState.extension = vsObState.extension || vsObExtConfirmed();
+
+      var steps = ['channel','extension','analysis','score'];
+      var doneCount = 1 + steps.filter(function(k){ return vsObState[k]; }).length; // +1 = compte créé
+      var pct = Math.round(doneCount / 5 * 100);
+
+      var bar = document.getElementById('vsObBar'); if(bar) bar.style.width = pct + '%';
+      var pctEl = document.getElementById('vsObPct'); if(pctEl) pctEl.textContent = pct + ' %';
+      var stageEl = document.getElementById('vsObStageMsg'); if(stageEl) stageEl.textContent = vsObStageMessage();
+
+      var list = document.getElementById('vsObList');
+      if(list){
+        steps.forEach(function(key){
+          var li = list.querySelector('[data-step="' + key + '"]');
+          if(!li) return;
+          var isDone = vsObState[key];
+          li.classList.toggle('done', isDone);
+          var chk = li.querySelector('.vs-ob-chk');
+          if(chk && isDone) chk.textContent = '✓';
+          // Petite pulsation uniquement à l'instant précis où l'étape passe à "fait"
+          if(chk && isDone && !vsObPrevDone[key]){
+            chk.classList.add('pop');
+            setTimeout(function(){ chk.classList.remove('pop'); }, 350);
+          }
+          vsObPrevDone[key] = isDone;
+        });
+      }
+
+      var cta = document.getElementById('vsObCta');
+      if(cta){
+        if(!vsObState.channel){
+          cta.textContent = 'Connecter ma chaîne YouTube';
+          cta.onclick = function(){ window.location.href = 'channels.html'; };
+        } else if(!vsObState.extension){
+          cta.textContent = "Installer l'extension Chrome";
+          cta.onclick = function(){ window.open('https://chromewebstore.google.com/search/VidSpark%20AI', '_blank'); };
+        } else if(!vsObState.analysis){
+          cta.textContent = 'Analyser ma première vidéo';
+          cta.onclick = vsObGoAnalyze;
+        } else {
+          cta.textContent = 'Voir mon tableau de bord';
+          cta.onclick = function(){ vsObMarkDone(); vsObHide(); };
+        }
+      }
+
+      if(vsObState.analysis){
+        vsObMarkDone();
+        // Vue de succès brève avant la transition — pur habillage : le
+        // critère de complétion (has_data) et vsObMarkDone() n'ont pas bougé.
+        var main = document.getElementById('vsObMain');
+        var success = document.getElementById('vsObSuccess');
+        if(main && success){ main.hidden = true; success.hidden = false; }
+        setTimeout(vsObHide, 1600);
+      } else {
+        vsObShow();
+      }
     }
 
     // Charger au démarrage
@@ -1692,6 +2134,7 @@
   }
   function renderCoach(d){
     window.__coach=d;   // mémorise pour initCharts (évite que les fausses courbes reviennent)
+    vsOnboardSetCoach(d);
     const head=document.getElementById('coachHeader'), live=document.getElementById('coachLive');
     // ── Synchroniser la KPI "Score SEO" avec le score Coach ──
     try{
@@ -1709,21 +2152,21 @@
     if(d.has_data && d.score){
       const dash=Math.round(d.score*2.01);
       head.innerHTML=`
-        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px;padding:14px;background:rgba(255,255,255,.02);border:1px solid var(--b1);border-radius:14px;">
+        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px;padding:14px;background:rgba(0,0,0,.025);border:1px solid var(--b1);border-radius:14px;">
           <svg viewBox="0 0 80 80" width="92" height="92" style="flex-shrink:0;">
-            <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="7"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="7"/>
             <circle cx="40" cy="40" r="32" fill="none" stroke="#FF9D1F" stroke-width="7" stroke-linecap="round" stroke-dasharray="${dash} 201" stroke-dashoffset="50" transform="rotate(-90 40 40)"/>
             <text x="40" y="38" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">${d.score}</text>
             <text x="40" y="52" text-anchor="middle" font-size="8" fill="#888">→ ${d.potential}</text>
           </svg>
           <div style="flex:1;min-width:200px;">
             <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">${t('coach_score_lbl')}</div>
-            <div style="font-size:13px;color:#e8e8f0;line-height:1.5;margin-top:5px;">🧠 ${sum}</div>
-            <div style="margin-top:7px;font-weight:800;color:#34d399;">+${d.points} ${t('coach_pts')} ↑</div>
+            <div style="font-size:13px;color:var(--text);line-height:1.5;margin-top:5px;">🧠 ${sum}</div>
+            <div style="margin-top:7px;font-weight:800;color:var(--green);">+${d.points} ${t('coach_pts')} ↑</div>
           </div>
         </div>`;
     } else {
-      head.innerHTML=`<div style="font-size:13px;color:#e8e8f0;line-height:1.5;margin-bottom:16px;padding:14px;background:rgba(255,255,255,.02);border:1px solid var(--b1);border-radius:14px;">🧠 ${sum}</div>`;
+      head.innerHTML=`<div style="font-size:13px;color:var(--text);line-height:1.5;margin-bottom:16px;padding:14px;background:rgba(0,0,0,.025);border:1px solid var(--b1);border-radius:14px;">🧠 ${sum}</div>`;
     }
     const dot={red:'🔴',amber:'🟠',yellow:'🟡',green:'🟢'};
     const col={red:'#ef4444',amber:'#f5b301',yellow:'#facc15',green:'#34d399'};
@@ -1747,9 +2190,34 @@
   }
   function dashCol(s){ return s>=80?'var(--green)':s>=60?'var(--accent-l)':'var(--amber)'; }
   function setTxt(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; }
+
+  /* ════════════════════════════════════════════════════════════
+     DASHBOARD PROGRESSIF — Phase 2.
+     Le dashboard n'est atteint qu'une fois l'onboarding terminé
+     (Phase 1 : has_data=true garanti). La maturité au-delà de ce
+     point est dérivée du nombre d'analyses déjà réalisées
+     (d.videos.length, déjà renvoyé par /api/user/coach — aucun
+     nouvel appel réseau) :
+       Niveau 1 (1-2 analyses)  → résumé + coach + actions rapides
+       Niveau 2 (3-4 analyses)  → + historique, KPI compte, suggestions IA
+       Niveau 3 (5+ analyses)   → + analytics, tendances, actus
+     Chaque élément gaté porte data-vs-lvl="2|3" ; on masque/révèle
+     via l'attribut natif `hidden` (jamais de display recalculé à la main).
+     ════════════════════════════════════════════════════════════ */
+  function vsApplyDashboardLevel(level){
+    document.querySelectorAll('[data-vs-lvl]').forEach(function(el){
+      var need = parseInt(el.getAttribute('data-vs-lvl'), 10);
+      el.hidden = level < need;
+    });
+  }
+
   function hydrateWidgets(d){
     var esc=function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
     var has = d && d.has_data && d.videos && d.videos.length;
+    if(has){
+      var lvl = d.videos.length >= 5 ? 3 : (d.videos.length >= 3 ? 2 : 1);
+      vsApplyDashboardLevel(lvl);
+    }
     /* 1) Analyses récentes = vraies vidéos analysées */
     var rec=document.getElementById('acRecentList');
     if(rec){
@@ -1766,7 +2234,7 @@
     if(reco && d && d.actions && d.actions.length){
       reco.innerHTML=d.actions.slice(0,3).map(function(a){
         var lbl=(window.t? t('coach_a_'+a.key) : a.key);
-        return '<div class="list-row"><div class="lr-ic" style="background:rgba(255,157,31,.12)">'+esc(a.icon||'💡')+'</div><div class="lr-body"><div class="lr-title">'+esc(lbl)+'</div><div class="lr-sub">+'+a.gain+' '+(window.t?t('coach_pts'):'pts')+'</div></div></div>';
+        return '<div class="list-row"><div class="lr-ic" style="background:rgba(242,144,15,.12)">'+esc(a.icon||'💡')+'</div><div class="lr-body"><div class="lr-title">'+esc(lbl)+'</div><div class="lr-sub">+'+a.gain+' '+(window.t?t('coach_pts'):'pts')+'</div></div></div>';
       }).join('');
     }
     /* 2) Charts Analytics = vrais scores de tes vidéos */
@@ -1784,7 +2252,11 @@
       setTxt('valGrowth', d.points!=null?('+'+d.points):'');
       setTxt('valKw', d.videos.length+' '+(window.t?t('dash_vids'):'vidéos'));
     } else if(d && d.has_data===false){
-      ['chartSeo','chartGrowth','chartKw','chartOpt'].forEach(function(id){ var e=document.getElementById(id); if(e) e.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">—</div>'; });
+      // Ce cas ne devrait plus se produire une fois l'onboarding (Phase 1) en place
+      // (le dashboard n'est atteint qu'avec has_data=true) — conservé par sécurité,
+      // avec un message explicatif au lieu d'un simple "—" (règle Phase 2 : jamais
+      // de graphique vide sans explication).
+      ['chartSeo','chartGrowth','chartKw','chartOpt'].forEach(function(id){ var e=document.getElementById(id); if(e) e.innerHTML='<div style="padding:20px 12px;text-align:center;color:var(--muted);font-size:12px;line-height:1.5;">'+(window.t?t('dash_empty_chart'):'Analyse quelques vidéos de plus pour débloquer ce graphique.')+'</div>'; });
       ['legSeo','legViral','legScore','legPot'].forEach(function(id){ setTxt(id,'—'); });
       ['valSeo','valGrowth','valKw'].forEach(function(id){ setTxt(id,''); });
     }
@@ -1915,7 +2387,7 @@
   var _vsToastT;
   function showToast(msg){
     var el=document.getElementById('vsToast');
-    if(!el){ el=document.createElement('div'); el.id='vsToast'; el.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#141c2e;border:1px solid rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:12px;box-shadow:0 18px 50px -18px rgba(0,0,0,.7);z-index:400;opacity:0;transition:opacity .25s,transform .25s;'; document.body.appendChild(el); }
+    if(!el){ el=document.createElement('div'); el.id='vsToast'; el.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#141c2e;border:1px solid rgba(0,0,0,.10);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:12px;box-shadow:0 18px 50px -18px rgba(0,0,0,.7);z-index:400;opacity:0;transition:opacity .25s,transform .25s;'; document.body.appendChild(el); }
     el.textContent=msg; requestAnimationFrame(function(){ el.style.opacity='1'; el.style.transform='translateX(-50%) translateY(0)'; });
     clearTimeout(_vsToastT); _vsToastT=setTimeout(function(){ el.style.opacity='0'; el.style.transform='translateX(-50%) translateY(20px)'; }, 2200);
   }
@@ -2015,7 +2487,7 @@
     var r=30, c=2*Math.PI*r, off=c*(1-pct/100);
     host.innerHTML=
       '<svg viewBox="0 0 80 80" width="100" height="100">'
-      +'<circle cx="40" cy="40" r="'+r+'" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="9"/>'
+      +'<circle cx="40" cy="40" r="'+r+'" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="9"/>'
       +'<circle cx="40" cy="40" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="9" stroke-linecap="round" '
       +'stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+c.toFixed(1)+'" transform="rotate(-90 40 40)" class="dnt"/>'
       +'<text x="40" y="44" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">'+pct+'%</text></svg>';

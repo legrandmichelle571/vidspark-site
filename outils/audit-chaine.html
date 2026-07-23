@@ -5,11 +5,9 @@
 <title>Audit Chaîne YouTube — VidSpark AI</title>
 <meta name="description" content="Audit complet de ta chaîne YouTube : stats réelles, score de santé, fréquence d'upload et recommandations IA.">
 <link rel="stylesheet" href="tools.css">
-<style id="orange-frames">
-.card,.kpi,.section,.panel,.box,.faq-item,.faq{border:1.5px solid #f7941d !important;}
-</style>
+<link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +20,7 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="badge-free" style="background:rgba(247,148,29,.18);color:var(--purple-l)" data-i18n="ac_badge">💎 RÉSERVÉ AUX ABONNÉS DIAMANT</div>
+    <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="ac_badge">💎 RÉSERVÉ AUX ABONNÉS DIAMANT</div>
     <h1 data-i18n="ac_h1">📈 Audit de Chaîne</h1>
     <p data-i18n="ac_sub">Entre le lien de ta chaîne YouTube : l'IA analyse les vraies statistiques (vues, engagement, fréquence) et te donne un score de santé + un plan d'action.</p>
   </div>
@@ -120,7 +118,7 @@ async function go(){
           <div class="vs-premium-section-body" style="display:flex;gap:10px;flex-wrap:wrap;">
             ${kpis.map(k=>`<div style="flex:1;min-width:100px;text-align:center;padding:12px;background:var(--s2);border-radius:8px;border:1.5px solid var(--b2)">
               <div style="font-size:11px;color:var(--muted);margin-bottom:4px">${k.label}</div>
-              <div style="font-size:18px;font-weight:700;color:#f7941d">${k.val}</div>
+              <div style="font-size:18px;font-weight:700;color:#F2900F">${k.val}</div>
             </div>`).join('')}
           </div>
         </div>

@@ -5,18 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
 <title>Conditions Générales d'Utilisation — VidSpark AI</title>
+<link rel="stylesheet" href="/css/tokens.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg:       #07070a;
-    --surface:  #0e0e12;
-    --border:   #1e1e28;
-    --text:     #e8e8f0;
-    --muted:    #8888a0;
-    --purple:   #f7941d;
-    --purple-l: #f9a94a;
-    --green:    #22c55e;
+    --bg:       var(--vs-bg);
+    --surface:  var(--vs-surface);
+    --border:   var(--vs-border-1);
+    --text:     var(--vs-text);
+    --muted:    var(--vs-muted);
+    --purple:   var(--vs-accent);
+    --purple-l: var(--vs-accent-2);
+    --green:    var(--vs-green);
   }
 
   html { scroll-behavior: smooth; }
@@ -50,8 +51,8 @@
   .logo-icon {
     width: 34px;
     height: 34px;
-    background: rgba(247,148,29,.15);
-    border: 1px solid rgba(247,148,29,.4);
+    background: rgba(242,144,15,.15);
+    border: 1px solid rgba(242,144,15,.4);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -74,12 +75,12 @@
     border-bottom: 1px solid var(--border);
     padding: 56px 24px 48px;
     text-align: center;
-    background: linear-gradient(160deg, rgba(247,148,29,.06) 0%, transparent 60%);
+    background: linear-gradient(160deg, rgba(242,144,15,.06) 0%, transparent 60%);
   }
   .hero-badge {
     display: inline-block;
-    background: rgba(247,148,29,.12);
-    border: 1px solid rgba(247,148,29,.3);
+    background: rgba(242,144,15,.12);
+    border: 1px solid rgba(242,144,15,.3);
     color: var(--purple-l);
     font-size: 12px;
     font-weight: 600;
@@ -158,8 +159,8 @@
     font-size: 12px;
     font-weight: 700;
     color: var(--purple);
-    background: rgba(247,148,29,.12);
-    border: 1px solid rgba(247,148,29,.25);
+    background: rgba(242,144,15,.12);
+    border: 1px solid rgba(242,144,15,.25);
     padding: 2px 8px;
     border-radius: 6px;
     min-width: 32px;
@@ -194,7 +195,7 @@
     border-radius: 10px;
     padding: 16px;
   }
-  .plan-card.pro   { border-color: rgba(247,148,29,.4); }
+  .plan-card.pro   { border-color: rgba(242,144,15,.4); }
   .plan-card.biz   { border-color: rgba(34,197,94,.35); }
   .plan-name {
     font-size: 13px;
@@ -225,7 +226,7 @@
   .table-wrap { overflow-x: auto; margin: 16px 0; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th {
-    background: rgba(247,148,29,.08);
+    background: rgba(242,144,15,.08);
     color: var(--purple-l);
     font-weight: 600;
     text-align: left;
@@ -242,7 +243,7 @@
     vertical-align: top;
   }
   td strong { color: var(--text); }
-  tr:hover td { background: rgba(255,255,255,.02); }
+  tr:hover td { background: rgba(0,0,0,.02); }
 
   /* ── Info boxes ── */
   .box {
@@ -252,10 +253,10 @@
     font-size: 13px;
     line-height: 1.6;
   }
-  .box-info  { background: rgba(59,130,246,.08);  border: 1px solid rgba(59,130,246,.25);  color: #93c5fd; }
-  .box-green { background: rgba(34,197,94,.08);   border: 1px solid rgba(34,197,94,.25);   color: #86efac; }
-  .box-warn  { background: rgba(245,158,11,.08);  border: 1px solid rgba(245,158,11,.25);  color: #fcd34d; }
-  .box-red   { background: rgba(239,68,68,.08);   border: 1px solid rgba(239,68,68,.25);   color: #fca5a5; }
+  .box-info  { background: rgba(59,130,246,.08);  border: 1px solid rgba(59,130,246,.25);  color: #1d4ed8; }
+  .box-green { background: rgba(34,197,94,.08);   border: 1px solid rgba(34,197,94,.25);   color: #15803d; }
+  .box-warn  { background: rgba(245,158,11,.08);  border: 1px solid rgba(245,158,11,.25);  color: #a15c07; }
+  .box-red   { background: rgba(239,68,68,.08);   border: 1px solid rgba(239,68,68,.25);   color: #b91c1c; }
 
   /* ── Lists ── */
   ul, ol { padding-left: 20px; color: var(--muted); }
@@ -274,16 +275,10 @@
   footer a { color: var(--purple-l); }
   footer a:hover { text-decoration: underline; }
 </style>
-<style id="orange-frames">
-/* Encadrement orange sur tous les panneaux/cartes */
-.card,.kpi,.section,.panel,.box,.contact-card,.pricing-card,.price-card,.plan-card,.tier-card,.tier,.feature,.feature-card,.faq-item,.faq,.tool-card,.stat-card,.stat,.glass,.info-card,.info-item,.step,.opp-card{border:1.5px solid #f7941d !important;}
-/* Les tuiles d'outils restent pleines (sans bordure) */
-.tool-tile{border:none !important;}
-</style>
   <script src="/js/i18n.js"></script>
   <script src="/js/meta-pixel.js"></script>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0B0F19">
+  <meta name="theme-color" content="#FBF8F3">
   <link rel="icon" href="/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/icons/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -315,7 +310,7 @@
   <h1 data-i18n="tr_h1">Conditions d'utilisation</h1>
   <p data-i18n="tr_sub">Les règles qui gouvernent l'utilisation de VidSpark AI et de ses services.</p>
   <div class="hero-date" data-i18n="tr_date">Dernière mise à jour : 31 mai 2026 · En vigueur immédiatement</div>
-  <div style="margin-top:14px;padding:10px 14px;background:rgba(247,148,29,.1);border:1px solid #f7941d;border-radius:8px;font-size:13px;" data-i18n="tr_note">ℹ️ Le texte juridique ci-dessous fait foi en français. Traductions à titre indicatif.</div>
+  <div style="margin-top:14px;padding:10px 14px;background:rgba(242,144,15,.1);border:1px solid #F2900F;border-radius:8px;font-size:13px;" data-i18n="tr_note">ℹ️ Le texte juridique ci-dessous fait foi en français. Traductions à titre indicatif.</div>
 </div>
 <script>
 registerI18n({
