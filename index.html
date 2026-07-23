@@ -192,7 +192,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(7,7,10,.85);
+  background: rgba(255,255,255,.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--b1);
@@ -403,6 +403,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: radial-gradient(ellipse at center, rgba(242,144,15,.2) 0%, transparent 70%);
   pointer-events: none;
 }
+.score-demo-row { display: flex; gap: 8px; margin-bottom: 18px; }
+.score-demo-input {
+  flex: 1; min-width: 0; font: inherit; font-size: 13.5px;
+  background: var(--s3); border: 1px solid var(--b2); border-radius: var(--r2);
+  padding: 10px 12px; color: var(--text);
+}
+.score-demo-input::placeholder { color: var(--faint); }
+.score-demo-input:focus-visible { outline: 2px solid var(--purple); outline-offset: 1px; }
+.score-demo-btn { white-space: nowrap; flex: none; }
+
 /* ---- Hero score card (Diagnostic + Coach) ---- */
 .score-card {
   width: 460px;
@@ -939,12 +949,17 @@ footer {
         <div class="mockup-wrap">
           <div class="mockup-glow"></div>
 
-          <div class="score-card" role="img" aria-label="Exemple de score VidSpark : 82 sur 100">
+          <div class="score-card">
+            <div class="score-demo-row">
+              <input type="text" id="heroDemoInput" class="score-demo-input" data-i18n-ph="ix_demo_ph" placeholder="youtube.com/@votre-chaine">
+              <button type="button" class="btn btn-primary btn-sm score-demo-btn" id="heroDemoBtn" data-i18n="ix_demo_btn">Analyser</button>
+            </div>
+
             <div class="score-card-top">
               <span class="live-dot" aria-hidden="true"></span>
               <span data-i18n="ix_score_live">Score en direct</span>
             </div>
-            <div class="score-card-num">82</div>
+            <div class="score-card-num" id="heroScoreNum" aria-live="polite">82</div>
             <div class="score-card-meta" data-i18n="ix_score_meta">+6 pts vs vidéo précédente</div>
             <div class="score-card-sub" data-i18n="ix_score_sub">Exemple illustratif — connectez votre chaîne pour votre vrai score</div>
 
@@ -956,7 +971,7 @@ footer {
 
             <div class="coach-line">
               <span class="spark-badge" aria-hidden="true">✦</span>
-              <p data-i18n="ix_coach_line">Top 20% des chaînes « setup ». Mais votre miniature vous coûte des vues.</p>
+              <p id="heroCoachLine" data-i18n="ix_coach_line">Top 20% des chaînes « setup ». Mais votre miniature vous coûte des vues.</p>
             </div>
           </div>
         </div>
@@ -1472,13 +1487,17 @@ registerI18n({
   ifd16:{fr:"Interface et générations en 14 langues, dont l'arabe (RTL) — unique.",en:'Interface and generations in 14 languages, including Arabic (RTL) — unique.',es:'Interfaz y generaciones en 14 idiomas, incluido el árabe (RTL) — único.',ar:'الواجهة والتوليدات بـ14 لغة، منها العربية (RTL) — فريد.'},
 
   // Hero score card (Diagnostic + Coach)
-  ix_score_live:{fr:'Score en direct',en:'Live score'},
-  ix_score_meta:{fr:'+6 pts vs vidéo précédente',en:'+6 pts vs previous video'},
-  ix_score_sub:{fr:'Exemple illustratif — connectez votre chaîne pour votre vrai score',en:'Illustrative example — connect your channel for your real score'},
-  ix_score_title:{fr:'Titre',en:'Title'},
-  ix_score_thumb:{fr:'Miniature',en:'Thumbnail'},
-  ix_score_desc:{fr:'Description',en:'Description'},
-  ix_coach_line:{fr:'Top 20% des chaînes « setup ». Mais votre miniature vous coûte des vues.',en:'Top 20% of "setup" channels. But your thumbnail is costing you views.'},
+  ix_score_live:{fr:'Score en direct',en:'Live score',es:'Puntuación en directo',ar:'نتيجة مباشرة'},
+  ix_score_meta:{fr:'+6 pts vs vidéo précédente',en:'+6 pts vs previous video',es:'+6 pts vs vídeo anterior',ar:'+6 نقاط مقارنة بالفيديو السابق'},
+  ix_score_sub:{fr:'Exemple illustratif — connectez votre chaîne pour votre vrai score',en:'Illustrative example — connect your channel for your real score',es:'Ejemplo ilustrativo — conecta tu canal para tu puntuación real',ar:'مثال توضيحي — اربط قناتك للحصول على نتيجتك الحقيقية'},
+  ix_score_title:{fr:'Titre',en:'Title',es:'Título',ar:'العنوان'},
+  ix_score_thumb:{fr:'Miniature',en:'Thumbnail',es:'Miniatura',ar:'الصورة المصغّرة'},
+  ix_score_desc:{fr:'Description',en:'Description',es:'Descripción',ar:'الوصف'},
+  ix_coach_line:{fr:'Top 20% des chaînes « setup ». Mais votre miniature vous coûte des vues.',en:'Top 20% of "setup" channels. But your thumbnail is costing you views.',es:'Top 20% de los canales "configurados". Pero tu miniatura te cuesta vistas.',ar:'ضمن أفضل 20% من القنوات "المُجهَّزة". لكن صورتك المصغّرة تكلّفك مشاهدات.'},
+  ix_demo_ph:{fr:'youtube.com/@votre-chaine',en:'youtube.com/@yourchannel',es:'youtube.com/@tucanal',ar:'youtube.com/@قناتك'},
+  ix_demo_btn:{fr:'Analyser',en:'Analyze',es:'Analizar',ar:'حلّل'},
+  ix_demo_aria:{fr:'Lien de votre chaîne YouTube',en:'Your YouTube channel link',es:'Enlace de tu canal de YouTube',ar:'رابط قناتك على يوتيوب'},
+  ix_demo_calc:{fr:'Calcul en cours…',en:'Calculating…',es:'Calculando…',ar:'جارٍ الحساب…'},
 
   // Features BENEFITS labels (3 cards: Analytics, Retention, Revenue)
   ixx_benefits_1:{fr:'Analyse automatique',en:'Automatic analysis',es:'Análisis automático',ar:'تحليل تلقائي'},
@@ -1810,6 +1829,55 @@ registerI18n({
     box.innerHTML = html;
     section.style.display = '';
   }
+})();
+</script>
+
+<script>
+(function(){
+  var input   = document.getElementById('heroDemoInput');
+  var btn     = document.getElementById('heroDemoBtn');
+  var numEl   = document.getElementById('heroScoreNum');
+  var coachEl = document.getElementById('heroCoachLine');
+  if (!input || !btn || !numEl || !coachEl) return;
+
+  if (window.t) input.setAttribute('aria-label', t('ix_demo_aria'));
+
+  var TARGET = 82;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var running = false;
+
+  /* Lit la traduction au moment de restaurer (pas à l'exécution de ce
+     script, qui tourne avant que i18n.js applique la langue réelle sur
+     DOMContentLoaded — capturer textContent trop tôt figerait le FR). */
+  function coachLineText(){ return window.t ? t('ix_coach_line') : coachEl.textContent; }
+
+  function animateTo(target){
+    if (reduced) { numEl.textContent = target; return; }
+    var steps = 24, i = 0;
+    var timer = setInterval(function(){
+      i++;
+      numEl.textContent = Math.round((target / steps) * i);
+      if (i >= steps) { clearInterval(timer); numEl.textContent = target; }
+    }, 20);
+  }
+
+  function runDemo(){
+    if (running || !input.value.trim()) { input.focus(); return; }
+    running = true;
+    btn.disabled = true;
+    numEl.textContent = '···';
+    coachEl.textContent = (window.t ? t('ix_demo_calc') : 'Calcul en cours…');
+
+    setTimeout(function(){
+      animateTo(TARGET);
+      coachEl.textContent = coachLineText();
+      btn.disabled = false;
+      running = false;
+    }, reduced ? 0 : 650);
+  }
+
+  btn.addEventListener('click', runDemo);
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter') runDemo(); });
 })();
 </script>
 

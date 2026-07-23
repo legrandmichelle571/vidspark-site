@@ -391,37 +391,6 @@
     .link-more{ font-size:11.5px; font-weight:700; color:var(--accent); letter-spacing:0; text-transform:none; cursor:pointer; }
     .link-more:hover{ color:var(--accent-l); }
 
-    /* ── KPIS ── */
-    .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:24px; }
-    @media(max-width:1100px){ .kpis{ grid-template-columns:repeat(2,1fr); } }
-    @media(max-width:560px){ .kpis{ grid-template-columns:1fr; } }
-    .kpi{
-      position:relative; overflow:hidden;
-      background:linear-gradient(165deg, rgba(0,0,0,.06), rgba(0,0,0,.025));
-      border:1px solid var(--b2); border-radius:var(--radius); padding:20px;
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      transition: transform .25s var(--ease), border-color .25s, box-shadow .25s;
-    }
-    .kpi::after{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-      background:radial-gradient(120px 80px at 85% 0%, var(--kpi-glow, rgba(242,144,15,.08)), transparent 70%); }
-    .kpi:hover{ transform:translateY(-4px); border-color:var(--accent-line); box-shadow:0 22px 48px -22px rgba(0,0,0,.7); }
-    .kpi-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
-    .kpi-ic{
-      width:44px; height:44px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:20px;
-      background:var(--accent-soft); border:1px solid var(--accent-line);
-    }
-    .kpi.k-blue   { --kpi-glow:rgba(96,165,250,.12); } .kpi.k-blue   .kpi-ic{ background:rgba(96,165,250,.12); border-color:rgba(96,165,250,.30); }
-    .kpi.k-green  { --kpi-glow:rgba(52,211,153,.12); } .kpi.k-green  .kpi-ic{ background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.30); }
-    .kpi.k-violet { --kpi-glow:rgba(167,139,250,.12);} .kpi.k-violet .kpi-ic{ background:rgba(167,139,250,.12); border-color:rgba(167,139,250,.30); }
-    .trend{ display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:800; padding:4px 9px; border-radius:20px; }
-    .trend.up{ color:var(--green); background:rgba(52,211,153,.10); }
-    .trend.down{ color:var(--red); background:rgba(248,113,113,.10); }
-    .trend.flat{ color:var(--muted); background:rgba(0,0,0,.055); }
-    .kpi-num{ font-size:32px; font-weight:900; letter-spacing:-1px; line-height:1; }
-    .kpi-num .unit{ font-size:15px; font-weight:700; color:var(--muted); margin-left:4px; }
-    .kpi-lbl{ font-size:12.5px; color:var(--muted); font-weight:600; margin-top:7px; }
-    .kpi .progress-bar{ width:100%; height:6px; background:rgba(0,0,0,.07); border-radius:6px; overflow:hidden; margin:11px 0 0; }
-    .kpi .progress-fill{ height:100%; border-radius:6px; background:linear-gradient(90deg, var(--accent), var(--accent-l)); transition: width 1s var(--ease); }
 
     /* ── DASH GRID (main + rail) ── */
     .dash-grid{ display:grid; grid-template-columns: minmax(0,1fr) 320px; gap:20px; align-items:start; }
@@ -446,6 +415,11 @@
     .coach-action .ca-title{ font-weight:700; font-size:14px; }
     .coach-action .ca-gain{ color:var(--green); font-weight:800; margin-left:4px; }
     .coach-action .ca-why{ font-size:12px; color:var(--muted); margin-top:2px; }
+    /* Une seule action dominante ("quoi faire aujourd'hui"), le reste secondaire */
+    .coach-action.is-primary{ padding:18px 20px; border-left-width:4px; background:linear-gradient(120deg, rgba(242,144,15,.09), rgba(0,0,0,.02)); }
+    .coach-action.is-primary .ca-title{ font-size:15.5px; }
+    .coach-action.is-minor{ padding:10px 14px; opacity:.85; }
+    .coach-action.is-minor .ca-title{ font-size:12.5px; font-weight:600; }
 
     /* ── ACTION CENTER ── */
     .ac-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
@@ -554,10 +528,7 @@
     /* ── LOADING SKELETON ── */
     .sk{ background:linear-gradient(100deg, rgba(0,0,0,.045) 30%, rgba(0,0,0,.09) 50%, rgba(0,0,0,.045) 70%); background-size:200% 100%; animation: shimmer 1.4s infinite; border-radius:10px; }
     @keyframes shimmer{ to{ background-position:-200% 0; } }
-    .sk-kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin:26px 0 24px; }
-    @media(max-width:1100px){ .sk-kpis{ grid-template-columns:repeat(2,1fr); } }
-    .sk-kpi{ height:128px; border-radius:var(--radius); }
-    .sk-row{ display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:20px; }
+    .sk-row{ display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:20px; margin-top:26px; }
     @media(max-width:1180px){ .sk-row{ grid-template-columns:1fr; } }
     .sk-big{ height:340px; border-radius:var(--radius); }
     .sk-rail{ height:340px; border-radius:var(--radius); }
@@ -757,6 +728,17 @@
       db_k_daysleft:{fr:'jours restants',en:'days remaining',es:'días restantes',ar:'الأيام المتبقّية',pt:'dias restantes',de:'verbleibende Tage',it:'giorni rimanenti',ru:'дней осталось',ja:'残り日数',ko:'남은 일수',hi:'शेष दिन',zh:'剩余天数',tr:'kalan gün',nl:'resterende dagen'},
       db_s_coach:{fr:'Coach',en:'Coach',ar:'المدرّب'}, db_s_analyser:{fr:'🔍 ANALYSER',en:'🔍 ANALYZE',ar:'🔍 تحليل'}, db_s_creer:{fr:'✍️ CRÉER',en:'✍️ CREATE',ar:'✍️ إنشاء'}, db_s_studio:{fr:'🎨 STUDIO',en:'🎨 STUDIO',ar:'🎨 الاستوديو'}, db_s_croissance:{fr:'📈 CROISSANCE',en:'📈 GROWTH',ar:'📈 النمو'},
       db_coach_title:{fr:'Ton plan cette semaine',en:'Your plan this week',ar:'خطّتك هذا الأسبوع'}, db_coach_sub:{fr:'Applique ces actions pour booster ta chaîne. Commence par la plus impactante.',en:'Apply these actions to grow your channel. Start with the most impactful one.',ar:'طبّق هذه الإجراءات لتعزيز قناتك. ابدأ بالأكثر تأثيرًا.'}, db_coach_cta:{fr:'Corriger',en:'Fix it',ar:'تصحيح'},
+      /* Ces 6 clés existaient déjà en data-i18n sur la carte "Activation de l'extension" mais
+         n'avaient jamais été enregistrées ici → elles s'affichaient comme clé brute (ex:
+         "db_act_locked") pour tout le monde, dans toutes les langues. Trouvé lors de la
+         vérification complète du Dashboard (2026-07-23), corrigé avec le même texte de repli
+         que celui déjà présent dans le HTML. */
+      db_act_title:{fr:"Activation de l'extension",en:'Extension activation',ar:'تفعيل الإضافة'},
+      db_act_hint:{fr:'Utilise ces codes pour activer ton extension Chrome.',en:'Use these codes to activate your Chrome extension.',ar:'استخدم هذه الرموز لتفعيل إضافة Chrome الخاصة بك.'},
+      db_act_locked:{fr:"Connecte ta chaîne YouTube pour débloquer l'activation de l'extension.",en:'Connect your YouTube channel to unlock extension activation.',ar:'اربط قناتك على يوتيوب لإلغاء قفل تفعيل الإضافة.'},
+      db_act_connect_yt:{fr:'Connecter ma chaîne YouTube',en:'Connect my YouTube channel',ar:'ربط قناتي على يوتيوب'},
+      db_act_valid:{fr:'✅ Code valide — extension prête à l\'emploi.',en:'✅ Valid code — extension ready to use.',ar:'✅ رمز صالح — الإضافة جاهزة للاستخدام.'},
+      db_act_release:{fr:'🔓 PC perdu ? Libérer mes codes',en:'🔓 Lost your PC? Release my codes',ar:'🔓 فقدت جهازك؟ حرّر رموزي'},
       db_coach_a1:{fr:'Analyse ta dernière vidéo',en:'Analyze your latest video',ar:'حلّل آخر فيديو لك'}, db_coach_w1:{fr:'Trouve quoi corriger pour plus de vues',en:'Find what to fix for more views',ar:'اكتشف ما يجب تصحيحه لمزيد من المشاهدات'},
       db_coach_a2:{fr:'Crée une miniature qui convertit',en:'Create a thumbnail that converts',ar:'أنشئ صورة مصغّرة تحوّل'}, db_coach_w2:{fr:'Concepts IA + texte dans ta langue',en:'AI concepts + text in your language',ar:'مفاهيم بالذكاء الاصطناعي + نص بلغتك'},
       db_coach_a3:{fr:'Publie un Short sur un sujet tendance',en:'Post a Short on a trending topic',ar:'انشر Short حول موضوع رائج'}, db_coach_w3:{fr:'Capte la vague avant les autres',en:'Catch the wave before others',ar:'اركب الموجة قبل الآخرين'},
@@ -842,6 +824,9 @@
       dash_empty_rec:{fr:'Analyse ta première vidéo pour voir tes résultats ici.',en:'Analyze your first video to see your results here.',ar:'حلّل أول فيديو لك لرؤية نتائجك هنا.'},
       dash_vids:{fr:'vidéos',en:'videos',ar:'فيديو'},
       dash_empty_trend:{fr:'Analyse une vidéo pour découvrir les tendances de ta niche.',en:'Analyze a video to discover your niche trends.',ar:'حلّل فيديو لاكتشاف رواج مجالك.'},
+      /* Clé manquante trouvée lors de la vérification (état "nouvel utilisateur") : les 4 graphiques
+         Analytique affichaient la clé brute "dash_empty_chart" au lieu du message, dans toutes les langues. */
+      dash_empty_chart:{fr:'Analyse quelques vidéos de plus pour débloquer ce graphique.',en:'Analyze a few more videos to unlock this chart.',ar:'حلّل بضعة فيديوهات إضافية لفتح هذا الرسم البياني.'},
       opp_vph:{fr:'vues/h',en:'views/h',ar:'مشاهدة/س'},
       ac_opp1:{fr:'« Outils IA 2026 »',en:'"AI tools 2026"',ar:'«أدوات الذكاء الاصطناعي 2026»'},
       ac_opp2:{fr:'« Algorithme YouTube »',en:'"YouTube algorithm"',ar:'«خوارزمية يوتيوب»'},
@@ -1148,9 +1133,6 @@
     <!-- Skeleton de chargement -->
     <div id="loading">
       <div class="sk" style="height:46px;width:280px;border-radius:12px;margin-bottom:26px;"></div>
-      <div class="sk-kpis">
-        <div class="sk sk-kpi"></div><div class="sk sk-kpi"></div><div class="sk sk-kpi"></div><div class="sk sk-kpi"></div>
-      </div>
       <div class="sk-row">
         <div class="sk sk-big"></div>
         <div class="sk sk-rail"></div>
@@ -1219,30 +1201,22 @@
         <p class="tb-sub" id="userEmail">Chargement…</p>
       </div>
 
-      <!-- ════ KPI OVERVIEW ════ -->
-      <section class="kpis fade-in" style="--d:1">
-        <div class="kpi">
-          <div class="kpi-top"><span class="kpi-ic">🎯</span><span class="trend up" id="seoTrend">▲ live</span></div>
-          <div class="kpi-num"><span id="seoScoreVal">—</span></div>
-          <div class="kpi-lbl" data-i18n="kpi_seo">Score SEO</div>
-        </div>
-        <div class="kpi k-blue" data-vs-lvl="2">
-          <div class="kpi-top"><span class="kpi-ic">📊</span><span class="trend flat" data-i18n="kpi_today">aujourd'hui</span></div>
-          <div class="kpi-num"><span id="usageText">0/10</span></div>
-          <div class="kpi-lbl" data-i18n="kpi_videos">Vidéos aujourd'hui</div>
-          <div class="progress-bar"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
-        </div>
-        <div class="kpi k-green" data-vs-lvl="2">
-          <div class="kpi-top"><span class="kpi-ic">📺</span><span class="trend up" id="chTrend" data-i18n="kpi_connected">connectées</span></div>
-          <div class="kpi-num"><span id="channelsCount">0</span></div>
-          <div class="kpi-lbl"><a class="card-action" href="channels.html" data-i18n="db_k_managch">Gérer mes chaînes →</a></div>
-        </div>
-        <div class="kpi k-violet" data-vs-lvl="2">
-          <div class="kpi-top"><span class="kpi-ic">⏳</span><span class="trend flat" data-i18n="db_k_sub">Abonnement</span></div>
-          <div class="kpi-num"><span id="daysRemaining">—</span><span class="unit" data-i18n="db_k_d">j</span></div>
-          <div class="kpi-lbl" id="planDesc" data-i18n="db_k_daysleft">jours restants</div>
-        </div>
-      </section>
+      <!-- Les 4 cartes KPI visuelles (Score SEO / Vidéos du jour / Chaînes / Abonnement) ont été
+           retirées : le score vit désormais dans la jauge de la carte Coach, le reste est
+           accessible via channels.html / billing.html.
+           seoScoreVal/seoTrend/chTrend/planDesc n'avaient aucun autre lecteur que cette carte
+           → supprimés avec elle.
+           usageText/progressFill/channelsCount/daysRemaining sont conservés ci-dessous, invisibles :
+           ce sont de vrais ancrages de données, pas un reliquat visuel — syncUserCard() les lit
+           pour alimenter la carte utilisateur de la sidebar (visible sur tout le site), et
+           loadUsage()/loadChannelsCount()/loadSubscription() écrivent dedans sans garde nulle.
+           À supprimer seulement si ces deux dépendances sont un jour refaites autrement. -->
+      <div id="dashDataAnchors" hidden>
+        <span id="usageText">0/10</span>
+        <div id="progressFill" style="width:0%"></div>
+        <span id="channelsCount">0</span>
+        <span id="daysRemaining">—</span>
+      </div>
 
       <!-- ════ GRID : contenu principal + rail droit ════ -->
       <div class="dash-grid">
@@ -1254,33 +1228,30 @@
             <div style="font-size:12.5px;color:var(--muted);margin:-8px 0 16px;" data-i18n="db_coach_sub">Applique ces actions pour booster ta chaîne. Commence par la plus impactante.</div>
             <div id="coachHeader"></div>
             <div id="coachLive">
-              <div class="coach-action" style="--ca:#ef4444">
+              <div class="coach-action is-primary" style="--ca:#ef4444">
                 <div class="ca-body">
                   <div class="ca-title">🔴 ✍️ <span data-i18n="db_coach_a1">Analyse ta dernière vidéo</span> <span class="ca-gain">+18</span></div>
                   <div class="ca-why" data-i18n="db_coach_w1">Trouve quoi corriger pour plus de vues</div>
                 </div>
                 <button class="btn btn-primary btn-sm" onclick="openTool('analyze')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
               </div>
-              <div class="coach-action" style="--ca:#f5b301">
+              <div class="coach-action is-minor" style="--ca:#f5b301">
                 <div class="ca-body">
-                  <div class="ca-title">🟠 🎨 <span data-i18n="db_coach_a2">Crée une miniature qui convertit</span> <span class="ca-gain">+12</span></div>
-                  <div class="ca-why" data-i18n="db_coach_w2">Concepts IA + texte dans ta langue</div>
+                  <div class="ca-title">🎨 <span data-i18n="db_coach_a2">Crée une miniature qui convertit</span> <span class="ca-gain">+12</span></div>
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="openTool('thumbnail')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
+                <button class="btn btn-ghost btn-sm" onclick="openTool('thumbnail')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
               </div>
-              <div class="coach-action" style="--ca:#facc15">
+              <div class="coach-action is-minor" style="--ca:#facc15">
                 <div class="ca-body">
-                  <div class="ca-title">🟡 📱 <span data-i18n="db_coach_a3">Publie un Short sur un sujet tendance</span> <span class="ca-gain">+8</span></div>
-                  <div class="ca-why" data-i18n="db_coach_w3">Capte la vague avant les autres</div>
+                  <div class="ca-title">📱 <span data-i18n="db_coach_a3">Publie un Short sur un sujet tendance</span> <span class="ca-gain">+8</span></div>
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="openTool('shorts')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
+                <button class="btn btn-ghost btn-sm" onclick="openTool('shorts')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
               </div>
-              <div class="coach-action" style="--ca:#facc15">
+              <div class="coach-action is-minor" style="--ca:#facc15">
                 <div class="ca-body">
-                  <div class="ca-title">🟡 🎯 <span data-i18n="db_coach_a4">Suis tes mots-clés</span> <span class="ca-gain">+6</span></div>
-                  <div class="ca-why" data-i18n="db_coach_w4">Vois ton classement progresser dans le temps</div>
+                  <div class="ca-title">🎯 <span data-i18n="db_coach_a4">Suis tes mots-clés</span> <span class="ca-gain">+6</span></div>
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="openTool('rank')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
+                <button class="btn btn-ghost btn-sm" onclick="openTool('rank')"><span data-i18n="db_coach_cta">Corriger</span> →</button>
               </div>
             </div>
           </div>
@@ -1307,15 +1278,7 @@
                   <button class="qa-btn" onclick="goToYouTube()"><span class="qa-ic">🎥</span><span class="qa-name" data-i18n="db_openyt">Ouvrir YouTube</span></button>
                 </div>
               </div>
-              <div class="mini-panel" data-vs-lvl="2">
-                <div class="mini-h"><span class="mh-ic">🧠</span> <span data-i18n="ac_recs">Recommandations IA</span></div>
-                <div id="acRecoList">
-                <div class="list-row"><div class="lr-ic" style="background:rgba(242,144,15,.12)">📝</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco1_t">Ajoute 3 mots-clés au titre</div><div class="lr-sub" data-i18n="ac_reco1_s">+18% de portée estimée</div></div></div>
-                <div class="list-row"><div class="lr-ic" style="background:rgba(52,211,153,.12)">⏱</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco2_t">Publie entre 18h–20h</div><div class="lr-sub" data-i18n="ac_reco2_s">Pic d'audience détecté</div></div></div>
-                <div class="list-row"><div class="lr-ic" style="background:rgba(96,165,250,.12)">🔁</div><div class="lr-body"><div class="lr-title" data-i18n="ac_reco3_t">Recycle ta vidéo en Short</div><div class="lr-sub" data-i18n="ac_reco3_s">3 moments forts repérés</div></div></div>
-                </div>
-              </div>
-              <div class="mini-panel" data-vs-lvl="3">
+              <div class="mini-panel" data-vs-lvl="3" style="grid-column:1/-1">
                 <div class="mini-h"><span class="mh-ic">🚀</span> <span data-i18n="ac_opps">Opportunités tendance</span></div>
                 <div id="oppList">
                 <div class="opp-row"><span class="opp-tag hot">HOT</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp1">"AI tools 2026"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +240%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('trending')">→</button></div>
@@ -1582,8 +1545,12 @@
 
     async function loadDashboard() {
       try {
-        // Vérifier connexion
-        await Auth.requireLogin();
+        // Vérifier connexion — requireLogin() redirige déjà vers /login.html si absent,
+        // mais ne bloque pas l'exécution : sans ce retour anticipé, le reste de la fonction
+        // continuait et affichait un "Failed to load dashboard: Not authenticated" pendant
+        // la fraction de seconde avant que la navigation vers /login.html ne prenne effet.
+        const isLoggedIn = await Auth.requireLogin();
+        if (!isLoggedIn) return;
 
         // Récupérer l'utilisateur depuis Supabase Auth
         const user = await Auth.getCurrentUser();
@@ -2136,19 +2103,13 @@
     window.__coach=d;   // mémorise pour initCharts (évite que les fausses courbes reviennent)
     vsOnboardSetCoach(d);
     const head=document.getElementById('coachHeader'), live=document.getElementById('coachLive');
-    // ── Synchroniser la KPI "Score SEO" avec le score Coach ──
-    try{
-      if(d.has_data && d.score){
-        const sv=document.getElementById('seoScoreVal');
-        if(sv){ sv.textContent=d.score; sv.setAttribute('data-target', d.score); }
-        const st=document.getElementById('seoTrend');
-        if(st){ st.className='trend up'; st.textContent='▲ +'+(d.points!=null?d.points:0); }
-        if(typeof runCounters==='function') runCounters();
-      }
-    }catch(e){}
     try{ hydrateWidgets(d); }catch(e){}
     if(!head||!live||!window.t) return;
-    const sum = t('coach_sum_'+(d.main_problem||'healthy'));
+    // Un nouvel utilisateur sans donnée (has_data:false) n'a pas de main_problem calculé —
+    // sans ce cas, il retombait sur 'healthy' ("ta chaîne est bien optimisée"), un message
+    // trompeur pour quelqu'un qui n'a encore rien analysé. 'new' est le message d'accueil
+    // déjà écrit et traduit pour exactement ce cas (voir coach_sum_new).
+    const sum = t('coach_sum_'+(d.main_problem||(d.has_data?'healthy':'new')));
     if(d.has_data && d.score){
       const dash=Math.round(d.score*2.01);
       head.innerHTML=`
@@ -2173,12 +2134,15 @@
     const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const acts=(d.actions||[]);
     if(acts.length){
-      live.innerHTML=acts.map(a=>`
-        <div class="coach-action" style="--ca:${col[a.priority]||'#888'}">
+      /* Une seule action prioritaire mise en avant ("quoi faire aujourd'hui") ;
+         les suivantes restent visibles mais en secondaire — évite la liste plate
+         de 4 actions à poids égal (voir mockup Coach validé le 2026-07-23). */
+      live.innerHTML=acts.map((a,i)=>`
+        <div class="coach-action ${i===0?'is-primary':'is-minor'}" style="--ca:${col[a.priority]||'#888'}">
           <div class="ca-body">
-            <div class="ca-title">${dot[a.priority]||''} ${esc(a.icon)} ${esc(t('coach_a_'+a.key))} <span class="ca-gain">+${a.gain}</span></div>
+            <div class="ca-title">${i===0?(dot[a.priority]||''):''} ${i===0?esc(a.icon):''} ${esc(t('coach_a_'+a.key))} <span class="ca-gain">+${a.gain}</span></div>
           </div>
-          <button class="btn btn-primary btn-sm" onclick="openTool('${esc(a.goto)}')">${t('db_coach_cta')} →</button>
+          <button class="btn ${i===0?'btn-primary':'btn-ghost'} btn-sm" onclick="openTool('${esc(a.goto)}')">${t('db_coach_cta')} →</button>
         </div>`).join('');
     }
   }
@@ -2228,14 +2192,6 @@
       } else if(d && d.has_data===false){
         rec.innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-size:12.5px;">'+(window.t?t('dash_empty_rec'):'Analyse ta première vidéo pour voir tes résultats ici.')+'</div>';
       }
-    }
-    /* 1b) Recommandations IA = actions priorisées du coach (réel, personnalisé) */
-    var reco=document.getElementById('acRecoList');
-    if(reco && d && d.actions && d.actions.length){
-      reco.innerHTML=d.actions.slice(0,3).map(function(a){
-        var lbl=(window.t? t('coach_a_'+a.key) : a.key);
-        return '<div class="list-row"><div class="lr-ic" style="background:rgba(242,144,15,.12)">'+esc(a.icon||'💡')+'</div><div class="lr-body"><div class="lr-title">'+esc(lbl)+'</div><div class="lr-sub">+'+a.gain+' '+(window.t?t('coach_pts'):'pts')+'</div></div></div>';
-      }).join('');
     }
     /* 2) Charts Analytics = vrais scores de tes vidéos */
     if(has){
@@ -2421,9 +2377,9 @@
     p.classList.remove('open');
   });
 
-  /* Compteurs animés : anime le préfixe numérique d'un .kpi-num span */
+  /* Compteurs animés : anime le préfixe numérique de #channelsCount / #daysRemaining */
   function runCounters(){
-    document.querySelectorAll('#seoScoreVal, #channelsCount, #daysRemaining').forEach(function(el){
+    document.querySelectorAll('#channelsCount, #daysRemaining').forEach(function(el){
       if(el.dataset.counted==='1') return;
       var raw=(el.textContent||'').trim();
       var m=raw.match(/^(\d+)/);

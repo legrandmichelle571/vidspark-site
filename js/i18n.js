@@ -63,7 +63,7 @@
     if(!document.getElementById('vsLangFloat')){
       const wrap = document.createElement('div');
       wrap.id = 'vsLangFloat';
-      wrap.innerHTML = `<select aria-label="Language" style="background:#141418;color:#e8e8f0;border:1px solid #2b3647;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);max-width:120px;">
+      wrap.innerHTML = `<select aria-label="Language" style="background:#FFFFFF;color:#211D16;border:1px solid #DCD3C2;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer;box-shadow:0 2px 8px rgba(33,29,22,.12);max-width:120px;">
         ${LANGS.map(l=>`<option value="${l.c}"${l.c===lang?' selected':''}>${l.n}</option>`).join('')}
       </select>`;
 

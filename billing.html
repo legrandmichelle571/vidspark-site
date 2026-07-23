@@ -142,7 +142,7 @@
     bill_f_dmt_3:{fr:'💎 Audit de chaîne avancé',en:'💎 Advanced channel audit',ar:'💎 تدقيق متقدم للقناة'},
     bill_f_dmt_4:{fr:'💎 Rank Tracker',en:'💎 Rank Tracker',ar:'💎 متتبّع الترتيب'},
     bill_f_dmt_5:{fr:'5000 analyses / jour',en:'5000 analyses / day',ar:'5000 تحليل / يوم'},
-    bill_f_dmt_6:{fr:'2000 titres IA / jour',en:'2000 AI titles / day',ar:'2000 عنوان ذكاء اصطناعي / يوم'},
+    bill_f_dmt_6:{fr:'2500 titres IA / jour',en:'2500 AI titles / day',ar:'2500 عنوان ذكاء اصطناعي / يوم'},
     /* ── MESSAGES JS ── */
     bill_loading_crypt:{fr:'⏳ Création du paiement Cryptomus...',en:'⏳ Creating Cryptomus payment...',ar:'⏳ جارٍ إنشاء دفعة Cryptomus...'},
     bill_loading_pp:{fr:'⏳ Redirection vers PayPal...',en:'⏳ Redirecting to PayPal...',ar:'⏳ جارٍ التوجيه إلى PayPal...'},
@@ -151,6 +151,16 @@
     bill_err_pp:{fr:'Erreur PayPal',en:'PayPal error',ar:'خطأ PayPal'},
     bill_ok_cancel:{fr:'✅ Abonnement annulé.',en:'✅ Subscription cancelled.',ar:'✅ تم إلغاء الاشتراك.'},
     bill_confirm_cancel:{fr:'Annuler ton abonnement ? Tu repasseras en Gratuit à la fin de la période.',en:'Cancel your subscription? You\'ll revert to Free at end of period.',ar:'هل تريد إلغاء اشتراكك؟ ستعود إلى الخطة المجانية في نهاية الفترة.'},
+    /* ── STATUT & PORTAIL STRIPE ── */
+    bill_pay_stripe:{fr:'💳 Carte bancaire',en:'💳 Credit card',ar:'💳 بطاقة ائتمان'},
+    bill_manage_sub:{fr:'Gérer mon abonnement',en:'Manage subscription',ar:'إدارة الاشتراك'},
+    bill_ending_note:{fr:'Se termine le',en:'Ends on',ar:'ينتهي في'},
+    bill_resume_btn:{fr:'Reprendre mon abonnement',en:'Resume my subscription',ar:'استئناف اشتراكي'},
+    bill_ok_resume:{fr:'✅ Abonnement repris.',en:'✅ Subscription resumed.',ar:'✅ تم استئناف الاشتراك.'},
+    bill_invoices_title:{fr:'Historique des factures',en:'Billing history',ar:'سجل الفواتير'},
+    bill_invoices_empty:{fr:'Aucune facture pour le moment.',en:'No invoices yet.',ar:'لا توجد فواتير بعد.'},
+    bill_invoice_paid:{fr:'Payée',en:'Paid',ar:'مدفوعة'},
+    bill_invoice_failed:{fr:'Échouée',en:'Failed',ar:'فاشلة'},
   });
   </script>
   <link rel="manifest" href="/manifest.json">
@@ -176,7 +186,10 @@
         <div class="lbl" data-i18n="bill_lbl">Ton plan actuel</div>
         <div class="plan"><span id="curPlan" class="pill free">FREE</span></div>
       </div>
-      <div id="curExpiry" style="color:var(--muted);font-size:13px;"></div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div id="curExpiry" style="color:var(--muted);font-size:13px;"></div>
+        <button id="manageSubBtn" class="choose ghost" style="display:none;width:auto;padding:9px 18px;" onclick="manageSubscription()" data-i18n="bill_manage_sub">Gérer mon abonnement</button>
+      </div>
     </div>
 
     <div class="toggle">
@@ -190,10 +203,16 @@
     <div id="msg"></div>
 
     <div class="cancel-row" id="cancelRow" style="display:none;">
-      <button onclick="cancelSubscription()" data-i18n="bill_cancel_btn">Annuler mon abonnement</button>
+      <button onclick="cancelSubscription()" id="cancelBtn" data-i18n="bill_cancel_btn">Annuler mon abonnement</button>
+      <button onclick="resumeSubscription()" id="resumeBtn" style="display:none;border-color:var(--green);color:var(--green);" data-i18n="bill_resume_btn">Reprendre mon abonnement</button>
     </div>
 
     <div class="secure" data-i18n="bill_secure">🔒 Paiement sécurisé par PayPal & Cryptomus — annulable à tout moment.</div>
+
+    <div id="invoicesSection" style="display:none;margin-top:48px;">
+      <h2 style="font-size:18px;font-weight:800;margin-bottom:16px;" data-i18n="bill_invoices_title">Historique des factures</h2>
+      <div id="invoicesList"></div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -298,10 +317,37 @@
         msg.style.color = 'var(--muted)';
         msg.innerHTML = `
           <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+            <button onclick="checkout('${plan}','stripe')" style="padding:12px 24px;background:linear-gradient(135deg,var(--purple),var(--purple-l));color:#0b0f19;border:none;border-radius:8px;cursor:pointer;font-weight:600;">${t('bill_pay_stripe')}</button>
             <button onclick="checkout('${plan}','paypal')" style="padding:12px 24px;background:var(--purple);color:#0b0f19;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🅿️ PayPal</button>
             <button onclick="checkout('${plan}','cryptomus')" style="padding:12px 24px;background:var(--gold);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">₿ USD / USDT</button>
           </div>
         `;
+        return;
+      }
+
+      // Stripe: Appel API (Checkout hébergé, aucune donnée de carte manipulée ici)
+      if(provider === 'stripe'){
+        msg.style.color = 'var(--muted)';
+        msg.textContent = '⏳ ...';
+        try{
+          const session = await Auth.getSession();
+          if(!session?.access_token){ msg.textContent=t('bill_err_login'); setTimeout(()=>location.href='login',1200); return; }
+          const res = await fetch(`${API_BASE}/api/subscription/checkout/stripe`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`},
+            body: JSON.stringify({ plan, interval })
+          });
+          const data = await res.json();
+          if(res.ok && data.checkout_url){
+            window.location.href = data.checkout_url;
+          } else {
+            msg.style.color='var(--red)';
+            msg.textContent = '❌ ' + (data.error || 'Stripe error');
+          }
+        }catch(e){
+          msg.style.color='var(--red)';
+          msg.textContent = '❌ Erreur : ' + e.message;
+        }
         return;
       }
 
@@ -369,6 +415,44 @@
       }catch(e){ msg.style.color='var(--red)'; msg.textContent='❌ '+e.message; }
     }
 
+    async function resumeSubscription(){
+      const msg = document.getElementById('msg');
+      try{
+        const session = await Auth.getSession();
+        const res = await fetch(`${API_BASE}/api/subscription/resume`,{
+          method:'POST',
+          headers:{'Authorization':`Bearer ${session.access_token}`}
+        });
+        if(res.ok){ msg.style.color='var(--green)'; msg.textContent=t('bill_ok_resume'); setTimeout(()=>location.reload(),1500); }
+        else { const d=await res.json().catch(()=>({})); msg.style.color='var(--red)'; msg.textContent='❌ '+(d.error||'Erreur'); }
+      }catch(e){ msg.style.color='var(--red)'; msg.textContent='❌ '+e.message; }
+    }
+
+    function manageSubscription(){
+      if (window._billingPortalUrl) window.location.href = window._billingPortalUrl;
+    }
+
+    async function loadInvoices(session){
+      try{
+        const res = await fetch(`${API_BASE}/api/subscription/invoices`,{ headers:{'Authorization':`Bearer ${session.access_token}`} });
+        if(!res.ok) return;
+        const { invoices } = await res.json();
+        const section = document.getElementById('invoicesSection');
+        const list = document.getElementById('invoicesList');
+        if(!invoices || !invoices.length){ return; }
+        section.style.display = 'block';
+        list.innerHTML = invoices.map(inv=>{
+          const d = new Date(inv.created_at).toLocaleDateString();
+          const ok = inv.status === 'succeeded';
+          return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--b1);font-size:14px;">
+            <span>${d}</span>
+            <span style="color:var(--muted);">${(inv.amount||0).toFixed(2)} ${(inv.currency||'').toUpperCase()}</span>
+            <span style="color:${ok?'var(--green)':'var(--red)'};font-weight:600;">${ok?t('bill_invoice_paid'):t('bill_invoice_failed')}</span>
+          </div>`;
+        }).join('');
+      }catch(e){ /* historique optionnel, ne bloque pas la page */ }
+    }
+
     async function loadCurrent(){
       try{
         const session = await Auth.getSession();
@@ -388,6 +472,30 @@
             }
           }
         }
+
+        /* Détails Stripe (portail, renouvellement, reprise) — best effort,
+           n'affecte pas l'affichage du plan ci-dessus si l'appel échoue. */
+        const statusRes = await fetch(`${API_BASE}/api/subscription/status`,{ headers:{'Authorization':`Bearer ${session.access_token}`} });
+        if(statusRes.ok){
+          const { subscription: sub, billing_url } = await statusRes.json();
+          if(billing_url){
+            window._billingPortalUrl = billing_url;
+            document.getElementById('manageSubBtn').style.display='inline-block';
+          }
+          if(sub?.cancel_at_period_end){
+            document.getElementById('cancelBtn').style.display='none';
+            document.getElementById('resumeBtn').style.display='inline-block';
+            if(sub.current_period_end){
+              const d = new Date(sub.current_period_end);
+              document.getElementById('curExpiry').textContent = t('bill_ending_note') + ' ' + d.toLocaleDateString();
+            }
+          } else if(sub?.current_period_end){
+            const d = new Date(sub.current_period_end);
+            document.getElementById('curExpiry').textContent = t('bill_valid_until') + ' ' + d.toLocaleDateString();
+          }
+        }
+
+        loadInvoices(session);
       }catch(e){ /* garde free par défaut */ }
       renderPlans();
     }
