@@ -506,6 +506,16 @@
       animation: floatY 3.4s ease-in-out infinite; transition: transform .2s var(--ease);
     }
     .ai-fab:hover{ transform:scale(1.07); }
+    .home-fab{
+      position:fixed; right:22px; bottom:90px; z-index:300;
+      display:flex; align-items:center; gap:6px;
+      padding:9px 14px; border-radius:12px;
+      background:var(--s2); border:1px solid var(--b2); color:var(--text);
+      font-family:inherit; font-weight:700; font-size:12.5px;
+      box-shadow:0 8px 22px -8px rgba(0,0,0,.3);
+      transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+    }
+    .home-fab:hover{ transform:translateY(-2px); box-shadow:0 12px 28px -8px rgba(0,0,0,.35); }
     @keyframes floatY{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
     .ai-pop{
       position:fixed; right:22px; bottom:94px; z-index:300; width:320px; max-width:calc(100vw - 44px);
@@ -1135,6 +1145,7 @@
   </div><!-- /main -->
 
   <!-- ════ FLOATING AI COACH ════ -->
+  <button class="home-fab" id="homeFab" onclick="backToHome()" title="Home">🏠 Home</button>
   <button class="ai-fab" id="aiFab" onclick="toggleAiPop()" title="Coach IA">🧠</button>
   <div class="ai-pop" id="aiPop">
     <div class="ai-pop-h">
@@ -1952,13 +1963,17 @@
 
   /* Coach flottant */
   function toggleAiPop(){
-    var p=document.getElementById('aiPop'); if(p) p.classList.toggle('open');
+    var p=document.getElementById('aiPop'); if(!p) return;
+    p.classList.toggle('open');
+    var h=document.getElementById('homeFab');
+    if(h) h.style.display = p.classList.contains('open') ? 'none' : 'flex';
   }
   document.addEventListener('click', function(e){
     var p=document.getElementById('aiPop'), fab=document.getElementById('aiFab'), nb=document.getElementById('notifBtn');
     if(!p||!p.classList.contains('open')) return;
     if(p.contains(e.target) || (fab&&fab.contains(e.target)) || (nb&&nb.contains(e.target))) return;
     p.classList.remove('open');
+    var h=document.getElementById('homeFab'); if(h) h.style.display='flex';
   });
 
   /* Compteurs animés : anime le préfixe numérique de #channelsCount / #daysRemaining */
