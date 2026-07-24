@@ -57,6 +57,14 @@ const Auth = {
    * Au retour d'une connexion Google, Supabase met un court instant à
    * traiter le token présent dans l'URL. On attend cet événement au lieu
    * de vérifier trop tôt (cause du bug "il faut s'y reprendre à 2 fois").
+   *
+   * Une simple visite (pas de retour OAuth) attend aussi un court instant
+   * avant de conclure "non connecté" : le service worker (sw.js) empêche
+   * le bfcache du navigateur, donc CHAQUE navigation "précédent" recharge
+   * la page de zéro et relance ce contrôle — sans ce filet, une session
+   * pourtant valide mais pas encore relue depuis le stockage local au
+   * moment du premier appel getSession() ci-dessous provoquait une
+   * déconnexion visible uniquement au clic sur "précédent".
    */
   async waitForSession(timeoutMs = 5000) {
     // 1) Session déjà présente ? on répond tout de suite.
@@ -70,7 +78,9 @@ const Auth = {
       url.includes('code=') ||
       window.location.hash.includes('error');
 
-    if (!returningFromOAuth) return null; // simple visite sans token → pas connecté
+    // Retour OAuth : jusqu'à 5s (traitement du token). Simple visite : jusqu'à
+    // 1.5s (laisse le temps à Supabase de relire une session déjà persistée).
+    const pollTimeout = returningFromOAuth ? timeoutMs : 1500;
 
     // 3) On attend l'événement SIGNED_IN + un sondage de secours.
     return new Promise((resolve) => {
@@ -91,7 +101,7 @@ const Auth = {
       const poll = setInterval(async () => {
         const s = await this.getSession();
         if (s) return finish(s);
-        if (Date.now() - start > timeoutMs) return finish(null);
+        if (Date.now() - start > pollTimeout) return finish(null);
       }, 300);
     });
   },

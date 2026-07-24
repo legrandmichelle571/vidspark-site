@@ -24,7 +24,7 @@
     a.style.cssText = [
       'position:fixed', 'bottom:20px', 'right:20px', 'z-index:9999',
       'display:inline-flex', 'align-items:center', 'gap:6px',
-      'background:linear-gradient(135deg,#FF9D1F,#ff7a18)', 'color:#0b0f19',
+      'background:linear-gradient(135deg,#F2900F,#E8830A)', 'color:#2b1500',
       'font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif',
       'font-weight:700', 'font-size:13px', 'padding:10px 16px', 'border-radius:12px',
       'text-decoration:none', 'box-shadow:0 8px 22px -8px rgba(255,157,31,.45)',
@@ -36,8 +36,11 @@
   }
 
   function check(){
-    if(!window.Auth || !window.Auth.getSession) return;
-    Auth.getSession().then(function(session){
+    if(!window.Auth || !window.Auth.waitForSession) return;
+    // waitForSession (pas getSession) : laisse à Supabase le temps de relire
+    // une session déjà persistée avant de conclure "non connecté" — sans ça,
+    // ce bouton pouvait rester invisible pour un utilisateur pourtant connecté.
+    Auth.waitForSession().then(function(session){
       if(session) inject();
     }).catch(function(){});
   }
