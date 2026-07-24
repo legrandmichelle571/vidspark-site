@@ -105,7 +105,7 @@
     bill_yearly:{fr:'Annuel',en:'Yearly',ar:'سنوي'},
     bill_save:{fr:'2 mois offerts /an',en:'2 months free /year',ar:'شهران مجّانًا /سنة'},
     bill_cancel_btn:{fr:'Annuler mon abonnement',en:'Cancel my subscription',ar:'إلغاء اشتراكي'},
-    bill_secure:{fr:'🔒 Paiement sécurisé par PayPal & Cryptomus — annulable à tout moment.',en:'🔒 Secure payment via PayPal & Cryptomus — cancel anytime.',ar:'🔒 دفع آمن عبر PayPal و Cryptomus — قابل للإلغاء في أي وقت.'},
+    bill_secure:{fr:'🔒 Paiement sécurisé par carte bancaire (Stripe) & Cryptomus — annulable à tout moment.',en:'🔒 Secure payment via credit card (Stripe) & Cryptomus — cancel anytime.',ar:'🔒 دفع آمن عبر البطاقة البنكية (Stripe) و Cryptomus — قابل للإلغاء في أي وقت.'},
     /* ── PLANS DYNAMIQUES ── */
     bill_per_month:{fr:'par mois',en:'per month',ar:'في الشهر'},
     bill_per_month_s:{fr:'/mois',en:'/mo',ar:'/شهر'},
@@ -247,7 +247,7 @@
 
     <div id="msg"></div>
 
-    <div class="secure" data-i18n="bill_secure">🔒 Paiement sécurisé par PayPal & Cryptomus — annulable à tout moment.</div>
+    <div class="secure" data-i18n="bill_secure">🔒 Paiement sécurisé par carte bancaire (Stripe) & Cryptomus — annulable à tout moment.</div>
 
     <div id="invoicesSection" style="display:none;margin-top:48px;">
       <h2 style="font-size:18px;font-weight:800;margin-bottom:16px;" data-i18n="bill_invoices_title">Historique des factures</h2>
@@ -365,7 +365,6 @@
         msg.innerHTML = `
           <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
             <button onclick="checkout('${plan}','stripe')" style="padding:12px 24px;background:linear-gradient(135deg,var(--purple),var(--purple-l));color:#0b0f19;border:none;border-radius:8px;cursor:pointer;font-weight:600;">${t('bill_pay_stripe')}</button>
-            <button onclick="checkout('${plan}','paypal')" style="padding:12px 24px;background:var(--purple);color:#0b0f19;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🅿️ PayPal</button>
             <button onclick="checkout('${plan}','cryptomus')" style="padding:12px 24px;background:var(--gold);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">₿ USD / USDT</button>
           </div>
         `;
