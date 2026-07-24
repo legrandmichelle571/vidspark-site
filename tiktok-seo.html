@@ -181,6 +181,10 @@ function renderForm(){
         <option value="fr">Français</option><option value="en">English</option>
         <option value="es">Español</option><option value="ar">العربية</option>
         <option value="pt">Português</option><option value="de">Deutsch</option>
+        <option value="it">Italiano</option><option value="ru">Русский</option>
+        <option value="ja">日本語</option><option value="ko">한국어</option>
+        <option value="hi">हिन्दी</option><option value="zh">中文</option>
+        <option value="tr">Türkçe</option><option value="nl">Nederlands</option>
       </select>
     </div>`;
 }
@@ -222,7 +226,7 @@ window.shell = ToolPage.mount({
   meta:[
     { icon:'🤖', text:t('tks_ai') },
     { icon:'⚡', text:Object.keys(TOOLS).length+' '+t('tks_tools_word') },
-    { icon:'🌍', text:'6 '+t('tks_langs_word') }
+    { icon:'🌍', text:'14 '+t('tks_langs_word') }
   ],
   sidebar:[
     { id:'tips', icon:'💡', title:t('tks_sc_tips'), html:`<p>💡 ${t(TOOLS[current].tipKey)}</p>` },
