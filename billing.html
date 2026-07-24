@@ -65,9 +65,18 @@
     .choose.ghost{background:transparent;border:1px solid var(--b2);color:var(--muted);cursor:default;}
     .choose:hover:not(.ghost){filter:brightness(1.06);transform:translateY(-1px);}
     .choose:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-    .cancel-row{margin-top:36px;text-align:center;}
-    .cancel-row button{background:transparent;border:1px solid var(--b2);color:var(--muted);padding:10px 22px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;transition:all .2s;}
-    .cancel-row button:hover{border-color:var(--red);color:var(--red);}
+    .acct-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px 24px;margin-top:18px;padding-top:18px;border-top:1px solid var(--b1);width:100%;}
+    .acct-stat .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+    .acct-stat .val{font-size:15px;font-weight:700;}
+    .acct-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;padding-top:18px;border-top:1px solid var(--b1);width:100%;}
+    .acct-actions .choose{width:auto;padding:11px 20px;}
+    .cancel-alert{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:rgba(194,59,34,.08);border:1px solid rgba(194,59,34,.3);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:24px;}
+    .cancel-alert .txt strong{display:block;color:var(--red);font-size:14px;margin-bottom:2px;}
+    .cancel-alert .txt span{font-size:12.5px;color:var(--muted);}
+    .cancel-alert button{flex-shrink:0;background:transparent;border:1px solid var(--green);color:var(--green);padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;}
+    .cancel-alert button:hover{background:rgba(52,211,153,.12);}
+    .plan-card.current-plan{border-color:var(--purple);box-shadow:0 0 0 2px rgba(242,144,15,.22),0 8px 30px rgba(242,144,15,.14);}
+    .plans-heading{font-size:16px;font-weight:800;margin:8px 0 16px;}
     #msg{text-align:center;margin-top:16px;min-height:20px;font-size:14px;}
     .secure{text-align:center;color:var(--muted);font-size:12px;margin-top:24px;}
     .app-main{ margin-left:270px; transition:margin-left .28s cubic-bezier(.4,0,.2,1); }
@@ -161,6 +170,28 @@
     bill_invoices_empty:{fr:'Aucune facture pour le moment.',en:'No invoices yet.',ar:'لا توجد فواتير بعد.'},
     bill_invoice_paid:{fr:'Payée',en:'Paid',ar:'مدفوعة'},
     bill_invoice_failed:{fr:'Échouée',en:'Failed',ar:'فاشلة'},
+    /* ── ABONNEMENT ACTIF — HEADER & CARTE ── */
+    bill_title_active:{fr:'Votre abonnement est actif',en:'Your subscription is active',ar:'اشتراكك نشط'},
+    bill_sub_active:{fr:'Vous bénéficiez actuellement du plan {plan}.',en:'You are currently on the {plan} plan.',ar:'أنت حاليًا على خطة {plan}.'},
+    bill_renew_auto:{fr:'Renouvellement automatique le {date}.',en:'Automatically renews on {date}.',ar:'يتجدد تلقائيًا في {date}.'},
+    bill_renew_ends:{fr:'Expire le {date}.',en:'Expires on {date}.',ar:'ينتهي في {date}.'},
+    bill_card_plan:{fr:'Plan actuel',en:'Current plan',ar:'الخطة الحالية'},
+    bill_card_price:{fr:'Prix mensuel',en:'Monthly price',ar:'السعر الشهري'},
+    bill_card_status:{fr:'Statut',en:'Status',ar:'الحالة'},
+    bill_card_renewal:{fr:'Date de renouvellement',en:'Renewal date',ar:'تاريخ التجديد'},
+    bill_card_start:{fr:'Date de début',en:'Start date',ar:'تاريخ البدء'},
+    bill_card_next_invoice:{fr:'Prochaine facture',en:'Next invoice',ar:'الفاتورة القادمة'},
+    bill_status_active:{fr:'Actif',en:'Active',ar:'نشط'},
+    bill_status_trialing:{fr:'Période d\'essai',en:'Trialing',ar:'فترة تجريبية'},
+    bill_status_past_due:{fr:'Paiement en retard',en:'Payment past due',ar:'دفعة متأخرة'},
+    bill_status_cancelled:{fr:'Annulé',en:'Cancelled',ar:'ملغى'},
+    bill_status_cancelling:{fr:'Annulation programmée',en:'Cancellation scheduled',ar:'إلغاء مجدول'},
+    bill_change_plan_btn:{fr:'Modifier le plan',en:'Change plan',ar:'تغيير الخطة'},
+    bill_cancel_action_btn:{fr:'Annuler l\'abonnement',en:'Cancel subscription',ar:'إلغاء الاشتراك'},
+    bill_plans_heading_change:{fr:'Changer de plan',en:'Change plan',ar:'تغيير الخطة'},
+    bill_switch_to:{fr:'Passer au',en:'Switch to',ar:'الترقية إلى'},
+    bill_alert_cancel_title:{fr:'Votre abonnement prendra fin le {date}.',en:'Your subscription will end on {date}.',ar:'سينتهي اشتراكك في {date}.'},
+    bill_alert_cancel_sub:{fr:'Vous conserverez vos avantages jusqu\'à cette date.',en:'You\'ll keep your benefits until then.',ar:'ستحتفظ بمزاياك حتى ذلك التاريخ.'},
   });
   </script>
   <link rel="manifest" href="/manifest.json">
@@ -178,8 +209,16 @@
   <!-- Navigation chrome injected by js/app-shell.js (VidSparkShell.mount) -->
   <div class="app-main">
   <div class="page fade-in">
-    <h1 data-i18n="bill_title">Choisis ton abonnement</h1>
-    <p class="sub" data-i18n="bill_sub">Débloque toute la puissance de l'IA pour optimiser tes vidéos YouTube.</p>
+    <h1 id="pageTitle" data-i18n="bill_title">Choisis ton abonnement</h1>
+    <p class="sub" id="pageSub" data-i18n="bill_sub">Débloque toute la puissance de l'IA pour optimiser tes vidéos YouTube.</p>
+
+    <div class="cancel-alert" id="cancelAlert" style="display:none;">
+      <div class="txt">
+        <strong id="cancelAlertTitle"></strong>
+        <span data-i18n="bill_alert_cancel_sub">Vous conserverez vos avantages jusqu'à cette date.</span>
+      </div>
+      <button onclick="resumeSubscription()" data-i18n="bill_resume_btn">Reprendre mon abonnement</button>
+    </div>
 
     <div class="current">
       <div>
@@ -188,7 +227,12 @@
       </div>
       <div style="display:flex;align-items:center;gap:16px;">
         <div id="curExpiry" style="color:var(--muted);font-size:13px;"></div>
-        <button id="manageSubBtn" class="choose ghost" style="display:none;width:auto;padding:9px 18px;" onclick="manageSubscription()" data-i18n="bill_manage_sub">Gérer mon abonnement</button>
+      </div>
+      <div class="acct-stats" id="acctStats" style="display:none;"></div>
+      <div class="acct-actions" id="acctActions" style="display:none;">
+        <button id="manageSubBtn" class="choose ghost" style="display:none;" onclick="manageSubscription()" data-i18n="bill_manage_sub">Gérer mon abonnement</button>
+        <button id="changePlanBtn" class="choose ghost" style="display:none;" onclick="scrollToPlans()" data-i18n="bill_change_plan_btn">Modifier le plan</button>
+        <button id="cancelBtn" class="choose ghost" style="display:none;" onclick="cancelSubscription()" data-i18n="bill_cancel_action_btn">Annuler l'abonnement</button>
       </div>
     </div>
 
@@ -198,14 +242,10 @@
       <span class="save-badge" data-i18n="bill_save">2 mois offerts /an</span>
     </div>
 
+    <h2 class="plans-heading" id="plansHeading" style="display:none;" data-i18n="bill_plans_heading_change">Changer de plan</h2>
     <div class="plans" id="plans"></div>
 
     <div id="msg"></div>
-
-    <div class="cancel-row" id="cancelRow" style="display:none;">
-      <button onclick="cancelSubscription()" id="cancelBtn" data-i18n="bill_cancel_btn">Annuler mon abonnement</button>
-      <button onclick="resumeSubscription()" id="resumeBtn" style="display:none;border-color:var(--green);color:var(--green);" data-i18n="bill_resume_btn">Reprendre mon abonnement</button>
-    </div>
 
     <div class="secure" data-i18n="bill_secure">🔒 Paiement sécurisé par PayPal & Cryptomus — annulable à tout moment.</div>
 
@@ -284,6 +324,7 @@
 
     function renderPlans(){
       const wrap = document.getElementById('plans');
+      const hasPaidPlan = currentPlan !== 'free';
       wrap.innerHTML = PLANS.map(p=>{
         const price = interval==='month' ? p.month : p.year;
         const note  = p.id==='free' ? '' : (interval==='year' ? t(p.yearNote) : t('bill_per_month'));
@@ -294,11 +335,13 @@
         } else if (isCurrent){
           btn = `<button class="choose ghost" disabled>✓ ${t('bill_your_plan')}</button>`;
         } else {
-          btn = `<button class="choose ${p.cls}" onclick="checkout('${p.id}')">${p.icon} ${t('bill_choose')} ${t(p.name)}</button>`;
+          // Un utilisateur déjà payant "passe" à un autre plan plutôt que de le "choisir"
+          const label = hasPaidPlan ? `${t('bill_switch_to')} ${t(p.name)}` : `${t('bill_choose')} ${t(p.name)}`;
+          btn = `<button class="choose ${p.cls}" onclick="checkout('${p.id}')">${p.icon} ${label}</button>`;
         }
         const feats = p.feats.map(f=>`<li class="${f[1]?'':'no'}"><span class="ic">${f[1]?'✓':'✕'}</span> ${t(f[0])}</li>`).join('');
         return `
-          <div class="plan-card ${p.popular?'popular':''}">
+          <div class="plan-card ${p.popular?'popular':''} ${isCurrent?'current-plan':''}">
             ${p.popular?`<div class="popular-tag">★ ${t('bill_popular')}</div>`:''}
             <div class="plan-name">${p.icon} ${t(p.name)}</div>
             <div class="plan-price">${price} <small>${p.id!=='free'?t('bill_per_month_s'):''}</small></div>
@@ -307,6 +350,10 @@
             ${btn}
           </div>`;
       }).join('');
+    }
+
+    function scrollToPlans(){
+      document.getElementById('plans').scrollIntoView({ behavior:'smooth', block:'start' });
     }
 
     async function checkout(plan, provider = null){
@@ -453,6 +500,32 @@
       }catch(e){ /* historique optionnel, ne bloque pas la page */ }
     }
 
+    function getPlanI18nKey(id){
+      const p = PLANS.find(x=>x.id===id);
+      return p ? p.name : 'bill_plan_free';
+    }
+
+    function renderAcctStats(sub, planLabel){
+      const wrap = document.getElementById('acctStats');
+      const statusMap = { active:'bill_status_active', trialing:'bill_status_trialing', past_due:'bill_status_past_due', cancelled:'bill_status_cancelled' };
+      const statusKey = sub.cancel_at_period_end ? 'bill_status_cancelling' : (statusMap[sub.status] || 'bill_status_active');
+      const fmt = d => d ? new Date(d).toLocaleDateString() : '—';
+      const amtNum = Number(sub.amount);
+      const hasAmount = Number.isFinite(amtNum);
+      const price = hasAmount ? `${amtNum.toFixed(2)} ${(sub.currency||'').toUpperCase()} ${sub.interval==='year'?'/an':'/mois'}` : '—';
+      const nextInvoice = (!sub.cancel_at_period_end && hasAmount) ? `${amtNum.toFixed(2)} ${(sub.currency||'').toUpperCase()} · ${fmt(sub.current_period_end)}` : '—';
+      const stats = [
+        [t('bill_card_plan'), planLabel],
+        [t('bill_card_price'), price],
+        [t('bill_card_status'), t(statusKey)],
+        [t('bill_card_renewal'), fmt(sub.current_period_end)],
+        [t('bill_card_start'), fmt(sub.created_at)],
+        [t('bill_card_next_invoice'), nextInvoice],
+      ];
+      wrap.innerHTML = stats.map(([lbl,val])=>`<div class="acct-stat"><div class="lbl">${lbl}</div><div class="val">${val}</div></div>`).join('');
+      wrap.style.display = 'grid';
+    }
+
     async function loadCurrent(){
       try{
         const session = await Auth.getSession();
@@ -464,34 +537,59 @@
           const el = document.getElementById('curPlan');
           el.textContent = currentPlan.toUpperCase();
           el.className = 'pill ' + currentPlan;
-          if(currentPlan!=='free'){
-            document.getElementById('cancelRow').style.display='block';
-            if(u.subscription_expiry){
-              const d=new Date(u.subscription_expiry);
-              document.getElementById('curExpiry').textContent = t('bill_valid_until') + ' ' + d.toLocaleDateString();
-            }
+          if(currentPlan!=='free' && u.subscription_expiry){
+            const d=new Date(u.subscription_expiry);
+            document.getElementById('curExpiry').textContent = t('bill_valid_until') + ' ' + d.toLocaleDateString();
           }
         }
 
-        /* Détails Stripe (portail, renouvellement, reprise) — best effort,
-           n'affecte pas l'affichage du plan ci-dessus si l'appel échoue. */
+        /* Détails Stripe (portail, renouvellement, reprise, statut) — seule source
+           de vérité pour tout ce qui concerne l'abonnement actif : le backend
+           décide, le frontend se contente d'afficher (best effort, n'affecte pas
+           l'affichage du plan ci-dessus si l'appel échoue). */
         const statusRes = await fetch(`${API_BASE}/api/subscription/status`,{ headers:{'Authorization':`Bearer ${session.access_token}`} });
         if(statusRes.ok){
           const { subscription: sub, billing_url } = await statusRes.json();
+
           if(billing_url){
             window._billingPortalUrl = billing_url;
             document.getElementById('manageSubBtn').style.display='inline-block';
           }
-          if(sub?.cancel_at_period_end){
-            document.getElementById('cancelBtn').style.display='none';
-            document.getElementById('resumeBtn').style.display='inline-block';
-            if(sub.current_period_end){
+
+          if(currentPlan!=='free'){
+            document.getElementById('acctActions').style.display='flex';
+            document.getElementById('changePlanBtn').style.display='inline-block';
+            document.getElementById('plansHeading').style.display='block';
+            document.getElementById('pageTitle').textContent = t('bill_title_active');
+
+            const planLabel = t(getPlanI18nKey(currentPlan));
+            let renewLine = '';
+            if(sub?.current_period_end){
               const d = new Date(sub.current_period_end);
-              document.getElementById('curExpiry').textContent = t('bill_ending_note') + ' ' + d.toLocaleDateString();
+              renewLine = sub.cancel_at_period_end
+                ? t('bill_renew_ends').replace('{date}', d.toLocaleDateString())
+                : t('bill_renew_auto').replace('{date}', d.toLocaleDateString());
             }
-          } else if(sub?.current_period_end){
-            const d = new Date(sub.current_period_end);
-            document.getElementById('curExpiry').textContent = t('bill_valid_until') + ' ' + d.toLocaleDateString();
+            document.getElementById('pageSub').textContent =
+              t('bill_sub_active').replace('{plan}', planLabel) + (renewLine ? (' ' + renewLine) : '');
+
+            if(sub){
+              document.getElementById('curExpiry').textContent = '';
+              renderAcctStats(sub, planLabel);
+            }
+
+            if(sub?.cancel_at_period_end){
+              document.getElementById('cancelBtn').style.display='none';
+              if(sub.current_period_end){
+                const d = new Date(sub.current_period_end);
+                document.getElementById('cancelAlertTitle').textContent =
+                  t('bill_alert_cancel_title').replace('{date}', d.toLocaleDateString());
+              }
+              document.getElementById('cancelAlert').style.display='flex';
+            } else {
+              document.getElementById('cancelBtn').style.display='inline-block';
+              document.getElementById('cancelAlert').style.display='none';
+            }
           }
         }
 
