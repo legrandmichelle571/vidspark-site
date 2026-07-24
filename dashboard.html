@@ -513,7 +513,7 @@
       background:var(--s2); border:1px solid var(--b2); color:var(--text);
       font-family:inherit; font-weight:700; font-size:12.5px;
       box-shadow:0 8px 22px -8px rgba(0,0,0,.3);
-      transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+      animation: floatY 3.4s ease-in-out infinite; transition: transform .2s var(--ease), box-shadow .2s var(--ease);
     }
     .home-fab:hover{ transform:translateY(-2px); box-shadow:0 12px 28px -8px rgba(0,0,0,.35); }
     @keyframes floatY{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
