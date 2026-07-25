@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Analyse Commentaires YouTube — VidSpark AI</title>
 <meta name="description" content="Analyse le sentiment des commentaires de ta vidéo YouTube, identifie les demandes de l'audience et génère des idées de vidéos.">
+<link rel="canonical" href="https://vidsparkpro.com/outils/analyse-commentaires.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Analyse Commentaires YouTube — VidSpark AI">
+<meta property="og:description" content="Analyse le sentiment des commentaires de ta vidéo YouTube, identifie les demandes de l'audience et génère des idées de vidéos.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/analyse-commentaires.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Analyse Commentaires YouTube — VidSpark AI">
+<meta name="twitter:description" content="Analyse le sentiment des commentaires de ta vidéo YouTube, identifie les demandes de l'audience et génère des idées de vidéos.">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,7 +30,7 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
     <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="cm_h1">💬 Analyse Commentaires</h1>
@@ -27,7 +39,7 @@
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="video" data-i18n-ph="cm_ph" placeholder="URL de ta vidéo YouTube — ex : youtube.com/watch?v=..." style="width:100%">
+      <input type="text" id="video" data-i18n-ph="cm_ph" placeholder="URL de ta vidéo YouTube — ex : youtube.com/watch?v=..." aria-label="URL de ta vidéo YouTube" style="width:100%">
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option>
@@ -49,7 +61,11 @@
     <p data-i18n="cm_up_p">L'extension VidSpark génère des réponses personnalisées pour tes commentaires directement depuis YouTube.</p>
     <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/optimiseur-audience.html">🌍 Optimiseur d'Audience</a> · <a href="/outils/audit-chaine.html">📈 Audit de Chaîne</a> · <a href="/outils/estimateur-revenus.html">💰 Estimateur de Revenus</a>
+  </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/api.js"></script>
@@ -131,6 +147,17 @@ async function go(){
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"Analyse Commentaires","item":"https://vidsparkpro.com/outils/analyse-commentaires.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Combien de commentaires sont analysés ?","acceptedAnswer":{"@type":"Answer","text":"L'IA analyse les 40 commentaires les plus pertinents (les plus likés et répondus) pour donner une vue représentative de l'audience."}},
+{"@type":"Question","name":"Comment utiliser cette analyse ?","acceptedAnswer":{"@type":"Answer","text":"Utilise les demandes identifiées pour planifier tes prochaines vidéos. Les commentaires négatifs indiquent ce à améliorer. Les positifs montrent ce qui plaît — fais-en plus !"}}]}
 </script>
 </body>
 </html>

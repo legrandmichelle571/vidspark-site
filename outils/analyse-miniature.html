@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Analyse Miniature YouTube (IA Vision) — VidSpark AI</title>
 <meta name="description" content="L'IA Vision note ta miniature YouTube : contraste, visage, émotion, texte, CTR estimé et conseils d'amélioration.">
+<link rel="canonical" href="https://vidsparkpro.com/outils/analyse-miniature.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Analyse Miniature YouTube (IA Vision) — VidSpark AI">
+<meta property="og:description" content="L'IA Vision note ta miniature YouTube : contraste, visage, émotion, texte, CTR estimé et conseils d'amélioration.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/analyse-miniature.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Analyse Miniature YouTube (IA Vision) — VidSpark AI">
+<meta name="twitter:description" content="L'IA Vision note ta miniature YouTube : contraste, visage, émotion, texte, CTR estimé et conseils d'amélioration.">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,7 +30,7 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
     <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="am_h1">🖼 Analyse Miniature IA</h1>
@@ -30,9 +42,9 @@
       <div id="drop-zone" onclick="document.getElementById('thumb-file').click()" style="border:2px dashed var(--b2);border-radius:10px;padding:30px;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--purple)'" onmouseout="this.style.borderColor='var(--b2)'">
         <div style="font-size:32px;margin-bottom:8px">🖼</div>
         <div style="font-size:14px;color:#8888a0" data-i18n="am_drop">Clique pour choisir ta miniature (JPG/PNG, max 5 Mo)</div>
-        <input type="file" id="thumb-file" accept="image/*" style="display:none" onchange="previewFile(this)">
+        <input type="file" id="thumb-file" accept="image/*" style="display:none" aria-label="Choisir ta miniature (JPG/PNG, max 5 Mo)" onchange="previewFile(this)">
       </div>
-      <img id="preview" style="display:none;max-width:100%;border-radius:8px;border:1.5px solid var(--b2)">
+      <img id="preview" alt="Aperçu de la miniature" style="display:none;max-width:100%;border-radius:8px;border:1.5px solid var(--b2)">
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option>
@@ -54,7 +66,11 @@
     <p data-i18n="am_up_p">L'extension VidSpark compare 2 miniatures : l'IA Vision dit laquelle gagnera et pourquoi, avec un prompt pour Midjourney.</p>
     <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/telecharger-miniature.html">🖼️ Téléchargeur de Miniatures YouTube</a> · <a href="/outils/ab-test-miniatures.html">📸 A/B Test Miniatures</a>
+  </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/api.js"></script>
@@ -165,6 +181,17 @@ async function go(){
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"Analyse Miniature IA","item":"https://vidsparkpro.com/outils/analyse-miniature.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Qu'est-ce qui fait une bonne miniature ?","acceptedAnswer":{"@type":"Answer","text":"Contraste fort, visage expressif (surprise, joie, choc), texte court et lisible en petit, couleurs vives qui ressortent dans le feed. L'IA vérifie tous ces critères."}},
+{"@type":"Question","name":"Quelle taille idéale pour une miniature ?","acceptedAnswer":{"@type":"Answer","text":"1280×720 pixels (ratio 16:9), format JPG ou PNG, moins de 2 Mo. C'est le standard YouTube recommandé."}}]}
 </script>
 </body>
 </html>

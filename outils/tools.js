@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.lang = lang;
   document.documentElement.dir = RTL.has(lang) ? 'rtl' : 'ltr';
 
-  const nav = document.createElement('div');
+  const nav = document.createElement('nav');
   nav.className = 'nav';
   nav.innerHTML = `
     <a href="/index.html" class="logo"><span class="lb">✦</span> VidSpark AI</a>

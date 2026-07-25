@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Générateur de Shorts YouTube — VidSpark AI</title>
 <meta name="description" content="Génère 3 idées de Shorts YouTube avec hook, script complet, hashtags et les timestamps à couper depuis ta vidéo.">
+<link rel="canonical" href="https://vidsparkpro.com/outils/generateur-shorts.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Générateur de Shorts YouTube — VidSpark AI">
+<meta property="og:description" content="Génère 3 idées de Shorts YouTube avec hook, script complet, hashtags et les timestamps à couper depuis ta vidéo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/generateur-shorts.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Générateur de Shorts YouTube — VidSpark AI">
+<meta name="twitter:description" content="Génère 3 idées de Shorts YouTube avec hook, script complet, hashtags et les timestamps à couper depuis ta vidéo.">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,7 +30,7 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
     <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="gs_h1">🎬 Générateur de Shorts</h1>
@@ -27,7 +39,7 @@
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="topic" data-i18n-ph="gs_ph_topic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€" style="width:100%">
+      <input type="text" id="topic" data-i18n-ph="gs_ph_topic" placeholder="Ex : J'ai comparé 5 smartphones à moins de 200€" aria-label="Sujet de ta vidéo longue" style="width:100%">
       <textarea id="desc" data-i18n-ph="gs_ph_desc" placeholder="Résumé de ta vidéo (optionnel) — pour des Shorts plus précis" rows="3" style="width:100%;background:var(--s2);border:1.5px solid var(--b2);color:var(--text);border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
       <div style="display:flex;gap:10px">
         <select id="lang">
@@ -50,7 +62,11 @@
     <p data-i18n="gs_up_p">L'extension VidSpark analyse directement ta vidéo YouTube et propose les meilleurs moments à couper en Shorts.</p>
     <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/idees-videos.html">💡 Idées de Vidéos</a> · <a href="/outils/score-viral.html">🔥 Score Viral</a> · <a href="/outils/hook-analyzer.html">🪝 Hook Analyzer</a>
+  </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/api.js"></script>
@@ -97,6 +113,17 @@ async function go(){
     });
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"Générateur de Shorts","item":"https://vidsparkpro.com/outils/generateur-shorts.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Quelle longueur idéale pour un Short ?","acceptedAnswer":{"@type":"Answer","text":"Entre 30 et 60 secondes. L'algorithme YouTube favorise les Shorts où les gens regardent jusqu'à la fin — donc plus c'est court et accrocheur, mieux c'est."}},
+{"@type":"Question","name":"Comment extraire un Short depuis ma vidéo longue ?","acceptedAnswer":{"@type":"Answer","text":"Utilise YouTube Studio (option \"Couper\" ou \"Shorts\"), CapCut, ou DaVinci Resolve. L'IA te donne les timestamps exacts à couper."}}]}
 </script>
 </body>
 </html>

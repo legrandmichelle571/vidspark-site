@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hook Analyzer YouTube — VidSpark AI</title>
 <meta name="description" content="Analyse ton intro YouTube : l'IA prédit la rétention, identifie où ça décroche et réécrit ton hook.">
+<link rel="canonical" href="https://vidsparkpro.com/outils/hook-analyzer.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Hook Analyzer YouTube — VidSpark AI">
+<meta property="og:description" content="Analyse ton intro YouTube : l'IA prédit la rétention, identifie où ça décroche et réécrit ton hook.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/hook-analyzer.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hook Analyzer YouTube — VidSpark AI">
+<meta name="twitter:description" content="Analyse ton intro YouTube : l'IA prédit la rétention, identifie où ça décroche et réécrit ton hook.">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,7 +30,7 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
     <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="hk_h1">🪝 Hook Analyzer</h1>
@@ -27,7 +39,7 @@
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <textarea id="hook" data-i18n-ph="hk_ph" placeholder="Colle ici tes 30 premières secondes de script ou d'intro…&#10;Ex : Salut ! Aujourd'hui je vais vous montrer comment j'ai perdu 10kg en 30 jours sans régime. C'est une méthode que j'ai découverte par hasard et qui a tout changé…" rows="5" style="width:100%;background:var(--s2);border:1.5px solid var(--b2);color:var(--text);border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
+      <textarea id="hook" data-i18n-ph="hk_ph" placeholder="Colle ici tes 30 premières secondes de script ou d'intro…&#10;Ex : Salut ! Aujourd'hui je vais vous montrer comment j'ai perdu 10kg en 30 jours sans régime. C'est une méthode que j'ai découverte par hasard et qui a tout changé…" aria-label="Colle ici tes 30 premières secondes de script ou d'intro" rows="5" style="width:100%;background:var(--s2);border:1.5px solid var(--b2);color:var(--text);border-radius:8px;padding:10px;font-size:14px;resize:vertical"></textarea>
       <div style="display:flex;gap:10px">
         <select id="lang">
           <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option>
@@ -49,7 +61,11 @@
     <p data-i18n="hk_up_p">L'extension VidSpark AI analyse ton hook en temps réel avec courbe de rétention prédite second par second.</p>
     <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/analyseur-titre.html">📊 Analyseur de Titre YouTube</a> · <a href="/outils/score-viral.html">🔥 Score Viral</a> · <a href="/outils/generateur-titres.html">✨ Générateur de Titres YouTube</a>
+  </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/api.js"></script>
@@ -133,6 +149,17 @@ async function go(){
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"Hook Analyzer","item":"https://vidsparkpro.com/outils/hook-analyzer.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Qu'est-ce qu'un hook YouTube ?","acceptedAnswer":{"@type":"Answer","text":"Le hook c'est les 15-30 premières secondes de ta vidéo. C'est là que tu perds ou gagnes ton audience. Un bon hook crée de la curiosité, pose un problème et promet une solution."}},
+{"@type":"Question","name":"Comment améliorer mon taux de rétention ?","acceptedAnswer":{"@type":"Answer","text":"Commence par une promesse forte ou une question. Évite les intro longues (\"Salut les amis, c'est moi…\"). Va direct au sujet. Le spectateur doit savoir en 5 secondes pourquoi il reste."}}]}
 </script>
 </body>
 </html>

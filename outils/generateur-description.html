@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Générateur de Description YouTube (IA) — Pro — VidSpark AI</title>
 <meta name="description" content="Génère une description YouTube optimisée SEO avec hashtags grâce à l'IA (abonnés Pro/Business).">
+<link rel="canonical" href="https://vidsparkpro.com/outils/generateur-description.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Générateur de Description YouTube (IA) — Pro — VidSpark AI">
+<meta property="og:description" content="Génère une description YouTube optimisée SEO avec hashtags grâce à l'IA (abonnés Pro/Business).">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/generateur-description.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Générateur de Description YouTube (IA) — Pro — VidSpark AI">
+<meta name="twitter:description" content="Génère une description YouTube optimisée SEO avec hashtags grâce à l'IA (abonnés Pro/Business).">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,7 +30,7 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
     <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="gd_h1">📝 Générateur de Description YouTube</h1>
@@ -27,7 +39,7 @@
 
   <div class="tool-box">
     <div class="row">
-      <input type="text" id="topic" data-i18n-ph="gd_ph" placeholder="Ex : tutoriel montage vidéo pour débutants" onkeydown="if(event.key==='Enter')run(this,go)">
+      <input type="text" id="topic" data-i18n-ph="gd_ph" aria-label="Sujet de la vidéo" placeholder="Ex : tutoriel montage vidéo pour débutants" onkeydown="if(event.key==='Enter')run(this,go)">
       <select id="lang">
         <option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option><option value="es">Español</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="hi">हिन्दी</option><option value="tr">Türkçe</option>
       </select>
@@ -48,7 +60,11 @@
     <p data-i18n="gd_up_p">L'extension VidSpark AI génère titre + description + « abonne-toi » + hashtags + 15 tags d'un coup, adaptés à ta niche et ta région.</p>
     <a href="/pricing.html" class="btn" data-i18n="discover_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/generateur-tags.html">🏷️ Générateur de Tags YouTube</a> · <a href="/outils/difficulte-mot-cle.html">🎯 Difficulté de Mot-clé YouTube</a> · <a href="/outils/extracteur-tags.html">🔎 Extracteur de Tags YouTube</a>
+  </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/api.js"></script>
@@ -109,6 +125,18 @@ async function go(){
       </div>`;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"Générateur de Description YouTube","item":"https://vidsparkpro.com/outils/generateur-description.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Pourquoi la description est-elle importante ?","acceptedAnswer":{"@type":"Answer","text":"YouTube indexe le texte de ta description : une description riche en mots-clés naturels aide l'algorithme à comprendre ta vidéo et à la proposer dans les recherches. Les 2 premières lignes sont visibles avant le clic « plus »."}},
+{"@type":"Question","name":"Combien de hashtags utiliser ?","acceptedAnswer":{"@type":"Answer","text":"3 à 5 hashtags pertinents suffisent. Les 3 premiers apparaissent au-dessus du titre de la vidéo."}},
+{"@type":"Question","name":"Quelle longueur idéale ?","acceptedAnswer":{"@type":"Answer","text":"Au moins 300 caractères. Une bonne description contient : un résumé accrocheur, les mots-clés naturels, un appel à l'abonnement et tes liens."}}]}
 </script>
 </body>
 </html>

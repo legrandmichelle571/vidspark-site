@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Extracteur de Tags YouTube Gratuit — VidSpark AI</title>
 <meta name="description" content="Extrais gratuitement les tags (mots-clés SEO) de n'importe quelle vidéo YouTube. Analyse les tags de tes concurrents, sans inscription.">
+<link rel="canonical" href="https://vidsparkpro.com/outils/extracteur-tags.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Extracteur de Tags YouTube Gratuit — VidSpark AI">
+<meta property="og:description" content="Extrais gratuitement les tags (mots-clés SEO) de n'importe quelle vidéo YouTube. Analyse les tags de tes concurrents, sans inscription.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/extracteur-tags.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Extracteur de Tags YouTube Gratuit — VidSpark AI">
+<meta name="twitter:description" content="Extrais gratuitement les tags (mots-clés SEO) de n'importe quelle vidéo YouTube. Analyse les tags de tes concurrents, sans inscription.">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,34 +30,38 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
-    <div class="badge-free" data-i18n="et_badge"></div>
-    <h1 data-i18n="et_h1"></h1>
-    <p data-i18n="et_sub"></p>
+    <div class="badge-free" data-i18n="et_badge">100% GRATUIT · SANS INSCRIPTION</div>
+    <h1 data-i18n="et_h1">🔎 Extracteur de Tags YouTube</h1>
+    <p data-i18n="et_sub">Colle l'URL d'une vidéo : découvre les tags SEO qu'elle utilise. Parfait pour analyser les vidéos qui cartonnent dans ta niche.</p>
   </div>
 
   <div class="tool-box">
     <div class="row">
-      <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')run(this,go)">
-      <button class="btn" onclick="run(this,go)" data-i18n="et_btn"></button>
+      <input type="text" id="url" aria-label="URL de la vidéo YouTube à analyser" placeholder="https://www.youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')run(this,go)">
+      <button class="btn" onclick="run(this,go)" data-i18n="et_btn">🔎 Extraire les tags</button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2 data-i18n="et_faq_title"></h2>
-    <div class="faq-item"><h3 data-i18n="et_q1"></h3><p data-i18n="et_a1"></p></div>
-    <div class="faq-item"><h3 data-i18n="et_q2"></h3><p data-i18n="et_a2"></p></div>
-    <div class="faq-item"><h3 data-i18n="et_q3"></h3><p data-i18n="et_a3"></p></div>
+    <h2 data-i18n="et_faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="et_q1">Pourquoi extraire les tags des concurrents ?</h3><p data-i18n="et_a1">Les vidéos qui cartonnent utilisent des mots-clés efficaces. En les analysant, tu découvres les termes exacts que ton audience recherche — et tu peux les réutiliser (intelligemment) dans tes propres vidéos.</p></div>
+    <div class="faq-item"><h3 data-i18n="et_q2">Ça marche avec toutes les vidéos ?</h3><p data-i18n="et_a2">Oui, tant que le créateur a défini des tags. Certaines vidéos n’en ont aucun (l’outil te le dira).</p></div>
+    <div class="faq-item"><h3 data-i18n="et_q3">Est-ce légal ?</h3><p data-i18n="et_a3">Oui : les tags sont des métadonnées publiques fournies par l’API officielle YouTube.</p></div>
   </div>
 
   <div class="upsell">
-    <h3 data-i18n="et_up_h"></h3>
-    <p data-i18n="et_up_p"></p>
-    <a href="/pricing.html" class="btn" data-i18n="et_up_btn"></a>
+    <h3 data-i18n="et_up_h">🏆 Va plus loin : analyse complète des concurrents</h3>
+    <p data-i18n="et_up_p">L’extension VidSpark AI montre les vues/heure des concurrents, les mots-clés en hausse, le score d’opportunité et les tendances de ta niche en direct.</p>
+    <a href="/pricing.html" class="btn" data-i18n="et_up_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/generateur-tags.html">🏷️ Générateur de Tags YouTube</a> · <a href="/outils/difficulte-mot-cle.html">🎯 Difficulté de Mot-clé YouTube</a> · <a href="/outils/generateur-description.html">📝 Générateur de Description YouTube</a>
+  </div>
+</main>
 
 <script src="tools.js?v=4"></script>
 <script src="/js/dashboard-link.js"></script>
@@ -108,6 +124,18 @@ async function go(){
       </div>`;
   }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"Extracteur de Tags YouTube","item":"https://vidsparkpro.com/outils/extracteur-tags.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Pourquoi extraire les tags des concurrents ?","acceptedAnswer":{"@type":"Answer","text":"Les vidéos qui cartonnent utilisent des mots-clés efficaces. En les analysant, tu découvres les termes exacts que ton audience recherche — et tu peux les réutiliser (intelligemment) dans tes propres vidéos."}},
+{"@type":"Question","name":"Ça marche avec toutes les vidéos ?","acceptedAnswer":{"@type":"Answer","text":"Oui, tant que le créateur a défini des tags. Certaines vidéos n’en ont aucun (l’outil te le dira)."}},
+{"@type":"Question","name":"Est-ce légal ?","acceptedAnswer":{"@type":"Answer","text":"Oui : les tags sont des métadonnées publiques fournies par l’API officielle YouTube."}}]}
 </script>
 </body>
 </html>

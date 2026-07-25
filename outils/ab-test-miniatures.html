@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A/B Test Miniatures YouTube — VidSpark AI</title>
 <meta name="description" content="Compare 2 miniatures YouTube : l'IA Vision dit laquelle génère le plus de clics et pourquoi.">
+<link rel="canonical" href="https://vidsparkpro.com/outils/ab-test-miniatures.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="A/B Test Miniatures YouTube — VidSpark AI">
+<meta property="og:description" content="Compare 2 miniatures YouTube : l'IA Vision dit laquelle génère le plus de clics et pourquoi.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/ab-test-miniatures.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A/B Test Miniatures YouTube — VidSpark AI">
+<meta name="twitter:description" content="Compare 2 miniatures YouTube : l'IA Vision dit laquelle génère le plus de clics et pourquoi.">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,7 +30,7 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
     <div class="badge-free" style="background:rgba(242,144,15,.18);color:var(--purple-l)" data-i18n="pro_badge">⭐ RÉSERVÉ AUX ABONNÉS PRO &amp; BUSINESS</div>
     <h1 data-i18n="abm_h1">📸 A/B Test Miniatures</h1>
@@ -32,18 +44,18 @@
         <div onclick="document.getElementById('fileA').click()" id="dropA" style="border:2px dashed #3b82f6;border-radius:8px;padding:20px;text-align:center;cursor:pointer">
           <div style="font-size:24px">🖼</div>
           <div style="font-size:12px;color:#8888a0" data-i18n="abm_choose">Clique pour choisir</div>
-          <input type="file" id="fileA" accept="image/*" style="display:none" onchange="preview('A',this)">
+          <input type="file" id="fileA" accept="image/*" style="display:none" aria-label="Choisir la miniature A" onchange="preview('A',this)">
         </div>
-        <img id="previewA" style="display:none;max-width:100%;border-radius:8px;margin-top:8px;border:2px solid #3b82f6">
+        <img id="previewA" alt="Aperçu de la miniature A" style="display:none;max-width:100%;border-radius:8px;margin-top:8px;border:2px solid #3b82f6">
       </div>
       <div style="flex:1;min-width:200px">
         <div style="font-size:13px;color:#ef4444;font-weight:700;margin-bottom:6px" data-i18n="abm_thumb_b">MINIATURE B</div>
         <div onclick="document.getElementById('fileB').click()" id="dropB" style="border:2px dashed #ef4444;border-radius:8px;padding:20px;text-align:center;cursor:pointer">
           <div style="font-size:24px">🖼</div>
           <div style="font-size:12px;color:#8888a0" data-i18n="abm_choose">Clique pour choisir</div>
-          <input type="file" id="fileB" accept="image/*" style="display:none" onchange="preview('B',this)">
+          <input type="file" id="fileB" accept="image/*" style="display:none" aria-label="Choisir la miniature B" onchange="preview('B',this)">
         </div>
-        <img id="previewB" style="display:none;max-width:100%;border-radius:8px;margin-top:8px;border:2px solid #ef4444">
+        <img id="previewB" alt="Aperçu de la miniature B" style="display:none;max-width:100%;border-radius:8px;margin-top:8px;border:2px solid #ef4444">
       </div>
     </div>
     <div style="display:flex;gap:10px">
@@ -65,7 +77,11 @@
     <p data-i18n="abm_up_p">Pour une analyse approfondie avec score par critère et conseils précis, utilise l'outil d'analyse de miniature.</p>
     <a href="/outils/analyse-miniature.html" class="btn" style="background:var(--b2);color:var(--text)" data-i18n="abm_up_btn">Analyser une miniature</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/analyse-miniature.html">🖼 Analyse Miniature IA</a> · <a href="/outils/telecharger-miniature.html">🖼️ Téléchargeur de Miniatures YouTube</a>
+  </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/js/api.js"></script>
@@ -150,6 +166,16 @@ async function go(){
     `;
   }catch(e){if(e.message==='LOGIN_REQUIRED'||e.message==='UPGRADE_REQUIRED'){r.innerHTML=lockedHTML(e.message);}else{r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}}
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"A/B Test Miniatures","item":"https://vidsparkpro.com/outils/ab-test-miniatures.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Comment l'IA choisit la meilleure miniature ?","acceptedAnswer":{"@type":"Answer","text":"L'IA Vision analyse chaque image : contraste des couleurs, présence et expressivité du visage, lisibilité du texte, composition générale et impact émotionnel. Elle combine ces scores pour prédire le CTR."}}]}
 </script>
 </body>
 </html>

@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Difficulté de Mot-clé YouTube Gratuit (Facile ou Dur à Ranker ?) — VidSpark AI</title>
 <meta name="description" content="Vérifie gratuitement si un mot-clé YouTube est facile ou difficile à ranker : score de difficulté sur 100, concurrence, vues moyennes du top et suggestions. Sans inscription.">
+<link rel="canonical" href="https://vidsparkpro.com/outils/difficulte-mot-cle.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Difficulté de Mot-clé YouTube Gratuit (Facile ou Dur à Ranker ?) — VidSpark AI">
+<meta property="og:description" content="Vérifie gratuitement si un mot-clé YouTube est facile ou difficile à ranker : score de difficulté sur 100, concurrence, vues moyennes du top et suggestions. Sans inscription.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/difficulte-mot-cle.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Difficulté de Mot-clé YouTube Gratuit (Facile ou Dur à Ranker ?) — VidSpark AI">
+<meta name="twitter:description" content="Vérifie gratuitement si un mot-clé YouTube est facile ou difficile à ranker : score de difficulté sur 100, concurrence, vues moyennes du top et suggestions. Sans inscription.">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,34 +30,38 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
-    <div class="badge-free" data-i18n="kd_badge"></div>
-    <h1 data-i18n="kd_h1"></h1>
-    <p data-i18n="kd_sub"></p>
+    <div class="badge-free" data-i18n="kd_badge">100% GRATUIT · SANS INSCRIPTION</div>
+    <h1 data-i18n="kd_h1">🎯 Difficulté de Mot-clé YouTube</h1>
+    <p data-i18n="kd_sub">Entre un mot-clé : on analyse les meilleures vidéos qui le ciblent et on te dit si c'est <strong>facile ou difficile</strong> de ranker dessus — avec un score sur 100.</p>
   </div>
 
   <div class="tool-box">
     <div class="row" style="flex-direction:column;gap:10px">
-      <input type="text" id="kw" data-i18n-ph="kd_ph" style="width:100%" onkeydown="if(event.key==='Enter')run(this,go)">
-      <button class="btn" onclick="run(this,go)" data-i18n="kd_btn"></button>
+      <input type="text" id="kw" data-i18n-ph="kd_ph" aria-label="Mot-clé YouTube à analyser" style="width:100%" onkeydown="if(event.key==='Enter')run(this,go)">
+      <button class="btn" onclick="run(this,go)" data-i18n="kd_btn">🎯 Vérifier la difficulté</button>
     </div>
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2 data-i18n="kd_faq_title"></h2>
-    <div class="faq-item"><h3 data-i18n="kd_q1"></h3><p data-i18n="kd_a1"></p></div>
-    <div class="faq-item"><h3 data-i18n="kd_q2"></h3><p data-i18n="kd_a2"></p></div>
-    <div class="faq-item"><h3 data-i18n="kd_q3"></h3><p data-i18n="kd_a3"></p></div>
+    <h2 data-i18n="kd_faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="kd_q1">Comment le score de difficulté est calculé ?</h3><p data-i18n="kd_a1">On analyse les meilleures vidéos qui rankent déjà sur ce mot-clé : leurs vues moyennes et leur fraîcheur (vues par heure). Plus le top est dominé par de grosses vidéos actives, plus c’est dur de ranker.</p></div>
+    <div class="faq-item"><h3 data-i18n="kd_q2">Quel mot-clé choisir ?</h3><p data-i18n="kd_a2">Vise les mots-clés Faciles et Moyens si ta chaîne est récente : tu rankeras plus vite. Garde les Difficiles pour quand tu auras de l’autorité.</p></div>
+    <div class="faq-item"><h3 data-i18n="kd_q3">C’est vraiment gratuit ?</h3><p data-i18n="kd_a3">Oui, sans inscription. Pour la recherche avancée, les générateurs IA et les 25 outils, passe à VidSpark Pro.</p></div>
   </div>
 
   <div class="upsell">
-    <h3 data-i18n="kd_up_h"></h3>
-    <p data-i18n="kd_up_p"></p>
-    <a href="/pricing.html" class="btn" data-i18n="kd_up_btn"></a>
+    <h3 data-i18n="kd_up_h">🔑 Recherche de mots-clés complète</h3>
+    <p data-i18n="kd_up_p">VidSpark AI te donne les suggestions, la difficulté, la concurrence et génère titres + tags optimisés pour chaque mot-clé.</p>
+    <a href="/pricing.html" class="btn" data-i18n="kd_up_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/generateur-tags.html">🏷️ Générateur de Tags YouTube</a> · <a href="/outils/extracteur-tags.html">🔎 Extracteur de Tags YouTube</a> · <a href="/outils/generateur-description.html">📝 Générateur de Description YouTube</a>
+  </div>
+</main>
 
 <script src="/js/api.js"></script>
 <script src="tools.js?v=4"></script>
@@ -169,6 +185,18 @@ async function go(){
     `;
   }catch(e){r.innerHTML='<div class="err">❌ '+esc(e.message)+'</div>';}
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"Difficulté de Mot-clé YouTube","item":"https://vidsparkpro.com/outils/difficulte-mot-cle.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Comment le score de difficulté est calculé ?","acceptedAnswer":{"@type":"Answer","text":"On analyse les meilleures vidéos qui rankent déjà sur ce mot-clé : leurs vues moyennes et leur fraîcheur (vues par heure). Plus le top est dominé par de grosses vidéos actives, plus c’est dur de ranker."}},
+{"@type":"Question","name":"Quel mot-clé choisir ?","acceptedAnswer":{"@type":"Answer","text":"Vise les mots-clés Faciles et Moyens si ta chaîne est récente : tu rankeras plus vite. Garde les Difficiles pour quand tu auras de l’autorité."}},
+{"@type":"Question","name":"C’est vraiment gratuit ?","acceptedAnswer":{"@type":"Answer","text":"Oui, sans inscription. Pour la recherche avancée, les générateurs IA et les 25 outils, passe à VidSpark Pro."}}]}
 </script>
 </body>
 </html>

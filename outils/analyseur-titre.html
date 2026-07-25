@@ -4,6 +4,18 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Analyseur de Titre YouTube Gratuit (Score CTR) — VidSpark AI</title>
 <meta name="description" content="Analyse gratuitement ton titre YouTube : score CTR instantané sur 100 et les 5 critères qui font cliquer (longueur, chiffre, émotion, hook, ponctuation).">
+<link rel="canonical" href="https://vidsparkpro.com/outils/analyseur-titre.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Analyseur de Titre YouTube Gratuit (Score CTR) — VidSpark AI">
+<meta property="og:description" content="Analyse gratuitement ton titre YouTube : score CTR instantané sur 100 et les 5 critères qui font cliquer (longueur, chiffre, émotion, hook, ponctuation).">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/outils/analyseur-titre.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Analyseur de Titre YouTube Gratuit (Score CTR) — VidSpark AI">
+<meta name="twitter:description" content="Analyse gratuitement ton titre YouTube : score CTR instantané sur 100 et les 5 critères qui font cliquer (longueur, chiffre, émotion, hook, ponctuation).">
+<!-- TODO SEO : ajouter og:image et twitter:image (1200x630) une fois l'image officielle disponible -->
 <link rel="stylesheet" href="tools.css">
 <link rel="stylesheet" href="/css/tokens.css">
   <link rel="manifest" href="/manifest.json">
@@ -18,31 +30,35 @@
   <script defer src="/js/pwa.js"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="hero">
-    <div class="badge-free" data-i18n="at_badge"></div>
-    <h1 data-i18n="at_h1"></h1>
-    <p data-i18n="at_sub"></p>
+    <div class="badge-free" data-i18n="at_badge">100% GRATUIT · INSTANTANÉ · SANS INSCRIPTION</div>
+    <h1 data-i18n="at_h1">📊 Analyseur de Titre YouTube</h1>
+    <p data-i18n="at_sub">Tape ton titre : le score CTR se met à jour en direct, avec les 5 critères qui font cliquer les spectateurs.</p>
   </div>
 
   <div class="tool-box">
-    <input type="text" id="titleIn" data-i18n-ph="at_ph" oninput="go()" style="width:100%">
+    <input type="text" id="titleIn" data-i18n-ph="at_ph" aria-label="Titre de la vidéo à analyser" oninput="go()" style="width:100%">
     <div class="result" id="res"></div>
   </div>
 
   <div class="faq">
-    <h2 data-i18n="at_faq_title"></h2>
-    <div class="faq-item"><h3 data-i18n="at_q1"></h3><p data-i18n="at_a1"></p></div>
-    <div class="faq-item"><h3 data-i18n="at_q2"></h3><p data-i18n="at_a2"></p></div>
-    <div class="faq-item"><h3 data-i18n="at_q3"></h3><p data-i18n="at_a3"></p></div>
+    <h2 data-i18n="at_faq_title">Questions fréquentes</h2>
+    <div class="faq-item"><h3 data-i18n="at_q1">Qu’est-ce que le CTR ?</h3><p data-i18n="at_a1">Le taux de clics (Click-Through Rate) : le % de personnes qui cliquent sur ta vidéo quand elles la voient. C’est l’un des signaux les plus importants pour l’algorithme YouTube.</p></div>
+    <div class="faq-item"><h3 data-i18n="at_q2">Sur quoi se base le score ?</h3><p data-i18n="at_a2">5 critères éprouvés : longueur idéale (40-70 caractères), présence d’un chiffre, mot émotionnel/puissant, accroche au début (Comment, Pourquoi, question…) et ponctuation expressive (? ou !).</p></div>
+    <div class="faq-item"><h3 data-i18n="at_q3">Un score de 100 garantit-il des vues ?</h3><p data-i18n="at_a3">Non — le score mesure le potentiel de clic du titre. La miniature, le sujet et la rétention comptent aussi. L’extension VidSpark AI analyse tout ça ensemble.</p></div>
   </div>
 
   <div class="upsell">
-    <h3 data-i18n="at_up_h"></h3>
-    <p data-i18n="at_up_p"></p>
-    <a href="/pricing.html" class="btn" data-i18n="at_up_btn"></a>
+    <h3 data-i18n="at_up_h">🩺 Le Title Doctor fait mieux</h3>
+    <p data-i18n="at_up_p">Dans l’extension VidSpark AI, l’IA diagnostique ton titre, te dit ce qui manque et le RÉÉCRIT pour plus de clics — directement sur YouTube.</p>
+    <a href="/pricing.html" class="btn" data-i18n="at_up_btn">Découvrir VidSpark AI — dès 9,99€/mois</a>
   </div>
-</div>
+
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--b2);font-size:14px;color:var(--muted)">
+    Autres outils utiles : <a href="/outils/generateur-titres.html">✨ Générateur de Titres YouTube</a> · <a href="/outils/ab-test-titres.html">⚔️ A/B Test Titres</a> · <a href="/outils/hook-analyzer.html">🪝 Hook Analyzer</a>
+  </div>
+</main>
 
 <script src="tools.js?v=4"></script>
 <script src="/js/dashboard-link.js"></script>
@@ -103,6 +119,18 @@ function go(){
       </div>
     </div>`;
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://vidsparkpro.com/"},
+{"@type":"ListItem","position":2,"name":"Outils","item":"https://vidsparkpro.com/outils.html"},
+{"@type":"ListItem","position":3,"name":"Analyseur de Titre YouTube","item":"https://vidsparkpro.com/outils/analyseur-titre.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Qu’est-ce que le CTR ?","acceptedAnswer":{"@type":"Answer","text":"Le taux de clics (Click-Through Rate) : le % de personnes qui cliquent sur ta vidéo quand elles la voient. C’est l’un des signaux les plus importants pour l’algorithme YouTube."}},
+{"@type":"Question","name":"Sur quoi se base le score ?","acceptedAnswer":{"@type":"Answer","text":"5 critères éprouvés : longueur idéale (40-70 caractères), présence d’un chiffre, mot émotionnel/puissant, accroche au début (Comment, Pourquoi, question…) et ponctuation expressive (? ou !)."}},
+{"@type":"Question","name":"Un score de 100 garantit-il des vues ?","acceptedAnswer":{"@type":"Answer","text":"Non — le score mesure le potentiel de clic du titre. La miniature, le sujet et la rétention comptent aussi. L’extension VidSpark AI analyse tout ça ensemble."}}]}
 </script>
 </body>
 </html>
