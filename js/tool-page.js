@@ -49,16 +49,17 @@
       +   '<a class="tp-back" href="/dashboard.html" aria-label="Tableau de bord">🏠 <span>Tableau de bord</span></a>'
       + '</div>';
 
-    // Si la page fournit déjà un <h1 id="tpStaticH1"> statique (visible sans JS,
-    // pour le SEO), on le réutilise au lieu d'en créer un second — jamais deux h1.
+    // Si la page fournit déjà un <h1 id="tpStaticH1"> / <p id="tpStaticSub"> statiques
+    // (visibles sans JS, pour le SEO), on les réutilise au lieu d'en créer des doublons.
     var existingH1 = document.getElementById('tpStaticH1');
+    var existingSub = document.getElementById('tpStaticSub');
 
     var page = document.createElement('div');
     page.className = 'tp-page';
     page.innerHTML =
         '<div class="tp-head">'
       +   (existingH1 ? '' : '<h1>'+(opts.icon?opts.icon+' ':'')+(opts.title||'')+'</h1>')
-      +   (opts.subtitle ? '<div class="sub">'+opts.subtitle+'</div>' : '')
+      +   (existingSub ? '' : (opts.subtitle ? '<div class="sub">'+opts.subtitle+'</div>' : ''))
       +   metaHTML(opts.meta)
       + '</div>'
       + '<div class="tp-grid">'
@@ -66,7 +67,11 @@
       +   '<aside class="tp-side" id="tpSide">'+(opts.sidebar||[]).map(cardHTML).join('')+'</aside>'
       + '</div>';
 
-    if(existingH1) page.querySelector('.tp-head').prepend(existingH1);
+    var tpHead = page.querySelector('.tp-head');
+    if(existingH1) tpHead.prepend(existingH1);
+    if(existingSub){
+      if(existingH1) existingH1.after(existingSub); else tpHead.prepend(existingSub);
+    }
 
     document.body.prepend(page);
     document.body.prepend(top);
