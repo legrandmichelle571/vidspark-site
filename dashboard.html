@@ -486,6 +486,9 @@
     /* ── ACTION CENTER ── */
     .ac-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
     @media(max-width:680px){ .ac-grid{ grid-template-columns:1fr; } }
+    /* Centre d'action déplacé dans le rail droit (320px) : la grille 2 colonnes
+       y serait trop étroite (tableau des analyses récentes illisible) */
+    .dash-rail .ac-grid{ grid-template-columns:1fr; }
     .mini-panel{ background:linear-gradient(165deg, rgba(0,0,0,.04), rgba(0,0,0,.015)); border:1px solid var(--b1); border-radius:14px; padding:16px; }
     .mini-h{ font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:12px; display:flex; align-items:center; gap:7px; }
     .mini-h .mh-ic{ font-size:13px; }
@@ -732,6 +735,8 @@
       db_myaccount:{fr:'⚙️ Mon compte',en:'⚙️ My account',es:'⚙️ Mi cuenta',ar:'⚙️ حسابي',pt:'⚙️ Minha conta',de:'⚙️ Mein Konto',it:'⚙️ Il mio account',ru:'⚙️ Мой аккаунт',ja:'⚙️ マイアカウント',ko:'⚙️ 내 계정',hi:'⚙️ मेरा खाता',zh:'⚙️ 我的账户',tr:'⚙️ Hesabım',nl:'⚙️ Mijn account'},
       db_openyt:{fr:'🎥 Ouvrir YouTube',en:'🎥 Open YouTube',es:'🎥 Abrir YouTube',ar:'🎥 فتح يوتيوب',pt:'🎥 Abrir YouTube',de:'🎥 YouTube öffnen',it:'🎥 Apri YouTube',ru:'🎥 Открыть YouTube',ja:'🎥 YouTubeを開く',ko:'🎥 YouTube 열기',hi:'🎥 YouTube खोलें',zh:'🎥 打开 YouTube',tr:'🎥 YouTube’u aç',nl:'🎥 YouTube openen'},
       db_upgrade:{fr:'🚀 Passer à Pro',en:'🚀 Go Pro',es:'🚀 Pasar a Pro',ar:'🚀 الترقية إلى Pro',pt:'🚀 Passar para Pro',de:'🚀 Zu Pro wechseln',it:'🚀 Passa a Pro',ru:'🚀 Перейти на Pro',ja:'🚀 Proにアップグレード',ko:'🚀 Pro로 업그레이드',hi:'🚀 Pro में अपग्रेड करें',zh:'🚀 升级到 Pro',tr:'🚀 Pro\'ya geç',nl:'🚀 Naar Pro'},
+      db_upgrade_biz:{fr:'💼 Passer à Business',en:'💼 Go Business',es:'💼 Pasar a Business',ar:'💼 الترقية إلى Business',pt:'💼 Passar para Business',de:'💼 Zu Business wechseln',it:'💼 Passa a Business',ru:'💼 Перейти на Business',ja:'💼 Businessにアップグレード',ko:'💼 Business로 업그레이드',hi:'💼 Business में अपग्रेड करें',zh:'💼 升级到 Business',tr:'💼 Business\'a geç',nl:'💼 Naar Business'},
+      db_upgrade_dmt:{fr:'💎 Passer à Diamant',en:'💎 Go Diamond',es:'💎 Pasar a Diamante',ar:'💎 الترقية إلى Diamant',pt:'💎 Passar para Diamante',de:'💎 Zu Diamant wechseln',it:'💎 Passa a Diamante',ru:'💎 Перейти на Diamant',ja:'💎 Diamantにアップグレード',ko:'💎 Diamant로 업그레이드',hi:'💎 Diamant में अपग्रेड करें',zh:'💎 升级到 Diamant',tr:'💎 Diamant\'a geç',nl:'💎 Naar Diamant'},
       db_state_new:{fr:'Nouvel utilisateur',en:'New user',ar:'مستخدم جديد'},
       db_state_active:{fr:'Utilisateur actif',en:'Active user',ar:'مستخدم نشط'},
       db_stat_yt:{fr:'Vues YouTube',en:'YouTube views',ar:'مشاهدات يوتيوب'},
@@ -1151,7 +1156,7 @@
           <span class="plan-chip"><span class="gem">💎</span> <span id="planName">—</span> <span class="plan-badge" id="planBadge">active</span></span>
           <button class="icon-btn" id="notifBtn" title="Notifications" onclick="toggleNotif(event)"><span class="tb-bell">🔔</span><span class="sb-badge count" id="topNotifCount">3</span></button>
           <button class="icon-btn" title="Réglages" onclick="window.location.href='account.html'">⚙️</button>
-          <button class="btn btn-primary" onclick="window.location.href='billing.html'" data-i18n="db_upgrade">🚀 Passer à Pro</button>
+          <button class="btn btn-primary" id="upgradeBtn" onclick="window.location.href='billing.html'" data-i18n="db_upgrade">🚀 Passer à Pro</button>
           <div class="avatar-wrap">
             <button id="avatarButton" class="avatar"><div id="avatarContent">👤</div></button>
             <div id="userMenu" class="menu">
@@ -1240,83 +1245,15 @@
             <div id="coachLive"></div>
           </div>
 
-          <!-- ACTION CENTER -->
-          <div class="card fade-in" style="--d:3">
-            <div class="section-title"><span class="st-ic">⚡</span> <span data-i18n="ac_title">Centre d'action</span></div>
-            <div class="ac-grid">
-              <div class="mini-panel" data-vs-lvl="2">
-                <div class="mini-h"><span class="mh-ic">🕑</span> <span data-i18n="ac_recent">Analyses récentes</span></div>
-                <table class="rec-table">
-                  <thead><tr>
-                    <th data-i18n="rec_th_title">Titre</th>
-                    <th data-i18n="rec_th_platform">Plateforme</th>
-                    <th data-i18n="rec_th_score">Score</th>
-                    <th data-i18n="rec_th_date">Date</th>
-                  </tr></thead>
-                  <tbody id="acRecentList">
-                    <tr><td data-i18n="ac_rec1_t">Top 5 erreurs SEO</td><td>▶</td><td style="color:var(--green)">87</td><td data-i18n="ac_rec1_s">il y a 2h</td></tr>
-                    <tr><td data-i18n="ac_rec2_t">Ma formule hook viral</td><td>▶</td><td style="color:var(--accent-l)">72</td><td data-i18n="ac_rec2_s">hier</td></tr>
-                    <tr><td data-i18n="ac_rec3_t">Test A/B miniature</td><td>▶</td><td style="color:var(--amber)">64</td><td data-i18n="ac_rec3_s">2j</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="mini-panel">
-                <div class="mini-h"><span class="mh-ic">⚡</span> <span data-i18n="ac_quick">Actions rapides</span></div>
-                <div class="qa-grid">
-                  <button class="qa-btn" onclick="openTool('analyze')"><span class="qa-ic">🎬</span><span class="qa-name" data-i18n="db_analyze">Analyser une vidéo</span></button>
-                  <button class="qa-btn" onclick="openTool('generate')"><span class="qa-ic">✨</span><span class="qa-name" data-i18n="db_generate">Générer (IA)</span></button>
-                  <button class="qa-btn" onclick="openTool('thumbnail')"><span class="qa-ic">🖼</span><span class="qa-name" data-i18n="db_thumbnail">Analyse miniature</span></button>
-                  <button class="qa-btn" onclick="location.href='/tiktok-seo.html'"><span class="qa-ic">🎵</span><span class="qa-name">SEO TikTok</span></button>
-                  <button class="qa-btn" onclick="goToYouTube()"><span class="qa-ic">🎥</span><span class="qa-name" data-i18n="db_openyt">Ouvrir YouTube</span></button>
-                </div>
-              </div>
-              <div class="mini-panel" data-vs-lvl="3" style="grid-column:1/-1">
-                <div class="mini-h"><span class="mh-ic">🚀</span> <span data-i18n="ac_opps">Opportunités tendance</span></div>
-                <div id="oppList">
-                <div class="opp-row"><span class="opp-tag hot">HOT</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp1">"AI tools 2026"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +240%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('trending')">→</button></div>
-                <div class="opp-row"><span class="opp-tag hot">HOT</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp2">"YouTube algorithm"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +180%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('trending')">→</button></div>
-                <div class="opp-row"><span class="opp-tag">UP</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp3">"faceless channel"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +95%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('ideas')">→</button></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ANALYTICS — avancé, visible à partir du niveau 3 (voir vsApplyDashboardLevel) -->
-          <div class="card fade-in" style="--d:4" data-vs-lvl="3">
-            <div class="section-title"><span class="st-ic">📈</span> <span data-i18n="an_title">Analytique</span><span class="st-spacer"></span><span class="link-more" onclick="openTool('audit')" data-i18n="db_audit">Audit de chaîne</span></div>
-            <div class="chart-box chart-box-featured">
-              <div class="chart-head"><span class="chart-title" data-i18n="an_seo">Progression SEO</span><span class="chart-val" id="valSeo" style="color:var(--green)">+14%</span></div>
-              <div id="chartSeo"></div>
-            </div>
-            <div class="charts-grid">
-              <div class="chart-box">
-                <div class="chart-head"><span class="chart-title" data-i18n="an_growth">Croissance de la chaîne</span><span class="chart-val" id="valGrowth" style="color:var(--green)">+8.2%</span></div>
-                <div id="chartGrowth"></div>
-              </div>
-              <div class="chart-box">
-                <div class="chart-head"><span class="chart-title" data-i18n="an_kw">Performance vidéos</span><span class="chart-val" id="valKw" style="color:var(--accent-l)">Top 10</span></div>
-                <div class="bars" id="chartKw"></div>
-              </div>
-              <div class="chart-box">
-                <div class="chart-head"><span class="chart-title" data-i18n="an_opt">Score d'optimisation</span></div>
-                <div class="donut-wrap"><div id="chartOpt"></div>
-                  <div class="donut-legend">
-                    <span><b data-i18n="an_leg_seo">SEO moyen</b> · <span id="legSeo">—</span></span>
-                    <span><b data-i18n="an_leg_viral">Viral moyen</b> · <span id="legViral">—</span></span>
-                    <span><b data-i18n="an_leg_score">Score</b> · <span id="legScore">—</span></span>
-                    <span><b data-i18n="an_leg_pot">Potentiel</b> · <span id="legPot">—</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ACTIVATION —
+          <!-- ACTIVATION — remontée à la place de l'ancien "Centre d'action" (déplacé dans le
+               rail droit, où il laissait un grand vide pour les nouveaux utilisateurs — voir
+               data-vs-lvl côté rail) : c'est la première action concrète attendue d'un nouvel
+               utilisateur, elle doit apparaître avant l'Analytique (encore gatée niveau 3).
                Phase 2 : la carte "Démarrage rapide" (checklist statique task1/2/3,
                jamais câblée à aucun état réel) a été retirée. Elle faisait
                doublon avec l'écran d'onboarding réel (Phase 1, has_data-driven)
                et n'apportait plus rien une fois celui-ci en place. -->
-          <div class="card primary fade-in ext-card" style="--d:5">
+          <div class="card primary fade-in ext-card" style="--d:3">
             <div class="section-title"><span class="st-ic">🔑</span> <span data-i18n="db_act_title">Activation de l'extension</span></div>
             <p class="ext-sub" data-i18n="db_ext_sub">Connecte l'extension Chrome à ton compte pour analyser n'importe quelle vidéo YouTube ou TikTok en un clic.</p>
             <div class="ext-steps-wrap">
@@ -1365,10 +1302,85 @@
             </div>
           </div>
 
+          <!-- ANALYTICS — avancé, visible à partir du niveau 3 (voir vsApplyDashboardLevel) -->
+          <div class="card fade-in" style="--d:4" data-vs-lvl="3">
+            <div class="section-title"><span class="st-ic">📈</span> <span data-i18n="an_title">Analytique</span><span class="st-spacer"></span><span class="link-more" onclick="openTool('audit')" data-i18n="db_audit">Audit de chaîne</span></div>
+            <div class="chart-box chart-box-featured">
+              <div class="chart-head"><span class="chart-title" data-i18n="an_seo">Progression SEO</span><span class="chart-val" id="valSeo" style="color:var(--green)">+14%</span></div>
+              <div id="chartSeo"></div>
+            </div>
+            <div class="charts-grid">
+              <div class="chart-box">
+                <div class="chart-head"><span class="chart-title" data-i18n="an_growth">Croissance de la chaîne</span><span class="chart-val" id="valGrowth" style="color:var(--green)">+8.2%</span></div>
+                <div id="chartGrowth"></div>
+              </div>
+              <div class="chart-box">
+                <div class="chart-head"><span class="chart-title" data-i18n="an_kw">Performance vidéos</span><span class="chart-val" id="valKw" style="color:var(--accent-l)">Top 10</span></div>
+                <div class="bars" id="chartKw"></div>
+              </div>
+              <div class="chart-box">
+                <div class="chart-head"><span class="chart-title" data-i18n="an_opt">Score d'optimisation</span></div>
+                <div class="donut-wrap"><div id="chartOpt"></div>
+                  <div class="donut-legend">
+                    <span><b data-i18n="an_leg_seo">SEO moyen</b> · <span id="legSeo">—</span></span>
+                    <span><b data-i18n="an_leg_viral">Viral moyen</b> · <span id="legViral">—</span></span>
+                    <span><b data-i18n="an_leg_score">Score</b> · <span id="legScore">—</span></span>
+                    <span><b data-i18n="an_leg_pot">Potentiel</b> · <span id="legPot">—</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div><!-- /dash-main -->
 
         <!-- ════ RIGHT RAIL ════ -->
         <aside class="dash-rail">
+          <!-- CENTRE D'ACTION — déplacé ici depuis le haut de la colonne principale : il laissait
+               un grand vide à droite pour les nouveaux utilisateurs (les autres cartes du rail
+               sont gatées niveau 2/3, voir data-vs-lvl), le "Centre d'action" en occupe désormais
+               l'espace. Toujours visible (pas de data-vs-lvl sur la carte elle-même) ; l'ac-grid
+               passe en une seule colonne dans ce rail étroit (320px, voir .dash-rail .ac-grid). -->
+          <div class="card rail-card fade-in" style="--d:2.5">
+            <div class="section-title"><span class="st-ic">⚡</span> <span data-i18n="ac_title">Centre d'action</span></div>
+            <div class="ac-grid">
+              <div class="mini-panel" data-vs-lvl="2">
+                <div class="mini-h"><span class="mh-ic">🕑</span> <span data-i18n="ac_recent">Analyses récentes</span></div>
+                <table class="rec-table">
+                  <thead><tr>
+                    <th data-i18n="rec_th_title">Titre</th>
+                    <th data-i18n="rec_th_platform">Plateforme</th>
+                    <th data-i18n="rec_th_score">Score</th>
+                    <th data-i18n="rec_th_date">Date</th>
+                  </tr></thead>
+                  <tbody id="acRecentList">
+                    <tr><td data-i18n="ac_rec1_t">Top 5 erreurs SEO</td><td>▶</td><td style="color:var(--green)">87</td><td data-i18n="ac_rec1_s">il y a 2h</td></tr>
+                    <tr><td data-i18n="ac_rec2_t">Ma formule hook viral</td><td>▶</td><td style="color:var(--accent-l)">72</td><td data-i18n="ac_rec2_s">hier</td></tr>
+                    <tr><td data-i18n="ac_rec3_t">Test A/B miniature</td><td>▶</td><td style="color:var(--amber)">64</td><td data-i18n="ac_rec3_s">2j</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mini-panel">
+                <div class="mini-h"><span class="mh-ic">⚡</span> <span data-i18n="ac_quick">Actions rapides</span></div>
+                <div class="qa-grid">
+                  <button class="qa-btn" onclick="openTool('analyze')"><span class="qa-ic">🎬</span><span class="qa-name" data-i18n="db_analyze">Analyser une vidéo</span></button>
+                  <button class="qa-btn" onclick="openTool('generate')"><span class="qa-ic">✨</span><span class="qa-name" data-i18n="db_generate">Générer (IA)</span></button>
+                  <button class="qa-btn" onclick="openTool('thumbnail')"><span class="qa-ic">🖼</span><span class="qa-name" data-i18n="db_thumbnail">Analyse miniature</span></button>
+                  <button class="qa-btn" onclick="location.href='/tiktok-seo.html'"><span class="qa-ic">🎵</span><span class="qa-name">SEO TikTok</span></button>
+                  <button class="qa-btn" onclick="goToYouTube()"><span class="qa-ic">🎥</span><span class="qa-name" data-i18n="db_openyt">Ouvrir YouTube</span></button>
+                </div>
+              </div>
+              <div class="mini-panel" data-vs-lvl="3">
+                <div class="mini-h"><span class="mh-ic">🚀</span> <span data-i18n="ac_opps">Opportunités tendance</span></div>
+                <div id="oppList">
+                <div class="opp-row"><span class="opp-tag hot">HOT</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp1">"AI tools 2026"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +240%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('trending')">→</button></div>
+                <div class="opp-row"><span class="opp-tag hot">HOT</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp2">"YouTube algorithm"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +180%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('trending')">→</button></div>
+                <div class="opp-row"><span class="opp-tag">UP</span><div class="lr-body"><div class="lr-title" data-i18n="ac_opp3">"faceless channel"</div><div class="lr-sub"><span data-i18n="ac_opp_search">Recherche</span> +95%</div></div><button class="btn btn-ghost btn-sm" onclick="openTool('ideas')">→</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="card rail-card fade-in" style="--d:3" data-vs-lvl="3">
             <div class="section-title"><span class="st-ic">🔑</span> <span data-i18n="rail_kw">Mots-clés tendance</span></div>
             <div class="kw-tabs">
@@ -1772,6 +1784,20 @@
           document.getElementById('planName').textContent = user.plan.toUpperCase();
           const pb = document.getElementById('planBadge');
           if (pb) { pb.textContent = user.plan; pb.className = 'plan-badge ' + user.plan; }
+        }
+        // Le bouton d'upgrade était figé sur "Passer à Pro" quel que soit le forfait réel :
+        // un utilisateur Business ou Diamant (au-dessus de Pro) se voyait donc proposer de
+        // "passer" à un plan inférieur au sien. On l'aligne sur le palier suivant réel,
+        // et on le masque une fois au sommet (Diamant).
+        const upgradeBtn = document.getElementById('upgradeBtn');
+        if (upgradeBtn) {
+          const nextTier = { free:'pro', pro:'business', business:'diamant' }[(user.plan||'free').toLowerCase()];
+          if (!nextTier) { upgradeBtn.style.display = 'none'; }
+          else {
+            const key = nextTier === 'pro' ? 'db_upgrade' : (nextTier === 'business' ? 'db_upgrade_biz' : 'db_upgrade_dmt');
+            upgradeBtn.setAttribute('data-i18n', key);
+            upgradeBtn.textContent = window.t ? t(key) : upgradeBtn.textContent;
+          }
         }
         // Usage réel si fourni par le backend
         // ⚠️ Le backend (/user/me) renvoie quota_used / quota_limit
@@ -2289,8 +2315,17 @@
     if(e.target.closest && e.target.closest('.sb-nav a.sb-link')) closeDrawer();
   });
 
-  /* Vue Analytique (retour home + scroll) */
-  function goAnalyticsView(){ if(typeof backToHome==='function') backToHome(); setTimeout(function(){ var c=document.querySelector('.charts-grid'); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); },70); }
+  /* Vue Analytique (retour home + scroll) — masquée tant que le niveau 3 (5+ vidéos
+     analysées, voir vsApplyDashboardLevel) n'est pas atteint : on prévient l'utilisateur
+     au lieu de scroller silencieusement vers une carte cachée (rien ne se passait alors). */
+  function goAnalyticsView(){
+    if(typeof backToHome==='function') backToHome();
+    setTimeout(function(){
+      var c=document.querySelector('.charts-grid');
+      if(c && c.offsetParent!==null) c.scrollIntoView({behavior:'smooth',block:'center'});
+      else if(typeof showToast==='function') showToast(window.t? t('dash_empty_chart') : 'Analyse quelques vidéos de plus pour débloquer ce graphique.');
+    },70);
+  }
 
   /* Coming soon → toast */
   var _vsToastT;
