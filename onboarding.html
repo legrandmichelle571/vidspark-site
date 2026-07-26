@@ -259,6 +259,10 @@
     ob_err_save:{fr:'Échec de l\'enregistrement de ta chaîne. Réessaie.',en:'Failed to save your channel. Please try again.',ar:'فشل حفظ قناتك. يرجى المحاولة مجددًا.'},
     ob_subscribers:{fr:'abonnés',en:'subscribers',ar:'مشترك'},
     ob_yt_channel:{fr:'Chaîne YouTube',en:'YouTube channel',ar:'قناة يوتيوب'},
+    ob_connected_h:{fr:'Ta chaîne connectée',en:'Your connected channel',ar:'قناتك المتصلة'},
+    ob_connected_p:{fr:'Tu es prêt·e à analyser tes vidéos. Tu peux ajouter d\'autres chaînes plus tard depuis "Mes chaînes".',en:'You\'re ready to analyze your videos. You can add more channels later from "My channels".',ar:'أنت جاهز لتحليل فيديوهاتك. يمكنك إضافة قنوات أخرى لاحقًا من "قنواتي".'},
+    ob_no_channel_yet:{fr:'Tu n\'as pas encore connecté de chaîne YouTube.',en:'You haven\'t connected a YouTube channel yet.',ar:'لم تقم بربط قناة يوتيوب بعد.'},
+    ob_connect_now:{fr:'🔗 Connecter ma chaîne YouTube',en:'🔗 Connect my YouTube channel',ar:'🔗 ربط قناتي على يوتيوب'},
   });
   </script>
   <script src="/js/meta-pixel.js"></script>
@@ -295,12 +299,19 @@
       </div>
 
       <div id="channelsContent" style="display: none;">
-        <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;" data-i18n="ob_select_h">Select Your Primary Channel</h2>
-        <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;" data-i18n="ob_select_p">
-          Choose the YouTube channel you want to analyze. You can add more channels later.
+        <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;" data-i18n="ob_connected_h">Your connected channel</h2>
+        <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;" data-i18n="ob_connected_p">
+          You're ready to analyze your videos. You can add more channels later from "My channels".
         </p>
 
         <div class="channels-grid" id="channelsList"></div>
+      </div>
+
+      <div id="noChannelBlock" style="display: none;">
+        <p style="font-size: 14px; color: var(--muted); margin-bottom: 16px;" data-i18n="ob_no_channel_yet">
+          You haven't connected a YouTube channel yet.
+        </p>
+        <a href="channels.html" class="btn btn-primary" style="display: block; text-align: center;" data-i18n="ob_connect_now">🔗 Connect my YouTube channel</a>
       </div>
 
       <div class="actions">
@@ -319,27 +330,42 @@
   <script src="js/auth.js"></script>
   <script>
     /**
-     * Onboarding — Sélection chaîne YouTube
+     * Onboarding — Confirmation de la chaîne YouTube connectée
+     *
+     * Utilisait /user/youtube-channels + ChannelsAPI.setPrimary() : deux endpoints
+     * qui n'ont jamais existé côté backend (flux "lister mes chaînes via l'API
+     * Google" jamais implémenté) → l'étape échouait systématiquement avec
+     * "Échec du chargement de tes chaînes YouTube", même pour un compte qui avait
+     * déjà connecté une chaîne via channels.html (le vrai flux, coller un lien).
+     * On relit donc la même source que le reste du site (/api/user/channels) :
+     * simple confirmation si une chaîne existe déjà, sinon renvoi vers channels.html.
      */
-    let selectedChannel = null;
+    const API_BASE = 'https://vidspark-ai-production-9ac7.up.railway.app';
 
     async function loadChannels() {
       try {
-        // Note: Cet endpoint devrait retourner les chaînes YouTube de l'utilisateur
-        // via Google YouTube API
-        const response = await API.get('/user/youtube-channels');
-        const channels = response.channels || [];
+        const session = await Auth.getSession();
+        const token = session?.access_token;
+        if (!token) throw new Error('Not authenticated');
+
+        const res = await fetch(`${API_BASE}/api/user/channels`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Load failed');
+        const data = await res.json();
+        const channels = data.channels || [];
 
         document.getElementById('loading').style.display = 'none';
 
         if (channels.length === 0) {
-          document.getElementById('error').innerHTML =
-            `<div class="error">${t('ob_no_channels')}</div>`;
+          document.getElementById('noChannelBlock').style.display = 'block';
+          document.getElementById('continueBtn').style.display = 'none';
           return;
         }
 
         renderChannels(channels);
         document.getElementById('channelsContent').style.display = 'block';
+        document.getElementById('continueBtn').disabled = false;
       } catch (err) {
         console.error('[Onboarding] Load channels error:', err);
         document.getElementById('loading').style.display = 'none';
@@ -351,51 +377,20 @@
     function renderChannels(channels) {
       const list = document.getElementById('channelsList');
       list.innerHTML = channels.map(channel => `
-        <div class="channel-card" onclick="selectChannel('${channel.id}', this)">
-          <div class="channel-card-radio" data-channel-id="${channel.id}"></div>
+        <div class="channel-card selected">
+          <div class="channel-card-radio">✓</div>
           <div class="channel-info">
-            <div class="channel-name">${channel.title}</div>
-            <div class="channel-meta">
-              ${channel.subscriberCount ? `${channel.subscriberCount} ${t('ob_subscribers')}` : t('ob_yt_channel')}
-            </div>
+            <div class="channel-name">${channel.channel_name || channel.channel_id}</div>
+            <div class="channel-meta">${t('ob_yt_channel')}</div>
           </div>
         </div>
       `).join('');
     }
 
-    function selectChannel(channelId, element) {
-      // Désélectionner le précédent
-      document.querySelectorAll('.channel-card').forEach(el => {
-        el.classList.remove('selected');
-      });
-
-      // Sélectionner le nouveau
-      element.classList.add('selected');
-      selectedChannel = {
-        id: channelId,
-        title: element.querySelector('.channel-name').textContent
-      };
-
-      document.getElementById('continueBtn').disabled = false;
-    }
-
-    async function continueSetup() {
-      if (!selectedChannel) return;
-
-      try {
-        document.getElementById('continueBtn').disabled = true;
-
-        // Sauvegarder la chaîne sélectionnée
-        await ChannelsAPI.setPrimary(selectedChannel.id);
-
-        // Rediriger vers dashboard
-        window.location.href = '/dashboard.html';
-      } catch (err) {
-        console.error('[Onboarding] Setup error:', err);
-        document.getElementById('error').innerHTML =
-          `<div class="error">${t('ob_err_save')}</div>`;
-        document.getElementById('continueBtn').disabled = false;
-      }
+    function continueSetup() {
+      // La chaîne est déjà enregistrée (via channels.html) — rien à sauvegarder ici,
+      // cette étape ne fait que confirmer l'état existant.
+      window.location.href = '/dashboard.html';
     }
 
     function skipOnboarding(e) {
