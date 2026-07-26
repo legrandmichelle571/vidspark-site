@@ -6,10 +6,12 @@
 <title>VidSpark AI — Centre de commande</title>
 <link rel="stylesheet" href="/css/tokens.css">
 <style>
+  /* Palette propre au panneau d'admin — volontairement indépendante de tokens.css
+     (qui pilote le thème clair du site public) pour rester sombre et lisible ici. */
   :root{
-    --bg:var(--vs-bg); --s1:var(--vs-surface-3); --s2:var(--vs-surface); --b1:var(--vs-border-1); --b2:var(--vs-border-2);
-    --text:var(--vs-text); --muted:var(--vs-muted); --purple:var(--vs-accent); --purple-l:var(--vs-accent-2);
-    --green:var(--vs-green); --red:var(--vs-red); --amber:var(--vs-amber); --blue:#2563EB;
+    --bg:#0B0F19; --s1:#141c2e; --s2:#0c1220; --b1:rgba(255,255,255,.08); --b2:rgba(255,255,255,.14);
+    --text:#eaecf3; --muted:#8b92a7; --purple:#FF9D1F; --purple-l:#ffb85c;
+    --green:#34d399; --red:#f87171; --amber:#fbbf24; --blue:#5b9bff;
   }
   *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
   body{background:var(--bg);color:var(--text);min-height:100vh;}
