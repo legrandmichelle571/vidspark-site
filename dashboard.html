@@ -322,6 +322,24 @@
     .tb-search .kbd{ position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:9px; font-weight:700; color:var(--faint); border:1px solid var(--b1); border-radius:5px; padding:2px 5px; background:rgba(0,0,0,.025); pointer-events:none; }
     @media(max-width:1300px){ .tb-search{ display:none; } }
     @media(max-width:1024px){ .tb-nav{ display:none; } }
+    /* ── Chaîne YouTube connectée (topbar) ── */
+    .tb-channel-connect{
+      display:flex; align-items:center; gap:7px; padding:9px 15px; border-radius:11px;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:#0b0f19;
+      font-size:12.5px; font-weight:700; white-space:nowrap; text-decoration:none;
+      box-shadow:0 8px 22px -8px var(--accent-glow); transition:all .18s var(--ease);
+    }
+    .tb-channel-connect:hover{ filter:brightness(1.06); transform:translateY(-1px); }
+    .tb-channel-pill{
+      display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:11px;
+      background:var(--s2); border:1px solid var(--b1); color:var(--text);
+      font-size:12.5px; font-weight:700; white-space:nowrap; text-decoration:none;
+      max-width:220px; overflow:hidden; transition:all .18s var(--ease);
+    }
+    .tb-channel-pill span:last-child{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .tb-channel-pill:hover{ border-color:var(--accent-line); background:var(--accent-soft); }
+    .tb-channel-pill .tb-channel-ic{ color:#ff0033; font-size:11px; flex-shrink:0; }
+    @media(max-width:1180px){ .tb-channel-connect, .tb-channel-pill{ display:none !important; } }
     .icon-btn{
       position:relative; width:42px; height:42px; border-radius:12px;
       display:flex; align-items:center; justify-content:center; font-size:17px;
@@ -737,9 +755,10 @@
       db_upgrade:{fr:'🚀 Passer à Pro',en:'🚀 Go Pro',es:'🚀 Pasar a Pro',ar:'🚀 الترقية إلى Pro',pt:'🚀 Passar para Pro',de:'🚀 Zu Pro wechseln',it:'🚀 Passa a Pro',ru:'🚀 Перейти на Pro',ja:'🚀 Proにアップグレード',ko:'🚀 Pro로 업그레이드',hi:'🚀 Pro में अपग्रेड करें',zh:'🚀 升级到 Pro',tr:'🚀 Pro\'ya geç',nl:'🚀 Naar Pro'},
       db_upgrade_biz:{fr:'💼 Passer à Business',en:'💼 Go Business',es:'💼 Pasar a Business',ar:'💼 الترقية إلى Business',pt:'💼 Passar para Business',de:'💼 Zu Business wechseln',it:'💼 Passa a Business',ru:'💼 Перейти на Business',ja:'💼 Businessにアップグレード',ko:'💼 Business로 업그레이드',hi:'💼 Business में अपग्रेड करें',zh:'💼 升级到 Business',tr:'💼 Business\'a geç',nl:'💼 Naar Business'},
       db_upgrade_dmt:{fr:'💎 Passer à Diamant',en:'💎 Go Diamond',es:'💎 Pasar a Diamante',ar:'💎 الترقية إلى Diamant',pt:'💎 Passar para Diamante',de:'💎 Zu Diamant wechseln',it:'💎 Passa a Diamante',ru:'💎 Перейти на Diamant',ja:'💎 Diamantにアップグレード',ko:'💎 Diamant로 업그레이드',hi:'💎 Diamant में अपग्रेड करें',zh:'💎 升级到 Diamant',tr:'💎 Diamant\'a geç',nl:'💎 Naar Diamant'},
+      db_connect_channel:{fr:'🔗 Connecter ma chaîne YouTube',en:'🔗 Connect my YouTube channel',es:'🔗 Conectar mi canal de YouTube',ar:'🔗 ربط قناتي على يوتيوب',pt:'🔗 Conectar meu canal do YouTube',de:'🔗 Meinen YouTube-Kanal verbinden',it:'🔗 Collega il mio canale YouTube',ru:'🔗 Подключить мой канал YouTube',ja:'🔗 YouTubeチャンネルを接続',ko:'🔗 내 YouTube 채널 연결',hi:'🔗 मेरा YouTube चैनल कनेक्ट करें',zh:'🔗 连接我的 YouTube 频道',tr:'🔗 YouTube kanalımı bağla',nl:'🔗 Mijn YouTube-kanaal koppelen'},
       db_state_new:{fr:'Nouvel utilisateur',en:'New user',ar:'مستخدم جديد'},
       db_state_active:{fr:'Utilisateur actif',en:'Active user',ar:'مستخدم نشط'},
-      db_stat_yt:{fr:'Vues YouTube',en:'YouTube views',ar:'مشاهدات يوتيوب'},
+      db_stat_yt:{fr:'Abonnés YouTube',en:'YouTube subscribers',ar:'مشتركو يوتيوب'},
       db_stat_tt:{fr:'Vues TikTok',en:'TikTok views',ar:'مشاهدات تيك توك'},
       db_stat_seo:{fr:'Score SEO moyen',en:'Average SEO score',ar:'متوسط نقاط SEO'},
       db_stat_vids:{fr:'Vidéos analysées',en:'Videos analyzed',ar:'الفيديوهات المحلَّلة'},
@@ -1151,6 +1170,16 @@
             <span class="kbd">Ctrl K</span>
           </div>
         </div>
+
+        <!-- Chaîne YouTube connectée — occupait un vide dans la topbar tant qu'aucune chaîne
+             n'était visible nulle part ailleurs dans l'en-tête. Alimenté par loadChannelsCount()
+             (déjà appelée au chargement), qui interrogeait déjà /api/user/channels mais ne
+             remplissait qu'un ancrage caché (#channelsCount) — on réutilise le même appel. -->
+        <a href="channels.html" class="tb-channel-connect" id="tbChannelConnect" data-i18n="db_connect_channel">🔗 Connecter ma chaîne YouTube</a>
+        <a href="channels.html" class="tb-channel-pill" id="tbChannelPill" style="display:none;">
+          <span class="tb-channel-ic">▶</span> <span id="tbChannelName">—</span>
+        </a>
+
         <div class="tb-right">
           <span id="dashStateBadge" class="state-badge" data-i18n="db_state_new">Nouvel utilisateur</span>
           <span class="plan-chip"><span class="gem">💎</span> <span id="planName">—</span> <span class="plan-badge" id="planBadge">active</span></span>
@@ -1202,9 +1231,9 @@
           <!-- STAT TILES — visibles uniquement niveau 3 (utilisateur actif) -->
           <div class="stat-tiles fade-in" style="--d:1" data-vs-lvl="3">
             <div class="stat-tile">
-              <div class="stat-tile-top"><span class="stat-ic yt">▶</span><span class="stat-lbl" data-i18n="db_stat_yt">Vues YouTube</span></div>
-              <div class="stat-val">128,4K</div>
-              <div class="stat-delta example" data-i18n="db_stat_example">Exemple</div>
+              <div class="stat-tile-top"><span class="stat-ic yt">▶</span><span class="stat-lbl" data-i18n="db_stat_yt">Abonnés YouTube</span></div>
+              <div class="stat-val" id="statYtSubs">—</div>
+              <div class="stat-delta real" data-i18n="db_stat_real">Réel</div>
             </div>
             <div class="stat-tile">
               <div class="stat-tile-top"><span class="stat-ic tt">♪</span><span class="stat-lbl" data-i18n="db_stat_tt">Vues TikTok</span></div>
@@ -1949,10 +1978,45 @@
         });
         if (!res.ok) return;
         const data = await res.json();
-        const n = (data.channels || []).length;
+        const channels = data.channels || [];
         const el = document.getElementById('channelsCount');
-        if (el) el.textContent = n;
+        if (el) el.textContent = channels.length;
+
+        // Widget topbar : bouton "Connecter ma chaîne" tant qu'aucune chaîne n'est
+        // liée, sinon son/leur nom affiché (voir #tbChannelConnect / #tbChannelPill).
+        const connectBtn = document.getElementById('tbChannelConnect');
+        const pill = document.getElementById('tbChannelPill');
+        if (connectBtn && pill) {
+          if (channels.length) {
+            const names = channels.map(c => c.channel_name || c.channel_id).join(', ');
+            const nameEl = document.getElementById('tbChannelName');
+            if (nameEl) nameEl.textContent = names;
+            pill.title = names;
+            pill.style.display = 'flex';
+            connectBtn.style.display = 'none';
+          } else {
+            connectBtn.style.display = 'flex';
+            pill.style.display = 'none';
+          }
+        }
+
+        // Tuile "Abonnés YouTube" : le nombre d'abonnés de la 1ère chaîne connectée.
+        // ⚠️ Nom de champ pas encore confirmé côté backend — plusieurs variantes
+        // possibles selon comment /api/user/channels expose la donnée YouTube API.
+        const subsEl = document.getElementById('statYtSubs');
+        if (subsEl) {
+          const first = channels[0];
+          const subs = first && (first.subscriber_count ?? first.subscribers ?? first.subs ?? first.channel_subs);
+          subsEl.textContent = (subs != null) ? fmtCompact(subs) : '—';
+        }
       } catch (e) { console.warn('[Dashboard] loadChannelsCount:', e); }
+    }
+
+    function fmtCompact(n) {
+      n = Number(n) || 0;
+      if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.', ',') + 'M';
+      if (n >= 1000) return (n / 1000).toFixed(1).replace('.', ',') + 'K';
+      return String(n);
     }
 
     // Charger au démarrage
