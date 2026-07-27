@@ -344,7 +344,7 @@ const RENDER = {
       <div class="sec">
         <h3>▶️ ${t('tks_clip')} ${i+1} ${time}</h3>
         <div class="item">
-          <div class="muted" style="font-size:12px;">${esc(c.angle||'')}</div>
+          <div class="muted" style="font-size:12px;">🎯 ${esc(c.angle||'')}</div>
           <b style="display:block;margin-top:4px;">🪝 ${esc(c.hook||'')}</b>
           ${c.script?`<div class="muted" style="font-size:12.5px;margin-top:6px;">🎬 ${esc(c.script)}</div>`:''}
           <div class="cap" style="margin-top:8px;">${esc(c.caption||'')}</div>${chips(c.hashtags,'p')}
