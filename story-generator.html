@@ -674,10 +674,28 @@ async function doGenerate(){
       })
     });
     if(!res.ok){ const e = await res.json().catch(()=>({})); throw new Error(e.error || t('genError')); }
-    const data = await res.json();
+    const { jobId } = await res.json();
+    const data = await pollStoryJob(jobId, token);
     state.result = data; state.activeTab = 'summary'; state.view = 'results';
   }catch(err){ state.generationError = err.message || t('genError'); }
   finally{ state.isGenerating = false; clearInterval(state.loadingTimer); render(); }
+}
+
+/* Une histoire complète peut prendre plus longtemps qu'une seule requête HTTP ne le
+   permet de façon fiable (timeout Railway/navigateur observé en prod) : /generate
+   répond immédiatement avec un jobId, on sonde /status/:jobId jusqu'à ce que ce soit prêt. */
+async function pollStoryJob(jobId, token){
+  const start = Date.now();
+  const maxWaitMs = 8 * 60 * 1000;
+  while (Date.now() - start < maxWaitMs){
+    await new Promise(r=>setTimeout(r, 4000));
+    const res = await fetch(API_BASE+'/api/story/status/'+jobId, { headers:{ 'Authorization':`Bearer ${token}` } });
+    if(!res.ok){ const e = await res.json().catch(()=>({})); throw new Error(e.error || t('genError')); }
+    const job = await res.json();
+    if(job.status === 'done') return job.result;
+    if(job.status === 'error') throw new Error(job.error || t('genError'));
+  }
+  throw new Error(t('genError'));
 }
 
 /* ---------- Loading view ---------- */
