@@ -460,6 +460,14 @@
     .coach-hero-ring .ring-lbl{ font-size:10px; color:var(--muted); margin-top:2px; }
     @media(max-width:520px){ .coach-hero{ justify-content:center; text-align:center; } .coach-hero-ring{ margin:0 auto; } }
 
+    /* ── QUICK GENERATE — barre de commande rapide (type "Make ..." vidIQ) ── */
+    .qg-row{ display:flex; gap:10px; flex-wrap:wrap; }
+    .qg-row input{ flex:2; min-width:200px; background:var(--s2); border:1px solid var(--b2); border-radius:11px; padding:11px 14px; color:var(--text); font-size:13.5px; font-family:inherit; }
+    .qg-row input:focus{ outline:none; border-color:var(--accent-line); }
+    .qg-row select{ flex:0 0 auto; min-width:150px; background:var(--s2); border:1px solid var(--b2); border-radius:11px; padding:11px 12px; color:var(--text); font-size:13px; font-family:inherit; }
+    .qg-row .btn{ flex:0 0 auto; white-space:nowrap; }
+    @media(max-width:640px){ .qg-row{ flex-direction:column; } .qg-row input, .qg-row select, .qg-row .btn{ width:100%; } }
+
     /* ── ACTIVATION EXTENSION — étapes numérotées + illustration ── */
     .ext-sub{ font-size:12.5px; color:var(--muted); margin:-6px 0 18px; line-height:1.5; }
     .ext-steps-wrap{ display:flex; gap:24px; align-items:flex-start; }
@@ -766,6 +774,13 @@
       db_stat_vids:{fr:'Vidéos analysées',en:'Videos analyzed',ar:'الفيديوهات المحلَّلة'},
       db_stat_pts:{fr:'Points SEO gagnés',en:'SEO points earned',ar:'نقاط SEO المكتسبة'},
       db_stat_real:{fr:'Donnée réelle',en:'Real data',ar:'بيانات حقيقية'},
+      db_qg_title:{fr:'Générer rapidement',en:'Quick generate',ar:'توليد سريع'},
+      db_qg_ph:{fr:'Décris ta vidéo en une phrase…',en:'Describe your video in one sentence…',ar:'صف فيديوك في جملة واحدة…'},
+      db_qg_video:{fr:'Vidéo (titres + tags + description)',en:'Video (titles + tags + description)',ar:'فيديو (عناوين + وسوم + وصف)'},
+      db_qg_short:{fr:'Short',en:'Short',ar:'فيديو قصير'},
+      db_qg_ideas:{fr:'Idées de vidéos',en:'Video ideas',ar:'أفكار فيديوهات'},
+      db_qg_titles:{fr:'Titres uniquement',en:'Titles only',ar:'عناوين فقط'},
+      db_qg_btn:{fr:'Générer',en:'Generate',ar:'توليد'},
       db_k_plan:{fr:'Forfait actuel',en:'Current plan',es:'Plan actual',ar:'الباقة الحالية',pt:'Plano atual',de:'Aktueller Tarif',it:'Piano attuale',ru:'Текущий тариф',ja:'現在のプラン',ko:'현재 플랜',hi:'वर्तमान योजना',zh:'当前套餐',tr:'Mevcut plan',nl:'Huidig plan'},
       db_k_analyses:{fr:'Analyses ce mois',en:'Analyses this month',es:'Análisis este mes',ar:'تحليلات هذا الشهر',pt:'Análises este mês',de:'Analysen diesen Monat',it:'Analisi questo mese',ru:'Анализов в этом месяце',ja:'今月の分析',ko:'이번 달 분석',hi:'इस माह विश्लेषण',zh:'本月分析',tr:'Bu ay analiz',nl:'Analyses deze maand'},
       db_k_quota:{fr:'Quota mensuel',en:'Monthly quota',es:'Cuota mensual',ar:'الحصّة الشهرية',pt:'Cota mensal',de:'Monatliches Kontingent',it:'Quota mensile',ru:'Месячная квота',ja:'月間クォータ',ko:'월간 할당량',hi:'मासिक कोटा',zh:'每月配额',tr:'Aylık kota',nl:'Maandquota'},
@@ -1273,6 +1288,24 @@
               </div>
             </div>
             <div id="coachLive"></div>
+          </div>
+
+          <!-- QUICK GENERATE — barre de commande rapide (inspirée du champ "Make..." de vidIQ) :
+               lance une génération IA directement depuis l'accueil, sans naviguer dans les outils.
+               Préremplit le champ du bon outil via openTool(view, topic) → postMessage/URL vers
+               diamant.html (voir la fonction JS quickGenerate() plus bas). -->
+          <div class="card fade-in" style="--d:2.2">
+            <div class="section-title"><span class="st-ic">✨</span> <span data-i18n="db_qg_title">Générer rapidement</span></div>
+            <div class="qg-row">
+              <input id="qgInput" type="text" data-i18n-ph="db_qg_ph" placeholder="Décris ta vidéo en une phrase…" onkeydown="if(event.key==='Enter')quickGenerate()">
+              <select id="qgType">
+                <option value="generate" data-i18n="db_qg_video">Vidéo (titres + tags + description)</option>
+                <option value="shorts" data-i18n="db_qg_short">Short</option>
+                <option value="ideas" data-i18n="db_qg_ideas">Idées de vidéos</option>
+                <option value="titlegen" data-i18n="db_qg_titles">Titres uniquement</option>
+              </select>
+              <button class="btn btn-primary" onclick="quickGenerate()"><span data-i18n="db_qg_btn">Générer</span> ✨</button>
+            </div>
           </div>
 
           <!-- ACTIVATION — remontée à la place de l'ancien "Centre d'action" (déplacé dans le
@@ -2066,15 +2099,27 @@
     var homeNav=document.getElementById('lnkHome');
     if(homeNav && homeNav.classList.contains('tb-nav-link')) homeNav.classList.toggle('active', view==='home');
   }
-  function openTool(view){
+  function openTool(view, prefillTopic){
     document.getElementById('content').style.display='none';
     var l=document.getElementById('loading'); if(l) l.style.display='none';
     document.getElementById('studioWrap').style.display='block';
     var f=document.getElementById('studioFrame');
-    if(!studioLoaded){ f.src='diamant.html?embed=1&v=7#'+view; studioLoaded=true; }
-    else { try{ f.contentWindow.postMessage({studioNav:view},'*'); }catch(e){ f.src='diamant.html?embed=1&v=7#'+view; } }
+    if(!studioLoaded){
+      var src='diamant.html?embed=1&v=7'+(prefillTopic?('&prefill='+encodeURIComponent(prefillTopic)):'')+'#'+view;
+      f.src=src; studioLoaded=true;
+    }
+    else { try{ f.contentWindow.postMessage({studioNav:view, prefillTopic:prefillTopic||undefined},'*'); }catch(e){ f.src='diamant.html?embed=1&v=7#'+view; } }
     setActiveLink(view);
     window.scrollTo(0,0);
+  }
+  /* Barre "Générer rapidement" (accueil) — envoie le sujet saisi vers le bon
+     outil de diamant.html (voir openTool() et le repli prefill côté iframe). */
+  function quickGenerate(){
+    var input = document.getElementById('qgInput');
+    var topic = (input.value || '').trim();
+    if(!topic){ input.focus(); return; }
+    var type = document.getElementById('qgType').value;
+    openTool(type, topic);
   }
   function backToHome(){
     document.getElementById('studioWrap').style.display='none';

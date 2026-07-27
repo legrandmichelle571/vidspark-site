@@ -650,7 +650,21 @@
   const fmtN = n => { n=+n||0; return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'k':n; };
   if(new URLSearchParams(location.search).get('embed')==='1') document.body.classList.add('embed');
   // Navigation depuis le dashboard parent (postMessage) ou le hash
-  window.addEventListener('message', function(e){ if(e.data && e.data.studioNav) nav(e.data.studioNav); });
+  window.addEventListener('message', function(e){
+    if(e.data && e.data.studioNav){
+      nav(e.data.studioNav);
+      if(e.data.prefillTopic) prefillTool(e.data.studioNav, e.data.prefillTopic);
+    }
+  });
+  // Barre "Générer rapidement" du dashboard (voir openTool() côté parent) : préremplit
+  // le champ sujet du bon outil plutôt que de forcer une génération à l'aveugle —
+  // l'utilisateur garde la main pour relire/ajuster avant de cliquer "Générer".
+  const PREFILL_MAP = { generate:'genTopic', shorts:'shTopic', ideas:'idTopic', titlegen:'tgTitle' };
+  function prefillTool(view, topic){
+    var fid = PREFILL_MAP[view];
+    var el = fid && $(fid);
+    if(el) el.value = topic;
+  }
 
   /* ── Thème : Sombre / Clair / Violet ── */
   const THEMES = ['dark','light','violet'];
@@ -1236,6 +1250,9 @@
       $('planBadge').textContent = plan;
       $('loading').style.display='none'; $('app').style.display='flex';
       const _h=location.hash.slice(1); if(_h && document.querySelector('.navitem[data-view="'+_h+'"]')) nav(_h);
+      // URLSearchParams.get() décode déjà la valeur — un decodeURIComponent() en plus
+      // planterait (URIError) si le sujet contient un caractère "%" (ex: "réduction de 50%").
+      const _pf=new URLSearchParams(location.search).get('prefill'); if(_pf && _h) prefillTool(_h, _pf);
       // Verrouille visuellement les onglets au-dessus du palier de l'utilisateur
       document.querySelectorAll('.navitem').forEach(b=>{
         const need = b.dataset.tier || 'pro';
