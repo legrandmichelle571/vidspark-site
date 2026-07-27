@@ -273,6 +273,8 @@ const state = {
   error: null,
   styleCategory: 'animation',
   config: { sceneCount:5, style:'disney', customStyle:'', aspectRatio:'16:9', customWidth:'', customHeight:'', tone:'adventure', ageGroup:'all ages', visualRichness:'cinematic', useCharacterRefs:false },
+  maxScenes: 20,
+  userPlan: null,
   result: null,
   isGenerating: false,
   generationError: null,
@@ -478,8 +480,9 @@ function renderStep4(){
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="text-sm font-semibold text-white/80 mb-2 block">${t('sceneCountLabel')}</label>
-            <input type="number" min="1" max="20" value="${c.sceneCount}" onchange="state.config.sceneCount=parseInt(this.value)||5" class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-cyan-500/50 focus:outline-none">
+            <label class="text-sm font-semibold text-white/80 mb-2 block">${t('sceneCountLabel')} <span class="text-white/30 font-normal">(max ${state.maxScenes})</span></label>
+            <input type="number" min="1" max="${state.maxScenes}" value="${c.sceneCount}" onchange="state.config.sceneCount=Math.min(${state.maxScenes},Math.max(1,parseInt(this.value)||5));render();" class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-cyan-500/50 focus:outline-none">
+            ${state.userPlan==='free' ? `<p class="text-[11px] text-white/30 mt-1">${state.lang==='ar'?'الخطة المجانية محدودة بـ 10 مشاهد. الترقية إلى Pro لغاية 20 مشهد.':(state.lang==='fr'?'Le plan Gratuit est limité à 10 scènes. Passe en Pro pour aller jusqu’à 20.':'Free plan is limited to 10 scenes. Upgrade to Pro for up to 20.')}</p>` : ''}
           </div>
           <div>
             <label class="text-sm font-semibold text-white/80 mb-2 block">${t('langLabel')}</label>
@@ -1058,6 +1061,15 @@ function tabExport(r){
     const token = await getToken();
     if(!token){
       state.error = t('authRequired');
+      render();
+      return;
+    }
+    const res = await fetch(API_BASE+'/api/user/quota', { headers:{ 'Authorization':`Bearer ${token}` } });
+    if(res.ok){
+      const q = await res.json();
+      state.userPlan = q.plan;
+      state.maxScenes = (q.plan === 'free' || !q.plan) ? 10 : 20;
+      state.config.sceneCount = Math.min(state.maxScenes, state.config.sceneCount);
       render();
     }
   }catch(e){}
