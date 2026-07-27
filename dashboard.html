@@ -331,14 +331,16 @@
     }
     .tb-channel-connect:hover{ filter:brightness(1.06); transform:translateY(-1px); }
     .tb-channel-pill{
-      display:flex; align-items:center; gap:8px; padding:8px 14px; border-radius:11px;
+      display:flex; align-items:center; gap:9px; padding:7px 14px; border-radius:11px;
       background:var(--s2); border:1px solid var(--b1); color:var(--text);
-      font-size:12.5px; font-weight:700; white-space:nowrap; text-decoration:none;
-      max-width:220px; overflow:hidden; transition:all .18s var(--ease);
+      white-space:nowrap; text-decoration:none;
+      max-width:260px; overflow:hidden; transition:all .18s var(--ease);
     }
-    .tb-channel-pill span:last-child{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .tb-channel-pill:hover{ border-color:var(--accent-line); background:var(--accent-soft); }
-    .tb-channel-pill .tb-channel-ic{ color:#ff0033; font-size:11px; flex-shrink:0; }
+    .tb-channel-pill .tb-channel-ic{ color:#ff0033; font-size:13px; flex-shrink:0; }
+    .tb-channel-tx{ display:flex; flex-direction:column; min-width:0; text-align:left; }
+    .tb-channel-lbl{ font-size:9.5px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; }
+    .tb-channel-name{ font-size:12.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     @media(max-width:1180px){ .tb-channel-connect, .tb-channel-pill{ display:none !important; } }
     .icon-btn{
       position:relative; width:42px; height:42px; border-radius:12px;
@@ -756,6 +758,7 @@
       db_upgrade_biz:{fr:'💼 Passer à Business',en:'💼 Go Business',es:'💼 Pasar a Business',ar:'💼 الترقية إلى Business',pt:'💼 Passar para Business',de:'💼 Zu Business wechseln',it:'💼 Passa a Business',ru:'💼 Перейти на Business',ja:'💼 Businessにアップグレード',ko:'💼 Business로 업그레이드',hi:'💼 Business में अपग्रेड करें',zh:'💼 升级到 Business',tr:'💼 Business\'a geç',nl:'💼 Naar Business'},
       db_upgrade_dmt:{fr:'💎 Passer à Diamant',en:'💎 Go Diamond',es:'💎 Pasar a Diamante',ar:'💎 الترقية إلى Diamant',pt:'💎 Passar para Diamante',de:'💎 Zu Diamant wechseln',it:'💎 Passa a Diamante',ru:'💎 Перейти на Diamant',ja:'💎 Diamantにアップグレード',ko:'💎 Diamant로 업그레이드',hi:'💎 Diamant में अपग्रेड करें',zh:'💎 升级到 Diamant',tr:'💎 Diamant\'a geç',nl:'💎 Naar Diamant'},
       db_connect_channel:{fr:'🔗 Connecter ma chaîne YouTube',en:'🔗 Connect my YouTube channel',es:'🔗 Conectar mi canal de YouTube',ar:'🔗 ربط قناتي على يوتيوب',pt:'🔗 Conectar meu canal do YouTube',de:'🔗 Meinen YouTube-Kanal verbinden',it:'🔗 Collega il mio canale YouTube',ru:'🔗 Подключить мой канал YouTube',ja:'🔗 YouTubeチャンネルを接続',ko:'🔗 내 YouTube 채널 연결',hi:'🔗 मेरा YouTube चैनल कनेक्ट करें',zh:'🔗 连接我的 YouTube 频道',tr:'🔗 YouTube kanalımı bağla',nl:'🔗 Mijn YouTube-kanaal koppelen'},
+      db_channel_connected:{fr:'Chaîne YouTube connectée',en:'YouTube channel connected',es:'Canal de YouTube conectado',ar:'قناة يوتيوب متصلة',pt:'Canal do YouTube conectado',de:'YouTube-Kanal verbunden',it:'Canale YouTube collegato',ru:'Канал YouTube подключён',ja:'YouTubeチャンネル接続済み',ko:'YouTube 채널 연결됨',hi:'YouTube चैनल कनेक्टेड',zh:'YouTube 频道已连接',tr:'YouTube kanalı bağlandı',nl:'YouTube-kanaal gekoppeld'},
       db_state_new:{fr:'Nouvel utilisateur',en:'New user',ar:'مستخدم جديد'},
       db_state_active:{fr:'Utilisateur actif',en:'Active user',ar:'مستخدم نشط'},
       db_stat_yt:{fr:'Abonnés YouTube',en:'YouTube subscribers',ar:'مشتركو يوتيوب'},
@@ -1033,6 +1036,7 @@
           <a class="sb-link" data-name="Thumbnail Downloader" onclick="openTool('thumbdl')"><span class="ic">🖼</span> <span class="lbl" data-i18n="db_thumbdl">Téléchargeur de miniatures</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Thumbnail Analyzer" onclick="openTool('thumbnail')"><span class="ic">🎨</span> <span class="lbl" data-i18n="db_thumbnail">Analyse miniature</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="TikTok SEO" onclick="location.href='/tiktok-seo.html'"><span class="ic">🎵</span> <span class="lbl">SEO TikTok</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Instagram SEO" onclick="location.href='/instagram-seo.html'"><span class="ic">📸</span> <span class="lbl">SEO Instagram</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Hashtag Generator" onclick="openTool('hashtags')"><span class="ic">🔗</span> <span class="lbl" data-i18n="db_hashtag">Générateur de hashtags</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Translate" onclick="openTool('translate')"><span class="ic">🌍</span> <span class="lbl" data-i18n="db_translate">Traduire</span><span class="sb-arrow">›</span></a>
         </div>
@@ -1177,7 +1181,11 @@
              remplissait qu'un ancrage caché (#channelsCount) — on réutilise le même appel. -->
         <a href="channels.html" class="tb-channel-connect" id="tbChannelConnect" data-i18n="db_connect_channel">🔗 Connecter ma chaîne YouTube</a>
         <a href="channels.html" class="tb-channel-pill" id="tbChannelPill" style="display:none;">
-          <span class="tb-channel-ic">▶</span> <span id="tbChannelName">—</span>
+          <span class="tb-channel-ic">▶</span>
+          <span class="tb-channel-tx">
+            <span class="tb-channel-lbl" data-i18n="db_channel_connected">Chaîne YouTube connectée</span>
+            <span class="tb-channel-name" id="tbChannelName">—</span>
+          </span>
         </a>
 
         <div class="tb-right">
@@ -1396,6 +1404,7 @@
                   <button class="qa-btn" onclick="openTool('generate')"><span class="qa-ic">✨</span><span class="qa-name" data-i18n="db_generate">Générer (IA)</span></button>
                   <button class="qa-btn" onclick="openTool('thumbnail')"><span class="qa-ic">🖼</span><span class="qa-name" data-i18n="db_thumbnail">Analyse miniature</span></button>
                   <button class="qa-btn" onclick="location.href='/tiktok-seo.html'"><span class="qa-ic">🎵</span><span class="qa-name">SEO TikTok</span></button>
+                  <button class="qa-btn" onclick="location.href='/instagram-seo.html'"><span class="qa-ic">📸</span><span class="qa-name">SEO Instagram</span></button>
                   <button class="qa-btn" onclick="goToYouTube()"><span class="qa-ic">🎥</span><span class="qa-name" data-i18n="db_openyt">Ouvrir YouTube</span></button>
                 </div>
               </div>
