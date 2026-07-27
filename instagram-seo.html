@@ -373,16 +373,23 @@ const RENDER = {
   repurpose(d,out){
     const clips=d.clips||[];
     const head = d.video?.title ? `<div class="muted" style="margin-bottom:12px;">🎬 ${esc(d.video.title)}${d.video.duration?` · ${esc(d.video.duration)}`:''}</div>` : '';
-    out.innerHTML=`<div class="card">${head}${clips.map((c,i)=>`
+    // Repli sans transcription (YouTube bloque parfois sa récupération côté serveur, voir
+    // instagram-repurpose côté backend) : pas de timecodes précis dans ce cas, on prévient.
+    const notice = d.fallback ? `<div class="item" style="border-color:var(--orange-d);background:rgba(193,36,109,.06);margin-bottom:14px;">⚠️ ${esc(d.fallback_reason||'')}</div>` : '';
+    out.innerHTML=`<div class="card">${head}${notice}${clips.map((c,i)=>{
+      const time = (c.start && c.end) ? `<span class="chip p" style="font-size:13px;">✂️ ${esc(c.start)} → ${esc(c.end)}</span>` : '';
+      return `
       <div class="sec">
-        <h3>▶️ ${t('igs_clip')} ${i+1} <span class="chip p" style="font-size:13px;">✂️ ${esc(c.start||'?')} → ${esc(c.end||'?')}</span></h3>
+        <h3>▶️ ${t('igs_clip')} ${i+1} ${time}</h3>
         <div class="item">
           <div class="muted" style="font-size:12px;">${esc(c.angle||'')}</div>
           <b style="display:block;margin-top:4px;">🪝 ${esc(c.hook||'')}</b>
+          ${c.script?`<div class="muted" style="font-size:12.5px;margin-top:6px;">🎬 ${esc(c.script)}</div>`:''}
           <div class="cap" style="margin-top:8px;">${esc(c.caption||'')}</div>${chips(c.hashtags,'p')}
           <button class="btn-mini" style="margin-top:8px;" onclick='copy(${JSON.stringify((c.caption||"")+" "+((c.hashtags||[]).join(" ")))},this)'>📋 ${t('igs_copy')}</button>
         </div>
-      </div>`).join('')}</div>`;
+      </div>`;
+    }).join('')}</div>`;
   },
   ideas(d,out){
     out.innerHTML=`<div class="card"><div class="sec"><h3>🔥 ${t('igs_tab_ideas')}</h3>${(d.ideas||[]).map((it,i)=>`
