@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VidSpark AI — Générateur d'histoires</title>
+<meta name="description" content="Transforme une idée ou une histoire en scènes cinématographiques ultra-détaillées, prêtes pour les générateurs d'images/vidéo IA (Nano Banana Pro, LTX-2, etc.).">
+<link rel="canonical" href="https://vidsparkpro.com/story-generator.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="VidSpark AI — Générateur d'histoires">
+<meta property="og:description" content="Transforme une idée ou une histoire en scènes cinématographiques ultra-détaillées, prêtes pour les générateurs d'images/vidéo IA.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsparkpro.com/story-generator.html">
+<meta property="og:site_name" content="VidSpark AI">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VidSpark AI — Générateur d'histoires">
+<meta name="twitter:description" content="Transforme une idée ou une histoire en scènes cinématographiques ultra-détaillées, prêtes pour les générateurs d'images/vidéo IA.">
+<script defer src="/js/meta-pixel.js"></script>
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/app-shell.css">
+<link rel="stylesheet" href="/css/tool-page.css">
+<meta name="theme-color" content="#FBF8F3">
+<link rel="icon" href="/icons/icon-192.png">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--shell-bg,#FBF8F3);min-height:100vh;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;}
+  /* ── Identité visuelle propre (ni orange TikTok, ni magenta Instagram) : violet/indigo
+     cinéma, cohérent avec l'usage "réalisateur IA" de cet outil. Portée à cette page
+     uniquement (voir instagram-seo.html pour le même principe). */
+  body .tp-main{ --orange:#6D5EF2; --orange-d:#4C3FCB; --purple:#22C1C3; }
+  body .tp-main .chip{ background:rgba(109,94,242,.12); border-color:rgba(109,94,242,.3); }
+  body .tp-main .tp-panel::before{
+    background:linear-gradient(90deg,#4C3FCB,#6D5EF2,#22C1C3,#6D5EF2,#4C3FCB);
+    background-size:300% 100%; animation:sgShimmer 10s ease infinite;
+  }
+  @keyframes sgShimmer{ 0%{background-position:0% 50%;} 100%{background-position:300% 50%;} }
+  .tp-head{ animation:sgFadeUp .5s ease both; }
+  .tp-panel{ animation:sgFadeUp .5s ease both .08s; }
+  .tp-side .tp-card{ animation:sgFadeUp .5s ease both; }
+  .tp-side .tp-card:nth-child(1){ animation-delay:.14s; }
+  .tp-side .tp-card:nth-child(2){ animation-delay:.20s; }
+  .tp-side .tp-card:nth-child(3){ animation-delay:.26s; }
+  .tp-side .tp-card:nth-child(4){ animation-delay:.32s; }
+  @keyframes sgFadeUp{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce){
+    .tp-head, .tp-panel, .tp-side .tp-card{ animation:none; }
+    body .tp-main .tp-panel::before{ animation:none; }
+  }
+  /* Grille de configuration (scène, style, format, ton…) */
+  .sg-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media(max-width:560px){ .sg-grid{ grid-template-columns:1fr; } }
+  .sg-toggle{ display:flex; gap:8px; }
+  .sg-toggle button{ flex:1; padding:9px; border-radius:10px; border:1px solid var(--b2); background:var(--s2); color:var(--muted); font-size:12px; font-weight:700; cursor:pointer; }
+  .sg-toggle button.active{ border-color:var(--orange); color:var(--orange-d); background:rgba(109,94,242,.10); }
+  .sg-scene-card{ background:var(--s2); border:1px solid var(--b2); border-radius:12px; padding:14px; margin-bottom:12px; }
+  .sg-scene-card h4{ font-size:14px; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .sg-field{ margin-bottom:8px; }
+  .sg-field .lbl{ font-size:10.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); margin-bottom:3px; display:flex; align-items:center; justify-content:space-between; gap:6px; }
+  .sg-field .val{ background:var(--s1); border:1px solid var(--b1); border-radius:8px; padding:8px 10px; font-size:12.5px; line-height:1.5; white-space:pre-wrap; }
+  .sg-char-card{ background:var(--s2); border:1px solid var(--b2); border-radius:12px; padding:14px; margin-bottom:10px; }
+  .sg-continuity{ background:var(--s2); border:1px solid var(--b2); border-radius:12px; padding:14px; }
+  .sg-continuity .lbl{ font-size:10.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); margin-top:8px; }
+  .sg-continuity .lbl:first-child{ margin-top:0; }
+</style>
+</head>
+<body>
+<h1 id="tpStaticH1">🎬 Générateur d'histoires</h1>
+<p id="tpStaticSub" class="sub">Transforme une idée en scènes cinématographiques prêtes pour l'IA — propulsé par IA.</p>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/i18n.js"></script>
+<script src="/js/tool-page.js"></script>
+<script>
+const API_BASE = 'https://vidspark-ai-production-9ac7.up.railway.app';
+let current = 'full';
+
+/* ── Styles d'animation (37) — repris d'un build Google AI Studio fourni par
+   l'utilisateur ("ToonStory Director AI"). Nom affiché selon la langue du site
+   (fr/ar sinon en) via styleLabel(). ── */
+const STYLE_LIST = [
+  {id:'disney',en:'Disney Fairytale',ar:'ديزني - حكايات خيالية',fr:'Disney Conte de Fées'},
+  {id:'pixar',en:'Pixar 3D',ar:'بيكسار - ثلاثي الأبعاد',fr:'Pixar 3D'},
+  {id:'ghibli',en:'Studio Ghibli',ar:'ستوديو جيبلي',fr:'Studio Ghibli'},
+  {id:'dreamworks',en:'DreamWorks Expressive',ar:'دريم ووركس - تعبيري',fr:'DreamWorks Expressif'},
+  {id:'anime',en:'Anime Cinematic',ar:'أنمي سينمائي',fr:'Anime Cinématographique'},
+  {id:'chibi',en:'Chibi Animation',ar:'تشيبي',fr:'Animation Chibi'},
+  {id:'cartoon-network',en:'Cartoon Network Style',ar:'كارتون نتورك',fr:'Style Cartoon Network'},
+  {id:'nickelodeon',en:'Nickelodeon Style',ar:'نيكولوديون',fr:'Style Nickelodeon'},
+  {id:'classic-2d',en:'Classic 2D Hand-drawn',ar:'رسم يدوي كلاسيكي',fr:'2D Classique (Dessiné à la main)'},
+  {id:'modern-2d',en:'Modern 2D TV',ar:'2D عصري',fr:'2D Moderne (TV)'},
+  {id:'claymation',en:'Claymation / Stop Motion',ar:'صلصال / إيقاف الحركة',fr:'Claymation / Stop Motion'},
+  {id:'neon-cyber',en:'Neon Cyber',ar:'نيون سايبر',fr:'Néon Cyber'},
+  {id:'watercolor',en:'Soft Watercolor',ar:'ألوان مائية ناعمة',fr:'Aquarelle Douce'},
+  {id:'storybook',en:'Storybook Illustration',ar:'رسوم قصص الأطفال',fr:'Illustration de Livre de Contes'},
+  {id:'dark-fantasy',en:'Dark Fantasy',ar:'فانتازيا مظلمة',fr:'Dark Fantasy'},
+  {id:'sci-fi',en:'Sci-Fi Animation',ar:'خيال علمي',fr:'Animation de Science-Fiction'},
+  {id:'arabic-folklore',en:'Arabic Folklore',ar:'فولكلور عربي',fr:'Folklore Arabe'},
+  {id:'islamic-geometric',en:'Islamic Geometric Fantasy',ar:'فانتازيا هندسية إسلامية',fr:'Fantaisie Géométrique Islamique'},
+  {id:'animal-adventure',en:'Animal Adventure',ar:'مغامرة حيوانات',fr:'Aventure Animale'},
+  {id:'preschool',en:'Preschool Animation',ar:'أنيميشن ما قبل المدرسة',fr:'Animation Préscolaire'},
+  {id:'shadow-stickman',en:'Shadow Stickman',ar:'شخصية عودية بظلال',fr:'Shadow Stickman'},
+  {id:'dark-stickman-horror',en:'Dark Stickman Horror',ar:'رعب الشخصيات العودية المظلمة',fr:'Stickman d’Horreur Sombre'},
+  {id:'minimal-noir',en:'Minimal Noir Animation',ar:'أنيميشن نوار بسيط',fr:'Animation Noir Minimaliste'},
+  {id:'analog-horror-stickman',en:'Analog Horror Stickman',ar:'رعب تمثيلي عودي',fr:'Horreur Analogique Stickman'},
+  {id:'limbo-style',en:'Limbo Style',ar:'أسلوب ليمبو الضبابي',fr:'Style Limbo'},
+  {id:'stick-figure-thriller',en:'Stick Figure Thriller',ar:'إثارة وتشويق الشخصيات العودية',fr:'Thriller en Stick Figure'},
+  {id:'stickman-classic',en:'Classic Stickman (Minimalist)',ar:'الأسلوب الكلاسيكي المبسط',fr:'Style Classique (Minimaliste)'},
+  {id:'stickman-pivot',en:'Pivot Style (Articulated)',ar:'أسلوب بيفوت المفصلي',fr:'Style Pivot (Articulé)'},
+  {id:'stickman-anime-rhg',en:'Anime / RHG Style (Dynamic Combat)',ar:'أنمي قتالي ديناميكي',fr:'Style Anime / RHG (Combat)'},
+  {id:'stickman-cartoon-doodle',en:'Cartoon / Doodle Style',ar:'أسلوب كارتون خربشة',fr:'Style Cartoon / Doodle'},
+  {id:'stickman-chibi-semi',en:'Chibi / Semi-Stickman Style',ar:'تشيبي عودي هجين',fr:'Style Chibi / Semi-Stickman'},
+  {id:'realistic',en:'Cinematic Realistic',ar:'واقعي سينمائي',fr:'Réaliste Cinématographique'},
+  {id:'hollywood-cinematic',en:'Hollywood Cinematic',ar:'سينما هوليوود',fr:'Cinéma Hollywoodien'},
+  {id:'photorealistic',en:'Photorealistic',ar:'واقعي فوتوغرافي',fr:'Photoréaliste'},
+  {id:'live-action',en:'Live Action',ar:'تصوير حي وبشري',fr:'Prise de Vue Réelle'},
+  {id:'dark-cinema',en:'Dark Cinema',ar:'سينما سوداوية وغامضة',fr:'Cinéma Sombre'},
+  {id:'ultra-realistic',en:'Ultra Realistic',ar:'فائق الواقعية والدقة',fr:'Ultra Réaliste'},
+  {id:'shadow-cinematic',en:'Shadow Cinematic',ar:'سينمائي الظلال الغامض',fr:'Cinématique des Ombres'}
+];
+const ASPECT_RATIOS = ['1:1','4:5','3:4','16:9','9:16','21:9','2.35:1','3:2','4:3'];
+
+function currentLang(){ return (typeof window.vsGetLang==='function') ? vsGetLang() : 'fr'; }
+function styleLabel(s){ const l=currentLang(); return s[l]||s.en; }
+
+const TOOLS = {
+  full:      { ep:'/api/story/generate', tipKey:'sg_tip_full', outcomes:['sg_oc_scenes','sg_oc_characters','sg_oc_continuity','sg_oc_prompts'] },
+  expand:    { ep:'/api/story/expand',   tipKey:'sg_tip_expand', outcomes:['sg_oc_story'] },
+  summarize: { ep:'/api/story/summarize',tipKey:'sg_tip_summarize', outcomes:['sg_oc_condensed'] }
+};
+const TAB_META = {
+  full:{icon:'🎬',key:'sg_tab_full'}, expand:{icon:'💡',key:'sg_tab_expand'}, summarize:{icon:'📄',key:'sg_tab_summarize'}
+};
+
+registerI18n({
+  sg_ai:{fr:'Propulsé par IA',en:'AI Powered',es:'Impulsado por IA',ar:'مدعوم بالذكاء الاصطناعي',pt:'Desenvolvido com IA',de:'KI-gestützt',it:'Basato su IA',ru:'На основе ИИ',ja:'AI搭載',ko:'AI 기반',hi:'AI द्वारा संचालित',zh:'AI 驱动',tr:'YZ Destekli',nl:'Aangedreven door AI'},
+  sg_tools_word:{fr:'outils',en:'tools',es:'herramientas',ar:'أدوات',pt:'ferramentas',de:'Tools',it:'strumenti',ru:'инструментов',ja:'ツール',ko:'도구',hi:'टूल',zh:'工具',tr:'araç',nl:'tools'},
+  sg_styles_word:{fr:'styles',en:'styles',es:'estilos',ar:'نمط',pt:'estilos',de:'Stile',it:'stili',ru:'стилей',ja:'スタイル',ko:'스타일',hi:'शैलियाँ',zh:'风格',tr:'stil',nl:'stijlen'},
+  sg_subtitle:{fr:'Transforme une idée en scènes cinématographiques prêtes pour l’IA.',en:'Turn an idea into cinematic scenes ready for AI generation.',es:'Convierte una idea en escenas cinematográficas listas para la IA.',ar:'حوّل فكرة إلى مشاهد سينمائية جاهزة للذكاء الاصطناعي.',pt:'Transforme uma ideia em cenas cinematográficas prontas para IA.',de:'Verwandle eine Idee in filmreife Szenen für KI-Generierung.',it:'Trasforma un’idea in scene cinematografiche pronte per l’IA.',ru:'Превратите идею в кинематографичные сцены для ИИ.',ja:'アイデアをAI生成向けの映画的シーンに変換。',ko:'아이디어를 AI 생성용 영화적 장면으로 변환하세요.',hi:'एक विचार को AI के लिए तैयार सिनेमाई दृश्यों में बदलें।',zh:'把创意变成可供 AI 生成使用的电影级场景。',tr:'Bir fikri yapay zekâ üretimine hazır sinematik sahnelere dönüştür.',nl:'Zet een idee om in filmische scenes, klaar voor AI-generatie.'},
+  sg_tab_full:{fr:'Créer une histoire',en:'Create a story',es:'Crear una historia',ar:'إنشاء قصة',pt:'Criar uma história',de:'Geschichte erstellen',it:'Crea una storia',ru:'Создать историю',ja:'ストーリーを作成',ko:'스토리 만들기',hi:'कहानी बनाएं',zh:'创建故事',tr:'Hikaye oluştur',nl:'Verhaal maken'},
+  sg_tab_expand:{fr:'Développer une idée',en:'Expand an idea',es:'Desarrollar una idea',ar:'تطوير فكرة',pt:'Desenvolver uma ideia',de:'Idee ausbauen',it:'Sviluppa un’idea',ru:'Развить идею',ja:'アイデアを展開',ko:'아이디어 확장',hi:'विचार विस्तार करें',zh:'扩展创意',tr:'Bir fikri geliştir',nl:'Idee uitwerken'},
+  sg_tab_summarize:{fr:'Résumer un texte',en:'Summarize a text',es:'Resumir un texto',ar:'تلخيص نص',pt:'Resumir um texto',de:'Text zusammenfassen',it:'Riassumi un testo',ru:'Обобщить текст',ja:'テキストを要約',ko:'텍스트 요약',hi:'टेक्स्ट सारांशित करें',zh:'总结文本',tr:'Bir metni özetle',nl:'Tekst samenvatten'},
+  sg_params:{fr:'Paramètres',en:'Settings',es:'Parámetros',ar:'الإعدادات',pt:'Parâmetros',de:'Einstellungen',it:'Parametri',ru:'Параметры',ja:'設定',ko:'설정',hi:'सेटिंग्स',zh:'参数',tr:'Ayarlar',nl:'Instellingen'},
+  sg_generate:{fr:'Générer',en:'Generate',es:'Generar',ar:'توليد',pt:'Gerar',de:'Generieren',it:'Genera',ru:'Создать',ja:'生成',ko:'생성',hi:'जनरेट करें',zh:'生成',tr:'Oluştur',nl:'Genereren'},
+  sg_generating:{fr:'Génération…',en:'Generating…',es:'Generando…',ar:'جارٍ التوليد…',pt:'Gerando…',de:'Wird generiert…',it:'Generazione…',ru:'Создание…',ja:'生成中…',ko:'생성 중…',hi:'जनरेट हो रहा है…',zh:'生成中…',tr:'Oluşturuluyor…',nl:'Genereren…'},
+  sg_copy:{fr:'Copier',en:'Copy',es:'Copiar',ar:'نسخ',pt:'Copiar',de:'Kopieren',it:'Copia',ru:'Копировать',ja:'コピー',ko:'복사',hi:'कॉपी करें',zh:'复制',tr:'Kopyala',nl:'Kopiëren'},
+  sg_copied:{fr:'Copié',en:'Copied',es:'Copiado',ar:'تم النسخ',pt:'Copiado',de:'Kopiert',it:'Copiato',ru:'Скопировано',ja:'コピー済み',ko:'복사됨',hi:'कॉपी हो गया',zh:'已复制',tr:'Kopyalandı',nl:'Gekopieerd'},
+  sg_storylabel:{fr:'Ton histoire (ou colle une histoire déjà écrite)',en:'Your story (or paste an already-written story)',es:'Tu historia (o pega una historia ya escrita)',ar:'قصتك (أو الصق قصة مكتوبة مسبقًا)',pt:'Sua história (ou cole uma história já escrita)',de:'Deine Geschichte (oder füge eine fertige Geschichte ein)',it:'La tua storia (o incolla una storia già scritta)',ru:'Ваша история (или вставьте уже написанную историю)',ja:'あなたの物語（または既に書かれた物語を貼り付け）',ko:'당신의 이야기 (또는 이미 작성된 이야기를 붙여넣기)',hi:'आपकी कहानी (या पहले से लिखी कहानी पेस्ट करें)',zh:'你的故事（或粘贴已写好的故事）',tr:'Hikayen (veya zaten yazılmış bir hikaye yapıştır)',nl:'Jouw verhaal (of plak een al geschreven verhaal)'},
+  sg_storyph:{fr:'Il était une fois…',en:'Once upon a time…',es:'Érase una vez…',ar:'كان يا مكان…',pt:'Era uma vez…',de:'Es war einmal…',it:'C’era una volta…',ru:'Жили-были…',ja:'昔々…',ko:'옛날 옛적에…',hi:'एक बार की बात है…',zh:'很久很久以前…',tr:'Bir zamanlar…',nl:'Er was eens…'},
+  sg_scenecount:{fr:'Nombre de scènes',en:'Scene count',es:'Número de escenas',ar:'عدد المشاهد',pt:'Número de cenas',de:'Anzahl der Szenen',it:'Numero di scene',ru:'Количество сцен',ja:'シーン数',ko:'장면 수',hi:'दृश्यों की संख्या',zh:'场景数量',tr:'Sahne sayısı',nl:'Aantal scenes'},
+  sg_style:{fr:'Style d’animation',en:'Animation style',es:'Estilo de animación',ar:'أسلوب الأنيميشن',pt:'Estilo de animação',de:'Animationsstil',it:'Stile di animazione',ru:'Стиль анимации',ja:'アニメーションスタイル',ko:'애니메이션 스타일',hi:'एनिमेशन शैली',zh:'动画风格',tr:'Animasyon stili',nl:'Animatiestijl'},
+  sg_customstyle:{fr:'Style personnalisé (optionnel)',en:'Custom style (optional)',es:'Estilo personalizado (opcional)',ar:'أسلوب مخصص (اختياري)',pt:'Estilo personalizado (opcional)',de:'Eigener Stil (optional)',it:'Stile personalizzato (opzionale)',ru:'Свой стиль (по желанию)',ja:'カスタムスタイル（任意）',ko:'커스텀 스타일 (선택)',hi:'कस्टम शैली (वैकल्पिक)',zh:'自定义风格（可选）',tr:'Özel stil (isteğe bağlı)',nl:'Aangepaste stijl (optioneel)'},
+  sg_customstyleph:{fr:'ex : Cyberpunk Noir…',en:'e.g. Cyberpunk Noir…',es:'ej: Cyberpunk Noir…',ar:'مثال: سايبربانك نوار…',pt:'ex: Cyberpunk Noir…',de:'z. B. Cyberpunk Noir…',it:'es: Cyberpunk Noir…',ru:'напр. Cyberpunk Noir…',ja:'例：サイバーパンク・ノワール…',ko:'예: 사이버펑크 누아르…',hi:'उदा: साइबरपंक नॉयर…',zh:'例如：赛博朋克黑色电影…',tr:'ör: Cyberpunk Noir…',nl:'bijv. Cyberpunk Noir…'},
+  sg_ratio:{fr:'Format d’image',en:'Aspect ratio',es:'Formato de imagen',ar:'الأبعاد',pt:'Formato de imagem',de:'Bildformat',it:'Formato immagine',ru:'Соотношение сторон',ja:'アスペクト比',ko:'화면 비율',hi:'आस्पेक्ट रेशियो',zh:'画面比例',tr:'En boy oranı',nl:'Beeldverhouding'},
+  sg_tone:{fr:'Ton et ambiance',en:'Tone & mood',es:'Tono y ambiente',ar:'النبرة والمزاج',pt:'Tom e clima',de:'Ton & Stimmung',it:'Tono e atmosfera',ru:'Тон и настроение',ja:'トーンと雰囲気',ko:'톤과 분위기',hi:'टोन और माहौल',zh:'基调与氛围',tr:'Ton ve atmosfer',nl:'Toon en sfeer'},
+  sg_tone_auto:{fr:'Auto',en:'Auto',es:'Auto',ar:'تلقائي',pt:'Auto',de:'Auto',it:'Auto',ru:'Авто',ja:'自動',ko:'자동',hi:'ऑटो',zh:'自动',tr:'Otomatik',nl:'Auto'},
+  sg_tone_adventure:{fr:'Aventure',en:'Adventure',es:'Aventura',ar:'مغامرة',pt:'Aventura',de:'Abenteuer',it:'Avventura',ru:'Приключение',ja:'冒険',ko:'모험',hi:'साहसिक',zh:'冒险',tr:'Macera',nl:'Avontuur'},
+  sg_tone_funny:{fr:'Drôle',en:'Funny',es:'Divertido',ar:'مضحك',pt:'Engraçado',de:'Lustig',it:'Divertente',ru:'Смешно',ja:'コメディ',ko:'재미있음',hi:'मज़ेदार',zh:'搞笑',tr:'Komik',nl:'Grappig'},
+  sg_tone_emotional:{fr:'Émotionnel',en:'Emotional',es:'Emocional',ar:'عاطفي',pt:'Emocional',de:'Emotional',it:'Emozionale',ru:'Эмоционально',ja:'感動的',ko:'감동적',hi:'भावनात्मक',zh:'情感',tr:'Duygusal',nl:'Emotioneel'},
+  sg_tone_darkfantasy:{fr:'Dark Fantasy',en:'Dark Fantasy',es:'Dark Fantasy',ar:'فانتازيا مظلمة',pt:'Dark Fantasy',de:'Dark Fantasy',it:'Dark Fantasy',ru:'Тёмное фэнтези',ja:'ダークファンタジー',ko:'다크 판타지',hi:'डार्क फैंटेसी',zh:'黑暗奇幻',tr:'Karanlık Fantezi',nl:'Dark Fantasy'},
+  sg_tone_magical:{fr:'Magique',en:'Magical',es:'Mágico',ar:'سحري',pt:'Mágico',de:'Magisch',it:'Magico',ru:'Волшебно',ja:'魔法的',ko:'마법 같은',hi:'जादुई',zh:'魔幻',tr:'Büyülü',nl:'Magisch'},
+  sg_tone_inspirational:{fr:'Inspirant',en:'Inspirational',es:'Inspirador',ar:'ملهم',pt:'Inspirador',de:'Inspirierend',it:'Ispirazionale',ru:'Вдохновляюще',ja:'感動を与える',ko:'영감을 주는',hi:'प्रेरणादायक',zh:'励志',tr:'İlham verici',nl:'Inspirerend'},
+  sg_tone_mystery:{fr:'Mystère',en:'Mystery',es:'Misterio',ar:'غموض',pt:'Mistério',de:'Mysteriös',it:'Mistero',ru:'Тайна',ja:'ミステリー',ko:'미스터리',hi:'रहस्य',zh:'悬疑',tr:'Gizem',nl:'Mysterie'},
+  sg_tone_action:{fr:'Action',en:'Action',es:'Acción',ar:'حركة',pt:'Ação',de:'Action',it:'Azione',ru:'Экшн',ja:'アクション',ko:'액션',hi:'एक्शन',zh:'动作',tr:'Aksiyon',nl:'Actie'},
+  sg_age:{fr:'Âge cible',en:'Target age',es:'Edad objetivo',ar:'العمر المستهدف',pt:'Idade-alvo',de:'Zielalter',it:'Età target',ru:'Целевой возраст',ja:'対象年齢',ko:'대상 연령',hi:'लक्षित आयु',zh:'目标年龄',tr:'Hedef yaş',nl:'Doelleeftijd'},
+  sg_age_kids:{fr:'Enfants',en:'Kids',es:'Niños',ar:'أطفال',pt:'Crianças',de:'Kinder',it:'Bambini',ru:'Дети',ja:'子供',ko:'어린이',hi:'बच्चे',zh:'儿童',tr:'Çocuklar',nl:'Kinderen'},
+  sg_age_family:{fr:'Famille',en:'Family',es:'Familia',ar:'عائلة',pt:'Família',de:'Familie',it:'Famiglia',ru:'Семья',ja:'ファミリー',ko:'가족',hi:'परिवार',zh:'家庭',tr:'Aile',nl:'Familie'},
+  sg_age_teens:{fr:'Adolescents',en:'Teens',es:'Adolescentes',ar:'مراهقون',pt:'Adolescentes',de:'Teenager',it:'Adolescenti',ru:'Подростки',ja:'ティーン',ko:'청소년',hi:'किशोर',zh:'青少年',tr:'Gençler',nl:'Tieners'},
+  sg_age_all:{fr:'Tous âges',en:'All ages',es:'Todas las edades',ar:'كل الأعمار',pt:'Todas as idades',de:'Alle Altersgruppen',it:'Tutte le età',ru:'Все возрасты',ja:'全年齢',ko:'전 연령',hi:'सभी आयु',zh:'所有年龄',tr:'Tüm yaşlar',nl:'Alle leeftijden'},
+  sg_richness:{fr:'Richesse visuelle',en:'Visual richness',es:'Riqueza visual',ar:'الثراء البصري',pt:'Riqueza visual',de:'Visuelle Fülle',it:'Ricchezza visiva',ru:'Визуальная насыщенность',ja:'ビジュアルの豊かさ',ko:'비주얼 풍부함',hi:'दृश्य समृद्धि',zh:'视觉丰富度',tr:'Görsel zenginlik',nl:'Visuele rijkdom'},
+  sg_rich_simple:{fr:'Simple',en:'Simple',es:'Simple',ar:'بسيط',pt:'Simples',de:'Einfach',it:'Semplice',ru:'Просто',ja:'シンプル',ko:'심플',hi:'सरल',zh:'简单',tr:'Basit',nl:'Eenvoudig'},
+  sg_rich_cinematic:{fr:'Cinématique',en:'Cinematic',es:'Cinematográfico',ar:'سينمائي',pt:'Cinematográfico',de:'Filmisch',it:'Cinematico',ru:'Кинематографично',ja:'シネマティック',ko:'시네마틱',hi:'सिनेमैटिक',zh:'电影级',tr:'Sinematik',nl:'Cinematisch'},
+  sg_rich_ultra:{fr:'Ultra-cinématique',en:'Ultra-cinematic',es:'Ultra-cinematográfico',ar:'فائق السينمائية',pt:'Ultra-cinematográfico',de:'Ultra-filmisch',it:'Ultra-cinematico',ru:'Ультра-кинематографично',ja:'ウルトラシネマティック',ko:'울트라 시네마틱',hi:'अल्ट्रा-सिनेमैटिक',zh:'超电影级',tr:'Ultra-sinematik',nl:'Ultra-cinematisch'},
+  sg_ideph:{fr:'ex : Un dragon qui a peur de voler…',en:'e.g. A dragon who’s afraid of flying…',es:'ej: Un dragón que le teme a volar…',ar:'مثال: تنّين يخاف من الطيران…',pt:'ex: Um dragão que tem medo de voar…',de:'z. B. Ein Drache, der Angst vorm Fliegen hat…',it:'es: Un drago che ha paura di volare…',ru:'напр. Дракон, который боится летать…',ja:'例：飛ぶのが怖いドラゴン…',ko:'예: 날기를 두려워하는 용…',hi:'उदा: एक ड्रैगन जो उड़ने से डरता है…',zh:'例如：一只害怕飞行的龙…',tr:'ör: Uçmaktan korkan bir ejderha…',nl:'bijv. Een draak die bang is om te vliegen…'},
+  sg_summarizeph:{fr:'Colle ici un texte, script ou histoire longue…',en:'Paste a long text, script or story here…',es:'Pega aquí un texto, guion o historia larga…',ar:'الصق هنا نصًا أو سيناريو أو قصة طويلة…',pt:'Cole aqui um texto, roteiro ou história longa…',de:'Füge hier einen langen Text, ein Skript oder eine Geschichte ein…',it:'Incolla qui un testo, sceneggiatura o storia lunga…',ru:'Вставьте сюда длинный текст, сценарий или историю…',ja:'長いテキスト、脚本、物語をここに貼り付け…',ko:'긴 텍스트, 대본 또는 이야기를 여기에 붙여넣으세요…',hi:'यहाँ एक लंबा टेक्स्ट, स्क्रिप्ट या कहानी पेस्ट करें…',zh:'在此粘贴长文本、剧本或故事…',tr:'Buraya uzun bir metin, senaryo veya hikaye yapıştır…',nl:'Plak hier een lange tekst, script of verhaal…'},
+  sg_useinfull:{fr:'Utiliser dans "Créer une histoire" →',en:'Use in "Create a story" →',es:'Usar en "Crear una historia" →',ar:'استخدم في "إنشاء قصة" ←',pt:'Usar em "Criar uma história" →',de:'In "Geschichte erstellen" verwenden →',it:'Usa in "Crea una storia" →',ru:'Использовать в «Создать историю» →',ja:'「ストーリーを作成」で使用 →',ko:'"스토리 만들기"에서 사용 →',hi:'"कहानी बनाएं" में उपयोग करें →',zh:'在"创建故事"中使用 →',tr:'"Hikaye oluştur" içinde kullan →',nl:'Gebruiken in "Verhaal maken" →'},
+  sg_sc_tips:{fr:'Conseil',en:'Tip',es:'Consejo',ar:'نصيحة',pt:'Dica',de:'Tipp',it:'Consiglio',ru:'Совет',ja:'アドバイス',ko:'팁',hi:'सुझाव',zh:'提示',tr:'İpucu',nl:'Tip'},
+  sg_sc_outcome:{fr:'Ce que tu vas obtenir',en:'What you’ll get',es:'Lo que vas a obtener',ar:'ما الذي ستحصل عليه',pt:'O que você vai obter',de:'Was du bekommst',it:'Cosa otterrai',ru:'Что вы получите',ja:'得られるもの',ko:'얻게 되는 것',hi:'आपको क्या मिलेगा',zh:'你将获得',tr:'Ne elde edeceksin',nl:'Wat je krijgt'},
+  sg_sc_shortcuts:{fr:'Raccourcis',en:'Shortcuts',es:'Accesos directos',ar:'اختصارات',pt:'Atalhos',de:'Verknüpfungen',it:'Scorciatoie',ru:'Быстрые ссылки',ja:'ショートカット',ko:'바로가기',hi:'शॉर्टकट',zh:'快捷方式',tr:'Kısayollar',nl:'Snelkoppelingen'},
+  sg_shortcut_dashboard:{fr:'Tableau de bord',en:'Dashboard',es:'Panel',ar:'لوحة التحكم',pt:'Painel',de:'Dashboard',it:'Dashboard',ru:'Панель',ja:'ダッシュボード',ko:'대시보드',hi:'डैशबोर्ड',zh:'仪表盘',tr:'Panel',nl:'Dashboard'},
+  sg_shortcut_tools:{fr:'Outils gratuits',en:'Free tools',es:'Herramientas gratis',ar:'أدوات مجانية',pt:'Ferramentas grátis',de:'Kostenlose Tools',it:'Strumenti gratis',ru:'Бесплатные инструменты',ja:'無料ツール',ko:'무료 도구',hi:'मुफ़्त टूल',zh:'免费工具',tr:'Ücretsiz araçlar',nl:'Gratis tools'},
+  sg_empty_title:{fr:'Ton pack de production apparaîtra ici',en:'Your production pack will appear here',es:'Tu paquete de producción aparecerá aquí',ar:'ستظهر حزمة الإنتاج هنا',pt:'Seu pacote de produção aparecerá aqui',de:'Dein Produktionspaket erscheint hier',it:'Il tuo pacchetto di produzione apparirà qui',ru:'Ваш производственный пакет появится здесь',ja:'制作パックがここに表示されます',ko:'제작 패키지가 여기에 표시됩니다',hi:'आपका प्रोडक्शन पैक यहाँ दिखेगा',zh:'你的制作包将显示在这里',tr:'Prodüksiyon paketin burada görünecek',nl:'Je productiepakket verschijnt hier'},
+  sg_error_generic:{fr:'Erreur',en:'Error',es:'Error',ar:'خطأ',pt:'Erro',de:'Fehler',it:'Errore',ru:'Ошибка',ja:'エラー',ko:'오류',hi:'त्रुटि',zh:'错误',tr:'Hata',nl:'Fout'},
+  sg_auth_required:{fr:'Connecte-toi pour utiliser le générateur d’histoires.',en:'Sign in to use the story generator.',es:'Inicia sesión para usar el generador de historias.',ar:'سجّل الدخول لاستخدام مولّد القصص.',pt:'Entre para usar o gerador de histórias.',de:'Melde dich an, um den Story-Generator zu nutzen.',it:'Accedi per usare il generatore di storie.',ru:'Войдите, чтобы использовать генератор историй.',ja:'ストーリージェネレーターを使うにはログインしてください。',ko:'스토리 생성기를 사용하려면 로그인하세요.',hi:'कहानी जनरेटर का उपयोग करने के लिए साइन इन करें।',zh:'登录后即可使用故事生成器。',tr:'Hikaye oluşturucuyu kullanmak için giriş yap.',nl:'Log in om de verhalengenerator te gebruiken.'},
+  sg_login_link:{fr:'Se connecter',en:'Sign in',es:'Iniciar sesión',ar:'تسجيل الدخول',pt:'Entrar',de:'Anmelden',it:'Accedi',ru:'Войти',ja:'ログイン',ko:'로그인',hi:'साइन इन करें',zh:'登录',tr:'Giriş yap',nl:'Inloggen'},
+  sg_session_expired:{fr:'Session expirée —',en:'Session expired —',es:'Sesión caducada —',ar:'انتهت الجلسة —',pt:'Sessão expirada —',de:'Sitzung abgelaufen —',it:'Sessione scaduta —',ru:'Сессия истекла —',ja:'セッション切れ —',ko:'세션 만료 —',hi:'सत्र समाप्त —',zh:'会话已过期 —',tr:'Oturum süresi doldu —',nl:'Sessie verlopen —'},
+  sg_reconnect:{fr:'reconnecte-toi',en:'sign in again',es:'vuelve a iniciar sesión',ar:'أعد تسجيل الدخول',pt:'entre novamente',de:'melde dich erneut an',it:'accedi di nuovo',ru:'войдите снова',ja:'再ログイン',ko:'다시 로그인',hi:'फिर से साइन इन करें',zh:'重新登录',tr:'tekrar giriş yap',nl:'log opnieuw in'},
+  sg_ai_working:{fr:'L’IA écrit ton histoire…',en:'The AI is writing your story…',es:'La IA está escribiendo tu historia…',ar:'الذكاء الاصطناعي يكتب قصتك…',pt:'A IA está escrevendo sua história…',de:'Die KI schreibt deine Geschichte…',it:'L’IA sta scrivendo la tua storia…',ru:'ИИ пишет вашу историю…',ja:'AIがあなたの物語を書いています…',ko:'AI가 당신의 이야기를 쓰는 중…',hi:'AI आपकी कहानी लिख रहा है…',zh:'AI 正在编写你的故事…',tr:'Yapay zekâ hikayeni yazıyor…',nl:'De AI schrijft je verhaal…'},
+  sg_oc_scenes:{fr:'Scènes détaillées',en:'Detailed scenes',es:'Escenas detalladas',ar:'مشاهد مفصّلة',pt:'Cenas detalhadas',de:'Detaillierte Szenen',it:'Scene dettagliate',ru:'Подробные сцены',ja:'詳細なシーン',ko:'상세 장면',hi:'विस्तृत दृश्य',zh:'详细场景',tr:'Detaylı sahneler',nl:'Gedetailleerde scenes'},
+  sg_oc_characters:{fr:'Personnages',en:'Characters',es:'Personajes',ar:'الشخصيات',pt:'Personagens',de:'Charaktere',it:'Personaggi',ru:'Персонажи',ja:'キャラクター',ko:'캐릭터',hi:'किरदार',zh:'角色',tr:'Karakterler',nl:'Personages'},
+  sg_oc_continuity:{fr:'Continuité',en:'Continuity',es:'Continuidad',ar:'الاستمرارية',pt:'Continuidade',de:'Kontinuität',it:'Continuità',ru:'Непрерывность',ja:'連続性',ko:'연속성',hi:'निरंतरता',zh:'连续性',tr:'Süreklilik',nl:'Continuïteit'},
+  sg_oc_prompts:{fr:'Prompts image + vidéo',en:'Image + video prompts',es:'Prompts de imagen + vídeo',ar:'مطالبات صورة + فيديو',pt:'Prompts de imagem + vídeo',de:'Bild- + Video-Prompts',it:'Prompt immagine + video',ru:'Промпты изображения + видео',ja:'画像＋動画プロンプト',ko:'이미지 + 비디오 프롬프트',hi:'इमेज + वीडियो प्रॉम्प्ट',zh:'图像 + 视频提示词',tr:'Görsel + video promptları',nl:'Afbeelding + video-prompts'},
+  sg_oc_story:{fr:'Histoire complète',en:'Full story',es:'Historia completa',ar:'قصة كاملة',pt:'História completa',de:'Vollständige Geschichte',it:'Storia completa',ru:'Полная история',ja:'完全なストーリー',ko:'전체 스토리',hi:'पूरी कहानी',zh:'完整故事',tr:'Tam hikaye',nl:'Volledig verhaal'},
+  sg_oc_condensed:{fr:'Récit condensé',en:'Condensed narrative',es:'Narrativa condensada',ar:'سرد مكثّف',pt:'Narrativa condensada',de:'Verdichtete Erzählung',it:'Narrazione condensata',ru:'Сжатое повествование',ja:'凝縮されたストーリー',ko:'요약된 서사',hi:'संक्षिप्त कथा',zh:'浓缩叙事',tr:'Özetlenmiş anlatı',nl:'Verdicht verhaal'},
+  sg_tip_full:{fr:'Plus ton histoire est riche en détails (lieux, émotions, rebondissements), plus les scènes générées seront précises et cohérentes.',en:'The richer your story is in detail (places, emotions, twists), the more precise and coherent the generated scenes will be.',es:'Cuanto más rica en detalles sea tu historia (lugares, emociones, giros), más precisas y coherentes serán las escenas generadas.',ar:'كلما كانت قصتك أغنى بالتفاصيل (الأماكن، المشاعر، المفاجآت)، كانت المشاهد المولّدة أكثر دقة وتماسكًا.',pt:'Quanto mais rica em detalhes for sua história (lugares, emoções, reviravoltas), mais precisas e coerentes serão as cenas geradas.'},
+  sg_tip_expand:{fr:'Une phrase suffit : donne le concept (personnage + situation), l’IA construit le reste de l’histoire.',en:'One sentence is enough: give the concept (character + situation), the AI builds the rest of the story.',es:'Con una frase basta: da el concepto (personaje + situación), la IA construye el resto de la historia.',ar:'جملة واحدة تكفي: أعطِ الفكرة (شخصية + موقف)، ويبني الذكاء الاصطناعي بقية القصة.',pt:'Uma frase basta: dê o conceito (personagem + situação), a IA constrói o resto da história.'},
+  sg_tip_summarize:{fr:'Idéal pour partir d’un script ou d’un texte déjà existant plutôt que de tout réécrire à la main.',en:'Ideal for starting from an existing script or text instead of rewriting everything by hand.',es:'Ideal para partir de un guion o texto ya existente en lugar de reescribirlo todo a mano.',ar:'مثالي للانطلاق من سيناريو أو نص موجود بدلاً من إعادة كتابة كل شيء يدويًا.',pt:'Ideal para partir de um roteiro ou texto já existente em vez de reescrever tudo à mão.'},
+  sg_lang_label:{fr:'Langue',en:'Language',es:'Idioma',ar:'اللغة',pt:'Idioma',de:'Sprache',it:'Lingua',ru:'Язык',ja:'言語',ko:'언어',hi:'भाषा',zh:'语言',tr:'Dil',nl:'Taal'},
+  sg_session_count:{fr:'Générations cette session',en:'Generations this session',es:'Generaciones en esta sesión',ar:'عمليات التوليد في هذه الجلسة',pt:'Gerações nesta sessão',de:'Generierungen in dieser Sitzung',it:'Generazioni in questa sessione',ru:'Генераций за сессию',ja:'このセッションの生成数',ko:'이번 세션 생성 횟수',hi:'इस सत्र में जनरेशन',zh:'本次会话生成次数',tr:'Bu oturumdaki üretimler',nl:'Generaties deze sessie'}
+});
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function copy(txt,btn){navigator.clipboard.writeText(txt).then(()=>{const orig=btn.textContent;btn.textContent='✓ '+t('sg_copied');setTimeout(()=>btn.textContent=orig,1400);});}
+
+function renderTools(){
+  document.getElementById('tools').innerHTML = Object.keys(TOOLS)
+    .map(k=>`<button class="tool ${k===current?'active':''}" onclick="selectTool('${k}')">${TAB_META[k].icon} ${t(TAB_META[k].key)}</button>`).join('');
+}
+
+const config = { sceneCount:5, style:'auto', customStyle:'', aspectRatio:'16:9', tone:'auto', ageGroup:'all ages', visualRichness:'cinematic' };
+
+function renderForm(){
+  const wrap = document.getElementById('form');
+  if(current==='full'){
+    const styleOpts = STYLE_LIST.map(s=>`<option value="${s.id}">${esc(styleLabel(s))}</option>`).join('');
+    const ratioOpts = ASPECT_RATIOS.map(r=>`<option value="${r}">${r}</option>`).join('');
+    wrap.innerHTML = `
+      <div class="tp-form-head">
+        <div class="tp-form-title">⚙️ ${t('sg_params')}</div>
+      </div>
+      <div class="tp-form-fields">
+        <label>${t('sg_storylabel')}</label>
+        <textarea id="f_story" style="min-height:110px;" placeholder="${t('sg_storyph')}"></textarea>
+      </div>
+      <div class="tp-divider"></div>
+      <div class="sg-grid">
+        <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:5px;">${t('sg_scenecount')}</label>
+          <input id="f_sceneCount" type="number" min="1" max="20" value="${config.sceneCount}"></div>
+        <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:5px;">${t('sg_style')}</label>
+          <select id="f_style">${styleOpts}</select></div>
+        <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:5px;">${t('sg_ratio')}</label>
+          <select id="f_ratio">${ratioOpts}</select></div>
+        <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:5px;">${t('sg_customstyle')}</label>
+          <input id="f_customStyle" placeholder="${t('sg_customstyleph')}"></div>
+        <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:5px;">${t('sg_tone')}</label>
+          <select id="f_tone">
+            <option value="auto">${t('sg_tone_auto')}</option>
+            <option value="adventure">${t('sg_tone_adventure')}</option>
+            <option value="funny">${t('sg_tone_funny')}</option>
+            <option value="emotional">${t('sg_tone_emotional')}</option>
+            <option value="dark fantasy">${t('sg_tone_darkfantasy')}</option>
+            <option value="magical">${t('sg_tone_magical')}</option>
+            <option value="inspirational">${t('sg_tone_inspirational')}</option>
+            <option value="mystery">${t('sg_tone_mystery')}</option>
+            <option value="action">${t('sg_tone_action')}</option>
+          </select></div>
+        <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:5px;">${t('sg_age')}</label>
+          <select id="f_age">
+            <option value="kids">${t('sg_age_kids')}</option>
+            <option value="family">${t('sg_age_family')}</option>
+            <option value="teens">${t('sg_age_teens')}</option>
+            <option value="all ages" selected>${t('sg_age_all')}</option>
+          </select></div>
+      </div>
+      <div style="margin-top:10px;">
+        <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px;">${t('sg_richness')}</label>
+        <div class="sg-toggle">
+          <button type="button" data-v="simple" onclick="pickRichness(this)">${t('sg_rich_simple')}</button>
+          <button type="button" data-v="cinematic" class="active" onclick="pickRichness(this)">${t('sg_rich_cinematic')}</button>
+          <button type="button" data-v="ultra-cinematic" onclick="pickRichness(this)">${t('sg_rich_ultra')}</button>
+        </div>
+      </div>
+      <div class="tp-divider"></div>
+      <div class="tp-form-fields">
+        <label>${t('sg_lang_label')||'Langue'}</label>
+        ${langSelectHtml()}
+      </div>`;
+  } else if(current==='expand'){
+    wrap.innerHTML = `
+      <div class="tp-form-head"><div class="tp-form-title">⚙️ ${t('sg_params')}</div></div>
+      <div class="tp-form-fields"><label>${t('sg_tab_expand')}</label><textarea id="f_idea" placeholder="${t('sg_ideph')}"></textarea></div>
+      <div class="tp-divider"></div>
+      <div class="tp-form-fields"><label>${t('sg_lang_label')||'Langue'}</label>${langSelectHtml()}</div>`;
+  } else {
+    wrap.innerHTML = `
+      <div class="tp-form-head"><div class="tp-form-title">⚙️ ${t('sg_params')}</div></div>
+      <div class="tp-form-fields"><label>${t('sg_tab_summarize')}</label><textarea id="f_text" style="min-height:140px;" placeholder="${t('sg_summarizeph')}"></textarea></div>
+      <div class="tp-divider"></div>
+      <div class="tp-form-fields"><label>${t('sg_lang_label')||'Langue'}</label>${langSelectHtml()}</div>`;
+  }
+}
+function langSelectHtml(){
+  return `<select id="f_lang">
+    <option value="fr">Français</option><option value="en">English</option>
+    <option value="es">Español</option><option value="ar">العربية</option>
+    <option value="pt">Português</option><option value="de">Deutsch</option>
+    <option value="it">Italiano</option><option value="ru">Русский</option>
+    <option value="ja">日本語</option><option value="ko">한국어</option>
+    <option value="hi">हिन्दी</option><option value="zh">中文</option>
+    <option value="tr">Türkçe</option><option value="nl">Nederlands</option>
+  </select>`;
+}
+function pickRichness(btn){
+  document.querySelectorAll('.sg-toggle button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  config.visualRichness = btn.dataset.v;
+}
+function selectTool(k){ current=k; document.getElementById('out').innerHTML=emptyStateHTML(k); renderTools(); renderForm(); syncSidebar(); }
+
+function syncSidebar(){
+  if(!window.shell) return;
+  const toolDef = TOOLS[current];
+  shell.updateCard('tips', `<p>💡 ${t(toolDef.tipKey)}</p>`);
+  shell.updateCard('outcome', `<div class="tag-wrap">${(toolDef.outcomes||[]).map(ok=>`<span class="tag">${t(ok)}</span>`).join('')}</div>`);
+}
+function emptyStateHTML(k){
+  const meta = TAB_META[k];
+  return `<div class="tp-out-empty">
+    <div class="ic">${meta.icon}</div>
+    <div class="tt">${t('sg_empty_title')}</div>
+    <div class="list">${(TOOLS[k].outcomes||[]).map(ok=>`<span class="badge">${t(ok)}</span>`).join('')}</div>
+  </div>`;
+}
+function bumpSessionStats(){
+  const n = (parseInt(sessionStorage.getItem('vs_story_gens')||'0',10) || 0) + 1;
+  sessionStorage.setItem('vs_story_gens', String(n));
+  if(window.shell) shell.updateCard('stats', `<div class="tp-stat-row"><span class="lb">${t('sg_session_count')||'Générations cette session'}</span><span class="vl">${n}</span></div>`);
+}
+
+window.shell = ToolPage.mount({
+  icon:'🎬', title:'Générateur d’histoires',
+  subtitle:t('sg_subtitle'),
+  meta:[
+    { icon:'🤖', text:t('sg_ai') },
+    { icon:'⚡', text:Object.keys(TOOLS).length+' '+t('sg_tools_word') },
+    { icon:'🎨', text:STYLE_LIST.length+' '+t('sg_styles_word') }
+  ],
+  sidebar:[
+    { id:'tips', icon:'💡', title:t('sg_sc_tips'), html:`<p>💡 ${t(TOOLS[current].tipKey)}</p>` },
+    { id:'outcome', icon:'📦', title:t('sg_sc_outcome'), html:`<div class="tag-wrap">${(TOOLS[current].outcomes||[]).map(ok=>`<span class="tag">${t(ok)}</span>`).join('')}</div>` },
+    { id:'stats', icon:'📊', title:'', html:`<div class="tp-stat-row"><span class="lb">${t('sg_session_count')}</span><span class="vl">${parseInt(sessionStorage.getItem('vs_story_gens')||'0',10)}</span></div>` },
+    { id:'shortcuts', icon:'🔗', title:t('sg_sc_shortcuts'), html:`<ul>
+        <li><a href="/dashboard.html">🏠 ${t('sg_shortcut_dashboard')} <span>›</span></a></li>
+        <li><a href="/outils.html">🛠️ ${t('sg_shortcut_tools')} <span>›</span></a></li>
+      </ul>` }
+  ]
+});
+shell.main.innerHTML = `
+  <div class="tp-panel">
+    <nav class="tools" id="tools"></nav>
+    <div class="tp-panel-body" id="form"></div>
+  </div>
+  <button class="btn" id="go" onclick="run()">✨ ${t('sg_generate')}</button>
+  <div id="out"></div>`;
+document.getElementById('out').innerHTML = emptyStateHTML(current);
+
+(async function(){
+  renderTools(); renderForm();
+  try{
+    const s = await (window.Auth?.getSession?.() || Promise.resolve(null));
+    if(!s?.access_token){
+      document.getElementById('out').innerHTML=`<div class="empty">🔒 ${t('sg_auth_required')}<br><br><a href="/login.html">${t('sg_login_link')} →</a></div>`;
+      document.getElementById('go').disabled=true;
+    }
+  }catch(e){}
+})();
+
+async function run(){
+  const out = document.getElementById('out'), btn = document.getElementById('go');
+  const lang = document.getElementById('f_lang').value;
+  let body, ep;
+  if(current==='full'){
+    ep = TOOLS.full.ep;
+    const storyInput = (document.getElementById('f_story').value||'').trim();
+    if(storyInput.length<10){ out.innerHTML=`<div class="err">${t('sg_storylabel')} (10+)</div>`; return; }
+    body = {
+      storyInput, language: lang,
+      config: {
+        sceneCount: parseInt(document.getElementById('f_sceneCount').value,10)||5,
+        style: document.getElementById('f_style').value,
+        customStyle: document.getElementById('f_customStyle').value.trim(),
+        aspectRatio: document.getElementById('f_ratio').value,
+        tone: document.getElementById('f_tone').value,
+        ageGroup: document.getElementById('f_age').value,
+        visualRichness: config.visualRichness
+      }
+    };
+  } else if(current==='expand'){
+    ep = TOOLS.expand.ep;
+    const idea = (document.getElementById('f_idea').value||'').trim();
+    if(idea.length<3){ out.innerHTML=`<div class="err">${t('sg_ideph')}</div>`; return; }
+    body = { idea, language: lang };
+  } else {
+    ep = TOOLS.summarize.ep;
+    const text = (document.getElementById('f_text').value||'').trim();
+    if(text.length<20){ out.innerHTML=`<div class="err">${t('sg_summarizeph')}</div>`; return; }
+    body = { text, language: lang };
+  }
+
+  btn.disabled=true; btn.innerHTML=`<span class="spin"></span> ${t('sg_generating')}`;
+  out.innerHTML=`<div class="empty">🎬 ${t('sg_ai_working')}</div>`;
+  try{
+    const s = await Auth.getSession();
+    const token = s?.access_token;
+    if(!token){ out.innerHTML=`<div class="err">${t('sg_session_expired')} <a href="/login.html">${t('sg_reconnect')}</a>.</div>`; return; }
+    const res = await fetch(API_BASE + ep, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+      body:JSON.stringify(body)
+    });
+    if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error||(t('sg_error_generic')+' '+res.status)); }
+    const data = await res.json();
+    RENDER[current](data, out);
+    if(typeof fbq==='function') fbq('trackCustom','StoryToolUsed',{tool:current});
+    bumpSessionStats();
+  }catch(err){ out.innerHTML='<div class="err">❌ '+esc(err.message)+'</div>'; }
+  finally{ btn.disabled=false; btn.innerHTML=`✨ ${t('sg_generate')}`; }
+}
+
+function fieldRow(label, value){
+  if(!value) return '';
+  return `<div class="sg-field"><div class="lbl">${esc(label)}<button class="btn-mini" onclick='copy(${JSON.stringify(String(value))},this)'>📋 ${t('sg_copy')}</button></div><div class="val">${esc(value)}</div></div>`;
+}
+
+const RENDER = {
+  full(d,out){
+    const chars = d.characters||[], scenes = d.scenes||[], cont = d.continuity||{};
+    const head = `<div class="sec">
+      <h3>🎬 ${esc(d.title||'')}</h3>
+      ${d.hook?`<div class="cap" style="margin-top:8px;">🪝 ${esc(d.hook)}</div>`:''}
+      ${d.synopsis?`<div class="muted" style="margin-top:8px;">${esc(d.synopsis)}</div>`:''}
+    </div>`;
+    const charsHtml = chars.length ? `<div class="sec"><h3>👤 ${t('sg_oc_characters')} (${chars.length})</h3>${chars.map(c=>`
+      <div class="sg-char-card">
+        <h4>${esc(c.name||'')} <span class="badge">${esc(c.role||'')}</span></h4>
+        ${fieldRow('Prompt', c.prompt)}
+        ${fieldRow('Negative prompt', c.negativePrompt)}
+      </div>`).join('')}</div>` : '';
+    const scenesHtml = scenes.length ? `<div class="sec"><h3>🎞️ ${t('sg_oc_scenes')} (${scenes.length})</h3>${scenes.map(s=>`
+      <div class="sg-scene-card">
+        <h4>#${s.number||''} ${esc(s.title||'')} <span class="badge">${esc(s.sceneCharacters||'')}</span></h4>
+        ${s.purpose?`<div class="muted" style="font-size:12px;margin-bottom:8px;">🎯 ${esc(s.purpose)}</div>`:''}
+        ${fieldRow('Prompt (image)', s.prompt)}
+        ${fieldRow('Negative prompt', s.negativePrompt)}
+        ${fieldRow('Video prompt', s.videoPrompt)}
+        ${fieldRow('Sequential video prompt', s.sequentialVideoPrompt)}
+        ${fieldRow('Dialogue', s.dialogue)}
+        ${fieldRow('Empty scene prompt', s.emptyScenePrompt)}
+        ${fieldRow('End frame prompt', s.endFramePrompt)}
+        ${fieldRow('LTX transition end prompt', s.ltxTransitionEndPrompt)}
+        ${fieldRow('Continuity notes', s.continuityNotes)}
+        ${fieldRow('Transition continuity', s.transitionContinuity)}
+        ${fieldRow('Camera', s.camera)}
+        ${fieldRow('Character actions', s.characterActions)}
+        ${fieldRow('Environment motion', s.environmentMotion)}
+        ${fieldRow('Lighting', s.lighting)}
+        ${fieldRow('Sound design', s.soundDesign)}
+        ${fieldRow('Emotional atmosphere', s.emotionalAtmosphere)}
+      </div>`).join('')}</div>` : '';
+    const contHtml = (cont && Object.keys(cont).length) ? `<div class="sec"><h3>🔗 ${t('sg_oc_continuity')}</h3>
+      <div class="sg-continuity">
+        ${Object.entries(cont).map(([k,v])=>v?`<div class="lbl">${esc(k)}</div><div style="font-size:12.5px;">${esc(v)}</div>`:'').join('')}
+      </div></div>` : '';
+    out.innerHTML = `<div class="card">${head}${charsHtml}${scenesHtml}${contHtml}</div>`;
+  },
+  expand(d,out){
+    const text = d.text || '';
+    out.innerHTML = `<div class="card"><div class="sec"><div class="hd"><h3>💡 ${t('sg_oc_story')}</h3><button class="btn-mini" onclick='copy(${JSON.stringify(text)},this)'>📋 ${t('sg_copy')}</button></div>
+      <div class="cap">${esc(text)}</div>
+      <button class="btn" style="margin-top:12px;" onclick="sendToFull(${JSON.stringify(text)})">${t('sg_useinfull')}</button>
+    </div></div>`;
+  },
+  summarize(d,out){
+    const text = d.text || '';
+    out.innerHTML = `<div class="card"><div class="sec"><div class="hd"><h3>📄 ${t('sg_oc_condensed')}</h3><button class="btn-mini" onclick='copy(${JSON.stringify(text)},this)'>📋 ${t('sg_copy')}</button></div>
+      <div class="cap">${esc(text)}</div>
+      <button class="btn" style="margin-top:12px;" onclick="sendToFull(${JSON.stringify(text)})">${t('sg_useinfull')}</button>
+    </div></div>`;
+  }
+};
+
+function sendToFull(text){
+  selectTool('full');
+  setTimeout(()=>{ const f=document.getElementById('f_story'); if(f) f.value = text; }, 30);
+}
+</script>
+</body>
+</html>

@@ -915,6 +915,7 @@
       db_tagextract:{fr:'Extracteur de tags',en:'Tag extractor',ar:'مستخرج الوسوم'}, db_descgen:{fr:'Générateur de description',en:'Description generator',ar:'مولّد الوصف'}, db_titlegen:{fr:'Générateur de titres',en:'Title generator',ar:'مولّد العناوين'}, db_thumbdl:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader',ar:'تنزيل الصور المصغّرة'}, db_chextract:{fr:'Extracteur de chaîne',en:'Channel extractor',ar:'مستخرج القناة'}, db_hashtag:{fr:'Générateur de hashtags',en:'Hashtag generator',ar:'مولّد الهاشتاغات'},
       db_publishtime:{fr:'Meilleur moment',en:'Best publish time',ar:'أفضل وقت للنشر'}, db_chgrowth:{fr:'Croissance chaîne',en:'Channel growth',ar:'نمو القناة'}, db_planner:{fr:'Planificateur',en:'Content planner',ar:'مخطّط المحتوى'},
       db_thumbstudio:{fr:'Thumbnail Studio',en:'Thumbnail Studio',ar:'استوديو الصور المصغّرة'}, db_thumbgen:{fr:'Générateur de miniatures',en:'Thumbnail generator',ar:'مولّد الصور المصغّرة'}, db_upscaler:{fr:'Upscaler d\'image',en:'Image upscaler',ar:'تكبير الصورة'},
+      db_storygen:{fr:'Générateur d\'histoires',en:'Story Generator',ar:'مولّد القصص'},
       db_billing2:{fr:'Facturation',en:'Billing',ar:'الفوترة'}, db_team:{fr:'Équipe',en:'Team',ar:'الفريق'}, db_apikeys:{fr:'Clés API',en:'API keys',ar:'مفاتيح API'}, db_settings:{fr:'Paramètres',en:'Settings',ar:'الإعدادات'},
       db_docs:{fr:'Documentation',en:'Documentation',ar:'التوثيق'}, db_tutorials:{fr:'Tutoriels',en:'Tutorials',ar:'الدروس'}, db_community:{fr:'Communauté',en:'Community',ar:'المجتمع'}, db_contact:{fr:'Contact',en:'Contact',ar:'اتصل بنا'}, db_whatsnew:{fr:'Nouveautés',en:"What's new",ar:'ما الجديد'},
       db_credits:{fr:'Crédits du jour',en:'Daily credits',ar:'رصيد اليوم'},
@@ -1095,6 +1096,7 @@
         <div class="sb-group-items">
           <a class="sb-link" data-name="Thumbnail Studio" onclick="openTool('thumbnail')"><span class="ic">🎬</span> <span class="lbl" data-i18n="db_thumbstudio">Thumbnail Studio</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Thumbnail A/B Test" onclick="openTool('abthumbs')"><span class="ic">🧪</span> <span class="lbl" data-i18n="db_abthumbs">A/B Test miniatures</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="Story Generator" onclick="location.href='/story-generator.html'"><span class="ic">📖</span> <span class="lbl" data-i18n="db_storygen">Générateur d'histoires</span><span class="sb-badge new">New</span><span class="sb-arrow">›</span></a>
           <!-- Générateur de miniatures : masqué (génération d'image IA externe — exclu) -->
 
           <!-- Upscaler d'image : masqué (service d'agrandissement externe — exclu) -->
@@ -1447,6 +1449,7 @@
                   <button class="qa-btn" onclick="openTool('thumbnail')"><span class="qa-ic">🖼</span><span class="qa-name" data-i18n="db_thumbnail">Analyse miniature</span></button>
                   <button class="qa-btn" onclick="location.href='/tiktok-seo.html'"><span class="qa-ic">🎵</span><span class="qa-name">SEO TikTok</span></button>
                   <button class="qa-btn" onclick="location.href='/instagram-seo.html'"><span class="qa-ic">📸</span><span class="qa-name">SEO Instagram</span></button>
+                  <button class="qa-btn" onclick="location.href='/story-generator.html'"><span class="qa-ic">📖</span><span class="qa-name" data-i18n="db_storygen">Générateur d'histoires</span></button>
                   <button class="qa-btn" onclick="goToYouTube()"><span class="qa-ic">🎥</span><span class="qa-name" data-i18n="db_openyt">Ouvrir YouTube</span></button>
                 </div>
               </div>
