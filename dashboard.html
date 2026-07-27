@@ -468,18 +468,18 @@
        ligne ~717) pour ne jamais passer sous/sur elle. */
     .qg-bar{
       position:fixed; left:0; right:0; bottom:0; z-index:250;
-      padding:12px clamp(16px,3vw,30px); padding-right:190px;
+      padding:8px clamp(16px,3vw,30px); padding-right:170px;
       background:var(--s2); border-top:1px solid var(--b2);
       box-shadow:0 -8px 24px -12px rgba(0,0,0,.15);
     }
     @media(min-width:1024px){ .qg-bar{ left:var(--side-w); } }
     body.side-collapsed .qg-bar{ left:var(--side-w-collapsed); }
     @media(max-width:640px){ .qg-bar{ padding-right:16px; } }
-    .qg-row{ display:flex; gap:10px; flex-wrap:wrap; max-width:900px; }
-    .qg-row input{ flex:2; min-width:160px; background:var(--s1); border:1px solid var(--b2); border-radius:11px; padding:11px 14px; color:var(--text); font-size:13.5px; font-family:inherit; }
+    .qg-row{ display:flex; gap:8px; flex-wrap:wrap; max-width:640px; align-items:center; }
+    .qg-row input{ flex:2; min-width:140px; background:var(--s1); border:1px solid var(--b2); border-radius:10px; padding:7px 12px; color:var(--text); font-size:12.5px; font-family:inherit; }
     .qg-row input:focus{ outline:none; border-color:var(--accent-line); }
-    .qg-row select{ flex:0 0 auto; min-width:150px; background:var(--s1); border:1px solid var(--b2); border-radius:11px; padding:11px 12px; color:var(--text); font-size:13px; font-family:inherit; }
-    .qg-row .btn{ flex:0 0 auto; white-space:nowrap; }
+    .qg-row select{ flex:0 0 auto; min-width:0; max-width:118px; background:var(--s1); border:1px solid var(--b2); border-radius:10px; padding:7px 8px; color:var(--text); font-size:11.5px; font-family:inherit; }
+    .qg-row .btn{ flex:0 0 auto; white-space:nowrap; padding:7px 14px; font-size:12px; border-radius:10px; }
     @media(max-width:640px){ .qg-row{ flex-direction:column; } .qg-row input, .qg-row select, .qg-row .btn{ width:100%; } }
 
     /* ── ACTIVATION EXTENSION — étapes numérotées + illustration ── */
@@ -653,22 +653,37 @@
     .home-fab:hover{ transform:translateY(-2px); box-shadow:0 12px 28px -8px rgba(0,0,0,.35); }
     @keyframes floatY{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
     .ai-pop{
-      position:fixed; right:22px; bottom:94px; z-index:300; width:320px; max-width:calc(100vw - 44px);
-      background:var(--s2); border:1px solid var(--b2); border-radius:18px; padding:18px;
-      box-shadow:var(--shadow); display:none; transform:translateY(10px) scale(.97); opacity:0;
+      position:fixed; right:22px; bottom:94px; z-index:300; width:360px; max-width:calc(100vw - 44px);
+      height:min(520px, calc(100vh - 140px));
+      background:var(--s2); border:1px solid var(--b2); border-radius:18px; padding:16px 16px 12px;
+      box-shadow:var(--shadow); display:none; flex-direction:column; overflow:hidden;
+      transform:translateY(10px) scale(.97); opacity:0;
       transition: opacity .2s var(--ease), transform .2s var(--ease);
     }
-    .ai-pop.open{ display:block; opacity:1; transform:translateY(0) scale(1); }
-    .ai-pop-h{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .ai-pop.open{ display:flex; opacity:1; transform:translateY(0) scale(1); }
+    .ai-pop-h{ display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-shrink:0; }
     .ai-pop-h .ai-av{ width:36px; height:36px; border-radius:11px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-size:17px; color:#0b0f19; }
     .ai-pop-h .ai-name{ font-weight:800; font-size:14px; }
     .ai-pop-h .ai-status{ font-size:11px; color:var(--green); display:flex; align-items:center; gap:5px; }
     .ai-pop-h .ai-status::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); }
-    .ai-sugg{ display:flex; align-items:center; gap:10px; width:100%; padding:11px 12px; margin-bottom:8px; border-radius:11px;
-      background:rgba(0,0,0,.045); border:1px solid var(--b1); text-align:left; color:var(--text); font-size:12.5px; font-weight:600; transition: all .18s var(--ease); }
-    .ai-sugg:last-child{ margin-bottom:0; }
+    /* Corps du chat : messages empilés, défilement propre */
+    #aiPopBody{ flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:10px; padding-right:2px; }
+    .ai-msg{ max-width:88%; padding:9px 12px; border-radius:12px; font-size:12.5px; line-height:1.5; white-space:pre-wrap; }
+    .ai-msg.bot{ align-self:flex-start; background:rgba(0,0,0,.045); border:1px solid var(--b1); color:var(--text); }
+    .ai-msg.user{ align-self:flex-end; background:var(--accent-soft); color:var(--text); }
+    .ai-msg.err{ align-self:flex-start; color:var(--red); background:rgba(194,59,34,.08); border:1px solid rgba(194,59,34,.25); }
+    .ai-typing{ align-self:flex-start; font-size:11.5px; color:var(--muted); font-style:italic; padding:0 2px; }
+    .ai-sugg-wrap{ display:flex; flex-direction:column; gap:6px; }
+    .ai-sugg{ display:flex; align-items:center; gap:10px; width:100%; padding:9px 11px; border-radius:11px;
+      background:rgba(0,0,0,.045); border:1px solid var(--b1); text-align:left; color:var(--text); font-size:12px; font-weight:600; transition: all .18s var(--ease); }
     .ai-sugg:hover{ border-color:var(--accent-line); background:var(--accent-soft); transform:translateX(2px); }
-    .ai-sugg .as-ic{ font-size:16px; }
+    .ai-sugg .as-ic{ font-size:15px; }
+    /* Ligne de saisie */
+    #aiPopForm{ display:flex; gap:8px; flex-shrink:0; }
+    #aiPopInput{ flex:1; resize:none; border:1px solid var(--b2); border-radius:10px; padding:9px 11px; font-size:12.5px; font-family:inherit; color:var(--text); background:var(--s1); max-height:70px; }
+    #aiPopInput:focus{ outline:none; border-color:var(--accent-line); }
+    #aiPopSend{ background:var(--accent); color:#0b0f19; border:none; border-radius:10px; width:38px; flex-shrink:0; font-size:15px; cursor:pointer; }
+    #aiPopSend:disabled{ opacity:.5; cursor:not-allowed; }
 
     /* ── LOADING SKELETON ── */
     .sk{ background:linear-gradient(100deg, rgba(0,0,0,.045) 30%, rgba(0,0,0,.09) 50%, rgba(0,0,0,.045) 70%); background-size:200% 100%; animation: shimmer 1.4s infinite; border-radius:10px; }
@@ -882,6 +897,11 @@
       ai_coach:{fr:'Coach IA',en:'AI Coach',ar:'مدرب الذكاء الاصطناعي'},
       ai_online:{fr:'En ligne',en:'Online',ar:'متصل'},
       ai_intro:{fr:'Que veux-tu améliorer aujourd\'hui ?',en:'What do you want to improve today?',ar:'ماذا تريد أن تحسّن اليوم؟'},
+      ai_ph:{fr:'Écris ta question…',en:'Type your question…',ar:'اكتب سؤالك…'},
+      ai_thinking:{fr:'Le coach réfléchit…',en:'The coach is thinking…',ar:'المدرب يفكر…'},
+      ai_error:{fr:'Oups, une erreur est survenue. Réessaie dans un instant.',en:'Oops, something went wrong. Try again in a moment.',ar:'عذرًا، حدث خطأ ما. أعد المحاولة بعد لحظة.'},
+      ai_ratelimit:{fr:'Trop de messages pour l\'instant, réessaie dans un moment.',en:'Too many messages for now, try again in a bit.',ar:'رسائل كثيرة جدًا الآن، أعد المحاولة بعد قليل.'},
+      ai_login_required:{fr:'Reconnecte-toi pour utiliser le Coach IA.',en:'Sign in again to use the AI Coach.',ar:'أعد تسجيل الدخول لاستخدام مدرب الذكاء الاصطناعي.'},
       coach_overview:{fr:'Vue d\'ensemble',en:'Overview',ar:'نظرة عامة'},
       /* ── sidebar premium ── */
       db_aipowered:{fr:'Propulsé par IA',en:'AI Powered',ar:'مدعوم بالذكاء الاصطناعي'},
@@ -1554,13 +1574,11 @@
       </div>
       <button class="icon-btn" style="width:32px;height:32px;font-size:14px;" onclick="toggleAiPop()">✕</button>
     </div>
-    <div style="font-size:12.5px;color:var(--muted);margin-bottom:12px;" data-i18n="ai_intro">Que veux-tu améliorer aujourd'hui ?</div>
-    <div id="aiPopBody">
-      <button class="ai-sugg" onclick="openTool('analyze');toggleAiPop()"><span class="as-ic">🎬</span> <span data-i18n="coach_a_seo">Optimise ton SEO</span></button>
-      <button class="ai-sugg" onclick="openTool('thumbnail');toggleAiPop()"><span class="as-ic">🎨</span> <span data-i18n="coach_a_thumb">Améliore ta miniature</span></button>
-      <button class="ai-sugg" onclick="openTool('shorts');toggleAiPop()"><span class="as-ic">📱</span> <span data-i18n="coach_a_viral">Publie un Short</span></button>
-      <button class="ai-sugg" onclick="openTool('trending');toggleAiPop()"><span class="as-ic">🚀</span> <span data-i18n="coach_a_grow">Saisis une opportunité de croissance</span></button>
-    </div>
+    <div id="aiPopBody"></div>
+    <form id="aiPopForm" onsubmit="return false;">
+      <textarea id="aiPopInput" rows="1" data-i18n-ph="ai_ph" placeholder="Écris ta question…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendCoachMessage();}"></textarea>
+      <button type="button" id="aiPopSend" onclick="sendCoachMessage()">➤</button>
+    </form>
   </div>
 
   <!-- Supabase Client Library -->
@@ -2486,9 +2504,14 @@
   /* Coach flottant */
   function toggleAiPop(){
     var p=document.getElementById('aiPop'); if(!p) return;
+    var opening = !p.classList.contains('open');
     p.classList.toggle('open');
     var h=document.getElementById('homeFab');
-    if(h) h.style.display = p.classList.contains('open') ? 'none' : 'flex';
+    if(h) h.style.display = opening ? 'none' : 'flex';
+    if(opening){
+      if(!aiGreeted){ aiGreeted=true; renderCoachGreeting(); }
+      var inp=document.getElementById('aiPopInput'); if(inp) setTimeout(function(){ inp.focus(); }, 50);
+    }
   }
   document.addEventListener('click', function(e){
     var p=document.getElementById('aiPop'), fab=document.getElementById('aiFab'), nb=document.getElementById('notifBtn');
@@ -2497,6 +2520,77 @@
     p.classList.remove('open');
     var h=document.getElementById('homeFab'); if(h) h.style.display='flex';
   });
+
+  /* ── Coach IA conversationnel (#aiPop) — chat réel branché sur POST /api/user/coach-chat,
+     personnalisé avec les vraies données de l'utilisateur (voir aiClient.js::coachChat côté
+     backend). Historique gardé en mémoire (perdu à la fermeture, pas persistant). ── */
+  var aiHistory = [];
+  var aiGreeted = false;
+  function aiChatEsc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function renderCoachGreeting(){
+    var body=document.getElementById('aiPopBody'); if(!body) return;
+    var greet = window.t ? t('ai_intro') : 'Que veux-tu améliorer aujourd\'hui ?';
+    var suggs = [
+      ['analyze','🎬','coach_a_seo','Optimise ton SEO'],
+      ['thumbnail','🎨','coach_a_thumb','Améliore ta miniature'],
+      ['shorts','📱','coach_a_viral','Publie un Short'],
+      ['trending','🚀','coach_a_grow','Saisis une opportunité de croissance']
+    ];
+    var suggHtml = suggs.map(function(s){
+      var label = window.t ? t(s[2]) : s[3];
+      return '<button class="ai-sugg" onclick="openTool(\''+s[0]+'\');toggleAiPop()"><span class="as-ic">'+s[1]+'</span> '+aiChatEsc(label)+'</button>';
+    }).join('');
+    body.innerHTML = '<div class="ai-msg bot">'+aiChatEsc(greet)+'</div><div class="ai-sugg-wrap">'+suggHtml+'</div>';
+  }
+  function addAiMsg(role, text){
+    var body=document.getElementById('aiPopBody'); if(!body) return;
+    var div=document.createElement('div');
+    div.className='ai-msg '+(role==='user'?'user':role==='err'?'err':'bot');
+    div.textContent=text;
+    body.appendChild(div);
+    body.scrollTop=body.scrollHeight;
+  }
+  async function sendCoachMessage(){
+    var input=document.getElementById('aiPopInput');
+    var msg=(input.value||'').trim();
+    if(!msg) return;
+    addAiMsg('user', msg);
+    aiHistory.push({role:'user', content:msg});
+    input.value='';
+    var sendBtn=document.getElementById('aiPopSend');
+    sendBtn.disabled=true;
+    var body=document.getElementById('aiPopBody');
+    var typing=document.createElement('div');
+    typing.className='ai-typing';
+    typing.textContent = window.t ? t('ai_thinking') : 'Le coach réfléchit…';
+    body.appendChild(typing); body.scrollTop=body.scrollHeight;
+    try{
+      var session = window.Auth ? await window.Auth.getSession() : null;
+      var token = session?.access_token;
+      if(!token){ typing.remove(); addAiMsg('err', window.t?t('ai_login_required'):'Reconnecte-toi pour utiliser le Coach IA.'); return; }
+      var lang = window.vsGetLang ? vsGetLang() : (localStorage.getItem('vs_site_lang')||'fr');
+      // API_BASE (déclaré plus haut) est scopé à un <script> différent — const ne
+      // traverse pas les balises <script> (contrairement à var/function) — on
+      // reprend donc l'URL en dur ici, comme le fait déjà chaque page du site.
+      var res = await fetch('https://vidspark-ai-production-9ac7.up.railway.app/api/user/coach-chat', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body: JSON.stringify({ message: msg, history: aiHistory.slice(-8), language: lang })
+      });
+      typing.remove();
+      if(res.status===429){ addAiMsg('err', window.t?t('ai_ratelimit'):'Trop de messages pour l\'instant, réessaie dans un moment.'); return; }
+      if(!res.ok){ addAiMsg('err', window.t?t('ai_error'):'Oups, une erreur est survenue.'); return; }
+      var data = await res.json();
+      var reply = data.reply || (window.t?t('ai_error'):'Oups, une erreur est survenue.');
+      addAiMsg('bot', reply);
+      aiHistory.push({role:'assistant', content:reply});
+    }catch(e){
+      typing.remove();
+      addAiMsg('err', window.t?t('ai_error'):'Oups, une erreur est survenue.');
+    }finally{
+      sendBtn.disabled=false;
+    }
+  }
 
   /* Compteurs animés : anime le préfixe numérique de #channelsCount / #daysRemaining */
   function runCounters(){
