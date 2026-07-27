@@ -489,13 +489,13 @@
     @media(max-width:760px){ .state-badge{ display:none; } }
 
     /* ── STAT TILES ── */
-    .stat-tiles{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
-    @media(max-width:1100px){ .stat-tiles{ grid-template-columns:repeat(3,1fr); } }
+    .stat-tiles{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    @media(max-width:1100px){ .stat-tiles{ grid-template-columns:repeat(2,1fr); } }
     @media(max-width:640px){ .stat-tiles{ grid-template-columns:repeat(2,1fr); } }
     .stat-tile{ background:var(--card-bg, linear-gradient(165deg, rgba(0,0,0,.06), rgba(0,0,0,.02))); border:1px solid var(--b2); border-radius:14px; padding:14px 16px; }
     .stat-tile-top{ display:flex; align-items:center; gap:7px; margin-bottom:10px; }
     .stat-ic{ width:22px; height:22px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; color:#fff; }
-    .stat-ic.yt{ background:#ef4444; } .stat-ic.tt{ background:#0f172a; } .stat-ic.seo{ background:var(--accent); }
+    .stat-ic.yt{ background:#ef4444; } .stat-ic.seo{ background:var(--accent); }
     .stat-ic.vid{ background:var(--amber); } .stat-ic.pts{ background:var(--green); }
     .stat-lbl{ font-size:11px; color:var(--muted); font-weight:700; }
     .stat-val{ font-size:22px; font-weight:800; }
@@ -762,11 +762,9 @@
       db_state_new:{fr:'Nouvel utilisateur',en:'New user',ar:'مستخدم جديد'},
       db_state_active:{fr:'Utilisateur actif',en:'Active user',ar:'مستخدم نشط'},
       db_stat_yt:{fr:'Abonnés YouTube',en:'YouTube subscribers',ar:'مشتركو يوتيوب'},
-      db_stat_tt:{fr:'Vues TikTok',en:'TikTok views',ar:'مشاهدات تيك توك'},
       db_stat_seo:{fr:'Score SEO moyen',en:'Average SEO score',ar:'متوسط نقاط SEO'},
       db_stat_vids:{fr:'Vidéos analysées',en:'Videos analyzed',ar:'الفيديوهات المحلَّلة'},
       db_stat_pts:{fr:'Points SEO gagnés',en:'SEO points earned',ar:'نقاط SEO المكتسبة'},
-      db_stat_example:{fr:'Exemple — en attente de données réelles',en:'Example — pending real data',ar:'مثال — بانتظار بيانات حقيقية'},
       db_stat_real:{fr:'Donnée réelle',en:'Real data',ar:'بيانات حقيقية'},
       db_k_plan:{fr:'Forfait actuel',en:'Current plan',es:'Plan actual',ar:'الباقة الحالية',pt:'Plano atual',de:'Aktueller Tarif',it:'Piano attuale',ru:'Текущий тариф',ja:'現在のプラン',ko:'현재 플랜',hi:'वर्तमान योजना',zh:'当前套餐',tr:'Mevcut plan',nl:'Huidig plan'},
       db_k_analyses:{fr:'Analyses ce mois',en:'Analyses this month',es:'Análisis este mes',ar:'تحليلات هذا الشهر',pt:'Análises este mês',de:'Analysen diesen Monat',it:'Analisi questo mese',ru:'Анализов в этом месяце',ja:'今月の分析',ko:'이번 달 분석',hi:'इस माह विश्लेषण',zh:'本月分析',tr:'Bu ay analiz',nl:'Analyses deze maand'},
@@ -1242,11 +1240,6 @@
               <div class="stat-tile-top"><span class="stat-ic yt">▶</span><span class="stat-lbl" data-i18n="db_stat_yt">Abonnés YouTube</span></div>
               <div class="stat-val" id="statYtSubs">—</div>
               <div class="stat-delta real" data-i18n="db_stat_real">Réel</div>
-            </div>
-            <div class="stat-tile">
-              <div class="stat-tile-top"><span class="stat-ic tt">♪</span><span class="stat-lbl" data-i18n="db_stat_tt">Vues TikTok</span></div>
-              <div class="stat-val">76,8K</div>
-              <div class="stat-delta example" data-i18n="db_stat_example">Exemple</div>
             </div>
             <div class="stat-tile">
               <div class="stat-tile-top"><span class="stat-ic seo">📊</span><span class="stat-lbl" data-i18n="db_stat_seo">Score SEO moyen</span></div>
