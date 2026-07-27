@@ -267,6 +267,8 @@
        desktop — no permanent left column. It only opens via the topbar
        hamburger, or the topbar dropdown menus for quick tool access. */
     .main{ margin-left:0; padding:26px 30px 60px; max-width:1640px; }
+    /* Dégagement pour ne pas passer sous la barre fixe .qg-bar (voir plus bas) */
+    #content{ padding-bottom:76px; }
     .app-side{ transform:translateX(-100%); width:300px; box-shadow:24px 0 60px -20px rgba(0,0,0,.7); }
     .app-side.drawer-open{ transform:translateX(0); }
     .sb-toggle{ display:none; }
@@ -460,11 +462,23 @@
     .coach-hero-ring .ring-lbl{ font-size:10px; color:var(--muted); margin-top:2px; }
     @media(max-width:520px){ .coach-hero{ justify-content:center; text-align:center; } .coach-hero-ring{ margin:0 auto; } }
 
-    /* ── QUICK GENERATE — barre de commande rapide (type "Make ..." vidIQ) ── */
-    .qg-row{ display:flex; gap:10px; flex-wrap:wrap; }
-    .qg-row input{ flex:2; min-width:200px; background:var(--s2); border:1px solid var(--b2); border-radius:11px; padding:11px 14px; color:var(--text); font-size:13.5px; font-family:inherit; }
+    /* ── QUICK GENERATE — barre de commande rapide FIXE en bas (type "Make ..." vidIQ) :
+       toujours visible sans avoir à remonter en haut de page, comme le champ observé
+       chez vidIQ. left suit exactement la largeur de la sidebar (même règle que .main
+       ligne ~717) pour ne jamais passer sous/sur elle. */
+    .qg-bar{
+      position:fixed; left:0; right:0; bottom:0; z-index:250;
+      padding:12px clamp(16px,3vw,30px); padding-right:190px;
+      background:var(--s2); border-top:1px solid var(--b2);
+      box-shadow:0 -8px 24px -12px rgba(0,0,0,.15);
+    }
+    @media(min-width:1024px){ .qg-bar{ left:var(--side-w); } }
+    body.side-collapsed .qg-bar{ left:var(--side-w-collapsed); }
+    @media(max-width:640px){ .qg-bar{ padding-right:16px; } }
+    .qg-row{ display:flex; gap:10px; flex-wrap:wrap; max-width:900px; }
+    .qg-row input{ flex:2; min-width:160px; background:var(--s1); border:1px solid var(--b2); border-radius:11px; padding:11px 14px; color:var(--text); font-size:13.5px; font-family:inherit; }
     .qg-row input:focus{ outline:none; border-color:var(--accent-line); }
-    .qg-row select{ flex:0 0 auto; min-width:150px; background:var(--s2); border:1px solid var(--b2); border-radius:11px; padding:11px 12px; color:var(--text); font-size:13px; font-family:inherit; }
+    .qg-row select{ flex:0 0 auto; min-width:150px; background:var(--s1); border:1px solid var(--b2); border-radius:11px; padding:11px 12px; color:var(--text); font-size:13px; font-family:inherit; }
     .qg-row .btn{ flex:0 0 auto; white-space:nowrap; }
     @media(max-width:640px){ .qg-row{ flex-direction:column; } .qg-row input, .qg-row select, .qg-row .btn{ width:100%; } }
 
@@ -1290,24 +1304,6 @@
             <div id="coachLive"></div>
           </div>
 
-          <!-- QUICK GENERATE — barre de commande rapide (inspirée du champ "Make..." de vidIQ) :
-               lance une génération IA directement depuis l'accueil, sans naviguer dans les outils.
-               Préremplit le champ du bon outil via openTool(view, topic) → postMessage/URL vers
-               diamant.html (voir la fonction JS quickGenerate() plus bas). -->
-          <div class="card fade-in" style="--d:2.2">
-            <div class="section-title"><span class="st-ic">✨</span> <span data-i18n="db_qg_title">Générer rapidement</span></div>
-            <div class="qg-row">
-              <input id="qgInput" type="text" data-i18n-ph="db_qg_ph" placeholder="Décris ta vidéo en une phrase…" onkeydown="if(event.key==='Enter')quickGenerate()">
-              <select id="qgType">
-                <option value="generate" data-i18n="db_qg_video">Vidéo (titres + tags + description)</option>
-                <option value="shorts" data-i18n="db_qg_short">Short</option>
-                <option value="ideas" data-i18n="db_qg_ideas">Idées de vidéos</option>
-                <option value="titlegen" data-i18n="db_qg_titles">Titres uniquement</option>
-              </select>
-              <button class="btn btn-primary" onclick="quickGenerate()"><span data-i18n="db_qg_btn">Générer</span> ✨</button>
-            </div>
-          </div>
-
           <!-- ACTIVATION — remontée à la place de l'ancien "Centre d'action" (déplacé dans le
                rail droit, où il laissait un grand vide pour les nouveaux utilisateurs — voir
                data-vs-lvl côté rail) : c'est la première action concrète attendue d'un nouvel
@@ -1525,6 +1521,26 @@
       </div><!-- /dash-grid -->
     </div><!-- /content -->
   </div><!-- /main -->
+
+  <!-- QUICK GENERATE — barre fixe en bas de l'écran (inspirée du champ "Make..." de vidIQ,
+       qui reste visible en permanence plutôt que de défiler avec le contenu) : lance une
+       génération IA directement depuis n'importe quel scroll de l'accueil, sans naviguer
+       dans les outils. Préremplit le champ du bon outil via openTool(view, topic) →
+       postMessage/URL vers diamant.html (voir quickGenerate() plus bas). Visible seulement
+       sur le tableau de bord (masquée quand le studio/un outil est ouvert, voir openTool()/
+       backToHome() qui togglent #qgBar). -->
+  <div class="qg-bar" id="qgBar">
+    <div class="qg-row">
+      <input id="qgInput" type="text" data-i18n-ph="db_qg_ph" placeholder="Décris ta vidéo en une phrase…" onkeydown="if(event.key==='Enter')quickGenerate()">
+      <select id="qgType">
+        <option value="generate" data-i18n="db_qg_video">Vidéo (titres + tags + description)</option>
+        <option value="shorts" data-i18n="db_qg_short">Short</option>
+        <option value="ideas" data-i18n="db_qg_ideas">Idées de vidéos</option>
+        <option value="titlegen" data-i18n="db_qg_titles">Titres uniquement</option>
+      </select>
+      <button class="btn btn-primary" onclick="quickGenerate()"><span data-i18n="db_qg_btn">Générer</span> ✨</button>
+    </div>
+  </div>
 
   <!-- ════ FLOATING AI COACH ════ -->
   <button class="home-fab" id="homeFab" onclick="backToHome()" title="Home">🏠 Home</button>
@@ -2103,6 +2119,7 @@
     document.getElementById('content').style.display='none';
     var l=document.getElementById('loading'); if(l) l.style.display='none';
     document.getElementById('studioWrap').style.display='block';
+    var qb=document.getElementById('qgBar'); if(qb) qb.style.display='none';
     var f=document.getElementById('studioFrame');
     if(!studioLoaded){
       var src='diamant.html?embed=1&v=7'+(prefillTopic?('&prefill='+encodeURIComponent(prefillTopic)):'')+'#'+view;
@@ -2124,6 +2141,7 @@
   function backToHome(){
     document.getElementById('studioWrap').style.display='none';
     document.getElementById('content').style.display='block';
+    var qb=document.getElementById('qgBar'); if(qb) qb.style.display='';
     setActiveLink('home');
     if(typeof loadCoach==='function') loadCoach();
     if(typeof loadTrending==='function') loadTrending();
