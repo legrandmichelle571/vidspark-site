@@ -641,6 +641,28 @@
       animation: floatY 3.4s ease-in-out infinite; transition: transform .2s var(--ease);
     }
     .ai-fab:hover{ transform:scale(1.07); }
+    /* Pastille « IA » : sans elle, le rond n'annonce rien. Placée hors du flux
+       du 🧠 pour ne pas décaler le pictogramme. */
+    .ai-fab-badge{
+      position:absolute; top:-3px; right:-5px; z-index:1;
+      background:#0b0f19; color:#fff; font-size:9.5px; font-weight:800; letter-spacing:.3px;
+      padding:2px 6px; border-radius:9px; line-height:1.3; font-family:inherit;
+      max-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+      box-shadow:0 2px 8px rgba(0,0,0,.35);
+    }
+    .ai-hint{
+      position:fixed; right:92px; bottom:34px; z-index:300; max-width:225px;
+      background:#0b0f19; color:#fff; font-size:12.5px; line-height:1.45; font-weight:600;
+      padding:9px 12px; border-radius:12px; box-shadow:0 10px 26px -10px rgba(0,0,0,.6);
+      opacity:0; transform:translateY(4px); pointer-events:none;
+      transition:opacity .3s var(--ease), transform .3s var(--ease);
+    }
+    .ai-hint.show{ opacity:1; transform:none; }
+    @media(max-width:520px){ .ai-hint{ display:none; } }
+    @media(prefers-reduced-motion:reduce){
+      .ai-fab, .home-fab{ animation:none; }
+      .ai-hint{ transition:none; }
+    }
     .home-fab{
       position:fixed; right:22px; bottom:90px; z-index:300;
       display:flex; align-items:center; gap:6px;
@@ -901,6 +923,8 @@
       ai_thinking:{fr:'Le coach réfléchit…',en:'The coach is thinking…',ar:'المدرب يفكر…'},
       ai_error:{fr:'Oups, une erreur est survenue. Réessaie dans un instant.',en:'Oops, something went wrong. Try again in a moment.',ar:'عذرًا، حدث خطأ ما. أعد المحاولة بعد لحظة.'},
       ai_ratelimit:{fr:'Trop de messages pour l\'instant, réessaie dans un moment.',en:'Too many messages for now, try again in a bit.',ar:'رسائل كثيرة جدًا الآن، أعد المحاولة بعد قليل.'},
+      ai_badge:{fr:'IA',en:'AI',es:'IA',ar:'ذكاء اصطناعي',pt:'IA',de:'KI',it:'IA',ru:'ИИ',ja:'AI',ko:'AI',hi:'AI',zh:'AI',tr:'YZ',nl:'AI'},
+      ai_hint:{fr:'Une IA pour t\'aider — clique pour discuter',en:'An AI here to help — click to chat',es:'Una IA para ayudarte — haz clic para chatear',ar:'ذكاء اصطناعي لمساعدتك — انقر للدردشة',pt:'Uma IA para ajudar — clique para conversar',de:'Eine KI, die hilft — zum Chatten klicken',it:'Un\'IA per aiutarti — clicca per chattare',ru:'ИИ готов помочь — нажмите, чтобы начать',ja:'AIがお手伝いします — クリックしてチャット',ko:'AI가 도와드립니다 — 클릭해서 대화하기',hi:'मदद के लिए एक AI — चैट करने के लिए क्लिक करें',zh:'AI 助手随时待命 — 点击开始聊天',tr:'Yardım için bir YZ — sohbet için tıkla',nl:'Een AI die helpt — klik om te chatten'},
       ai_login_required:{fr:'Reconnecte-toi pour utiliser le Coach IA.',en:'Sign in again to use the AI Coach.',ar:'أعد تسجيل الدخول لاستخدام مدرب الذكاء الاصطناعي.'},
       coach_overview:{fr:'Vue d\'ensemble',en:'Overview',ar:'نظرة عامة'},
       /* ── sidebar premium ── */
@@ -1566,8 +1590,12 @@
   </div>
 
   <!-- ════ FLOATING AI COACH ════ -->
-  <button class="home-fab" id="homeFab" onclick="backToHome()" title="Home">🏠 Home</button>
-  <button class="ai-fab" id="aiFab" onclick="toggleAiPop()" title="Coach IA">🧠</button>
+  <button class="home-fab" id="homeFab" onclick="backToHome()"><span class="ic">🏠</span> <span data-i18n="db_home">Tableau de bord</span></button>
+  <!-- Amorce affichée une seule fois par session : un rond avec un pictogramme
+       ne dit pas qu'il y a une IA derrière, et le title= natif suppose un
+       survol — inexistant sur mobile. -->
+  <div class="ai-hint" id="aiHint" data-i18n="ai_hint" role="note">Une IA pour t'aider — clique pour discuter</div>
+  <button class="ai-fab" id="aiFab" onclick="toggleAiPop()">🧠<span class="ai-fab-badge" data-i18n="ai_badge">IA</span></button>
   <div class="ai-pop" id="aiPop">
     <div class="ai-pop-h">
       <div class="ai-av">🧠</div>
@@ -2504,6 +2532,34 @@
     if(m){ var used=+m[1], lim=+m[2]||1; set('ucCredLbl', used+' / '+lim); var f=document.getElementById('ucCredFill'); if(f) f.style.width=Math.min(100, used/lim*100)+'%'; }
   }
 
+  /* Amorce du coach : le bouton rond n'annonce pas qu'une IA se cache derrière.
+     Une fois par session, et elle disparaît dès le premier clic — au-delà, un
+     rappel permanent deviendrait du harcèlement visuel. */
+  function hideAiHint(){
+    var h=document.getElementById('aiHint');
+    if(h) h.classList.remove('show');
+    try{ sessionStorage.setItem('vs_ai_hint_seen','1'); }catch(e){}
+  }
+  /* applyI18n() ne traite que data-i18n et data-i18n-ph : un aria-label doit
+     être posé à la main, et reposé au changement de langue. */
+  function paintAiLabels(){
+    var f=document.getElementById('aiFab'); if(!f) return;
+    var nom = window.t ? t('ai_coach') : 'Coach IA';
+    var aide = window.t ? t('ai_hint') : 'Une IA pour t\'aider — clique pour discuter';
+    f.setAttribute('aria-label', nom + ' — ' + aide);
+  }
+  paintAiLabels();
+  document.addEventListener('vslangchange', paintAiLabels);
+
+  (function(){
+    try{ if(sessionStorage.getItem('vs_ai_hint_seen')) return; }catch(e){}
+    setTimeout(function(){
+      var p=document.getElementById('aiPop'), h=document.getElementById('aiHint');
+      if(h && p && !p.classList.contains('open')) h.classList.add('show');
+    }, 2600);
+    setTimeout(hideAiHint, 11000);
+  })();
+
   /* Coach flottant */
   function toggleAiPop(){
     var p=document.getElementById('aiPop'); if(!p) return;
@@ -2512,6 +2568,7 @@
     var h=document.getElementById('homeFab');
     if(h) h.style.display = opening ? 'none' : 'flex';
     if(opening){
+      hideAiHint();
       if(!aiGreeted){ aiGreeted=true; renderCoachGreeting(); }
       var inp=document.getElementById('aiPopInput'); if(inp) setTimeout(function(){ inp.focus(); }, 50);
     }
