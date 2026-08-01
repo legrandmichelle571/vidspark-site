@@ -644,10 +644,10 @@
     /* Pastille « IA » : sans elle, le rond n'annonce rien. Placée hors du flux
        du 🧠 pour ne pas décaler le pictogramme. */
     .ai-fab-badge{
-      position:absolute; top:-3px; right:-5px; z-index:1;
-      background:#0b0f19; color:#fff; font-size:9.5px; font-weight:800; letter-spacing:.3px;
-      padding:2px 6px; border-radius:9px; line-height:1.3; font-family:inherit;
-      max-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+      position:absolute; top:-6px; right:-10px; z-index:1;
+      background:#0b0f19; color:#fff; font-size:9px; font-weight:800; letter-spacing:.2px;
+      padding:2px 7px; border-radius:9px; line-height:1.35; font-family:inherit;
+      max-width:104px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
       box-shadow:0 2px 8px rgba(0,0,0,.35);
     }
     .ai-hint{
@@ -701,6 +701,11 @@
     .ai-sugg:hover{ border-color:var(--accent-line); background:var(--accent-soft); transform:translateX(2px); }
     .ai-sugg .as-ic{ font-size:15px; }
     /* Ligne de saisie */
+    /* Invite au-dessus du champ : le panneau ne disait nulle part qu'on peut
+       écrire librement, les suggestions donnaient l'impression d'un menu fermé. */
+    .ai-pop-invite{ flex-shrink:0; margin-bottom:7px; padding-top:9px; border-top:1px solid var(--b1); }
+    .ai-pop-invite .ai-inv-t{ font-size:12.5px; font-weight:800; color:var(--text); }
+    .ai-pop-invite .ai-inv-s{ font-size:11px; color:var(--muted); margin-top:2px; }
     #aiPopForm{ display:flex; gap:8px; flex-shrink:0; }
     #aiPopInput{ flex:1; resize:none; border:1px solid var(--b2); border-radius:10px; padding:9px 11px; font-size:12.5px; font-family:inherit; color:var(--text); background:var(--s1); max-height:70px; }
     #aiPopInput:focus{ outline:none; border-color:var(--accent-line); }
@@ -926,7 +931,10 @@
       ai_thinking:{fr:'Le coach réfléchit…',en:'The coach is thinking…',ar:'المدرب يفكر…'},
       ai_error:{fr:'Oups, une erreur est survenue. Réessaie dans un instant.',en:'Oops, something went wrong. Try again in a moment.',ar:'عذرًا، حدث خطأ ما. أعد المحاولة بعد لحظة.'},
       ai_ratelimit:{fr:'Trop de messages pour l\'instant, réessaie dans un moment.',en:'Too many messages for now, try again in a bit.',ar:'رسائل كثيرة جدًا الآن، أعد المحاولة بعد قليل.'},
-      ai_badge:{fr:'IA',en:'AI',es:'IA',ar:'ذكاء اصطناعي',pt:'IA',de:'KI',it:'IA',ru:'ИИ',ja:'AI',ko:'AI',hi:'AI',zh:'AI',tr:'YZ',nl:'AI'},
+      /* Nom de marque : identique dans toutes les langues, il ne se traduit pas. */
+      ai_badge:{fr:'ChatGPT AI',en:'ChatGPT AI',es:'ChatGPT AI',ar:'ChatGPT AI',pt:'ChatGPT AI',de:'ChatGPT AI',it:'ChatGPT AI',ru:'ChatGPT AI',ja:'ChatGPT AI',ko:'ChatGPT AI',hi:'ChatGPT AI',zh:'ChatGPT AI',tr:'ChatGPT AI',nl:'ChatGPT AI'},
+      ai_inv_t:{fr:"Parle à l'assistant AI",en:'Talk to the AI assistant',es:'Habla con el asistente AI',ar:'تحدّث إلى مساعد AI',pt:'Fale com o assistente AI',de:'Sprich mit dem AI-Assistenten',it:"Parla con l'assistente AI",ru:'Поговорите с AI-ассистентом',ja:'AIアシスタントに話しかける',ko:'AI 어시스턴트와 대화하기',hi:'AI असिस्टेंट से बात करें',zh:'与 AI 助手对话',tr:'AI asistanıyla konuş',nl:'Praat met de AI-assistent'},
+      ai_inv_s:{fr:"Pose ta question, l'AI te répond",en:'Ask your question, the AI answers',es:'Haz tu pregunta, la AI responde',ar:'اطرح سؤالك، وسيجيبك AI',pt:'Faça sua pergunta, a AI responde',de:'Stell deine Frage, die AI antwortet',it:"Fai la tua domanda, l'AI risponde",ru:'Задайте вопрос — AI ответит',ja:'質問すれば、AIが答えます',ko:'질문하면 AI가 답합니다',hi:'अपना सवाल पूछें, AI जवाब देगा',zh:'提出问题，AI 会回答',tr:'Sorunu sor, AI cevaplasın',nl:'Stel je vraag, de AI antwoordt'},
       ai_hint:{fr:'Une IA pour t\'aider — clique pour discuter',en:'An AI here to help — click to chat',es:'Una IA para ayudarte — haz clic para chatear',ar:'ذكاء اصطناعي لمساعدتك — انقر للدردشة',pt:'Uma IA para ajudar — clique para conversar',de:'Eine KI, die hilft — zum Chatten klicken',it:'Un\'IA per aiutarti — clicca per chattare',ru:'ИИ готов помочь — нажмите, чтобы начать',ja:'AIがお手伝いします — クリックしてチャット',ko:'AI가 도와드립니다 — 클릭해서 대화하기',hi:'मदद के लिए एक AI — चैट करने के लिए क्लिक करें',zh:'AI 助手随时待命 — 点击开始聊天',tr:'Yardım için bir YZ — sohbet için tıkla',nl:'Een AI die helpt — klik om te chatten'},
       ai_login_required:{fr:'Reconnecte-toi pour utiliser le Coach IA.',en:'Sign in again to use the AI Coach.',ar:'أعد تسجيل الدخول لاستخدام مدرب الذكاء الاصطناعي.'},
       coach_overview:{fr:'Vue d\'ensemble',en:'Overview',ar:'نظرة عامة'},
@@ -1609,6 +1617,10 @@
       <button class="icon-btn" style="width:32px;height:32px;font-size:14px;" onclick="toggleAiPop()">✕</button>
     </div>
     <div id="aiPopBody"></div>
+    <div class="ai-pop-invite">
+      <div class="ai-inv-t" data-i18n="ai_inv_t">Parle à l'assistant AI</div>
+      <div class="ai-inv-s" data-i18n="ai_inv_s">Pose ta question, l'AI te répond</div>
+    </div>
     <form id="aiPopForm" onsubmit="return false;">
       <textarea id="aiPopInput" rows="1" data-i18n-ph="ai_ph" placeholder="Écris ta question…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendCoachMessage();}"></textarea>
       <button type="button" id="aiPopSend" onclick="sendCoachMessage()">➤</button>

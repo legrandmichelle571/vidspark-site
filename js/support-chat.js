@@ -43,7 +43,10 @@
       vsc_ratelimit:{fr:'Tu as atteint la limite de messages pour l’instant. Réessaie dans un moment.',en:'You’ve reached the message limit for now. Try again in a bit.',es:'Has alcanzado el límite de mensajes por ahora. Inténtalo de nuevo en un momento.',ar:'لقد وصلت إلى الحد الأقصى للرسائل حاليًا. أعد المحاولة بعد قليل.',pt:'Você atingiu o limite de mensagens por enquanto. Tente novamente em breve.',de:'Du hast das Nachrichtenlimit vorerst erreicht. Versuch es gleich noch einmal.',it:'Hai raggiunto il limite di messaggi per ora. Riprova tra poco.',ru:'Вы достигли лимита сообщений. Повторите попытку немного позже.',ja:'現在メッセージの上限に達しました。しばらくしてからもう一度お試しください。',ko:'현재 메시지 한도에 도달했습니다. 잠시 후 다시 시도해 주세요.',hi:'आप अभी संदेश सीमा तक पहुँच गए हैं। थोड़ी देर बाद फिर कोशिश करें।',zh:'你已达到当前的消息上限，请稍后再试。',tr:'Şimdilik mesaj sınırına ulaştın. Biraz sonra tekrar dene.',nl:'Je hebt de berichtenlimiet voorlopig bereikt. Probeer het straks nog eens.'},
 
       /* Identité : l'utilisateur doit voir tout de suite que c'est une IA. */
-      vsc_ai_badge:{fr:'IA',en:'AI',es:'IA',ar:'ذكاء اصطناعي',pt:'IA',de:'KI',it:'IA',ru:'ИИ',ja:'AI',ko:'AI',hi:'AI',zh:'AI',tr:'YZ',nl:'AI'},
+      /* Nom de marque : identique dans toutes les langues, il ne se traduit pas. */
+      vsc_ai_badge:{fr:'ChatGPT AI',en:'ChatGPT AI',es:'ChatGPT AI',ar:'ChatGPT AI',pt:'ChatGPT AI',de:'ChatGPT AI',it:'ChatGPT AI',ru:'ChatGPT AI',ja:'ChatGPT AI',ko:'ChatGPT AI',hi:'ChatGPT AI',zh:'ChatGPT AI',tr:'ChatGPT AI',nl:'ChatGPT AI'},
+      vsc_inv_t:{fr:"Parle à l'assistant AI",en:'Talk to the AI assistant',es:'Habla con el asistente AI',ar:'تحدّث إلى مساعد AI',pt:'Fale com o assistente AI',de:'Sprich mit dem AI-Assistenten',it:"Parla con l'assistente AI",ru:'Поговорите с AI-ассистентом',ja:'AIアシスタントに話しかける',ko:'AI 어시스턴트와 대화하기',hi:'AI असिस्टेंट से बात करें',zh:'与 AI 助手对话',tr:'AI asistanıyla konuş',nl:'Praat met de AI-assistent'},
+      vsc_inv_s:{fr:"Pose ta question, l'AI te répond",en:'Ask your question, the AI answers',es:'Haz tu pregunta, la AI responde',ar:'اطرح سؤالك، وسيجيبك AI',pt:'Faça sua pergunta, a AI responde',de:'Stell deine Frage, die AI antwortet',it:"Fai la tua domanda, l'AI risponde",ru:'Задайте вопрос — AI ответит',ja:'質問すれば、AIが答えます',ko:'질문하면 AI가 답합니다',hi:'अपना सवाल पूछें, AI जवाब देगा',zh:'提出问题，AI 会回答',tr:'Sorunu sor, AI cevaplasın',nl:'Stel je vraag, de AI antwoordt'},
       vsc_hint:{fr:'Une IA pour t’aider — clique pour discuter',en:'An AI here to help — click to chat',es:'Una IA para ayudarte — haz clic para chatear',ar:'ذكاء اصطناعي لمساعدتك — انقر للدردشة',pt:'Uma IA para ajudar — clique para conversar',de:'Eine KI, die hilft — zum Chatten klicken',it:'Un’IA per aiutarti — clicca per chattare',ru:'ИИ готов помочь — нажмите, чтобы начать',ja:'AIがお手伝いします — クリックしてチャット',ko:'AI가 도와드립니다 — 클릭해서 대화하기',hi:'मदद के लिए एक AI — चैट करने के लिए क्लिक करें',zh:'AI 助手随时待命 — 点击开始聊天',tr:'Yardım için bir YZ — sohbet için tıkla',nl:'Een AI die helpt — klik om te chatten'},
       vsc_greeting_user:{fr:'👋 Salut ! Je vois ce que tu as à l’écran. Pose-moi une question sur ta chaîne ou sur ce résultat.',en:'👋 Hi! I can see what’s on your screen. Ask me about your channel or about this result.',es:'👋 ¡Hola! Veo lo que tienes en pantalla. Pregúntame sobre tu canal o sobre este resultado.',ar:'👋 مرحبًا! أرى ما هو معروض على شاشتك. اسألني عن قناتك أو عن هذه النتيجة.',pt:'👋 Oi! Estou vendo o que está na sua tela. Pergunte sobre seu canal ou sobre este resultado.',de:'👋 Hallo! Ich sehe, was auf deinem Bildschirm ist. Frag mich zu deinem Kanal oder zu diesem Ergebnis.',it:'👋 Ciao! Vedo cosa hai sullo schermo. Chiedimi del tuo canale o di questo risultato.',ru:'👋 Привет! Я вижу, что у вас на экране. Спросите о канале или об этом результате.',ja:'👋 こんにちは！画面の内容が見えています。チャンネルやこの結果について質問してください。',ko:'👋 안녕하세요! 화면에 있는 내용을 보고 있어요. 채널이나 이 결과에 대해 물어보세요.',hi:'👋 नमस्ते! मैं देख सकता हूँ कि स्क्रीन पर क्या है। अपने चैनल या इस परिणाम के बारे में पूछें।',zh:'👋 你好！我能看到你屏幕上的内容。可以问我关于你的频道或这个结果的问题。',tr:'👋 Merhaba! Ekranındakini görüyorum. Kanalın ya da bu sonuç hakkında sor.',nl:'👋 Hoi! Ik zie wat er op je scherm staat. Vraag me iets over je kanaal of dit resultaat.'},
       vsc_ctx_seen:{fr:'Je regarde ce qui est affiché sur cette page',en:'I can see what’s shown on this page',es:'Veo lo que se muestra en esta página',ar:'أرى ما هو معروض في هذه الصفحة',pt:'Vejo o que está exibido nesta página',de:'Ich sehe, was auf dieser Seite angezeigt wird',it:'Vedo ciò che è mostrato in questa pagina',ru:'Я вижу, что показано на этой странице',ja:'このページに表示されている内容が見えます',ko:'이 페이지에 표시된 내용을 보고 있습니다',hi:'मैं देख सकता हूँ कि इस पेज पर क्या दिख रहा है',zh:'我能看到此页面显示的内容',tr:'Bu sayfada gösterileni görüyorum',nl:'Ik zie wat op deze pagina staat'}
@@ -57,7 +60,8 @@
     vsc_placeholder:'Écris ta question…', vsc_send:'Envoyer', vsc_thinking:'L’assistant réfléchit…',
     vsc_error:'Oups, une erreur est survenue. Réessaie dans un instant, ou passe par la page Contact.',
     vsc_ratelimit:'Tu as atteint la limite de messages pour l’instant. Réessaie dans un moment.',
-    vsc_ai_badge:'IA', vsc_hint:'Une IA pour t’aider — clique pour discuter',
+    vsc_ai_badge:'ChatGPT AI', vsc_hint:'Une IA pour t’aider — clique pour discuter',
+    vsc_inv_t:'Parle à l’assistant AI', vsc_inv_s:'Pose ta question, l’AI te répond',
     vsc_ctx_seen:'Je regarde ce qui est affiché sur cette page'
   };
   const T = hasI18n ? window.t : function(k){ return FALLBACK[k] || k; };
@@ -73,9 +77,15 @@
       display:flex; align-items:center; justify-content:center; transition:transform .18s var(--vs-ease,cubic-bezier(.4,0,.2,1)); }
     #vscFab:hover{ transform:scale(1.07); }
     /* Pastille « IA » : le pictogramme seul ne dit pas a quoi on parle. */
-    #vscFab .vsc-ai{ position:absolute; top:-4px; right:-4px; background:#211D16; color:#FFF; font-size:9px; font-weight:800;
-      letter-spacing:.3px; padding:2px 5px; border-radius:8px; line-height:1.3; font-family:"Inter",-apple-system,sans-serif;
-      max-width:64px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #vscFab .vsc-ai{ position:absolute; top:-6px; right:-10px; background:#211D16; color:#FFF; font-size:9px; font-weight:800;
+      letter-spacing:.2px; padding:2px 7px; border-radius:9px; line-height:1.35; font-family:"Inter",-apple-system,sans-serif;
+      max-width:104px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    /* Invite au-dessus du champ : rien n'indiquait qu'on peut écrire librement. */
+    #vscInvite{ flex-shrink:0; padding:9px 12px 0; border-top:1px solid var(--vs-border-1,#E7E0D3); background:var(--vs-surface,#FFFFFF);
+      font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    #vscInvite .vsc-inv-t{ font-size:12.5px; font-weight:800; color:var(--vs-text,#211D16); }
+    #vscInvite .vsc-inv-s{ font-size:11px; color:var(--vs-muted,#756D5E); margin-top:2px; }
+    #vscInvite + #vscForm{ border-top:none; padding-top:8px; }
     #vscHint{ position:fixed; right:86px; bottom:30px; z-index:9998; max-width:220px; background:#211D16; color:#FFF;
       font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size:12.5px; line-height:1.45;
       padding:9px 12px; border-radius:12px; box-shadow:0 10px 26px -12px rgba(0,0,0,.5); cursor:pointer;
@@ -160,12 +170,17 @@
     if (inp) inp.placeholder = T('vsc_placeholder');
     const snd = panel.querySelector('#vscSend');
     if (snd) snd.textContent = T('vsc_send');
+    const it = panel.querySelector('.vsc-inv-t');
+    if (it) it.textContent = T('vsc_inv_t');
+    const is = panel.querySelector('.vsc-inv-s');
+    if (is) is.textContent = T('vsc_inv_s');
   }
 
   panel.innerHTML =
     '<div id="vscHead"><span></span><span style="display:flex;align-items:center;gap:8px">'
     + '<span class="vsc-pill"></span><button id="vscClose" type="button" aria-label="✕">✕</button></span></div>'
     + '<div id="vscBody" aria-live="polite"></div>'
+    + '<div id="vscInvite"><div class="vsc-inv-t"></div><div class="vsc-inv-s"></div></div>'
     + '<form id="vscForm"><textarea id="vscInput" rows="1" maxlength="800"></textarea>'
     + '<button id="vscSend" type="submit"></button></form>';
 
