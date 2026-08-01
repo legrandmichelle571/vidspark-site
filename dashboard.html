@@ -916,7 +916,10 @@
       rail_ann:{fr:'Nouveautés',en:'What\'s new',ar:'جديدنا'},
       rail_tips:{fr:'Astuce pro',en:'Pro tip',ar:'نصيحة احترافية'},
       db_tip_guide:{fr:'Voir le guide de démarrage →',en:'See the getting-started guide →',ar:'شاهد دليل البدء ←'},
-      ai_coach:{fr:'Coach IA',en:'AI Coach',ar:'مدرب الذكاء الاصطناعي'},
+      /* Nom unique de l'assistant sur tout le site. db_aiassist et vsc_title
+         (js/support-chat.js) reprennent exactement les mêmes valeurs : trois
+         libellés différents faisaient croire à trois outils distincts. */
+      ai_coach:{fr:'Coach IA',en:'AI Coach',es:'Coach IA',ar:'مدرب الذكاء الاصطناعي',pt:'Coach IA',de:'KI-Coach',it:'Coach IA',ru:'ИИ-коуч',ja:'AIコーチ',ko:'AI 코치',hi:'AI कोच',zh:'AI 教练',tr:'YZ Koçu',nl:'AI-coach'},
       ai_online:{fr:'En ligne',en:'Online',ar:'متصل'},
       ai_intro:{fr:'Que veux-tu améliorer aujourd\'hui ?',en:'What do you want to improve today?',ar:'ماذا تريد أن تحسّن اليوم؟'},
       ai_ph:{fr:'Écris ta question…',en:'Type your question…',ar:'اكتب سؤالك…'},
@@ -935,7 +938,7 @@
       db_g_dashboard:{fr:'Tableau de bord',en:'Dashboard',ar:'لوحة التحكم'}, db_g_analyze:{fr:'Analyser',en:'Analyze',ar:'تحليل'}, db_g_create:{fr:'Créer (IA)',en:'AI Create',ar:'إنشاء (ذكاء اصطناعي)'}, db_g_seo:{fr:'Outils SEO',en:'SEO Tools',ar:'أدوات SEO'}, db_g_growth:{fr:'Croissance',en:'Growth',ar:'النمو'}, db_g_studio:{fr:'Studio',en:'Studio',ar:'الاستوديو'}, db_g_account:{fr:'Compte',en:'Account',ar:'الحساب'}, db_g_help:{fr:'Aide',en:'Help',ar:'المساعدة'},
       db_notifications:{fr:'Notifications',en:'Notifications',ar:'الإشعارات'}, db_recent:{fr:'Activité récente',en:'Recent activity',ar:'النشاط الأخير'},
       db_seoscore:{fr:'Score SEO',en:'SEO Score',ar:'نقاط SEO'}, db_competitor:{fr:'Analyse concurrents',en:'Competitor analysis',ar:'تحليل المنافسين'}, db_comparison:{fr:'Comparer des chaînes',en:'Channel comparison',ar:'مقارنة القنوات'}, db_analytics:{fr:'Analytique',en:'Analytics',ar:'التحليلات'},
-      db_script:{fr:'Générateur de script',en:'Script generator',ar:'مولّد السكربت'}, db_voice:{fr:'Générateur de voix',en:'Voice generator',ar:'مولّد الصوت'}, db_aiassist:{fr:'Assistant IA',en:'AI assistant',ar:'مساعد الذكاء الاصطناعي'}, db_thumbai:{fr:'Miniature IA',en:'Thumbnail AI',ar:'صورة مصغّرة بالذكاء الاصطناعي'},
+      db_script:{fr:'Générateur de script',en:'Script generator',ar:'مولّد السكربت'}, db_voice:{fr:'Générateur de voix',en:'Voice generator',ar:'مولّد الصوت'}, db_aiassist:{fr:'Coach IA',en:'AI Coach',es:'Coach IA',ar:'مدرب الذكاء الاصطناعي',pt:'Coach IA',de:'KI-Coach',it:'Coach IA',ru:'ИИ-коуч',ja:'AIコーチ',ko:'AI 코치',hi:'AI कोच',zh:'AI 教练',tr:'YZ Koçu',nl:'AI-coach'}, db_thumbai:{fr:'Miniature IA',en:'Thumbnail AI',ar:'صورة مصغّرة بالذكاء الاصطناعي'},
       db_tagextract:{fr:'Extracteur de tags',en:'Tag extractor',ar:'مستخرج الوسوم'}, db_descgen:{fr:'Générateur de description',en:'Description generator',ar:'مولّد الوصف'}, db_titlegen:{fr:'Générateur de titres',en:'Title generator',ar:'مولّد العناوين'}, db_thumbdl:{fr:'Téléchargeur de miniatures',en:'Thumbnail downloader',ar:'تنزيل الصور المصغّرة'}, db_chextract:{fr:'Extracteur de chaîne',en:'Channel extractor',ar:'مستخرج القناة'}, db_hashtag:{fr:'Générateur de hashtags',en:'Hashtag generator',ar:'مولّد الهاشتاغات'},
       db_publishtime:{fr:'Meilleur moment',en:'Best publish time',ar:'أفضل وقت للنشر'}, db_chgrowth:{fr:'Croissance chaîne',en:'Channel growth',ar:'نمو القناة'}, db_planner:{fr:'Planificateur',en:'Content planner',ar:'مخطّط المحتوى'},
       db_thumbstudio:{fr:'Thumbnail Studio',en:'Thumbnail Studio',ar:'استوديو الصور المصغّرة'}, db_thumbgen:{fr:'Générateur de miniatures',en:'Thumbnail generator',ar:'مولّد الصور المصغّرة'}, db_upscaler:{fr:'Upscaler d\'image',en:'Image upscaler',ar:'تكبير الصورة'},
@@ -1061,7 +1064,7 @@
           <a class="sb-link" data-name="Script Generator" onclick="openTool('script')"><span class="ic">📝</span> <span class="lbl" data-i18n="db_script">Générateur de script</span><span class="sb-arrow">›</span></a>
           <!-- Générateur de voix : masqué (service TTS externe — exclu) -->
 
-          <a class="sb-link" data-name="AI Assistant" onclick="toggleAiPop()"><span class="ic">🤖</span> <span class="lbl" data-i18n="db_aiassist">Assistant IA</span><span class="sb-badge beta">Beta</span><span class="sb-arrow">›</span></a>
+          <a class="sb-link" data-name="AI Assistant" onclick="toggleAiPop()"><span class="ic">🤖</span> <span class="lbl" data-i18n="db_aiassist">Coach IA</span><span class="sb-badge beta">Beta</span><span class="sb-arrow">›</span></a>
           <a class="sb-link" data-name="Thumbnail AI" onclick="openTool('thumbnail')"><span class="ic">🎨</span> <span class="lbl" data-i18n="db_thumbai">Miniature IA</span><span class="sb-badge ai">AI</span><span class="sb-arrow">›</span></a>
         </div>
       </div>

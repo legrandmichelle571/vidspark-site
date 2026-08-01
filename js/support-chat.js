@@ -31,7 +31,10 @@
 
   if (hasI18n) {
     registerI18n({
-      vsc_title:{fr:'Assistant VidSpark AI',en:'VidSpark AI Assistant',es:'Asistente VidSpark AI',ar:'مساعد VidSpark AI',pt:'Assistente VidSpark AI',de:'VidSpark-AI-Assistent',it:'Assistente VidSpark AI',ru:'Ассистент VidSpark AI',ja:'VidSpark AI アシスタント',ko:'VidSpark AI 어시스턴트',hi:'VidSpark AI असिस्टेंट',zh:'VidSpark AI 助手',tr:'VidSpark AI Asistanı',nl:'VidSpark AI-assistent'},
+      /* Meme nom que ai_coach et db_aiassist dans dashboard.html : l'assistant
+         portait trois libelles differents selon la page, ce qui donnait
+         l'impression de trois outils distincts. */
+      vsc_title:{fr:'Coach IA',en:'AI Coach',es:'Coach IA',ar:'مدرب الذكاء الاصطناعي',pt:'Coach IA',de:'KI-Coach',it:'Coach IA',ru:'ИИ-коуч',ja:'AIコーチ',ko:'AI 코치',hi:'AI कोच',zh:'AI 教练',tr:'YZ Koçu',nl:'AI-coach'},
       vsc_greeting:{fr:'👋 Salut ! Une question sur VidSpark AI (fonctionnalités, tarifs, comment ça marche) ? Je suis là pour t’aider.',en:'👋 Hi! Got a question about VidSpark AI (features, pricing, how it works)? I’m here to help.',es:'👋 ¡Hola! ¿Tienes alguna pregunta sobre VidSpark AI (funciones, precios, cómo funciona)? Estoy aquí para ayudarte.',ar:'👋 مرحبًا! هل لديك سؤال عن VidSpark AI (الميزات، الأسعار، كيفية العمل)؟ أنا هنا للمساعدة.',pt:'👋 Oi! Tem alguma dúvida sobre o VidSpark AI (recursos, preços, como funciona)? Estou aqui para ajudar.',de:'👋 Hallo! Hast du eine Frage zu VidSpark AI (Funktionen, Preise, Funktionsweise)? Ich helfe gerne.',it:'👋 Ciao! Hai una domanda su VidSpark AI (funzioni, prezzi, come funziona)? Sono qui per aiutarti.',ru:'👋 Привет! Есть вопрос о VidSpark AI (функции, цены, как это работает)? Я помогу.',ja:'👋 こんにちは！VidSpark AIについて（機能、料金、使い方など）質問はありますか？お手伝いします。',ko:'👋 안녕하세요! VidSpark AI에 대해 궁금한 점(기능, 요금제, 사용법)이 있으신가요? 도와드릴게요.',hi:'👋 नमस्ते! VidSpark AI (सुविधाएँ, कीमत, कैसे काम करता है) के बारे में कोई सवाल? मैं मदद के लिए यहाँ हूँ।',zh:'👋 你好！对 VidSpark AI 有疑问吗（功能、价格、使用方法）？我可以帮你。',tr:'👋 Merhaba! VidSpark AI hakkında (özellikler, fiyatlar, nasıl çalışır) bir sorun mu var? Yardımcı olmak için buradayım.',nl:'👋 Hoi! Een vraag over VidSpark AI (functies, prijzen, hoe het werkt)? Ik help je graag.'},
       vsc_placeholder:{fr:'Écris ta question…',en:'Type your question…',es:'Escribe tu pregunta…',ar:'اكتب سؤالك…',pt:'Escreva sua pergunta…',de:'Schreib deine Frage…',it:'Scrivi la tua domanda…',ru:'Введите вопрос…',ja:'質問を入力…',ko:'질문을 입력하세요…',hi:'अपना सवाल लिखें…',zh:'输入你的问题…',tr:'Sorunu yaz…',nl:'Typ je vraag…'},
       vsc_send:{fr:'Envoyer',en:'Send',es:'Enviar',ar:'إرسال',pt:'Enviar',de:'Senden',it:'Invia',ru:'Отправить',ja:'送信',ko:'보내기',hi:'भेजें',zh:'发送',tr:'Gönder',nl:'Versturen'},
@@ -48,7 +51,7 @@
   }
 
   const FALLBACK = {
-    vsc_title:'Assistant VidSpark AI',
+    vsc_title:'Coach IA',
     vsc_greeting:'👋 Salut ! Une question sur VidSpark AI (fonctionnalités, tarifs, comment ça marche) ? Je suis là pour t’aider.',
     vsc_greeting_user:'👋 Salut ! Je vois ce que tu as à l’écran. Pose-moi une question sur ta chaîne ou sur ce résultat.',
     vsc_placeholder:'Écris ta question…', vsc_send:'Envoyer', vsc_thinking:'L’assistant réfléchit…',
