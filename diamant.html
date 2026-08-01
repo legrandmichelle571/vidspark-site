@@ -758,7 +758,11 @@
     d_analyzed:{fr:'commentaires analysés',en:'comments analyzed',ar:'تعليق تم تحليله'},
     d_betterTitle:{fr:'✨ Titre encore meilleur (IA)',en:'✨ Even better title (AI)',ar:'✨ عنوان أفضل (ذكاء اصطناعي)'},
     d_title:{fr:'Titre',en:'Title',ar:'العنوان'},
-    d_relatedkw:{fr:'🔑 Mots-clés similaires (difficulté + vues)',en:'🔑 Related keywords (difficulty + views)',ar:'🔑 كلمات مفتاحية مشابهة (الصعوبة + المشاهدات)'}
+    d_relatedkw:{fr:'🔑 Mots-clés similaires (difficulté + vues)',en:'🔑 Related keywords (difficulty + views)',ar:'🔑 كلمات مفتاحية مشابهة (الصعوبة + المشاهدات)'},
+    d_analyzing:{fr:'Analyse…',en:'Analyzing…',ar:'جارٍ التحليل…'},
+    d_auditunavail:{fr:'Audit indisponible',en:'Audit unavailable',ar:'التدقيق غير متاح'},
+    d_daysunit:{fr:'j',en:'d',ar:'يوم'},
+    d_auditagain:{fr:"Relancer l'audit",en:'Run audit again',ar:'أعد التدقيق'}
   });
   async function apiPost(path, body){
     // Injecte la langue de l'interface par défaut ; un body avec sa propre "language" la garde
@@ -812,11 +816,11 @@
   async function runAudit(){
     const btn=$('auditBtn');
     $('auditErr').style.display='none'; $('auditResult').style.display='none';
-    btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyse…';
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> '+t('d_analyzing');
     try{
       const {ok,status,data}=await apiPost('/api/diamant/channel-audit',{ channelId: $('auditChannelId').value.trim() || undefined });
       if(status===403){ toolLocked(data); return; }
-      if(!ok) throw new Error(data.error||'Audit indisponible');
+      if(!ok) throw new Error(data.error||t('d_auditunavail'));
       const b=data.health_breakdown||{};
       const bar=(l,v,m)=>`<div class="bar-row"><div class="l"><span>${l}</span><span>${v}/${m}</span></div><div class="bar"><i style="width:${Math.round(v/m*100)}%"></i></div></div>`;
       const stat=(v,k)=>`<div class="stat"><div class="v">${v}</div><div class="k">${k}</div></div>`;
@@ -826,11 +830,11 @@
           <div class="score">${data.health_score}<small>/100</small></div>
           <div class="bars">${bar('💬 '+t('d_engagement'),b.engagement||0,30)}${bar('📅 '+t('d_regularite'),b.regularite||0,30)}${bar('🏷️ '+t('d_seotags'),b.seo_tags||0,25)}${bar('✍️ '+t('d_titres'),b.titres||0,15)}</div>
         </div>
-        <div class="stats">${stat(fmtN(data.subs),t('d_subs'))}${stat(fmtN(data.avg_views),t('d_avgviews'))}${stat(data.avg_engagement+'%',t('d_engagement'))}${stat((data.upload_freq_days??'—')+' j',t('d_betweenvids'))}${stat(data.tags_usage_pct+'%',t('d_withtags'))}${stat(fmtN(data.total_videos),t('d_videos'))}</div>
+        <div class="stats">${stat(fmtN(data.subs),t('d_subs'))}${stat(fmtN(data.avg_views),t('d_avgviews'))}${stat(data.avg_engagement+'%',t('d_engagement'))}${stat((data.upload_freq_days??'—')+' '+t('d_daysunit'),t('d_betweenvids'))}${stat(data.tags_usage_pct+'%',t('d_withtags'))}${stat(fmtN(data.total_videos),t('d_videos'))}</div>
         <div class="muted" style="font-weight:700;color:var(--text);margin-bottom:8px;">${t('d_recos')}</div>${recs}`;
       $('auditResult').style.display='block';
     }catch(e){ $('auditErr').textContent='❌ '+e.message; $('auditErr').style.display='block'; }
-    finally{ btn.disabled=false; btn.textContent='Relancer l\'audit'; }
+    finally{ btn.disabled=false; btn.textContent=t('d_auditagain'); }
   }
 
   /* ── Rank ── */
