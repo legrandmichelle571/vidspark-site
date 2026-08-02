@@ -32,6 +32,22 @@
   .fade-in{animation:sgFade .35s ease both;}
   @keyframes sgFade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
   @media (prefers-reduced-motion: reduce){.fade-in{animation:none;}}
+
+  /* ── Bulle d'assistance remontée sur cette page ──
+     Le bouton « Nouvelle histoire » est en fixed bottom-8 (32px) et mesure
+     ~60px de haut : il occupe donc 32→92px depuis le bas, du même côté que
+     la bulle (left en arabe, right sinon). La bulle, à bottom:20px sur 56px
+     de haut, se posait dessus. On la remonte au-dessus du bouton.
+     Sélecteurs préfixés par body : support-chat.js injecte son <style> en fin
+     de <head> au runtime, donc à spécificité égale c'est lui qui gagnerait. */
+  body #vscFab{ bottom:104px; }
+  body #vscHint{ bottom:114px; }
+  body #vscPanel{ bottom:172px; height:min(520px, calc(100vh - 224px)); }
+  @media(max-width:520px){
+    /* Le bouton « Nouvelle histoire » garde sa taille en mobile → même décalage. */
+    body #vscFab{ bottom:104px; }
+    body #vscPanel{ bottom:168px; height:min(520px, calc(100vh - 220px)); }
+  }
 </style>
 </head>
 <body>
@@ -259,9 +275,10 @@ const TR = {
 };
 
 /* ---------- State ---------- */
+/* Langue par défaut : ANGLAIS (aligné sur js/i18n.js). */
 function detectLang(){
   try{ const v = localStorage.getItem('vs_site_lang'); if(v && TR[v]) return v; }catch(e){}
-  return 'fr';
+  return 'en';
 }
 const state = {
   lang: detectLang(),
