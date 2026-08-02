@@ -1028,7 +1028,16 @@ registerI18n({
   ct_st_invalid:{fr:"Merci de remplir tous les champs requis (message : 20 caractères min) et d'accepter la politique de confidentialité.",en:'Please fill in all required fields (message: 20 characters min) and accept the privacy policy.',es:'Rellena todos los campos obligatorios (mensaje: 20 caracteres mín.) y acepta la política de privacidad.',ar:'يرجى ملء كل الحقول المطلوبة (الرسالة: 20 حرفًا على الأقل) والموافقة على سياسة الخصوصية.'},
   ct_st_ok:{fr:'✅ Message envoyé ! Notre équipe vous répondra rapidement.',en:'✅ Message sent! Our team will get back to you shortly.',es:'✅ ¡Mensaje enviado! Nuestro equipo te responderá pronto.',ar:'✅ تم إرسال الرسالة! سيردّ عليك فريقنا قريبًا.'},
   ct_st_err:{fr:'⚠️ Envoi impossible. Réessayez, ou copiez l\'adresse support@vidsparkpro.com et écrivez-nous depuis votre webmail.',en:'⚠️ Could not send. Try again, or copy support@vidsparkpro.com and write to us from your webmail.',es:'⚠️ No se pudo enviar. Inténtalo de nuevo o copia support@vidsparkpro.com y escríbenos desde tu webmail.',ar:'⚠️ تعذّر الإرسال. أعد المحاولة أو انسخ support@vidsparkpro.com وراسلنا من بريدك على الويب.'},
-  ct_st_mailto:{fr:'Ouverture de votre client email…',en:'Opening your email client…',es:'Abriendo tu cliente de correo…',ar:'جارٍ فتح بريدك الإلكتروني…'}
+  ct_st_mailto:{fr:'Ouverture de votre client email…',en:'Opening your email client…',es:'Abriendo tu cliente de correo…',ar:'جارٍ فتح بريدك الإلكتروني…'},
+
+  /* ── Repli quand l'envoi automatique est indisponible ── */
+  ct_st_down:{fr:"L'envoi automatique est momentanément indisponible. Ton message n'est pas perdu — envoie-le en un clic ci-dessous.",en:'Automatic sending is temporarily unavailable. Your message is not lost — send it in one click below.',es:'El envío automático no está disponible por ahora. Tu mensaje no se ha perdido: envíalo con un clic abajo.',ar:'الإرسال التلقائي غير متاح مؤقتًا. رسالتك لم تُفقد — أرسلها بنقرة واحدة أدناه.'},
+  ct_st_offline:{fr:'Serveur injoignable. Ton message est prêt — envoie-le en un clic ci-dessous.',en:'Server unreachable. Your message is ready — send it in one click below.',es:'Servidor inaccesible. Tu mensaje está listo: envíalo con un clic abajo.',ar:'تعذّر الوصول إلى الخادم. رسالتك جاهزة — أرسلها بنقرة واحدة أدناه.'},
+  ct_fb_intro:{fr:'Ouvre ton webmail avec le message déjà rédigé, ou copie-le pour le coller où tu veux :',en:'Open your webmail with the message already written, or copy it to paste anywhere:',es:'Abre tu webmail con el mensaje ya redactado, o cópialo para pegarlo donde quieras:',ar:'افتح بريدك على الويب والرسالة مكتوبة سلفًا، أو انسخها لتلصقها حيث تشاء:'},
+  ct_fb_copy:{fr:'📋 Copier mon message',en:'📋 Copy my message',es:'📋 Copiar mi mensaje',ar:'📋 انسخ رسالتي'},
+  ct_fb_copied:{fr:'✓ Copié',en:'✓ Copied',es:'✓ Copiado',ar:'✓ تم النسخ'},
+  ct_fb_copyfail:{fr:'Copie refusée — sélectionne le texte',en:'Copy blocked — select the text',es:'Copia bloqueada: selecciona el texto',ar:'تعذّر النسخ — حدّد النص'},
+  ct_fb_addr:{fr:'Adresse de destination :',en:'Destination address:',es:'Dirección de destino:',ar:'عنوان الوجهة:'}
 });
 
 /* applyI18n() ne sait pas traduire l'attribut label des <optgroup> (ce n'est
@@ -1093,11 +1102,72 @@ registerI18n({
   }
 
   /* Repli : ouvre le client email pré-rempli */
-  function mailtoFallback(d) {
-    const body = `Nom : ${d.nom}\nEmail : ${d.email}\nSujet : ${d.sujet}\nPlan : ${d.plan}\n\n${d.message}`;
-    window.location.href = 'mailto:contact@vidsparkpro.com'
-      + '?subject=' + encodeURIComponent('[Contact] ' + (d.sujet || '') + ' — ' + d.nom)
-      + '&body=' + encodeURIComponent(body);
+  /* Adresse de destination selon le sujet choisi. L'ancien repli visait
+     contact@vidsparkpro.com, qui ne figure nulle part sur cette page : on
+     route vers les quatre adresses réellement annoncées. */
+  function routeFor(sujet) {
+    const s = String(sujet || '');
+    if (s.indexOf('billing-') === 0) return 'billing@vidsparkpro.com';
+    if (s.indexOf('rgpd-')    === 0) return 'privacy@vidsparkpro.com';
+    if (s.indexOf('abuse-')   === 0) return 'abuse@vidsparkpro.com';
+    return 'support@vidsparkpro.com';
+  }
+
+  function draftFor(d) {
+    return {
+      to: routeFor(d.sujet),
+      subject: '[Contact] ' + (d.sujet || '') + ' — ' + d.nom,
+      body: 'Nom : ' + d.nom + '\nEmail : ' + d.email + '\nSujet : ' + d.sujet
+          + '\nPlan : ' + (d.plan || '—') + '\n\n' + d.message
+    };
+  }
+
+  /* ── Repli quand le backend ne peut pas envoyer ──
+     L'ancien repli faisait window.location = 'mailto:…'. Sans client email
+     configuré — le cas de la plupart des visiteurs sur desktop — Windows
+     affiche « selectionner une application » et le message est perdu. On
+     propose desormais des liens de redaction webmail, qui fonctionnent dans
+     n'importe quel navigateur, plus une copie du message en un clic. */
+  function offerAlternatives(d) {
+    const m = draftFor(d);
+    const gmail = 'https://mail.google.com/mail/?view=cm&fs=1'
+      + '&to=' + encodeURIComponent(m.to)
+      + '&su=' + encodeURIComponent(m.subject)
+      + '&body=' + encodeURIComponent(m.body);
+    const outlook = 'https://outlook.live.com/mail/0/deeplink/compose'
+      + '?to=' + encodeURIComponent(m.to)
+      + '&subject=' + encodeURIComponent(m.subject)
+      + '&body=' + encodeURIComponent(m.body);
+
+    let box = document.getElementById('form-fallback');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'form-fallback';
+      box.style.cssText = 'margin-bottom:16px;padding:14px 16px;border-radius:var(--r);'
+        + 'background:rgba(242,144,15,.08);border:1px solid rgba(242,144,15,.28);font-size:13px';
+      status.parentNode.insertBefore(box, status.nextSibling);
+    }
+    box.innerHTML =
+        '<p style="margin:0 0 10px;color:var(--muted);line-height:1.6">' + t('ct_fb_intro') + '</p>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:8px">'
+      +   '<button type="button" id="fb-copy" class="card-btn" style="background:rgba(242,144,15,.14);'
+      +     'color:var(--purple-l);border-color:rgba(242,144,15,.3)">' + t('ct_fb_copy') + '</button>'
+      +   '<a class="card-btn" style="background:rgba(242,144,15,.14);color:var(--purple-l);'
+      +     'border-color:rgba(242,144,15,.3)" target="_blank" rel="noopener" href="' + gmail + '">Gmail</a>'
+      +   '<a class="card-btn" style="background:rgba(242,144,15,.14);color:var(--purple-l);'
+      +     'border-color:rgba(242,144,15,.3)" target="_blank" rel="noopener" href="' + outlook + '">Outlook</a>'
+      + '</div>'
+      + '<p style="margin:10px 0 0;color:var(--faint);font-size:11.5px">' + t('ct_fb_addr') + ' <strong>' + m.to + '</strong></p>';
+
+    document.getElementById('fb-copy').addEventListener('click', async function () {
+      const full = m.to + '\n' + m.subject + '\n\n' + m.body;
+      try {
+        await navigator.clipboard.writeText(full);
+        this.textContent = t('ct_fb_copied');
+      } catch (e) {
+        this.textContent = t('ct_fb_copyfail');
+      }
+    });
   }
 
   form.addEventListener('submit', async function (e) {
@@ -1130,16 +1200,17 @@ registerI18n({
       } else {
         const j = await r.json().catch(() => ({}));
         if (j.code === 'EMAIL_NOT_CONFIGURED') {
-          showStatus(t('ct_st_mailto'), true);
-          mailtoFallback(data);
+          showStatus(t('ct_st_down'), false);
+          offerAlternatives(data);
         } else {
           showStatus(t('ct_st_err'), false);
+          offerAlternatives(data);
         }
       }
     } catch (err) {
-      /* Réseau coupé → repli mailto */
-      showStatus(t('ct_st_mailto'), true);
-      mailtoFallback(data);
+      /* Réseau coupé ou serveur injoignable */
+      showStatus(t('ct_st_offline'), false);
+      offerAlternatives(data);
     } finally {
       btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = old;
     }
