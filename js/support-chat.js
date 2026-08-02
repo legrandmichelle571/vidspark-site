@@ -29,8 +29,12 @@
   const API_BASE = 'https://vidspark-ai-production-9ac7.up.railway.app';
   const hasI18n = typeof window.registerI18n === 'function' && typeof window.t === 'function';
 
-  if (hasI18n) {
-    registerI18n({
+  /* Dictionnaire defini au niveau du module, pas a l'interieur du if(hasI18n) :
+     story-generator.html et les 18 pages /outils/ ne chargent pas js/i18n.js,
+     le panneau tombait donc sur un repli code en dur en francais — un site en
+     anglais affichait un coach en francais. Il sert desormais aussi de repli
+     traduit quand le moteur i18n est absent. */
+  const DICT = {
       /* Meme nom que ai_coach et db_aiassist dans dashboard.html : l'assistant
          portait trois libelles differents selon la page, ce qui donnait
          l'impression de trois outils distincts. */
@@ -50,25 +54,22 @@
       vsc_hint:{fr:'Une IA pour t’aider — clique pour discuter',en:'An AI here to help — click to chat',es:'Una IA para ayudarte — haz clic para chatear',ar:'ذكاء اصطناعي لمساعدتك — انقر للدردشة',pt:'Uma IA para ajudar — clique para conversar',de:'Eine KI, die hilft — zum Chatten klicken',it:'Un’IA per aiutarti — clicca per chattare',ru:'ИИ готов помочь — нажмите, чтобы начать',ja:'AIがお手伝いします — クリックしてチャット',ko:'AI가 도와드립니다 — 클릭해서 대화하기',hi:'मदद के लिए एक AI — चैट करने के लिए क्लिक करें',zh:'AI 助手随时待命 — 点击开始聊天',tr:'Yardım için bir YZ — sohbet için tıkla',nl:'Een AI die helpt — klik om te chatten'},
       vsc_greeting_user:{fr:'👋 Salut ! Je vois ce que tu as à l’écran. Pose-moi une question sur ta chaîne ou sur ce résultat.',en:'👋 Hi! I can see what’s on your screen. Ask me about your channel or about this result.',es:'👋 ¡Hola! Veo lo que tienes en pantalla. Pregúntame sobre tu canal o sobre este resultado.',ar:'👋 مرحبًا! أرى ما هو معروض على شاشتك. اسألني عن قناتك أو عن هذه النتيجة.',pt:'👋 Oi! Estou vendo o que está na sua tela. Pergunte sobre seu canal ou sobre este resultado.',de:'👋 Hallo! Ich sehe, was auf deinem Bildschirm ist. Frag mich zu deinem Kanal oder zu diesem Ergebnis.',it:'👋 Ciao! Vedo cosa hai sullo schermo. Chiedimi del tuo canale o di questo risultato.',ru:'👋 Привет! Я вижу, что у вас на экране. Спросите о канале или об этом результате.',ja:'👋 こんにちは！画面の内容が見えています。チャンネルやこの結果について質問してください。',ko:'👋 안녕하세요! 화면에 있는 내용을 보고 있어요. 채널이나 이 결과에 대해 물어보세요.',hi:'👋 नमस्ते! मैं देख सकता हूँ कि स्क्रीन पर क्या है। अपने चैनल या इस परिणाम के बारे में पूछें।',zh:'👋 你好！我能看到你屏幕上的内容。可以问我关于你的频道或这个结果的问题。',tr:'👋 Merhaba! Ekranındakini görüyorum. Kanalın ya da bu sonuç hakkında sor.',nl:'👋 Hoi! Ik zie wat er op je scherm staat. Vraag me iets over je kanaal of dit resultaat.'},
       vsc_ctx_seen:{fr:'Je regarde ce qui est affiché sur cette page',en:'I can see what’s shown on this page',es:'Veo lo que se muestra en esta página',ar:'أرى ما هو معروض في هذه الصفحة',pt:'Vejo o que está exibido nesta página',de:'Ich sehe, was auf dieser Seite angezeigt wird',it:'Vedo ciò che è mostrato in questa pagina',ru:'Я вижу, что показано на этой странице',ja:'このページに表示されている内容が見えます',ko:'이 페이지에 표시된 내용을 보고 있습니다',hi:'मैं देख सकता हूँ कि इस पेज पर क्या दिख रहा है',zh:'我能看到此页面显示的内容',tr:'Bu sayfada gösterileni görüyorum',nl:'Ik zie wat op deze pagina staat'}
-    });
-  }
-
-  const FALLBACK = {
-    vsc_title:'Coach IA',
-    vsc_greeting:'👋 Salut ! Une question sur VidSpark AI (fonctionnalités, tarifs, comment ça marche) ? Je suis là pour t’aider.',
-    vsc_greeting_user:'👋 Salut ! Je vois ce que tu as à l’écran. Pose-moi une question sur ta chaîne ou sur ce résultat.',
-    vsc_placeholder:'Écris ta question…', vsc_send:'Envoyer', vsc_thinking:'L’assistant réfléchit…',
-    vsc_error:'Oups, une erreur est survenue. Réessaie dans un instant, ou passe par la page Contact.',
-    vsc_ratelimit:'Tu as atteint la limite de messages pour l’instant. Réessaie dans un moment.',
-    vsc_ai_badge:'ChatGPT AI', vsc_hint:'Une IA pour t’aider — clique pour discuter',
-    vsc_inv_t:'Parle à l’assistant AI', vsc_inv_s:'Pose ta question, l’AI te répond',
-    vsc_ctx_seen:'Je regarde ce qui est affiché sur cette page'
   };
-  const T = hasI18n ? window.t : function(k){ return FALLBACK[k] || k; };
+
+  if (hasI18n) registerI18n(DICT);
+
   /* Repli si i18n.js n'est pas chargé : anglais par défaut, comme vsGetLang(). */
   const lang = () => (typeof window.vsGetLang === 'function')
     ? window.vsGetLang()
     : (localStorage.getItem('vs_site_lang') || 'en');
+
+  /* Sans moteur i18n, on lit DICT directement dans la langue courante au lieu
+     de servir du francais. Repli sur l'anglais si la langue manque. */
+  const T = hasI18n ? window.t : function(k){
+    const e = DICT[k];
+    if (!e) return k;
+    return e[lang()] || e.en || k;
+  };
 
   const style = document.createElement('style');
   style.textContent = `
