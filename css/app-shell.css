@@ -267,3 +267,48 @@ body.side-collapsed .app-topbar{ margin-left:var(--shell-side-w-collapsed); }
 @media (prefers-reduced-motion: reduce){
   .app-side, .app-main, .app-topbar, .shell-menu, .shell-notif-pop, .side-overlay, .sb-toggle .chev, .sb-group-items{ transition-duration:.001ms !important; }
 }
+
+/* ══════════════════════════════════════════════════════
+   RTL (arabe) — <html dir="rtl"> retourne les flex/grid tout seul, mais pas
+   les ancrages physiques (left/right en dur). Sans ce bloc, .shell-menu
+   (right:0) s'ouvrait vers la gauche depuis l'avatar déjà collé au bord
+   gauche : le menu du compte sortait de l'écran / passait sous la sidebar.
+   Chaque ancrage est ici remis du côté lecture arabe.
+   ══════════════════════════════════════════════════════ */
+[dir="rtl"] .app-side{
+  left:auto; right:0;
+  border-right:none; border-left:1px solid var(--shell-b1);
+  border-radius:20px 0 0 20px;
+}
+[dir="rtl"] .app-main,
+[dir="rtl"] .app-topbar{ margin-left:0; margin-right:var(--shell-side-w); }
+[dir="rtl"] body.side-collapsed .app-main,
+[dir="rtl"] body.side-collapsed .app-topbar{ margin-left:0; margin-right:var(--shell-side-w-collapsed); }
+[dir="rtl"] .app-side a.sb-link.active::before{ left:auto; right:-12px; }
+[dir="rtl"] body.side-collapsed .app-side a.sb-link::after{ left:auto; right:calc(100% + 12px); }
+[dir="rtl"] .sb-ws .ws-tx,
+[dir="rtl"] .sb-group-h .gh-title{ text-align:right; }
+[dir="rtl"] .sb-search .si{ left:auto; right:11px; }
+[dir="rtl"] .sb-search .kbd{ right:auto; left:9px; }
+[dir="rtl"] .su-av .on{ right:auto; left:-1px; }
+
+[dir="rtl"] .shell-menu{ right:auto; left:0; }
+[dir="rtl"] .shell-menu-item{ text-align:right; }
+[dir="rtl"] .shell-notif-pop{ right:auto; left:24px; }
+
+@media(max-width:1024px){
+  [dir="rtl"] .app-side{
+    transform:translateX(100%);
+    box-shadow:-24px 0 60px -20px rgba(0,0,0,.7);
+    border-radius:20px 0 0 20px;
+  }
+  [dir="rtl"] .app-side.drawer-open{ transform:translateX(0); }
+  [dir="rtl"] .app-main, [dir="rtl"] body.side-collapsed .app-main,
+  [dir="rtl"] .app-topbar, [dir="rtl"] body.side-collapsed .app-topbar{ margin-right:0; }
+}
+@media(max-width:760px){
+  [dir="rtl"] .shell-notif-pop{ left:10px; right:10px; }
+}
+@media(max-width:420px){
+  [dir="rtl"] .app-side{ border-radius:0; }
+}

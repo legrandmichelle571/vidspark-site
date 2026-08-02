@@ -783,6 +783,56 @@
         .dash-rail{ order:3; position:static; }
       }
     }
+
+    /* ══════════════════════════════════════════════════════
+       RTL (arabe) — vsSetLang('ar') pose <html dir="rtl">, ce qui retourne
+       les flex/grid tout seul, mais PAS les éléments positionnés en dur
+       (left/right physiques). Résultat avant ce bloc : le menu du compte
+       (.menu, ancré right:0) s'ouvrait vers la gauche depuis l'avatar, donc
+       en dehors de l'écran / sous la sidebar — panneau blanc vide, illisible.
+       On remet ici chaque ancrage physique du côté lecture arabe.
+       ══════════════════════════════════════════════════════ */
+
+    /* ── Sidebar : passe à droite, comme la lecture ── */
+    [dir="rtl"] .app-side{
+      left:auto; right:0;
+      border-right:none; border-left:1px solid rgba(255,255,255,.08);
+      border-radius:20px 0 0 20px;
+      transform:translateX(100%);            /* tiroir fermé : sort par la droite */
+      box-shadow:-24px 0 60px -20px rgba(0,0,0,.7);
+    }
+    [dir="rtl"] .app-side.drawer-open{ transform:translateX(0); }
+    [dir="rtl"] .app-side a.sb-link.active::before{ left:auto; right:-12px; }
+    [dir="rtl"] body.side-collapsed .app-side a.sb-link::after{ left:auto; right:calc(100% + 12px); }
+    [dir="rtl"] .sb-ws .ws-tx{ text-align:right; }
+    [dir="rtl"] .sb-search .si{ left:auto; right:11px; }
+    [dir="rtl"] .sb-search .kbd{ right:auto; left:9px; }
+    [dir="rtl"] .sb-search input{ padding:9px 31px 9px 42px; }
+    [dir="rtl"] .sb-fav{ right:auto; left:9px; }
+    [dir="rtl"] .su-av .on{ right:auto; left:-1px; }
+    @media(min-width:1024px){
+      [dir="rtl"] .app-side{ transform:none; box-shadow:none; border-radius:24px 0 0 24px; }
+      [dir="rtl"] .main{ margin-left:0; margin-right:var(--side-w); }
+    }
+
+    /* ── Topbar : menu compte, notifications, dropdowns, recherche ── */
+    [dir="rtl"] .menu{ right:auto; left:0; }
+    [dir="rtl"] .menu-item{ text-align:right; }
+    [dir="rtl"] .notif-pop{ right:auto; left:24px; }
+    [dir="rtl"] #topNotifCount{ right:auto; left:5px; }
+    [dir="rtl"] .badge-dot{ right:auto; left:10px; }
+    [dir="rtl"] .tb-dd-panel{ left:auto; right:0; }
+    [dir="rtl"] .tb-search .si{ left:auto; right:11px; }
+    [dir="rtl"] .tb-search .kbd{ right:auto; left:9px; }
+    [dir="rtl"] .tb-search input{ padding:9px 31px 9px 42px; }
+
+    /* ── Boutons flottants + décor ── */
+    [dir="rtl"] .ai-fab{ right:auto; left:22px; }
+    [dir="rtl"] .ai-fab-badge{ right:auto; left:-10px; }
+    [dir="rtl"] .ai-hint{ right:auto; left:92px; }
+    [dir="rtl"] .home-fab{ right:auto; left:22px; }
+    [dir="rtl"] .ai-pop{ right:auto; left:22px; }
+    [dir="rtl"] .coach-card::before{ right:auto; left:-10%; }
   </style>
 
   <script src="/js/i18n.js"></script>
