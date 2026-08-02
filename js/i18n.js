@@ -12,10 +12,14 @@
   const I18N = {};
 
   window.registerI18n = function(dict){ for(const k in dict) I18N[k]=Object.assign(I18N[k]||{},dict[k]); };
+  /* Langue par défaut : ANGLAIS. On ne suit plus navigator.language — un
+     visiteur au navigateur français tombait sur un site en français alors que
+     l'anglais est la langue de référence du produit. Le choix explicite fait
+     dans le sélecteur reste prioritaire et persiste (localStorage). */
+  const DEFAULT_LANG = 'en';
   window.vsGetLang = function(){
-    let l = localStorage.getItem('vs_site_lang');
-    if(!l){ l=(navigator.language||'fr').slice(0,2); if(!LANGS.some(x=>x.c===l)) l='en'; }
-    return l;
+    const l = localStorage.getItem('vs_site_lang');
+    return (l && LANGS.some(x=>x.c===l)) ? l : DEFAULT_LANG;
   };
   window.t = function(key){ const e=I18N[key]; if(!e) return key; const l=vsGetLang(); return e[l]||e.en||e.fr||key; };
   window.applyI18n = function(){

@@ -65,9 +65,10 @@
     vsc_ctx_seen:'Je regarde ce qui est affiché sur cette page'
   };
   const T = hasI18n ? window.t : function(k){ return FALLBACK[k] || k; };
+  /* Repli si i18n.js n'est pas chargé : anglais par défaut, comme vsGetLang(). */
   const lang = () => (typeof window.vsGetLang === 'function')
     ? window.vsGetLang()
-    : (localStorage.getItem('vs_site_lang') || (navigator.language || 'fr').slice(0, 2));
+    : (localStorage.getItem('vs_site_lang') || 'en');
 
   const style = document.createElement('style');
   style.textContent = `

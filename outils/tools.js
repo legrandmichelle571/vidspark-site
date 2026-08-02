@@ -27,10 +27,12 @@ const I18N = {
 /* Les pages ajoutent leurs propres clés via registerI18n({key:{fr,en,...}}) */
 function registerI18n(dict){ for(const k in dict) I18N[k]=Object.assign(I18N[k]||{},dict[k]); }
 
+/* Langue par défaut : ANGLAIS (aligné sur js/i18n.js). On ne suit plus
+   navigator.language ; seul un choix explicite dans le sélecteur l'emporte. */
+const DEFAULT_LANG = 'en';
 function getLang(){
-  let l = localStorage.getItem('vs_site_lang');
-  if(!l){ l=(navigator.language||'fr').slice(0,2); if(!LANGS.some(x=>x.c===l)) l='en'; }
-  return l;
+  const l = localStorage.getItem('vs_site_lang');
+  return (l && LANGS.some(x=>x.c===l)) ? l : DEFAULT_LANG;
 }
 /* Repli : langue choisie → anglais → français */
 function t(key){ const e=I18N[key]; if(!e) return key; const l=getLang(); return e[l]||e.en||e.fr||key; }
