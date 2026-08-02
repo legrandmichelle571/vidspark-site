@@ -11,6 +11,21 @@
   const RTL = new Set(['ar']);
   const I18N = {};
 
+  /* ── Remise a zero unique de la langue enregistree ──
+     Passer le defaut a l'anglais ne suffisait pas : tout navigateur deja venu
+     garde un vs_site_lang d'avant le changement (souvent 'fr'), qui l'emporte
+     sur le defaut. Le site continuait donc de s'ouvrir en francais pour les
+     visiteurs existants. On efface la valeur stockee une seule fois, puis la
+     persistance normale reprend : la langue choisie apres ce reset est gardee.
+     Pour forcer un nouveau reset, changer la valeur ci-dessous. */
+  const LANG_RESET = '2026-08-en';
+  try {
+    if(localStorage.getItem('vs_lang_reset') !== LANG_RESET){
+      localStorage.removeItem('vs_site_lang');
+      localStorage.setItem('vs_lang_reset', LANG_RESET);
+    }
+  } catch(e){}
+
   window.registerI18n = function(dict){ for(const k in dict) I18N[k]=Object.assign(I18N[k]||{},dict[k]); };
   /* Langue par défaut : ANGLAIS. On ne suit plus navigator.language — un
      visiteur au navigateur français tombait sur un site en français alors que

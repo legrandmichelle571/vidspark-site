@@ -27,6 +27,18 @@ const I18N = {
 /* Les pages ajoutent leurs propres clés via registerI18n({key:{fr,en,...}}) */
 function registerI18n(dict){ for(const k in dict) I18N[k]=Object.assign(I18N[k]||{},dict[k]); }
 
+/* Remise a zero unique de la langue enregistree — meme cle et meme valeur que
+   js/i18n.js et story-generator.html, pour qu'elle ne se declenche qu'une fois
+   quelle que soit la page d'entree. Ces pages ne chargent pas js/i18n.js, d'ou
+   la duplication. Voir le commentaire detaille dans js/i18n.js. */
+const LANG_RESET = '2026-08-en';
+try {
+  if(localStorage.getItem('vs_lang_reset') !== LANG_RESET){
+    localStorage.removeItem('vs_site_lang');
+    localStorage.setItem('vs_lang_reset', LANG_RESET);
+  }
+} catch(e){}
+
 /* Langue par défaut : ANGLAIS (aligné sur js/i18n.js). On ne suit plus
    navigator.language ; seul un choix explicite dans le sélecteur l'emporte. */
 const DEFAULT_LANG = 'en';

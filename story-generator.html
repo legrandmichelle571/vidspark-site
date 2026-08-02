@@ -275,6 +275,17 @@ const TR = {
 };
 
 /* ---------- State ---------- */
+/* Remise a zero unique de la langue enregistree — meme cle et meme valeur que
+   js/i18n.js et outils/tools.js. Cette page ne charge pas js/i18n.js, d'ou la
+   duplication. Voir le commentaire detaille dans js/i18n.js. */
+const LANG_RESET = '2026-08-en';
+try {
+  if(localStorage.getItem('vs_lang_reset') !== LANG_RESET){
+    localStorage.removeItem('vs_site_lang');
+    localStorage.setItem('vs_lang_reset', LANG_RESET);
+  }
+} catch(e){}
+
 /* Langue par défaut : ANGLAIS (aligné sur js/i18n.js). */
 function detectLang(){
   try{ const v = localStorage.getItem('vs_site_lang'); if(v && TR[v]) return v; }catch(e){}
