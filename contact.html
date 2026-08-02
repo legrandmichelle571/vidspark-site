@@ -321,13 +321,30 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px; color: var(--muted);
   line-height: 1.65; flex: 1; margin-bottom: 20px;
 }
+/* Adresse cliquable : un clic la copie. Un visiteur sans client email
+   configuré (cas le plus fréquent sur desktop) peut ainsi la coller dans
+   son webmail au lieu de se heurter à la boîte de dialogue « choisir une
+   application » de Windows. */
 .card-email {
   font-size: 13px; font-weight: 600;
   color: var(--muted); font-family: "SF Mono", "Fira Code", monospace;
   background: var(--s2); border: 1px solid var(--b2);
   padding: 7px 12px; border-radius: var(--r);
   margin-bottom: 12px; word-break: break-all;
+  width: 100%; text-align: left; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  transition: border-color .15s, color .15s;
 }
+.card-email:hover { border-color: var(--b3, var(--b2)); color: var(--text); }
+.card-email .copy-ic { font-size: 12px; opacity: .55; flex-shrink: 0; }
+.card-email.copied { border-color: rgba(34,197,94,.45); color: var(--green); }
+
+/* Lien de repli pour ceux qui ont bien un client email */
+.card-mailto {
+  font-size: 11.5px; color: var(--faint); text-decoration: none;
+  margin-top: 9px; text-align: center; display: block;
+}
+.card-mailto:hover { color: var(--muted); text-decoration: underline; }
 .card-btn {
   display: inline-flex; align-items: center; justify-content: center;
   gap: 7px; padding: 9px 16px; border-radius: var(--r);
@@ -569,14 +586,14 @@ footer {
         <span class="nav-logo-badge">Beta</span>
       </a>
       <ul class="nav-links">
-        <li><a href="index.html#features">Fonctionnalités</a></li>
-        <li><a href="index.html#pricing">Tarifs</a></li>
-        <li><a href="index.html#faq">FAQ</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="index.html#features" data-i18n="ct_nav_feat">Fonctionnalités</a></li>
+        <li><a href="index.html#pricing" data-i18n="ct_nav_price">Tarifs</a></li>
+        <li><a href="index.html#faq" data-i18n="ct_nav_faq">FAQ</a></li>
+        <li><a href="contact.html" class="active" data-i18n="ct_nav_contact">Contact</a></li>
       </ul>
       <div class="nav-cta">
-        <a href="index.html#pricing" class="btn btn-ghost">Tarifs</a>
-        <a href="index.html" class="btn btn-primary">Accueil</a>
+        <a href="index.html#pricing" class="btn btn-ghost" data-i18n="ct_nav_price">Tarifs</a>
+        <a href="index.html" class="btn btn-primary" data-i18n="ct_nav_home">Accueil</a>
       </div>
       <label for="nav-check" class="nav-toggle" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -615,9 +632,14 @@ footer {
           Questions sur l'extension, les fonctionnalités, les scores SEO,
           la configuration ou tout autre sujet lié à l'utilisation de VidSpark AI.
         </p>
-        <div class="card-email">support@vidsparkpro.com</div>
-        <a href="mailto:support@vidsparkpro.com" class="card-btn" data-i18n="ct_write">
-          Écrire un email →
+        <button type="button" class="card-email" data-copy="support@vidsparkpro.com">
+          <span class="copy-tx">support@vidsparkpro.com</span><span class="copy-ic">⧉</span>
+        </button>
+        <a href="#formulaire" class="card-btn" data-subject="support-autre" data-i18n="ct_write">
+          Écrire un message →
+        </a>
+        <a href="mailto:support@vidsparkpro.com" class="card-mailto" data-i18n="ct_or_mail">
+          ou ouvrir mon client email
         </a>
         <div class="card-delay" data-i18n="ct_sup_delay">Réponse sous 72 heures ouvrées</div>
       </div>
@@ -630,9 +652,14 @@ footer {
           Questions sur votre abonnement, vos factures, un remboursement,
           le droit de rétractation, ou toute erreur de prélèvement.
         </p>
-        <div class="card-email">billing@vidsparkpro.com</div>
-        <a href="mailto:billing@vidsparkpro.com" class="card-btn" data-i18n="ct_write">
-          Écrire un email →
+        <button type="button" class="card-email" data-copy="billing@vidsparkpro.com">
+          <span class="copy-tx">billing@vidsparkpro.com</span><span class="copy-ic">⧉</span>
+        </button>
+        <a href="#formulaire" class="card-btn" data-subject="billing-abonnement" data-i18n="ct_write">
+          Écrire un message →
+        </a>
+        <a href="mailto:billing@vidsparkpro.com" class="card-mailto" data-i18n="ct_or_mail">
+          ou ouvrir mon client email
         </a>
         <div class="card-delay" data-i18n="ct_bil_delay">Réponse sous 48 heures ouvrées</div>
       </div>
@@ -645,9 +672,14 @@ footer {
           Exercice de vos droits RGPD : accès, rectification, suppression,
           portabilité, opposition. Toute question relative à votre vie privée.
         </p>
-        <div class="card-email">privacy@vidsparkpro.com</div>
-        <a href="mailto:privacy@vidsparkpro.com" class="card-btn" data-i18n="ct_write">
-          Écrire un email →
+        <button type="button" class="card-email" data-copy="privacy@vidsparkpro.com">
+          <span class="copy-tx">privacy@vidsparkpro.com</span><span class="copy-ic">⧉</span>
+        </button>
+        <a href="#formulaire" class="card-btn" data-subject="rgpd-autre" data-i18n="ct_write">
+          Écrire un message →
+        </a>
+        <a href="mailto:privacy@vidsparkpro.com" class="card-mailto" data-i18n="ct_or_mail">
+          ou ouvrir mon client email
         </a>
         <div class="card-delay" data-i18n="ct_priv_delay">Réponse sous 72 h · Traitement sous 30 jours</div>
       </div>
@@ -660,9 +692,14 @@ footer {
           Signalement d'une utilisation abusive, d'une faille de sécurité,
           de contenu inapproprié ou de toute activité frauduleuse sur la plateforme.
         </p>
-        <div class="card-email">abuse@vidsparkpro.com</div>
-        <a href="mailto:abuse@vidsparkpro.com" class="card-btn" data-i18n="ct_report">
+        <button type="button" class="card-email" data-copy="abuse@vidsparkpro.com">
+          <span class="copy-tx">abuse@vidsparkpro.com</span><span class="copy-ic">⧉</span>
+        </button>
+        <a href="#formulaire" class="card-btn" data-subject="abuse-abus" data-i18n="ct_report">
           Signaler →
+        </a>
+        <a href="mailto:abuse@vidsparkpro.com" class="card-mailto" data-i18n="ct_or_mail">
+          ou ouvrir mon client email
         </a>
         <div class="card-delay" data-i18n="ct_abuse_delay">Traitement prioritaire sous 24 heures</div>
       </div>
@@ -677,10 +714,10 @@ footer {
 <div class="info-bar" style="margin-top:48px">
   <div class="wrap">
     <div class="info-bar-inner">
-      <div class="info-item"><div class="info-dot"></div><strong>Service disponible</strong></div>
-      <div class="info-item">📅 Lundi – Vendredi · 9h–18h CET</div>
-      <div class="info-item">🌍 Support en Français &amp; English</div>
-      <div class="info-item">⚡ Business : réponse sous 24 h</div>
+      <div class="info-item"><div class="info-dot"></div><strong data-i18n="ct_info_open">Service disponible</strong></div>
+      <div class="info-item" data-i18n="ct_info_hours">📅 Lundi – Vendredi · 9h–18h CET</div>
+      <div class="info-item" data-i18n="ct_info_langs">🌍 Support en Français &amp; English</div>
+      <div class="info-item" data-i18n="ct_info_biz">⚡ Business : réponse sous 24 h</div>
     </div>
   </div>
 </div>
@@ -705,29 +742,29 @@ footer {
           <li>
             <div class="form-info-icon">🔐</div>
             <div class="form-info-text">
-              <strong>Données sécurisées</strong>
-              <span>Vos informations ne sont jamais partagées avec des tiers.</span>
+              <strong data-i18n="ct_aside_sec_t">Données sécurisées</strong>
+              <span data-i18n="ct_aside_sec_d">Vos informations ne sont jamais partagées avec des tiers.</span>
             </div>
           </li>
           <li>
             <div class="form-info-icon">⏱</div>
             <div class="form-info-text">
-              <strong>Délai de réponse</strong>
-              <span>72 h ouvrées pour le support, 24 h pour la facturation et les urgences.</span>
+              <strong data-i18n="ct_aside_delay_t">Délai de réponse</strong>
+              <span data-i18n="ct_aside_delay_d">72 h ouvrées pour le support, 24 h pour la facturation et les urgences.</span>
             </div>
           </li>
           <li>
             <div class="form-info-icon">🌍</div>
             <div class="form-info-text">
-              <strong>Langues acceptées</strong>
-              <span>Français et English. Les autres langues sont traitées au mieux.</span>
+              <strong data-i18n="ct_aside_lang_t">Langues acceptées</strong>
+              <span data-i18n="ct_aside_lang_d">Français et English. Les autres langues sont traitées au mieux.</span>
             </div>
           </li>
           <li>
             <div class="form-info-icon">📎</div>
             <div class="form-info-text">
-              <strong>Pièces jointes</strong>
-              <span>Pour envoyer des captures d'écran, utilisez directement les adresses email.</span>
+              <strong data-i18n="ct_aside_att_t">Pièces jointes</strong>
+              <span data-i18n="ct_aside_att_d">Pour envoyer des captures d'écran, utilisez directement les adresses email.</span>
             </div>
           </li>
         </ul>
@@ -739,21 +776,23 @@ footer {
 
           <div class="form-row">
             <div class="form-group">
-              <label for="f-name">Nom <span>*</span></label>
+              <label for="f-name"><span data-i18n="ct_f_name">Nom</span> <span>*</span></label>
               <input
                 type="text"
                 id="f-name"
                 name="nom"
+                data-i18n-ph="ct_f_name_ph"
                 placeholder="Votre nom complet"
                 required
                 autocomplete="name">
             </div>
             <div class="form-group">
-              <label for="f-email">Email <span>*</span></label>
+              <label for="f-email"><span data-i18n="ct_f_email">Email</span> <span>*</span></label>
               <input
                 type="email"
                 id="f-email"
                 name="email"
+                data-i18n-ph="ct_f_email_ph"
                 placeholder="vous@exemple.com"
                 required
                 autocomplete="email">
@@ -761,52 +800,53 @@ footer {
           </div>
 
           <div class="form-group">
-            <label for="f-subject">Sujet <span>*</span></label>
+            <label for="f-subject"><span data-i18n="ct_f_subject">Sujet</span> <span>*</span></label>
             <select id="f-subject" name="sujet" required>
-              <option value="" disabled selected>Sélectionner le type de demande</option>
-              <optgroup label="Support">
-                <option value="support-extension">Problème avec l'extension</option>
-                <option value="support-analyse">Question sur une analyse</option>
-                <option value="support-compte">Gestion du compte</option>
-                <option value="support-autre">Autre question</option>
+              <option value="" disabled selected data-i18n="ct_f_subject_ph">Sélectionner le type de demande</option>
+              <optgroup label="Support" data-i18n-label="ct_og_support">
+                <option value="support-extension" data-i18n="ct_o_ext">Problème avec l'extension</option>
+                <option value="support-analyse" data-i18n="ct_o_analyse">Question sur une analyse</option>
+                <option value="support-compte" data-i18n="ct_o_compte">Gestion du compte</option>
+                <option value="support-autre" data-i18n="ct_o_autre">Autre question</option>
               </optgroup>
-              <optgroup label="Facturation">
-                <option value="billing-abonnement">Gestion de l'abonnement</option>
-                <option value="billing-remboursement">Demande de remboursement</option>
-                <option value="billing-facture">Facture ou paiement</option>
+              <optgroup label="Facturation" data-i18n-label="ct_og_billing">
+                <option value="billing-abonnement" data-i18n="ct_o_abo">Gestion de l'abonnement</option>
+                <option value="billing-remboursement" data-i18n="ct_o_refund">Demande de remboursement</option>
+                <option value="billing-facture" data-i18n="ct_o_invoice">Facture ou paiement</option>
               </optgroup>
-              <optgroup label="Légal &amp; Données">
-                <option value="rgpd-acces">Accès à mes données (RGPD)</option>
-                <option value="rgpd-suppression">Suppression de mes données</option>
-                <option value="rgpd-autre">Autre demande RGPD</option>
+              <optgroup label="Légal &amp; Données" data-i18n-label="ct_og_legal">
+                <option value="rgpd-acces" data-i18n="ct_o_access">Accès à mes données (RGPD)</option>
+                <option value="rgpd-suppression" data-i18n="ct_o_erase">Suppression de mes données</option>
+                <option value="rgpd-autre" data-i18n="ct_o_gdpr">Autre demande RGPD</option>
               </optgroup>
-              <optgroup label="Signalement">
-                <option value="abuse-securite">Faille de sécurité</option>
-                <option value="abuse-abus">Utilisation abusive</option>
+              <optgroup label="Signalement" data-i18n-label="ct_og_abuse">
+                <option value="abuse-securite" data-i18n="ct_o_sec">Faille de sécurité</option>
+                <option value="abuse-abus" data-i18n="ct_o_abuse">Utilisation abusive</option>
               </optgroup>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="f-plan">Votre plan actuel</label>
+            <label for="f-plan" data-i18n="ct_f_plan">Votre plan actuel</label>
             <select id="f-plan" name="plan">
-              <option value="" disabled selected>Sélectionner votre plan (optionnel)</option>
-              <option value="free">Gratuit</option>
+              <option value="" disabled selected data-i18n="ct_f_plan_ph">Sélectionner votre plan (optionnel)</option>
+              <option value="free" data-i18n="ct_o_free">Gratuit</option>
               <option value="pro">Pro</option>
               <option value="business">Business</option>
               <option value="diamant">💎 Diamant</option>
-              <option value="unknown">Je ne sais pas</option>
+              <option value="unknown" data-i18n="ct_o_dunno">Je ne sais pas</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="f-message">Message <span>*</span></label>
+            <label for="f-message"><span data-i18n="ct_f_msg">Message</span> <span>*</span></label>
             <textarea
               id="f-message"
               name="message"
+              data-i18n-ph="ct_f_msg_ph"
               placeholder="Décrivez votre demande en détail. Plus vous êtes précis, plus vite nous pourrons vous aider."
               required></textarea>
-            <div class="form-hint">Minimum 20 caractères. Indiquez votre adresse email de compte VidSpark AI si différente de celle ci-dessus.</div>
+            <div class="form-hint" data-i18n="ct_f_hint">Minimum 20 caractères. Indiquez votre adresse email de compte VidSpark AI si différente de celle ci-dessus.</div>
           </div>
 
           <div class="form-group" style="margin-bottom:8px">
@@ -816,7 +856,7 @@ footer {
                 name="rgpd"
                 required
                 style="width:16px;height:16px;margin-top:2px;accent-color:var(--purple);flex-shrink:0">
-              <span>
+              <span data-i18n="ct_f_rgpd">
                 J'accepte que mes données soient utilisées pour traiter ma demande de support,
                 conformément à la <a href="privacy.html" style="color:var(--purple-l)">politique de confidentialité</a>. <span style="color:var(--red)">*</span>
               </span>
@@ -826,7 +866,7 @@ footer {
           <div id="form-status" role="status" style="display:none;font-size:14px;font-weight:600;padding:12px 16px;border-radius:var(--r);margin-bottom:16px"></div>
 
           <div class="form-submit-row">
-            <p class="form-note">
+            <p class="form-note" data-i18n="ct_f_note">
               Votre message est envoyé directement à notre équipe.<br>
               Voir notre <a href="privacy.html">politique de confidentialité</a>.
             </p>
@@ -906,7 +946,6 @@ registerI18n({
   ct_delay:{fr:'Délai de réponse moyen · Support : 72 h · Business : 24 h',en:'Average response time · Support: 72h · Business: 24h',es:'Tiempo medio de respuesta · Soporte: 72h · Business: 24h',ar:'متوسّط زمن الردّ · الدعم: 72 ساعة · Business: 24 ساعة'},
   ct_sup_t:{fr:'Support général',en:'General support',es:'Soporte general',ar:'الدعم العام'},
   ct_sup_d:{fr:"Questions sur l'extension, les fonctionnalités, les scores SEO, la configuration ou tout autre sujet lié à l'utilisation de VidSpark AI.",en:'Questions about the extension, features, SEO scores, setup or anything else related to using VidSpark AI.',es:'Preguntas sobre la extensión, funciones, puntuaciones SEO, configuración o cualquier otro tema de uso de VidSpark AI.',ar:'أسئلة عن الإضافة والميزات ونتائج SEO والإعداد أو أي موضوع آخر متعلّق باستخدام VidSpark AI.'},
-  ct_write:{fr:'Écrire un email →',en:'Write an email →',es:'Escribir un email →',ar:'أرسل بريدًا ←'},
   ct_report:{fr:'Signaler →',en:'Report →',es:'Reportar →',ar:'بلّغ ←'},
   ct_sup_delay:{fr:'Réponse sous 72 heures ouvrées',en:'Reply within 72 business hours',es:'Respuesta en 72 horas hábiles',ar:'الردّ خلال 72 ساعة عمل'},
   ct_bil_t:{fr:'Facturation',en:'Billing',es:'Facturación',ar:'الفوترة'},
@@ -920,8 +959,89 @@ registerI18n({
   ct_abuse_delay:{fr:'Traitement prioritaire sous 24 heures',en:'Priority handling within 24 hours',es:'Tratamiento prioritario en 24 horas',ar:'معالجة ذات أولوية خلال 24 ساعة'},
   ct_form_h:{fr:'Envoyez-nous<br><span class="gradient-text">un message</span>',en:'Send us<br><span class="gradient-text">a message</span>',es:'Envíanos<br><span class="gradient-text">un mensaje</span>',ar:'أرسل لنا<br><span class="gradient-text">رسالة</span>'},
   ct_form_p:{fr:'Préférez-vous ne pas ouvrir votre client email ? Remplissez ce formulaire et votre message sera acheminé vers le bon service.',en:'Prefer not to open your email client? Fill out this form and your message will be routed to the right team.',es:'¿Prefieres no abrir tu cliente de correo? Rellena este formulario y tu mensaje se enviará al equipo adecuado.',ar:'تفضّل ألّا تفتح بريدك؟ املأ هذا النموذج وسيُوجَّه رسالتك إلى الفريق المناسب.'},
-  ct_send:{fr:'Envoyer le message',en:'Send message',es:'Enviar mensaje',ar:'إرسال الرسالة'}
+  ct_send:{fr:'Envoyer le message',en:'Send message',es:'Enviar mensaje',ar:'إرسال الرسالة'},
+
+  /* ── Ajouts : le bouton des cartes mène désormais au formulaire (qui passe
+        par le backend), le mailto n'est plus que le repli secondaire. ── */
+  ct_write:{fr:'Écrire un message →',en:'Write a message →',es:'Escribir un mensaje →',ar:'اكتب رسالة ←'},
+  ct_or_mail:{fr:'ou ouvrir mon client email',en:'or open my email client',es:'o abrir mi cliente de correo',ar:'أو افتح بريدي الإلكتروني'},
+  ct_copied:{fr:'Adresse copiée ✓',en:'Address copied ✓',es:'Dirección copiada ✓',ar:'تم نسخ العنوان ✓'},
+
+  /* Navigation */
+  ct_nav_feat:{fr:'Fonctionnalités',en:'Features',es:'Funciones',ar:'الميزات'},
+  ct_nav_price:{fr:'Tarifs',en:'Pricing',es:'Precios',ar:'الأسعار'},
+  ct_nav_faq:{fr:'FAQ',en:'FAQ',es:'FAQ',ar:'الأسئلة الشائعة'},
+  ct_nav_contact:{fr:'Contact',en:'Contact',es:'Contacto',ar:'اتصل بنا'},
+  ct_nav_home:{fr:'Accueil',en:'Home',es:'Inicio',ar:'الرئيسية'},
+
+  /* Bandeau d'info */
+  ct_info_open:{fr:'Service disponible',en:'Service available',es:'Servicio disponible',ar:'الخدمة متاحة'},
+  ct_info_hours:{fr:'📅 Lundi – Vendredi · 9h–18h CET',en:'📅 Monday – Friday · 9am–6pm CET',es:'📅 Lunes – Viernes · 9h–18h CET',ar:'📅 الاثنين – الجمعة · 9ص–6م بتوقيت وسط أوروبا'},
+  ct_info_langs:{fr:'🌍 Support en Français & English',en:'🌍 Support in English & French',es:'🌍 Soporte en inglés y francés',ar:'🌍 الدعم بالإنجليزية والفرنسية'},
+  ct_info_biz:{fr:'⚡ Business : réponse sous 24 h',en:'⚡ Business: reply within 24h',es:'⚡ Business: respuesta en 24h',ar:'⚡ Business: الردّ خلال 24 ساعة'},
+
+  /* Colonne d'info à côté du formulaire */
+  ct_aside_sec_t:{fr:'Données sécurisées',en:'Secure data',es:'Datos seguros',ar:'بيانات آمنة'},
+  ct_aside_sec_d:{fr:'Vos informations ne sont jamais partagées avec des tiers.',en:'Your information is never shared with third parties.',es:'Tu información nunca se comparte con terceros.',ar:'لا تتم مشاركة معلوماتك مع أي طرف ثالث.'},
+  ct_aside_delay_t:{fr:'Délai de réponse',en:'Response time',es:'Tiempo de respuesta',ar:'زمن الردّ'},
+  ct_aside_delay_d:{fr:'72 h ouvrées pour le support, 24 h pour la facturation et les urgences.',en:'72 business hours for support, 24h for billing and urgent matters.',es:'72 horas hábiles para soporte, 24 h para facturación y urgencias.',ar:'72 ساعة عمل للدعم، و24 ساعة للفوترة والحالات العاجلة.'},
+  ct_aside_lang_t:{fr:'Langues acceptées',en:'Languages accepted',es:'Idiomas aceptados',ar:'اللغات المقبولة'},
+  ct_aside_lang_d:{fr:'Français et English. Les autres langues sont traitées au mieux.',en:'English and French. Other languages are handled on a best-effort basis.',es:'Inglés y francés. Otros idiomas se atienden en la medida de lo posible.',ar:'الإنجليزية والفرنسية. تُعالَج اللغات الأخرى قدر الإمكان.'},
+  ct_aside_att_t:{fr:'Pièces jointes',en:'Attachments',es:'Archivos adjuntos',ar:'المرفقات'},
+  ct_aside_att_d:{fr:"Pour envoyer des captures d'écran, utilisez directement les adresses email.",en:'To send screenshots, write directly to the email addresses above.',es:'Para enviar capturas de pantalla, escribe directamente a las direcciones de email.',ar:'لإرسال لقطات الشاشة، راسل العناوين البريدية أعلاه مباشرة.'},
+
+  /* Champs du formulaire */
+  ct_f_name:{fr:'Nom',en:'Name',es:'Nombre',ar:'الاسم'},
+  ct_f_name_ph:{fr:'Votre nom complet',en:'Your full name',es:'Tu nombre completo',ar:'اسمك الكامل'},
+  ct_f_email:{fr:'Email',en:'Email',es:'Email',ar:'البريد الإلكتروني'},
+  ct_f_email_ph:{fr:'vous@exemple.com',en:'you@example.com',es:'tu@ejemplo.com',ar:'you@example.com'},
+  ct_f_subject:{fr:'Sujet',en:'Subject',es:'Asunto',ar:'الموضوع'},
+  ct_f_subject_ph:{fr:'Sélectionner le type de demande',en:'Select the type of request',es:'Selecciona el tipo de solicitud',ar:'اختر نوع الطلب'},
+  ct_og_support:{fr:'Support',en:'Support',es:'Soporte',ar:'الدعم'},
+  ct_og_billing:{fr:'Facturation',en:'Billing',es:'Facturación',ar:'الفوترة'},
+  ct_og_legal:{fr:'Légal & Données',en:'Legal & Data',es:'Legal y datos',ar:'القانون والبيانات'},
+  ct_og_abuse:{fr:'Signalement',en:'Report',es:'Reporte',ar:'الإبلاغ'},
+  ct_o_ext:{fr:"Problème avec l'extension",en:'Problem with the extension',es:'Problema con la extensión',ar:'مشكلة في الإضافة'},
+  ct_o_analyse:{fr:'Question sur une analyse',en:'Question about an analysis',es:'Pregunta sobre un análisis',ar:'سؤال عن تحليل'},
+  ct_o_compte:{fr:'Gestion du compte',en:'Account management',es:'Gestión de la cuenta',ar:'إدارة الحساب'},
+  ct_o_autre:{fr:'Autre question',en:'Other question',es:'Otra pregunta',ar:'سؤال آخر'},
+  ct_o_abo:{fr:"Gestion de l'abonnement",en:'Subscription management',es:'Gestión de la suscripción',ar:'إدارة الاشتراك'},
+  ct_o_refund:{fr:'Demande de remboursement',en:'Refund request',es:'Solicitud de reembolso',ar:'طلب استرداد'},
+  ct_o_invoice:{fr:'Facture ou paiement',en:'Invoice or payment',es:'Factura o pago',ar:'فاتورة أو دفعة'},
+  ct_o_access:{fr:'Accès à mes données (RGPD)',en:'Access my data (GDPR)',es:'Acceso a mis datos (RGPD)',ar:'الوصول إلى بياناتي (GDPR)'},
+  ct_o_erase:{fr:'Suppression de mes données',en:'Erase my data',es:'Supresión de mis datos',ar:'حذف بياناتي'},
+  ct_o_gdpr:{fr:'Autre demande RGPD',en:'Other GDPR request',es:'Otra solicitud RGPD',ar:'طلب GDPR آخر'},
+  ct_o_sec:{fr:'Faille de sécurité',en:'Security flaw',es:'Falla de seguridad',ar:'ثغرة أمنية'},
+  ct_o_abuse:{fr:'Utilisation abusive',en:'Abusive use',es:'Uso abusivo',ar:'استخدام مسيء'},
+  ct_f_plan:{fr:'Votre plan actuel',en:'Your current plan',es:'Tu plan actual',ar:'خطتك الحالية'},
+  ct_f_plan_ph:{fr:'Sélectionner votre plan (optionnel)',en:'Select your plan (optional)',es:'Selecciona tu plan (opcional)',ar:'اختر خطتك (اختياري)'},
+  ct_o_free:{fr:'Gratuit',en:'Free',es:'Gratis',ar:'مجاني'},
+  ct_o_dunno:{fr:'Je ne sais pas',en:"I don't know",es:'No lo sé',ar:'لا أعرف'},
+  ct_f_msg:{fr:'Message',en:'Message',es:'Mensaje',ar:'الرسالة'},
+  ct_f_msg_ph:{fr:'Décrivez votre demande en détail. Plus vous êtes précis, plus vite nous pourrons vous aider.',en:'Describe your request in detail. The more precise you are, the faster we can help.',es:'Describe tu solicitud en detalle. Cuanto más preciso seas, más rápido podremos ayudarte.',ar:'صف طلبك بالتفصيل. كلما كنت أدقّ، أسرعنا في مساعدتك.'},
+  ct_f_hint:{fr:'Minimum 20 caractères. Indiquez votre adresse email de compte VidSpark AI si différente de celle ci-dessus.',en:'Minimum 20 characters. Include your VidSpark AI account email if different from the one above.',es:'Mínimo 20 caracteres. Indica el email de tu cuenta VidSpark AI si es distinto al anterior.',ar:'20 حرفًا كحدّ أدنى. اذكر بريد حسابك في VidSpark AI إن كان مختلفًا عمّا سبق.'},
+  ct_f_rgpd:{fr:'J\'accepte que mes données soient utilisées pour traiter ma demande de support, conformément à la <a href="privacy.html" style="color:var(--purple-l)">politique de confidentialité</a>. <span style="color:var(--red)">*</span>',en:'I agree that my data may be used to handle my support request, in accordance with the <a href="privacy.html" style="color:var(--purple-l)">privacy policy</a>. <span style="color:var(--red)">*</span>',es:'Acepto que mis datos se usen para tramitar mi solicitud de soporte, conforme a la <a href="privacy.html" style="color:var(--purple-l)">política de privacidad</a>. <span style="color:var(--red)">*</span>',ar:'أوافق على استخدام بياناتي لمعالجة طلب الدعم، وفقًا <a href="privacy.html" style="color:var(--purple-l)">لسياسة الخصوصية</a>. <span style="color:var(--red)">*</span>'},
+  ct_f_note:{fr:'Votre message est envoyé directement à notre équipe.<br>Voir notre <a href="privacy.html">politique de confidentialité</a>.',en:'Your message goes straight to our team.<br>See our <a href="privacy.html">privacy policy</a>.',es:'Tu mensaje se envía directamente a nuestro equipo.<br>Consulta nuestra <a href="privacy.html">política de privacidad</a>.',ar:'تصل رسالتك مباشرة إلى فريقنا.<br>اطّلع على <a href="privacy.html">سياسة الخصوصية</a>.'},
+
+  /* Messages d'état du formulaire */
+  ct_st_sending:{fr:'Envoi…',en:'Sending…',es:'Enviando…',ar:'جارٍ الإرسال…'},
+  ct_st_invalid:{fr:"Merci de remplir tous les champs requis (message : 20 caractères min) et d'accepter la politique de confidentialité.",en:'Please fill in all required fields (message: 20 characters min) and accept the privacy policy.',es:'Rellena todos los campos obligatorios (mensaje: 20 caracteres mín.) y acepta la política de privacidad.',ar:'يرجى ملء كل الحقول المطلوبة (الرسالة: 20 حرفًا على الأقل) والموافقة على سياسة الخصوصية.'},
+  ct_st_ok:{fr:'✅ Message envoyé ! Notre équipe vous répondra rapidement.',en:'✅ Message sent! Our team will get back to you shortly.',es:'✅ ¡Mensaje enviado! Nuestro equipo te responderá pronto.',ar:'✅ تم إرسال الرسالة! سيردّ عليك فريقنا قريبًا.'},
+  ct_st_err:{fr:'⚠️ Envoi impossible. Réessayez, ou copiez l\'adresse support@vidsparkpro.com et écrivez-nous depuis votre webmail.',en:'⚠️ Could not send. Try again, or copy support@vidsparkpro.com and write to us from your webmail.',es:'⚠️ No se pudo enviar. Inténtalo de nuevo o copia support@vidsparkpro.com y escríbenos desde tu webmail.',ar:'⚠️ تعذّر الإرسال. أعد المحاولة أو انسخ support@vidsparkpro.com وراسلنا من بريدك على الويب.'},
+  ct_st_mailto:{fr:'Ouverture de votre client email…',en:'Opening your email client…',es:'Abriendo tu cliente de correo…',ar:'جارٍ فتح بريدك الإلكتروني…'}
 });
+
+/* applyI18n() ne sait pas traduire l'attribut label des <optgroup> (ce n'est
+   pas du contenu). On le fait ici, au chargement et à chaque changement. */
+(function(){
+  function translateOptgroups(){
+    document.querySelectorAll('optgroup[data-i18n-label]').forEach(function(g){
+      g.label = t(g.getAttribute('data-i18n-label'));
+    });
+  }
+  document.addEventListener('DOMContentLoaded', translateOptgroups);
+  document.addEventListener('vslangchange', translateOptgroups);
+})();
 </script>
 
 <script>
@@ -932,6 +1052,37 @@ registerI18n({
   const form   = document.getElementById('contact-form');
   const status = document.getElementById('form-status');
   if (!form) return;
+
+  /* ── Adresse cliquable : copie dans le presse-papier ──
+     Sans client email configuré, le mailto: n'ouvre rien d'exploitable
+     (Windows propose de « choisir une application »). Copier l'adresse
+     laisse le visiteur écrire depuis Gmail, Outlook web, son téléphone… */
+  document.querySelectorAll('.card-email[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', async function () {
+      const addr = btn.getAttribute('data-copy');
+      const tx = btn.querySelector('.copy-tx');
+      try {
+        await navigator.clipboard.writeText(addr);
+      } catch (e) {
+        /* clipboard refusé (http, permission) → sélectionner le texte pour un Ctrl+C manuel */
+        const r = document.createRange(); r.selectNodeContents(tx);
+        const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+        return;
+      }
+      btn.classList.add('copied');
+      tx.textContent = (typeof t === 'function' ? t('ct_copied') : 'Copié ✓');
+      setTimeout(function () { btn.classList.remove('copied'); tx.textContent = addr; }, 1800);
+    });
+  });
+
+  /* ── Bouton de carte → formulaire, avec le bon sujet déjà choisi ── */
+  document.querySelectorAll('.card-btn[data-subject]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      const sel = document.getElementById('f-subject');
+      if (sel) sel.value = a.getAttribute('data-subject');
+      setTimeout(function () { document.getElementById('f-name')?.focus({ preventScroll: true }); }, 400);
+    });
+  });
 
   function showStatus(msg, ok) {
     status.textContent = msg;
@@ -958,14 +1109,14 @@ registerI18n({
     };
 
     if (!data.nom || !data.email || !data.message || data.message.trim().length < 20 || !data.rgpd) {
-      showStatus('Merci de remplir tous les champs requis (message : 20 caractères min) et d\'accepter la politique de confidentialité.', false);
+      showStatus(t('ct_st_invalid'), false);
       return;
     }
 
     const btn = form.querySelector('.btn-submit');
     const old = btn.innerHTML;
     btn.disabled = true; btn.style.opacity = '.7';
-    btn.querySelector('[data-i18n="ct_send"]').textContent = 'Envoi…';
+    btn.querySelector('[data-i18n="ct_send"]').textContent = t('ct_st_sending');
 
     try {
       const r = await fetch(API_BASE + '/public/contact', {
@@ -975,19 +1126,19 @@ registerI18n({
       });
       if (r.ok) {
         form.reset();
-        showStatus('✅ Message envoyé ! Notre équipe vous répondra rapidement.', true);
+        showStatus(t('ct_st_ok'), true);
       } else {
         const j = await r.json().catch(() => ({}));
         if (j.code === 'EMAIL_NOT_CONFIGURED') {
-          showStatus('Ouverture de votre client email…', true);
+          showStatus(t('ct_st_mailto'), true);
           mailtoFallback(data);
         } else {
-          showStatus('⚠️ ' + (j.error || 'Envoi impossible.') + ' Réessayez ou écrivez à support@vidsparkpro.com.', false);
+          showStatus(t('ct_st_err'), false);
         }
       }
     } catch (err) {
       /* Réseau coupé → repli mailto */
-      showStatus('Ouverture de votre client email…', true);
+      showStatus(t('ct_st_mailto'), true);
       mailtoFallback(data);
     } finally {
       btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = old;
