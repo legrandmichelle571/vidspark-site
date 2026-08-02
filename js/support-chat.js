@@ -236,6 +236,24 @@
     return { text: '[Contexte de la page consultée] ' + bits.join(' ; '), hasResult: Boolean(res) };
   }
 
+  /* paintLabels() ne touche pas au fil de discussion : le message d'accueil
+     deja affiche resterait dans l'ancienne langue au-dessus d'une interface
+     traduite. On le repeint donc ici, mais seulement tant que la conversation
+     n'a pas commence — l'historique reel n'est jamais reecrit. Ce listener est
+     separe parce que paintLabels() s'execute avant que body et chatHistory ne
+     soient initialises. */
+  document.addEventListener('vslangchange', function(){
+    if (chatHistory.length || !body.children.length) return;
+    body.innerHTML = '';
+    addMsg('bot', token ? T('vsc_greeting_user') : T('vsc_greeting'));
+    if (token && pageContext().hasResult) {
+      const c = document.createElement('div');
+      c.className = 'vsc-ctx';
+      c.textContent = '👁 ' + T('vsc_ctx_seen');
+      body.appendChild(c);
+    }
+  });
+
   /* ── Ouverture ─────────────────────────────────────────────────── */
   function setOpen(v){
     opened = v;

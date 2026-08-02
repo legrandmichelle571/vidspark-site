@@ -54,6 +54,9 @@ function setLang(code){
   document.documentElement.lang = code;
   document.documentElement.dir = RTL.has(code) ? 'rtl' : 'ltr';
   applyI18n();
+  /* Previent les widgets injectes hors de ces pages — le panneau du coach
+     (support-chat.js) notamment, qui restait dans l'ancienne langue. */
+  try{ document.dispatchEvent(new CustomEvent('vslangchange',{detail:code})); }catch(e){}
 }
 /* Applique les traductions à tout élément [data-i18n] / [data-i18n-ph] (placeholder) */
 function applyI18n(){

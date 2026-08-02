@@ -345,7 +345,14 @@ function renderNav(){
       </div>
     </div>`;
 }
-function setLang(l){ state.lang = l; try{ localStorage.setItem('vs_site_lang', l); }catch(e){} render(); }
+/* L'evenement previent les widgets injectes hors de render() — le panneau du
+   coach (support-chat.js) notamment, qui restait dans l'ancienne langue. */
+function setLang(l){
+  state.lang = l;
+  try{ localStorage.setItem('vs_site_lang', l); }catch(e){}
+  render();
+  try{ document.dispatchEvent(new CustomEvent('vslangchange',{detail:l})); }catch(e){}
+}
 
 /* ---------- Dispatcher ---------- */
 function render(){
