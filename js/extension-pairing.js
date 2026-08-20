@@ -7,8 +7,10 @@
  *    voir manifest.json → externally_connectable). L'extension génère un nonce
  *    gardé localement et ne renvoie que son empreinte SHA-256 ("challenge").
  * 2. Le site échange ce challenge contre un `state` à usage unique auprès du
- *    backend (POST /api/auth/extension/handshake/start, authentifié par la
- *    session Supabase de l'utilisateur).
+ *    backend (POST /api/auth/link/start, authentifié par la session Supabase
+ *    de l'utilisateur). Chemin volontairement neutre (pas "extension" ni
+ *    "handshake" dans l'URL) : certains bloqueurs de pub/VPN filtrent ces
+ *    mots-clés et cassaient l'appel en "Failed to fetch" (observé en test réel).
  * 3. Le site relaie ce `state` à l'extension, qui complète le handshake
  *    DIRECTEMENT auprès du backend (le site n'est plus dans la boucle) et
  *    reçoit son credential de liaison.
@@ -51,7 +53,7 @@ const VSExtPairing = {
 
     let startData;
     try {
-      startData = await API.post('/auth/extension/handshake/start', { challenge: requestResp.challenge });
+      startData = await API.post('/auth/link/start', { challenge: requestResp.challenge });
     } catch (err) {
       onFallback();
       return { detected: true, error: err.message };
@@ -73,7 +75,7 @@ const VSExtPairing = {
 
   /** Génère un code de secours à un seul champ (valable 10 minutes). */
   async generateManualCode() {
-    return API.post('/auth/extension/pair/manual-code', {});
+    return API.post('/auth/link/code', {});
   },
 
   _sendToExtension(message) {
