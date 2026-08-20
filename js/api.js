@@ -175,23 +175,13 @@ const API = {
 const AuthAPI = {
   /**
    * POST /api/auth/google
-   * Créer les codes d'activation avec access_token Supabase
+   * Confirme la connexion Google/Supabase auprès du backend (met à jour
+   * last_login, garantit qu'un activation_codes existe pour ce compte —
+   * find-or-create côté serveur). Le backend accepte access_token OU
+   * id_token ; le site envoie son access_token de session Supabase.
    */
   async googleLogin(accessToken) {
-    const data = await API.post('/auth/google', { access_token: accessToken });
-
-    // Sauvegarder les codes d'activation
-    localStorage.setItem('VIDSPARK_ACTIVATION_ID', data.activation_id);
-    localStorage.setItem('VIDSPARK_ACTIVATION_SECRET', data.activation_secret);
-    localStorage.setItem('VIDSPARK_SUBSCRIPTION_EXPIRY', data.subscription_expiry);
-    localStorage.setItem('VIDSPARK_USER', JSON.stringify(data.user));
-
-    console.log('[AuthAPI] ✅ Activation codes received:', {
-      activation_id: data.activation_id,
-      subscription_expiry: data.subscription_expiry
-    });
-
-    return data;
+    return API.post('/auth/google', { access_token: accessToken });
   },
 
   /**

@@ -1445,10 +1445,17 @@
                       <a href="/channels.html" class="btn btn-primary" data-i18n="db_act_connect_yt">Connecter ma chaîne YouTube</a>
                     </div>
                     <div id="codesUnlocked">
-                      <div id="codesContainer"></div>
-                      <input type="hidden" id="activationId"><input type="hidden" id="activationSecret">
-                      <div style="margin-top:8px;padding:11px 14px;background:rgba(52,211,153,.08);border-left:3px solid var(--green);border-radius:8px;">
-                        <span style="font-size:12px;color:var(--green);" data-i18n="db_act_valid">✅ Code valide — extension prête à l'emploi.</span>
+                      <div id="extStatusBox" style="padding:11px 14px;background:var(--s1);border-left:3px solid var(--b2);border-radius:8px;font-size:12px;color:var(--muted);">
+                        🔎 Détection de l'extension…
+                      </div>
+                      <div id="extFallbackBox" style="display:none;margin-top:10px;">
+                        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Extension non détectée automatiquement. Installe-la ou connecte-la avec ce code temporaire :</p>
+                        <button id="btnGenCode" onclick="generateExtCode()" class="btn btn-primary" style="width:100%;">🔑 Générer un code de connexion</button>
+                        <div id="extCodeBox" style="display:none;margin-top:10px;background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:12px;text-align:center;">
+                          <div id="extCodeValue" style="font-family:monospace;font-size:18px;font-weight:800;color:var(--green);letter-spacing:1px;margin-bottom:8px;"></div>
+                          <button onclick="copyText(document.getElementById('extCodeValue').textContent, this)" class="btn btn-ghost" style="width:100%;margin-bottom:6px;">📋 Copier</button>
+                          <div style="font-size:11px;color:var(--muted);">Colle ce code dans l'extension. Il expire dans 10 minutes et ne peut servir qu'une fois.</div>
+                        </div>
                       </div>
                       <button onclick="releaseDevices()" class="btn btn-ghost" style="width:100%;margin-top:12px;" data-i18n="db_act_release">🔓 PC perdu ? Libérer mes codes</button>
                       <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
@@ -1682,6 +1689,7 @@
 
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/extension-pairing.js"></script>
   <script>
     /**
      * Dashboard — Affichage profil et stats utilisateur
@@ -1830,18 +1838,25 @@
           throw new Error('Not authenticated');
         }
 
-        // 🔥 IMPORTANT: Envoyer l'ID token au backend pour activer l'extension
-        const session = await Auth.getSession();
-        const token = session?.access_token;
-        if (token) {
-          console.log('[Dashboard] Sending google login to backend with token...');
-          try {
-            await AuthAPI.googleLogin(token);
-            console.log('[Dashboard] ✅ Backend activation codes received');
-          } catch (err) {
-            console.error('[Dashboard] Error sending google login:', err);
-            // Continuer même si ça échoue
-          }
+        // Confirme la connexion Google/Supabase auprès du backend (last_login,
+        // garantit un activation_codes stable pour ce compte — find-or-create
+        // côté serveur, /api/auth/google accepte access_token OU id_token).
+        try {
+          const session = await Auth.getSession();
+          if (session?.access_token) await AuthAPI.googleLogin(session.access_token);
+        } catch (err) {
+          console.warn('[Dashboard] googleLogin sync failed:', err.message);
+        }
+
+        // Connexion automatique de l'extension (handshake sécurisé) — couche
+        // séparée qui remet le credential existant à l'extension sans jamais
+        // le faire transiter en clair par le site. Voir js/extension-pairing.js.
+        if (window.VSExtPairing) {
+          VSExtPairing.run({
+            onDetected:  () => setExtCardStatus('detecting'),
+            onConnected: () => { setExtCardStatus('connected'); loadActivationData(); },
+            onFallback:  () => setExtCardStatus('fallback')
+          }).catch((err) => console.warn('[Dashboard] Extension pairing:', err.message));
         }
 
         // ℹ️ Une chaîne YouTube n'est PLUS obligatoire pour accéder au dashboard — les
@@ -1889,30 +1904,12 @@
       }
     }
 
-    // Copier et afficher activation
-    function copyClip(fieldId) {
-      const field = document.getElementById(fieldId);
-      navigator.clipboard.writeText(field.value);
-      const btn = event.target;
-      const orig = btn.textContent;
-      btn.textContent = '✅ Copied!';
-      setTimeout(() => { btn.textContent = orig; }, 1500);
-    }
-
-    function toggleSecret() {
-      const field = document.getElementById('activationSecret');
-      field.type = field.type === 'password' ? 'text' : 'password';
-    }
-
-    // Copie un texte directement (codes multiples)
+    // Copie un texte directement (code de connexion)
     function copyText(txt, btn) {
       navigator.clipboard.writeText(txt);
       const orig = btn.textContent;
       btn.textContent = '✅';
       setTimeout(() => { btn.textContent = orig; }, 1500);
-    }
-    function toggleField(el) {
-      el.type = el.type === 'password' ? 'text' : 'password';
     }
 
     // Libère tous les codes (déverrouille les appareils) — si PC perdu
@@ -1931,25 +1928,46 @@
       } catch (e) { msg.style.color = 'var(--red,#ef4444)'; msg.textContent = '❌ ' + e.message; }
     }
 
-    // Affiche 1 ou 5 codes (Business) dans la carte d'activation
-    function renderCodes(codes) {
-      const wrap = document.getElementById('codesContainer');
-      if (!wrap) return;
-      wrap.innerHTML = codes.map((c, i) => `
-        <div style="background: var(--s2); border-radius: 10px; padding: 12px; margin-bottom: 10px; border:1px solid var(--b1);">
-          ${codes.length > 1 ? `<div style="font-size:11px;color:var(--purple-l,#f9a94a);font-weight:700;margin-bottom:6px;">PC ${i + 1}</div>` : ''}
-          <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">ID</div>
-          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-            <input type="text" value="${c.activation_id}" readonly style="flex:1;background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:8px;color:var(--green);font-family:monospace;font-size:11px;">
-            <button onclick="copyText('${c.activation_id}', this)" style="background:var(--purple);color:#0b0f19;padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;border:none;font-weight:700;">Copy</button>
-          </div>
-          <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">Secret</div>
-          <div style="display: flex; gap: 8px;">
-            <input type="password" value="${c.activation_secret}" readonly style="flex:1;background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:8px;color:var(--green);font-family:monospace;font-size:11px;">
-            <button onclick="toggleField(this.parentNode.querySelector('input'))" style="background:var(--b2);color:var(--text);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;border:none;">👁️</button>
-            <button onclick="copyText('${c.activation_secret}', this)" style="background:var(--purple);color:#0b0f19;padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;border:none;font-weight:700;">Copy</button>
-          </div>
-        </div>`).join('');
+    // Statut de connexion de l'extension — remplace l'ancien affichage ID+Secret
+    // par le nouveau handshake automatique + code de secours à un seul champ.
+    function setExtCardStatus(status) {
+      const box = document.getElementById('extStatusBox');
+      const fallback = document.getElementById('extFallbackBox');
+      const illStatus = document.getElementById('extIllStatus');
+      if (!box) return;
+      if (status === 'detecting') {
+        box.style.borderLeftColor = 'var(--b2)';
+        box.style.color = 'var(--muted)';
+        box.textContent = '🔎 Détection de l\'extension…';
+        fallback.style.display = 'none';
+      } else if (status === 'connected') {
+        box.style.borderLeftColor = 'var(--green)';
+        box.style.color = 'var(--green)';
+        box.textContent = '✅ Extension connectée — prête à l\'emploi.';
+        fallback.style.display = 'none';
+        if (illStatus) { illStatus.textContent = (window.t ? t('db_ext_ill_ok') : '✅ Prête à connecter'); illStatus.classList.add('ok'); }
+      } else if (status === 'fallback') {
+        box.style.borderLeftColor = 'var(--red,#ef4444)';
+        box.style.color = 'var(--muted)';
+        box.textContent = '⚠️ Extension non détectée automatiquement.';
+        fallback.style.display = 'block';
+      }
+    }
+
+    async function generateExtCode() {
+      const btn = document.getElementById('btnGenCode');
+      btn.disabled = true;
+      btn.textContent = '⏳ Génération…';
+      try {
+        const data = await VSExtPairing.generateManualCode();
+        document.getElementById('extCodeValue').textContent = data.code;
+        document.getElementById('extCodeBox').style.display = 'block';
+      } catch (e) {
+        alert('Impossible de générer le code : ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🔑 Générer un code de connexion';
+      }
     }
 
     // Récupérer et afficher l'activation
@@ -2025,15 +2043,6 @@
           if (lockedEl)   lockedEl.style.display   = 'none';
           if (unlockedEl) unlockedEl.style.display = '';
           if (illStatus){ illStatus.textContent = (window.t?t('db_ext_ill_ok'):'✅ Prête à connecter'); illStatus.classList.add('ok'); }
-
-          document.getElementById('activationId').value = user.activation_id;
-          document.getElementById('activationSecret').value = user.activation_secret;
-
-          // Liste des codes (Business = 5, autres = 1)
-          const codes = Array.isArray(user.codes) && user.codes.length
-            ? user.codes
-            : [{ activation_id: user.activation_id, activation_secret: user.activation_secret }];
-          renderCodes(codes);
 
           const hint = document.getElementById('codesHint');
           const PC_BY_PLAN = { diamant: 10, business: 5, pro: 1, free: 1 };
