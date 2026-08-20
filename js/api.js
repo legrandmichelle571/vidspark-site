@@ -5,6 +5,17 @@
  * Gère les tokens, refresh automatique, et gestion d'erreurs
  */
 
+// Override possible via ?dev_api=<url encodée> dans l'URL (persisté en
+// localStorage) ou localStorage.setItem('VIDSPARK_API_URL', '...') — pour
+// pointer vers un backend local pendant les tests. Ne change rien pour un
+// utilisateur normal.
+(function persistDevApiUrlFromUrl() {
+  try {
+    const fromUrl = new URLSearchParams(window.location.search).get('dev_api');
+    if (fromUrl) localStorage.setItem('VIDSPARK_API_URL', fromUrl);
+  } catch (e) {}
+})();
+
 const API = {
   // Configuration
   baseURL: localStorage.getItem('VIDSPARK_API_URL') || 'https://vidspark-ai-production-9ac7.up.railway.app/api',

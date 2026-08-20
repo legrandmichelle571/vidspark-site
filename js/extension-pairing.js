@@ -16,10 +16,18 @@
  * Si l'extension n'est pas détectée, ou si une étape échoue/expire, l'appelant
  * peut proposer le code de secours à un seul champ via generateManualCode().
  */
-// Override possible via localStorage.setItem('VIDSPARK_EXTENSION_ID', '...')
-// — utile pour tester en local avec l'extension dev (clé fixe séparée de la
-// prod, voir VidSpark-AI/dev-keys/README.md). Ne change rien pour un
-// utilisateur normal (retombe sur l'ID de production par défaut).
+// Override possible via ?dev_ext=<id> dans l'URL (persisté en localStorage,
+// donc à mettre une seule fois) ou directement localStorage.setItem
+// ('VIDSPARK_EXTENSION_ID', '...') dans la console — utile pour tester en
+// local avec l'extension dev (clé fixe séparée de la prod, voir
+// VidSpark-AI/dev-keys/README.md). Ne change rien pour un utilisateur normal
+// (retombe sur l'ID de production par défaut).
+(function persistDevExtensionIdFromUrl() {
+  try {
+    const fromUrl = new URLSearchParams(window.location.search).get('dev_ext');
+    if (fromUrl) localStorage.setItem('VIDSPARK_EXTENSION_ID', fromUrl);
+  } catch (e) {}
+})();
 const VIDSPARK_EXTENSION_ID = localStorage.getItem('VIDSPARK_EXTENSION_ID') || 'ojahpkeponimlmfokadlijbajooeejbk';
 const VSExtPairing = {
   _detectTimeoutMs: 4000,
