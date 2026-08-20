@@ -94,3 +94,10 @@ const VSExtPairing = {
     });
   }
 };
+
+// `const` au premier niveau d'un script classique n'est JAMAIS attaché à
+// `window` (contrairement à `var`) — sans cette ligne, `window.VSExtPairing`
+// reste indéfini pour tout code qui le teste ainsi (dashboard.html), même si
+// `VSExtPairing` existe bien dans la portée du script. C'était le bug racine
+// empêchant tout pairing de se déclencher.
+window.VSExtPairing = VSExtPairing;
