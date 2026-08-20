@@ -1436,27 +1436,33 @@
                   <div class="ext-step-body" style="flex:1;min-width:0;">
                     <div class="ext-step-title" data-i18n="db_ext_step2">Connecte l'extension avec ton compte</div>
                     <div id="codesHint" style="font-size:12px;color:var(--muted);margin-bottom:10px;" data-i18n="db_act_hint">Utilise ces codes pour activer ton extension Chrome.</div>
+                    <!-- Pairing (détection + handshake + code de secours) : TOUJOURS visible,
+                         jamais bloqué par l'absence de chaîne YouTube liée (décision explicite —
+                         le pairing est une couche d'autorisation, pas une fonctionnalité qui doit
+                         attendre l'onboarding complet). Ne pas remettre ce bloc dans codesUnlocked. -->
+                    <div id="extStatusBox" style="padding:11px 14px;background:var(--s1);border-left:3px solid var(--b2);border-radius:8px;font-size:12px;color:var(--muted);">
+                      🔎 Détection de l'extension…
+                    </div>
+                    <div id="extFallbackBox" style="display:none;margin-top:10px;">
+                      <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Extension non détectée automatiquement. Installe-la ou connecte-la avec ce code temporaire :</p>
+                      <button id="btnGenCode" onclick="generateExtCode()" class="btn btn-primary" style="width:100%;">🔑 Générer un code de connexion</button>
+                      <div id="extCodeBox" style="display:none;margin-top:10px;background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:12px;text-align:center;">
+                        <div id="extCodeValue" style="font-family:monospace;font-size:18px;font-weight:800;color:var(--green);letter-spacing:1px;margin-bottom:8px;"></div>
+                        <button onclick="copyText(document.getElementById('extCodeValue').textContent, this)" class="btn btn-ghost" style="width:100%;margin-bottom:6px;">📋 Copier</button>
+                        <div style="font-size:11px;color:var(--muted);">Colle ce code dans l'extension. Il expire dans 10 minutes et ne peut servir qu'une fois.</div>
+                      </div>
+                    </div>
+
                     <!-- Verrouillé tant qu'aucune chaîne YouTube n'est connectée — voir loadActivationData().
                          L'ID/Secret (activation_id/activation_secret) ne sont jamais rendus dans le DOM avant
-                         ce moment : le backend lui-même ne les renvoie pas (voir /api/user/me côté serveur). -->
+                         ce moment : le backend lui-même ne les renvoie pas (voir /api/user/me côté serveur).
+                         Ne concerne QUE la libération d'appareils ci-dessous, plus le pairing (voir ci-dessus). -->
                     <div id="codesLocked" style="display:none;text-align:center;padding:18px 8px;">
                       <div style="font-size:28px;margin-bottom:8px;">🔒</div>
                       <div style="font-size:13px;color:var(--muted);margin-bottom:14px;" data-i18n="db_act_locked">Connecte ta chaîne YouTube pour débloquer l'activation de l'extension.</div>
                       <a href="/channels.html" class="btn btn-primary" data-i18n="db_act_connect_yt">Connecter ma chaîne YouTube</a>
                     </div>
                     <div id="codesUnlocked">
-                      <div id="extStatusBox" style="padding:11px 14px;background:var(--s1);border-left:3px solid var(--b2);border-radius:8px;font-size:12px;color:var(--muted);">
-                        🔎 Détection de l'extension…
-                      </div>
-                      <div id="extFallbackBox" style="display:none;margin-top:10px;">
-                        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Extension non détectée automatiquement. Installe-la ou connecte-la avec ce code temporaire :</p>
-                        <button id="btnGenCode" onclick="generateExtCode()" class="btn btn-primary" style="width:100%;">🔑 Générer un code de connexion</button>
-                        <div id="extCodeBox" style="display:none;margin-top:10px;background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:12px;text-align:center;">
-                          <div id="extCodeValue" style="font-family:monospace;font-size:18px;font-weight:800;color:var(--green);letter-spacing:1px;margin-bottom:8px;"></div>
-                          <button onclick="copyText(document.getElementById('extCodeValue').textContent, this)" class="btn btn-ghost" style="width:100%;margin-bottom:6px;">📋 Copier</button>
-                          <div style="font-size:11px;color:var(--muted);">Colle ce code dans l'extension. Il expire dans 10 minutes et ne peut servir qu'une fois.</div>
-                        </div>
-                      </div>
                       <button onclick="releaseDevices()" class="btn btn-ghost" style="width:100%;margin-top:12px;" data-i18n="db_act_release">🔓 PC perdu ? Libérer mes codes</button>
                       <div id="releaseMsg" style="font-size:11px;margin-top:6px;text-align:center;"></div>
                     </div>
